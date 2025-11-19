@@ -224,8 +224,9 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_text(input: &str) -> IResult<&str, Node> {
-fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
-    many0(parse_block_node)(input)
+    // Use take_while1 to ensure at least one character is consumed
+    let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@')(input)?;
+    Ok((input, Node::Text(text.to_string())))
 }
 
 fn parse_text_exclude_brace(input: &str) -> IResult<&str, Node> {
@@ -280,7 +281,7 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
         input,
         Node::For {
             pattern: pattern.trim().to_string(),
-            iterator: iterator.trim().to_string(),
+            iterator: String::new(), // Iterator is now part of pattern in this simplified parser
             body,
         },
     ))
