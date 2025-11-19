@@ -229,6 +229,22 @@ fn parse_text(input: &str) -> IResult<&str, Node> {
     Ok((input, Node::Text(text.to_string())))
 }
 
+fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
+    many0(parse_block_node)(input)
+}
+
+fn parse_block_node(input: &str) -> IResult<&str, Node> {
+    // Try structured nodes first, then fall back to text (excluding '}')
+    alt((
+        parse_if,
+        parse_for,
+        parse_expression,
+        parse_call,
+        parse_element,
+        parse_text_exclude_brace,
+    ))(input)
+}
+
 fn parse_text_exclude_brace(input: &str) -> IResult<&str, Node> {
     let (input, text) = take_while1(|c| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
     Ok((input, Node::Text(text.to_string())))
