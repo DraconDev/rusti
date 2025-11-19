@@ -65,7 +65,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, children) = if name == "script" || name == "style" {
         // For script/style tags, consume everything until the closing tag
         // Build the closing tag pattern manually
-        let mut remaining = input;
+        let remaining = input;
         let mut content_end = 0;
 
         // Search for </tagname>
