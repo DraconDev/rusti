@@ -1,6 +1,6 @@
 use nom::{
     branch::alt,
-    bytes::complete::{tag, take_until, take_while1},
+    bytes::complete::{tag, take_until},
     character::complete::{alphanumeric1, char, multispace0},
     combinator::value,
     multi::many0,
@@ -40,7 +40,7 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
     alt((parse_expression, parse_call, parse_element, parse_text))(input)
 }
 
-fn parse_element(input: &str) -> IResult<&str, Node> {
+pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('<')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = alphanumeric1(input)?;

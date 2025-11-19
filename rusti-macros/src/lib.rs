@@ -48,12 +48,53 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
         let chunk = match node {
             parser::Node::Element {
                 name,
-                _attrs: _,
+                attrs,
                 children,
             } => {
                 let children_code = generate_body(children);
+
+                // Generate attribute code
+                let mut attr_code = proc_macro2::TokenStream::new();
+                for (attr_name, attr_value) in attrs {
+                    let attr_chunk = match attr_value {
+                        parser::AttributeValue::Static(value) => {
+                            // Static attributes are escaped for XSS safety
+                            quote! {
+                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#value))?;
+                            }
+                        }
+                        parser::AttributeValue::Dynamic(expr) => {
+                            // Dynamic attributes - parse expression and escape
+                            match syn::parse_str::<syn::Expr>(expr) {
+                                Ok(parsed_expr) => quote! {
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#parsed_expr))?;
+                                },
+                                Err(_) => {
+                                    use std::str::FromStr;
+                                    match proc_macro2::TokenStream::from_str(expr) {
+                                        Ok(tokens) => quote! {
+                                            write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#tokens))?;
+                                        },
+                                        Err(e) => syn::Error::new(
+                                            proc_macro2::Span::call_site(),
+                                            format!(
+                                                "Invalid attribute expression '{}': {}",
+                                                expr, e
+                                            ),
+                                        )
+                                        .to_compile_error(),
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    attr_code.extend(attr_chunk);
+                }
+
                 quote! {
-                    write!(f, "<{}>", #name)?;
+                    write!(f, "<{}", #name)?;
+                    #attr_code
+                    write!(f, ">")?;
                     #children_code
                     write!(f, "</{}>", #name)?;
                 }
@@ -128,3 +169,6 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod attr_tests;
