@@ -199,6 +199,42 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                     }
                 }
             }
+            parser::Node::Match { expr, arms } => {
+                let match_expr =
+                    syn::parse_str::<syn::Expr>(expr).expect("Failed to parse match expression");
+
+                let match_arms_code: Vec<_> = arms
+                    .iter()
+                    .map(|arm| {
+                        let pattern_str = &arm.pattern;
+                        let body_code = generate_body(&arm.body);
+
+                        // Parse the pattern - handle wildcard _ specially
+                        if pattern_str.trim() == "_" {
+                            quote! {
+                                _ => {
+                                    #body_code
+                                }
+                            }
+                        } else {
+                            // Try to parse as a pattern
+                            let pattern_pat = proc_macro2::TokenStream::from_str(pattern_str)
+                                .expect("Failed to parse match pattern");
+                            quote! {
+                                #pattern_pat => {
+                                    #body_code
+                                }
+                            }
+                        }
+                    })
+                    .collect();
+
+                quote! {
+                    match #match_expr {
+                        #(#match_arms_code)*
+                    }
+                }
+            }
         };
         stream.extend(chunk);
     }
