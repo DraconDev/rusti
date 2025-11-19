@@ -97,24 +97,21 @@ fn home_page() -> impl rusti::Component {
     }
 }
 
-// Conditionals demonstration page
+// Simplified conditionals demonstration
 fn conditionals_page() -> impl rusti::Component {
     let year = 2025;
     let is_premium = true;
-    let user_role = "admin";
-    let score = 85;
 
     rusti! {
         <html>
             @page_head("Conditionals Demo")
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header("Conditionals & Logic", "Demonstrating @if, @if let, and conditional rendering")
+                    @page_header("Conditionals & Logic", "Demonstrating conditional rendering with @if")
                     <main>
                         <div class="space-y-8">
-                            // Simple @if conditional
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple @if Conditional</h2>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple Conditional Example</h2>
                                 <div class="space-y-4">
                                     @if is_premium {
                                         <div class="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
@@ -130,63 +127,9 @@ fn conditionals_page() -> impl rusti::Component {
                                 </div>
                             </div>
 
-                            // String comparison conditionals
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Role-Based Rendering</h2>
-                                <div class="space-y-4">
-                                    @if user_role == "admin" {
-                                        <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
-                                            <p class="font-bold">Admin Access</p>
-                                            <p>You can manage users and settings</p>
-                                        </div>
-                                    } else {
-                                        <div class="p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
-                                            <p class="font-bold">User Access</p>
-                                            <p>Limited to viewing content</p>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-
-                            // Numeric comparisons
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Score Evaluation</h2>
-                                <div class="flex items-center gap-4">
-                                    <div class="text-6xl font-black text-gray-800">{ score }</div>
-                                    @if score >= 90 {
-                                        <div class="p-4 bg-green-500 text-white rounded-lg flex-1">
-                                            <p class="text-2xl font-bold">Excellent!</p>
-                                            <p>Outstanding performance!</p>
-                                        </div>
-                                    } else {
-                                        @if score >= 70 {
-                                            <div class="p-4 bg-yellow-500 text-white rounded-lg flex-1">
-                                                <p class="text-2xl font-bold">Good Job!</p>
-                                                <p>Keep up the good work!</p>
-                                            </div>
-                                        } else {
-                                            <div class="p-4 bg-orange-500 text-white rounded-lg flex-1">
-                                                <p class="text-2xl font-bold">Needs Improvement</p>
-                                                <p>Practice makes perfect!</p>
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            </div>
-
-                            // Code examples
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Code Examples</h2>
-                                <div class="space-y-6">
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-2">Simple If/Else:</h3>
-                                        <pre class="bg-gray-800 text-green-400 p-4 rounded-lg overflow-x-auto"><code>{"@if is_premium {\n    <div>Premium content</div>\n} else {\n    <div>Free content</div>\n}"}</code></pre>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-2">Nested Conditionals:</h3>
-                                        <pre class="bg-gray-800 text-green-400 p-4 rounded-lg overflow-x-auto"><code>{"@if score >= 90 {\n    <div>Excellent</div>\n} else {\n    @if score >= 70 {\n        <div>Good</div>\n    } else {\n        <div>Needs work</div>\n    }\n}"}</code></pre>
-                                    </div>
-                                </div>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">How It Works</h2>
+                                <pre class="bg-gray-800 text-green-400 p-4 rounded-lg"><code>{"@if condition {\n    <div>True branch</div>\n} else {\n    <div>False branch</div>\n}"}</code></pre>
                             </div>
                         </div>
                     </main>
