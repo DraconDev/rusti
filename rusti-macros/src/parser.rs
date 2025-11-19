@@ -1,10 +1,10 @@
 use nom::{
     branch::alt,
     bytes::complete::{is_not, tag, take_until},
-    character::complete::{alphanumeric1, char, multispace0, multispace1},
-    combinator::{value},
-    multi::{many0},
-    sequence::{delimited, preceded, tuple},
+    character::complete::{alphanumeric1, char, multispace0},
+    combinator::value,
+    multi::many0,
+    sequence::{delimited, preceded},
     IResult,
 };
 
@@ -12,7 +12,7 @@ use nom::{
 pub enum Node {
     Element {
         name: String,
-        attrs: Vec<(String, String)>,
+        _attrs: Vec<(String, String)>,
         children: Vec<Node>,
     },
     Text(String),
@@ -20,7 +20,7 @@ pub enum Node {
     Call {
         name: String,
         args: String,
-        children: Vec<Node>,
+        _children: Vec<Node>,
     },
 }
 
@@ -29,31 +29,33 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 }
 
 fn parse_node(input: &str) -> IResult<&str, Node> {
-    alt((
-        parse_element,
-        parse_expression,
-        parse_call,
-        parse_text,
-    ))(input)
+    alt((parse_element, parse_expression, parse_call, parse_text))(input)
 }
 
 fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('<')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, name) = alphanumeric1(input)?;
+    let (input, _) = multispace0(input)?;
     // TODO: Parse attributes
     let (input, _) = char('>')(input)?;
-    
+
     let (input, children) = parse_nodes(input)?;
-    
-    let (input, _) = preceded(multispace0, tag("</"))(input)?;
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('<')(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('/')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, _) = tag(name)(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, _) = char('>')(input)?;
 
     Ok((
         input,
         Node::Element {
             name: name.to_string(),
-            attrs: vec![],
+            _attrs: vec![],
             children,
         },
     ))
@@ -70,7 +72,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
     let (input, args) = delimited(char('('), take_until(")"), char(')'))(input)?;
     let (input, _) = multispace0(input)?;
-    
+
     let (input, children) = alt((
         delimited(
             char('{'),
@@ -85,7 +87,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
         Node::Call {
             name: name.to_string(),
             args: args.to_string(),
-            children,
+            _children: children,
         },
     ))
 }
