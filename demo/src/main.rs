@@ -4,15 +4,6 @@ use axum::{
     routing::{get, post},
     Form, Router,
 }; 
-mod examples;
-use examples::attributes::styled_card;
-use examples::components::components_page;
-use examples::composition::page;
-use examples::conditionals::{conditional_page, status_badge};
-use examples::hello::greeting;
-use examples::match_demo::{match_page, role_color, role_description};
-use examples::todo::{todo_page, TodoItem};
-use examples::xss_protection::xss_page;
 use rusti::rusti;
 use serde::Deserialize;
 
