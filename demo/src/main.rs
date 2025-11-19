@@ -87,7 +87,6 @@ fn home_page() -> impl rusti::Component {
                                 @clickable_card("Components", "Reusable UI building blocks", "/")
                                 @clickable_card("HTMX", "Server-side interactivity", "/htmx")
                                 @clickable_card("Conditionals", "If/else logic rendering", "/conditionals")
-                                @clickable_card("Lists", "For loops and iteration", "/lists")
                                 @clickable_card("XSS Protection", "Automatic HTML escaping", "/xss")
                                 @clickable_card("Attributes", "Dynamic attribute values", "/attributes")
                             </div>
@@ -199,36 +198,6 @@ fn conditionals_page() -> impl rusti::Component {
                                             <li>Boolean: true, false</li>
                                         </ul>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                    @page_footer(year)
-                </div>
-            </body>
-        </html>
-    }
-}
-
-// Lists and iteration demo - simplified to avoid parser issues
-fn lists_page() -> impl rusti::Component {
-    let year = 2025;
-
-    rusti! {
-        <html>
-            @page_head("Lists Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
-                <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header("Lists & Iteration", "For loops concept (full demo coming soon)")
-                    <main>
-                        <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">For Loops Syntax</h2>
-                                <p class="text-gray-700 mb-4">Rusti supports iteration over collections with the @for directive:</p>
-                                <pre class="bg-gray-800 text-green-400 p-4 rounded"><code>{"@for item in items {\n    <li>{ item }</li>\n}"}</code></pre>
-                                <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-500">
-                                    <p class="text-yellow-800 font-bold">Note: Full interactive demo coming soon!</p>
-                                    <p class="text-yellow-700 text-sm">The parser needs enhancements to handle complex @for scenarios.</p>
                                 </div>
                             </div>
                         </div>
@@ -376,10 +345,6 @@ async fn conditionals_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&conditionals_page()))
 }
 
-async fn lists_demo() -> impl IntoResponse {
-    Html(rusti::render_to_string(&lists_page()))
-}
-
 async fn xss_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&xss_page()))
 }
@@ -416,7 +381,6 @@ async fn main() {
         .route("/", get(hello_world))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
-        .route("/lists", get(lists_demo))
         .route("/xss", get(xss_demo))
         .route("/attributes", get(attributes_demo))
         .route("/htmx/counter/increment", post(htmx_increment))
@@ -434,14 +398,12 @@ async fn main() {
     println!("   http://127.0.0.1:3000/  - Home");
     println!("   http://127.0.0.1:3000/htmx - HTMX Demo");
     println!("   http://127.0.0.1:3000/conditionals - Conditionals");
-    println!("   http://127.0.0.1:3000/lists - Lists & Iteration");
     println!("   http://127.0.0.1:3000/xss - XSS Protection");
     println!("   http://127.0.0.1:3000/attributes - Dynamic Attributes");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
     println!("   • Conditional rendering (@if/@else)");
-    println!("   • Lists and iteration (@for)");
     println!("   • Auto HTML escaping (XSS protection)");
     println!("   • Dynamic attributes");
     println!("\n");
