@@ -87,6 +87,8 @@ fn home_page() -> impl rusti::Component {
                                 @clickable_card("Components", "Reusable UI building blocks", "/")
                                 @clickable_card("HTMX", "Server-side interactivity", "/htmx")
                                 @clickable_card("Conditionals", "If/else logic rendering", "/conditionals")
+                                @clickable_card("Lists", "For loops and iteration", "/lists")
+                                @clickable_card("Match", "Pattern matching", "/match")
                                 @clickable_card("XSS Protection", "Automatic HTML escaping", "/xss")
                                 @clickable_card("Attributes", "Dynamic attribute values", "/attributes")
                             </div>
