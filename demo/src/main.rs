@@ -67,7 +67,7 @@ fn full_page_layout<'a, C: rusti::Component + 'a>(
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header(title, subtitle)
                     <main>
-                        { content }
+                        @content()
                     </main>
                     @page_footer(year)
                 </div>
@@ -157,9 +157,20 @@ fn counter_partial(count: i32) -> impl rusti::Component {
 }
 
 async fn hello_world() -> impl IntoResponse {
-    let component = layout_page(
+    let content = rusti! {
+        <section class="mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                @clickable_card("Basic Examples", "Simple component composition", "/")
+                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
+            </div>
+        </section>
+    };
+
+    let component = full_page_layout(
         "Rusti Demo",
-        "Welcome to the Rusti demo application!".to_string(),
+        "Welcome to the Rusti demo application!",
+        content,
     );
     Html(rusti::render_to_string(&component))
 }
