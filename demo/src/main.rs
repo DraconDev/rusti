@@ -12,7 +12,8 @@ struct CounterForm {
     count: i32,
 }
 
-fn page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
+// Basic layout component used by other pages in this file
+fn layout_page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
     let year = 2025;
 
     rusti! {
@@ -256,8 +257,7 @@ fn user_profile<'a>(
 
 async fn hello_world() -> impl IntoResponse {
     let title = "Rusti - Type-Safe HTML Templates";
-    let body = "Welcome to Rusti! A Go templ-like library for Rust with component composition, XSS protection, and full type safety.";
-    let component = page(title, body);
+    let component = layout_page("Rusti Demo", "Welcome to the Rusti demo application!");
     Html(rusti::render_to_string(&component))
 }
 
