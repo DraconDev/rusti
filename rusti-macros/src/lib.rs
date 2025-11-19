@@ -9,7 +9,17 @@ pub fn rusti(input: TokenStream) -> TokenStream {
 
     // Parse the block content
     let nodes = match parser::parse_nodes(&input_str) {
-        Ok((_, nodes)) => nodes,
+        Ok((remaining, nodes)) => {
+            if !remaining.trim().is_empty() {
+                return syn::Error::new(
+                    proc_macro2::Span::call_site(),
+                    format!("Unexpected input remaining: {}", remaining),
+                )
+                .to_compile_error()
+                .into();
+            }
+            nodes
+        }
         Err(e) => {
             return syn::Error::new(
                 proc_macro2::Span::call_site(),
@@ -68,8 +78,14 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                         // If we can't parse it, it's probably invalid Rust.
                         // But let's try to emit it as tokens.
                         use std::str::FromStr;
-                        let tokens = proc_macro2::TokenStream::from_str(expr).unwrap();
-                        quote! { write!(f, "{}", rusti::Escaped(#tokens))?; }
+                        match proc_macro2::TokenStream::from_str(expr) {
+                            Ok(tokens) => quote! { write!(f, "{}", rusti::Escaped(#tokens))?; },
+                            Err(e) => syn::Error::new(
+                                proc_macro2::Span::call_site(),
+                                format!("Invalid expression '{}': {}", expr, e),
+                            )
+                            .to_compile_error(),
+                        }
                     }
                 }
             }
@@ -78,14 +94,27 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                 args,
                 _children: _,
             } => {
-                let name_ident = syn::parse_str::<syn::Path>(name).unwrap();
-                // args is "(...)" string.
-                // We need to parse args.
-                // If args is "name", it's "name".
-                // The parser returns args without parens?
-                // Parser: delimited(char('('), take_until(")"), char(')'))
-                // So args is the content inside parens.
-                let args_tokens = proc_macro2::TokenStream::from_str(args).unwrap();
+                let name_ident = match syn::parse_str::<syn::Path>(name) {
+                    Ok(path) => path,
+                    Err(e) => {
+                        return syn::Error::new(
+                            proc_macro2::Span::call_site(),
+                            format!("Invalid component name '{}': {}", name, e),
+                        )
+                        .to_compile_error();
+                    }
+                };
+
+                let args_tokens = match proc_macro2::TokenStream::from_str(args) {
+                    Ok(tokens) => tokens,
+                    Err(e) => {
+                        return syn::Error::new(
+                            proc_macro2::Span::call_site(),
+                            format!("Invalid arguments '{}': {}", args, e),
+                        )
+                        .to_compile_error();
+                    }
+                };
 
                 quote! {
                     rusti::Component::render(&#name_ident(#args_tokens), f)?;
@@ -96,3 +125,6 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
     }
     stream
 }
+
+#[cfg(test)]
+mod tests;

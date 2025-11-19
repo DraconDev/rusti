@@ -1,6 +1,6 @@
 use nom::{
     branch::alt,
-    bytes::complete::{is_not, tag, take_until},
+    bytes::complete::{tag, take_until},
     character::complete::{alphanumeric1, char, multispace0},
     combinator::value,
     multi::many0,
@@ -28,7 +28,7 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
     many0(preceded(multispace0, parse_node))(input)
 }
 
-fn parse_node(input: &str) -> IResult<&str, Node> {
+pub fn parse_node(input: &str) -> IResult<&str, Node> {
     alt((parse_element, parse_expression, parse_call, parse_text))(input)
 }
 
@@ -93,6 +93,12 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_text(input: &str) -> IResult<&str, Node> {
-    let (input, text) = is_not("<{@}")(input)?;
+    let (input, text) = nom::bytes::complete::is_not("<{@}")(input)?;
+    if text.is_empty() {
+        return Err(nom::Err::Error(nom::error::Error::new(
+            input,
+            nom::error::ErrorKind::Fail,
+        )));
+    }
     Ok((input, Node::Text(text.to_string())))
 }
