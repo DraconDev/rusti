@@ -52,8 +52,12 @@ fn page_footer(year: i32) -> impl rusti::Component {
     }
 }
 
-// Basic layout component used by other pages in this file
-fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
+// Flexible layout component that accepts any content
+fn full_page_layout<'a, C: rusti::Component + 'a>(
+    title: &'a str,
+    subtitle: &'a str,
+    content: C,
+) -> impl rusti::Component + 'a {
     let year = 2025;
 
     rusti! {
@@ -61,15 +65,9 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
             @page_head(title)
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header(title, &body)
+                    @page_header(title, subtitle)
                     <main>
-                        <section class="mb-12">
-                            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
-                            <div class="grid md:grid-cols-2 gap-8">
-                                @clickable_card("Basic Examples", "Simple component composition", "/")
-                                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
-                            </div>
-                        </section>
+                        { content }
                     </main>
                     @page_footer(year)
                 </div>
@@ -98,8 +96,7 @@ fn clickable_card<'a>(
 
 // HTMX Interactive Demo
 fn htmx_page() -> impl rusti::Component {
-    // Build the body content with the counter embedded
-    let body_content = rusti! {
+    let content = rusti! {
         <div class="space-y-8">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
@@ -127,8 +124,11 @@ fn htmx_page() -> impl rusti::Component {
         </div>
     };
 
-    let body_str = rusti::render_to_string(&body_content);
-    layout_page("HTMX + Rusti Demo", body_str)
+    full_page_layout(
+        "HTMX + Rusti Demo",
+        "Interactive counter with server-side rendering",
+        content,
+    )
 }
 
 fn counter_partial(count: i32) -> impl rusti::Component {
