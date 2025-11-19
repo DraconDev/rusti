@@ -224,36 +224,23 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_text(input: &str) -> IResult<&str, Node> {
-    // Use take_while1 to ensure at least one character is consumed
-    let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
+fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
+    many0(parse_block_node)(input)
+}
+
+fn parse_text_exclude_brace(input: &str) -> IResult<&str, Node> {
+    let (input, text) = take_while1(|c| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
     Ok((input, Node::Text(text.to_string())))
 }
 
 fn parse_if(input: &str) -> IResult<&str, Node> {
-    println!(
-        "DEBUG: parse_if input: '{}'",
-        input.lines().next().unwrap_or("")
-    );
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("if")(input)?;
     let (input, _) = multispace0(input)?;
     // Parse condition until the opening brace
-    // Condition might contain braces (e.g. struct init), so use balanced parsing?
-    // But standard if condition doesn't end with brace unless it's a block.
-    // Usually `if expr {`.
-    // If expr contains `{`, we need to handle it.
-    // Let's use take_until("{") for now, assuming condition doesn't contain top-level braces.
-    // But wait, `if let Some(x) = foo { ... }` is fine.
-    // `if Foo { x: 1 } == bar { ... }` would fail with take_until.
-    // But `rusti` syntax is `@if condition {`.
-    // If condition has braces, it's tricky.
-    // But for now `take_until("{")` is probably fine for most cases.
-    // Actually, let's stick to take_until("{") for if/for to minimize risk,
-    // as `take_balanced` requires a delimiter to start with, but here we are scanning *for* the delimiter.
     let (input, condition) = take_until("{")(input)?;
-    println!("DEBUG: parse_if condition: '{}'", condition);
     let (input, _) = char('{')(input)?;
-    let (input, then_branch) = parse_nodes(input)?;
+    let (input, then_branch) = parse_block_nodes(input)?;
     let (input, _) = char('}')(input)?;
 
     // Check for else block
@@ -262,7 +249,7 @@ fn parse_if(input: &str) -> IResult<&str, Node> {
             Ok((input, _)) => {
                 let (input, _) = multispace0(input)?;
                 let (input, _) = char('{')(input)?;
-                let (input, else_nodes) = parse_nodes(input)?;
+                let (input, else_nodes) = parse_block_nodes(input)?;
                 let (input, _) = char('}')(input)?;
                 (input, Some(else_nodes))
             }
@@ -283,16 +270,10 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("for")(input)?;
     let (input, _) = multispace0(input)?;
-
-    // Parse pattern (e.g., "item")
-    let (input, pattern) = take_until(" in ")(input)?;
-    let (input, _) = tag(" in ")(input)?;
-    let (input, _) = multispace0(input)?;
-
-    // Parse iterator until the opening brace
-    let (input, iterator) = take_until("{")(input)?;
+    // Parse pattern (e.g. "item in items")
+    let (input, pattern) = take_until("{")(input)?;
     let (input, _) = char('{')(input)?;
-    let (input, body) = parse_nodes(input)?;
+    let (input, body) = parse_block_nodes(input)?;
     let (input, _) = char('}')(input)?;
 
     Ok((
