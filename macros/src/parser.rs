@@ -45,10 +45,6 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 }
 
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
-    println!(
-        "DEBUG: parse_node input: '{}'",
-        input.lines().next().unwrap_or("")
-    );
     // Try structured nodes first, then fall back to text
     // This prevents text from consuming empty strings when input starts with special chars
     alt((
