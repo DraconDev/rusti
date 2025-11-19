@@ -69,106 +69,112 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
 }
 
 fn is_identifier_char(c: char) -> bool {
-    c.is_alphanumeric() || c == '-' || c == '_' || c == ':'
+    c.is_alphanumeric() || c == '_' || c == '-' || c == ':'
 }
 
-fn parse_identifier(input: &str) -> IResult<&str, String> {
-    let (input, name) = take_while1(is_identifier_char)(input)?;
-    Ok((input, name.to_string()))
+fn parse_identifier(input: &str) -> IResult<&str, &str> {
+    take_while1(is_identifier_char)(input)
 }
 
-pub fn parse_element(input: &str) -> IResult<&str, Node> {
+fn parse_element(input: &str) -> IResult<&str, Node> {
+    // Parse opening tag
     let (input, _) = char('<')(input)?;
-    let (input, _) = multispace0(input)?;
     let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
 
     // Parse attributes
-    let (input, attrs) = many0(preceded(multispace0, parse_attribute))(input)?;
+    let (input, attrs) = parse_attributes(input)?;
 
-    let (input, _) = multispace0(input)?;
-    let (input, _) = char('>')(input)?;
+    // Check for self-closing tag
+    let (input, is_self_closing) = alt((value(true, tag("/>")), value(false, char('>'))))(input)?;
 
-    // Special handling for script and style tags - skip their content
-    let (input, children) = if name == "script" || name == "style" {
-        // For script/style tags, consume everything until the closing tag
-        // Build the closing tag pattern manually
-        let remaining = input;
-        let mut content_end = 0;
+    if is_self_closing {
+        return Ok((
+            input,
+            Node::Element {
+                name: name.to_string(),
+                attrs,
+                children: vec![],
+            },
+        ));
+    }
 
-        // Search for </tagname>
-        while content_end < remaining.len() {
-            if remaining[content_end..].starts_with("</") {
-                let after_slash = &remaining[content_end + 2..];
-                if after_slash.starts_with(&name) {
-                    // Check if followed by whitespace or >
-                    let after_name = &after_slash[name.len()..];
-                    if after_name.starts_with('>')
-                        || after_name.starts_with(' ')
-                        || after_name.starts_with('\t')
-                        || after_name.starts_with('\n')
-                    {
-                        break;
-                    }
-                }
-            }
-            content_end += 1;
-        }
+    // Parse children
+    let (input, children) = parse_block_nodes(input)?;
 
-        (&remaining[content_end..], vec![])
-    } else {
-        parse_nodes(input)?
-    };
-
-    let (input, _) = multispace0(input)?;
-    let (input, _) = char('<')(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, _) = char('/')(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, _) = tag(name.as_str())(input)?;
-    let (input, _) = multispace0(input)?;
+    // Parse closing tag
+    let (input, _) = tag("</")(input)?;
+    let (input, _) = tag(name)(input)?;
     let (input, _) = char('>')(input)?;
 
     Ok((
         input,
         Node::Element {
-            name: name,
+            name: name.to_string(),
             attrs,
             children,
         },
     ))
 }
 
-// Parse a single attribute: name="value" or name={expr}
+fn parse_attributes(input: &str) -> IResult<&str, Vec<(String, AttributeValue)>> {
+    many0(parse_attribute)(input)
+}
+
 fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
-    let (input, name) = parse_identifier(input)?;
+    let (input_before_attr, _) = multispace0(input)?;
+
+    // If we encounter '>' or '/>', we're done with attributes
+    if input_before_attr.starts_with('>') || input_before_attr.starts_with("/>") {
+        // Return empty result by failing gracefully
+        return Err(nom::Err::Error(nom::error::Error::new(
+            input,
+            nom::error::ErrorKind::Tag,
+        )));
+    }
+
+    let (input, name) = parse_identifier(input_before_attr)?;
     let (input, _) = multispace0(input)?;
     let (input, _) = char('=')(input)?;
     let (input, _) = multispace0(input)?;
 
-    // Try dynamic attribute first: name={expr}
-    let (input, value) = alt((parse_dynamic_attr_value, parse_static_attr_value))(input)?;
+    // Try to parse dynamic value first (in curly braces)
+    let (input, value) = alt((
+        |i| {
+            let (i, _) = char('{')(i)?;
+            let (i, expr) = take_balanced(i, '{', '}')?;
+            let (i, _) = char('}')(i)?;
+            Ok((i, AttributeValue::Dynamic(expr.to_string())))
+        },
+        |i| {
+            let (i, val) = delimited(char('"'), take_until("\""), char('"'))(i)?;
+            Ok((i, AttributeValue::Static(val.to_string())))
+        },
+    ))(input)?;
 
-    Ok((input, (name, value)))
+    Ok((input, (name.to_string(), value)))
 }
 
-// Helper to take content until a balanced closing delimiter
-fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str> {
-    move |input: &str| {
-        let mut depth = 0;
-        let mut chars = input.char_indices();
+// Helper function to extract content between balanced braces
+fn take_balanced(input: &str, open: char, close: char) -> IResult<&str, &str> {
+    let mut depth = 1;
+    let mut idx = 0;
+    let chars: Vec<char> = input.chars().collect();
 
-        while let Some((i, c)) = chars.next() {
-            if c == open {
-                depth += 1;
-            } else if c == close {
-                if depth == 0 {
-                    return Ok((&input[i..], &input[..i]));
-                }
-                depth -= 1;
-            }
+    while idx < chars.len() && depth > 0 {
+        if chars[idx] == open {
+            depth += 1;
+        } else if chars[idx] == close {
+            depth -= 1;
         }
+        if depth > 0 {
+            idx += 1;
+        }
+    }
 
+    if depth == 0 {
+        Ok((&input[idx..], &input[..idx]))
+    } else {
         Err(nom::Err::Error(nom::error::Error::new(
             input,
             nom::error::ErrorKind::TakeUntil,
@@ -176,106 +182,113 @@ fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str
     }
 }
 
-// Parse dynamic attribute value: {expr}
-fn parse_dynamic_attr_value(input: &str) -> IResult<&str, AttributeValue> {
-    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
-    Ok((input, AttributeValue::Dynamic(expr.trim().to_string())))
-}
-
-// Parse static attribute value: "text" or 'text'
-fn parse_static_attr_value(input: &str) -> IResult<&str, AttributeValue> {
-    let (input, value) = alt((
-        delimited(char('"'), take_until("\""), char('"')),
-        delimited(char('\''), take_until("'"), char('\'')),
-    ))(input)?;
-    Ok((input, AttributeValue::Static(value.to_string())))
-}
-
 fn parse_expression(input: &str) -> IResult<&str, Node> {
-    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, expr) = take_balanced(input, '{', '}')?;
+    let (input, _) = char('}')(input)?;
+
     Ok((input, Node::Expression(expr.trim().to_string())))
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, name) = parse_identifier(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, args) = delimited(char('('), take_balanced('(', ')'), char(')'))(input)?;
-    let (input, _) = multispace0(input)?;
-
-    let (input, children) = alt((
-        delimited(
-            char('{'),
-            preceded(multispace0, parse_nodes),
-            preceded(multispace0, char('}')),
-        ),
-        value(vec![], multispace0),
-    ))(input)?;
+    let (input, _) = char('(')(input)?;
+    let (input, args) = take_until(")")(input)?;
+    let (input, _) = char(')')(input)?;
 
     Ok((
         input,
         Node::Call {
-            name: name,
+            name: name.to_string(),
             args: args.to_string(),
-            _children: children,
+            _children: vec![],
         },
     ))
 }
 
+pub fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
+    let mut nodes = Vec::new();
+    let mut current_input = input;
+
+    loop {
+        let (input, _) = multispace0(current_input)?;
+
+        // Check if we've reached a closing tag or brace
+        if input.starts_with("</") || input.starts_with('}') {
+            return Ok((input, nodes));
+        }
+
+        // Check if we've reached an else keyword (for if statements)
+        if input.starts_with("else") {
+            return Ok((input, nodes));
+        }
+
+        // If input is empty, return what we have
+        if input.is_empty() {
+            return Ok((input, nodes));
+        }
+
+        // Try to parse a node
+        match parse_node(input) {
+            Ok((remaining, node)) => {
+                nodes.push(node);
+                current_input = remaining;
+            }
+            Err(_) => {
+                // If we can't parse a node, return what we have
+                return Ok((input, nodes));
+            }
+        }
+    }
+}
+
 fn parse_text(input: &str) -> IResult<&str, Node> {
-    // Use take_while1 to ensure at least one character is consumed
-    let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@')(input)?;
-    Ok((input, Node::Text(text.to_string())))
-}
+    let end_chars = ['<', '{', '@', '}'];
+    let text: String = input
+        .chars()
+        .take_while(|c| !end_chars.contains(c))
+        .collect();
 
-fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
-    many0(parse_block_node)(input)
-}
-
-fn parse_block_node(input: &str) -> IResult<&str, Node> {
-    // Try structured nodes first, then fall back to text (excluding '}')
-    alt((
-        parse_if,
-        parse_for,
-        parse_expression,
-        parse_call,
-        parse_element,
-        parse_text_exclude_brace,
-    ))(input)
-}
-
-fn parse_text_exclude_brace(input: &str) -> IResult<&str, Node> {
-    let (input, text) = take_while1(|c| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
-    Ok((input, Node::Text(text.to_string())))
+    if text.is_empty() {
+        Err(nom::Err::Error(nom::error::Error::new(
+            input,
+            nom::error::ErrorKind::TakeWhile1,
+        )))
+    } else {
+        Ok((&input[text.len()..], Node::Text(text.to_string())))
+    }
 }
 
 fn parse_if(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("if")(input)?;
     let (input, _) = multispace0(input)?;
-    // Parse condition until the opening brace
-    let (input, condition) = take_until("{")(input)?;
+    let (input, condition) = take_while1(|c: char| c != '{')(input)?;
+    let condition = condition.trim();
+
+    let (input, _) = multispace0(input)?;
     let (input, _) = char('{')(input)?;
     let (input, then_branch) = parse_block_nodes(input)?;
     let (input, _) = char('}')(input)?;
 
-    // Check for else block
-    let (input, else_branch) =
-        match preceded(multispace0::<&str, nom::error::Error<&str>>, tag("else"))(input) {
-            Ok((input, _)) => {
-                let (input, _) = multispace0(input)?;
-                let (input, _) = char('{')(input)?;
-                let (input, else_nodes) = parse_block_nodes(input)?;
-                let (input, _) = char('}')(input)?;
-                (input, Some(else_nodes))
-            }
-            Err(_) => (input, None),
-        };
+    // Try to parse else branch
+    let (input, _) = multispace0(input)?;
+    let (input, else_branch) = if input.starts_with("else") {
+        let (input, _) = tag("else")(input)?;
+        let (input, _) = multispace0(input)?;
+        let (input, _) = char('{')(input)?;
+        let (input, else_nodes) = parse_block_nodes(input)?;
+        let (input, _) = char('}')(input)?;
+        (input, Some(else_nodes))
+    } else {
+        (input, None)
+    };
 
     Ok((
         input,
         Node::If {
-            condition: condition.trim().to_string(),
+            condition: condition.to_string(),
             then_branch,
             else_branch,
         },
@@ -305,4 +318,65 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
             body,
         },
     ))
+}
+
+fn parse_match(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = tag("match")(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse the expression to match against
+    let (input, expr) = take_while1(|c: char| c != '{')(input)?;
+    let expr = expr.trim();
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse match arms: pattern => { body }
+    let (input, arms) = parse_match_arms(input)?;
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('}')(input)?;
+
+    Ok((
+        input,
+        Node::Match {
+            expr: expr.to_string(),
+            arms,
+        },
+    ))
+}
+
+fn parse_match_arms(input: &str) -> IResult<&str, Vec<MatchArm>> {
+    let mut arms = Vec::new();
+    let mut current_input = input;
+
+    loop {
+        // Skip whitespace
+        let (input, _) = multispace0(current_input)?;
+
+        // Check if we've reached the end of the match block
+        if input.starts_with('}') {
+            return Ok((input, arms));
+        }
+
+        // Parse pattern until =>
+        let (input, pattern) = take_until("=>")(input)?;
+        let (input, _) = tag("=>")(input)?;
+        let (input, _) = multispace0(input)?;
+        let (input, _) = char('{')(input)?;
+
+        // Parse the body
+        let (input, body) = parse_block_nodes(input)?;
+
+        let (input, _) = char('}')(input)?;
+
+        arms.push(MatchArm {
+            pattern: pattern.trim().to_string(),
+            body,
+        });
+
+        current_input = input;
+    }
 }
