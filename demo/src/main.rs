@@ -4,6 +4,14 @@ use axum::{
     routing::{get, post},
     Form, Router,
 };
+use examples::attributes::styled_card;
+use examples::components::components_page;
+use examples::composition::page;
+use examples::conditionals::{conditional_page, status_badge};
+use examples::hello::greeting;
+use examples::match_demo::{match_page, role_color, role_description};
+use examples::todo::{todo_page, TodoItem};
+use examples::xss_protection::xss_page;
 use rusti::rusti;
 use serde::Deserialize;
 
@@ -13,7 +21,7 @@ struct CounterForm {
 }
 
 // Basic layout component used by other pages in this file
-fn layout_page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
+fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
     let year = 2025;
 
     rusti! {
@@ -256,8 +264,10 @@ fn user_profile<'a>(
 }
 
 async fn hello_world() -> impl IntoResponse {
-    let title = "Rusti - Type-Safe HTML Templates";
-    let component = layout_page("Rusti Demo", "Welcome to the Rusti demo application!");
+    let component = layout_page(
+        "Rusti Demo",
+        "Welcome to the Rusti demo application!".to_string(),
+    );
     Html(rusti::render_to_string(&component))
 }
 
@@ -410,16 +420,14 @@ fn match_page<'a>(role: &'a str, score: i32) -> impl rusti::Component + 'a {
 
 // HTMX Interactive Demo
 fn htmx_page() -> impl rusti::Component {
-    let counter_html = rusti::render_to_string(&counter_partial(0));
-
     // We need to wrap the counter in the explanation text
     let body_content = rusti! {
         <div class="space-y-8">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
                 <div id="counter" class="text-center">
-                    // Inject the pre-rendered counter HTML
-                    { counter_html }
+                    // Use component composition instead of string injection to avoid escaping
+                    @counter_partial(0)
                 </div>
             </div>
             <div class="bg-white rounded-2xl p-8 shadow-lg">
@@ -443,7 +451,7 @@ fn htmx_page() -> impl rusti::Component {
     };
 
     let body_str = rusti::render_to_string(&body_content);
-    layout_page("HTMX + Rusti Demo", &body_str)
+    layout_page("HTMX + Rusti Demo", body_str)
 }
 
 fn counter_partial(count: i32) -> impl rusti::Component {
