@@ -1,0 +1,1 @@
+/home/dracon/_Dev/gemini_project/rusti/target/release/librusti.rlib: /home/dracon/_Dev/gemini_project/rusti/macros/src/lib.rs /home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs /home/dracon/_Dev/gemini_project/rusti/src/lib.rs

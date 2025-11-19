@@ -1,7 +1,23 @@
+[package]
+name = "rusti"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+description = "Type-safe, compile-time HTML templating for Rust"
+repository = "https://github.com/yourusername/rusti"
+keywords = ["html", "template", "macro", "web"]
+categories = ["template-engine", "web-programming"]
+
 [workspace]
-members = [
-    "rusti",
-    "rusti-macros",
-    "example",
-]
+members = ["macros", "demo"]
 resolver = "2"
+
+[dependencies]
+rusti-macros = { path = "macros" }
+
+[dev-dependencies]
+
+[[example]]
+name = "basic"
+path = "demo/src/main.rs"

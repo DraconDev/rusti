@@ -1,1 +1,72 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+   0.026203717s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint: dependency on `rusti_macros` is newer than we are 1763526817.802261628s > 1763526782.491321630s "/home/dracon/_Dev/gemini_project/rusti"
+   0.026259422s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rusti", ["lib"], "/home/dracon/_Dev/gemini_project/rusti/src/lib.rs", Edition2021) }
+   0.026267648s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "rusti_macros", dep_mtime: FileTime { seconds: 1763526817, nanos: 802261628 }, max_mtime: FileTime { seconds: 1763526782, nanos: 491321630 } })
+   0.026564898s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint: dependency on `rusti_macros` is newer than we are 1763526817.802261628s > 1763526782.489840903s "/home/dracon/_Dev/gemini_project/rusti"
+   0.026583053s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("rusti", ["lib"], "/home/dracon/_Dev/gemini_project/rusti/src/lib.rs", Edition2021) }
+   0.026586459s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="rusti"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "rusti_macros", dep_mtime: FileTime { seconds: 1763526817, nanos: 802261628 }, max_mtime: FileTime { seconds: 1763526782, nanos: 489840903 } })
+   0.026647815s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint: fingerprint error for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { kind: "example", name: "basic", tested: false, benched: false, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.026652233s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-1e598991d236678a/example-basic`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/core/src/ops/function.rs:287:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panicking.rs:590:40
+  16: std::panicking::catch_unwind
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panicking.rs:553:19
+  17: std::panic::catch_unwind
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panicking.rs:590:40
+  20: std::panicking::catch_unwind
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panicking.rs:553:19
+  21: std::panic::catch_unwind
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/ed61e7d7e242494fb7057f2657300d9e77bb4fcb/library/std/src/rt.rs:171:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.068132842s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)/Check { test: false }/TargetInner { name: "rusti-demo", doc: true, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.068144534s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "rusti" })
+   0.069280948s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)/Check { test: true }/TargetInner { name: "rusti-demo", doc: true, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.069288803s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDepFingerprint { name: "rusti" })
+   0.069615910s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint: stale: changed "/home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs"
+   0.069620559s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:           (vs) "/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-macros-1158b17193f8ea51/dep-lib-rusti_macros"
+   0.069623725s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1763526782, nanos: 465712586 } < FileTime { seconds: 1763526817, nanos: 583259017 }
+   0.069649303s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros)/Check { test: false }/TargetInner { name_inferred: true, for_host: true, proc_macro: true, ..: lib_target("rusti_macros", ["proc-macro"], "/home/dracon/_Dev/gemini_project/rusti/macros/src/lib.rs", Edition2021) }
+   0.069655415s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-macros-1158b17193f8ea51/dep-lib-rusti_macros", reference_mtime: FileTime { seconds: 1763526782, nanos: 465712586 }, stale: "/home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs", stale_mtime: FileTime { seconds: 1763526817, nanos: 583259017 } }))
+   0.069832649s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint: stale: changed "/home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs"
+   0.069835655s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:           (vs) "/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-macros-b794b838d6cc2db4/dep-test-lib-rusti_macros"
+   0.069838430s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1763526782, nanos: 465712586 } < FileTime { seconds: 1763526817, nanos: 583259017 }
+   0.069857246s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros)/Check { test: true }/TargetInner { name_inferred: true, for_host: true, proc_macro: true, ..: lib_target("rusti_macros", ["proc-macro"], "/home/dracon/_Dev/gemini_project/rusti/macros/src/lib.rs", Edition2021) }
+   0.069862656s  INFO prepare_target{force=false package_id=rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros) target="rusti_macros"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-macros-b794b838d6cc2db4/dep-test-lib-rusti_macros", reference_mtime: FileTime { seconds: 1763526782, nanos: 465712586 }, stale: "/home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs", stale_mtime: FileTime { seconds: 1763526817, nanos: 583259017 } }))
+    Checking rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)
+    Checking rusti-macros v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/macros)
+    Checking rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)
+error: could not compile `rusti-demo` (bin "rusti-demo" test) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `rusti-demo` (bin "rusti-demo") due to 2 previous errors
+error: could not compile `rusti` (example "basic") due to 8 previous errors

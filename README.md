@@ -8,64 +8,101 @@ A type-safe, Rust-native HTML templating library inspired by Go's `templ`.
 - **Type-Safe**: Components are just Rust functions. Arguments are type-checked.
 - **Zero-Cost Abstraction**: Templates are compiled to efficient `std::fmt::Write` calls. No runtime parsing or interpretation.
 - **Component Composition**: Nest components easily using `@Component(args)` syntax.
+- ✅ **Type-Safe**: All templates checked at compile time
+- ✅ **Zero-Cost**: Compiles to efficient `fmt::Write` calls
+- ✅ **XSS Protected**: Automatic HTML escaping for all dynamic content
+- ✅ **Component Composition**: Nest components infinitely
+- ✅ **Tailwind Support**: Full HTML attribute parsing
+- ✅ **Rust Integration**: Use `if/else`, `match`, and any Rust expression
 
-## Installation
+## Quick Start
 
-Add `rusti` to your `Cargo.toml`:
-
+Add Rusti to your `Cargo.toml`:
 ```toml
 [dependencies]
-rusti = { path = "rusti" } # Replace with actual version when published
+rusti = { path = "path/to/rusti" }
 ```
 
-## Usage
-
-### Basic Component
-
-Define a component as a function that returns `impl rusti::Component`. Use the `rusti!` macro to define the HTML structure.
-
+Write type-safe templates:
 ```rust
 use rusti::rusti;
 
-fn hello(name: &str) -> impl rusti::Component + '_ {
+fn greeting(name: &str) -> impl rusti::Component + '_ {
     rusti! {
-        <div>
+        <div class="greeting">
             <h1>Hello, { name }!</h1>
-            <p>Welcome to Rusti.</p>
         </div>
     }
 }
 
 fn main() {
-    let component = hello("World");
-    println!("{}", rusti::render_to_string(&component));
+    println!("{}", greeting("World").render_to_string());
 }
 ```
 
-### Component Composition
+## Web Framework Integration
 
-You can call other components using the `@` syntax.
+### Axum
+```rust
+use axum::{response::Html, routing::get, Router};
+
+async fn index() -> Html<String> {
+    let page = rusti! {
+        <html>
+            <head><title>My App</title></head>
+            <body><h1>Welcome!</h1></body>
+        </html>
+    };
+    Html(rusti::Component::render_to_string(&page))
+}
+```
+
+## Examples
+
+Run the demo web server:
+```bash
+cargo run -p rusti-demo
+```
+
+Visit `http://127.0.0.1:3000` to see:
+- Component composition
+- Conditional rendering
+- Match expressions
+- Tailwind CSS styling
+
+## Documentation
+
+- **[USAGE.md](USAGE.md)** - Comprehensive usage guide
+- **[LIMITATIONS.md](LIMITATIONS.md)** - Current parser limitations
+- **[KNOWN_ISSUES.md](KNOWN_ISSUES.md)** - IDE/tooling quirks
+
+## Project Structure
+
+```
+rusti/
+├── src/                # Runtime library (Component trait, Escaped type)
+├── macros/             # Procedural macro implementation
+├── demo/               # Demo web server with Axum
+└── Cargo.toml          # Main library + workspace config
+```
+
+## How It Works
+
+The `rusti!` macro parses HTML-like syntax and generates Rust code:
 
 ```rust
-fn header(title: &str) -> impl rusti::Component + '_ {
-    rusti! {
-        <header><h1>{ title }</h1></header>
-    }
-}
-
-fn page(title: &str) -> impl rusti::Component + '_ {
-    rusti! {
-        <div>
-            @header(title)
-            <main>Content</main>
-        </div>
-    }
-}
+rusti! { <h1>{ name }</h1> }
 ```
 
-### Control Flow
-
-Currently, you can use Rust expressions `{ ... }` to embed dynamic content. Complex control flow (if/for) inside the macro is planned but can be achieved using Rust logic outside or inside expressions.
+Compiles to:
+```rust
+move |__rusti_writer: &mut dyn std::fmt::Write| {
+    write!(__rusti_writer, "<h1>")?;
+    write!(__rusti_writer, "{}", rusti::Escaped(name))?;
+    write!(__rusti_writer, "</h1>")?;
+    Ok(())
+}
+```
 
 ## License
 
