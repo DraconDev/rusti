@@ -19,7 +19,7 @@ fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <head>
             <title>{ title }</title>
-            <link rel="stylesheet" href="https://cdn.tailwindcss.com"></link>
+            <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
         </head>
     }
