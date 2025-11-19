@@ -134,6 +134,20 @@ fn page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
                                         </li>
                                     </ul>
                                 </div>
+                                <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-pink-100 hover:border-pink-300">
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">H</div>
+                                        <h3 class="text-2xl font-bold text-gray-800">HTMX Interactivity</h3>
+                                    </div>
+                                    <ul class="space-y-3">
+                                        <li class="group/item">
+                                            <a href="/htmx" class="flex items-center gap-2 text-pink-600 hover:text-pink-800 font-medium transition-colors p-3 rounded-lg hover:bg-pink-50">
+                                                <span class="text-pink-400 group-hover/item:translate-x-1 transition-transform">&gt;</span>
+                                                <span>Interactive counter</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </section>
                     </main>
