@@ -97,21 +97,24 @@ fn home_page() -> impl rusti::Component {
     }
 }
 
-// Simplified conditionals demonstration
+// Comprehensive conditionals demonstration
 fn conditionals_page() -> impl rusti::Component {
     let year = 2025;
     let is_premium = true;
+    let user_role = "admin";
+    let score = 85;
+    let stock_count = 3;
 
     rusti! {
         <html>
             @page_head("Conditionals Demo")
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header("Conditionals & Logic", "Demonstrating conditional rendering with @if")
+                    @page_header("Conditionals & Logic", "Comprehensive guide to conditional rendering in Rusti")
                     <main>
                         <div class="space-y-8">
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple Conditional Example</h2>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">1. Simple Boolean Conditional</h2>
                                 <div class="space-y-4">
                                     @if is_premium {
                                         <div class="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
@@ -124,12 +127,76 @@ fn conditionals_page() -> impl rusti::Component {
                                             <p>Upgrade to premium for more features</p>
                                         </div>
                                     }
+                                    <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if is_premium { ... } else { ... }"}</code></pre>
                                 </div>
                             </div>
 
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">How It Works</h2>
-                                <pre class="bg-gray-800 text-green-400 p-4 rounded-lg"><code>{"@if condition {\n    <div>True branch</div>\n} else {\n    <div>False branch</div>\n}"}</code></pre>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">2. String Comparison</h2>
+                                <div class="space-y-4">
+                                    @if user_role == "admin" {
+                                        <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                                            <p class="font-bold">Admin Access</p>
+                                            <p>Full system permissions granted</p>
+                                        </div>
+                                    } else {
+                                        <div class="p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
+                                            <p class="font-bold">User Access</p>
+                                            <p>Limited permissions</p>
+                                        </div>
+                                    }
+                                    <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if role == \"admin\" { ... }"}</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">3. Numeric Comparison</h2>
+                                <div class="flex items-center gap-4">
+                                    <div class="text-6xl font-black text-gray-800">{ score }</div>
+                                    @if score >= 90 {
+                                        <div class="p-4 bg-green-500 text-white rounded-lg flex-1">
+                                            <p class="text-2xl font-bold">Excellent!</p>
+                                            <p>Outstanding performance</p>
+                                        </div>
+                                    } else {
+                                        <div class="p-4 bg-yellow-500 text-white rounded-lg flex-1">
+                                            <p class="text-2xl font-bold">Good Job!</p>
+                                            <p>Keep improving</p>
+                                        </div>
+                                    }
+                                </div>
+                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if score >= 90 { ... } else { ... }"}</code></pre>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">4. Stock Level Indicator</h2>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-4xl font-bold">Stock: { stock_count }</span>
+                                    @if stock_count > 10 {
+                                        <span class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">In Stock</span>
+                                    } else {
+                                        @if stock_count > 0 {
+                                            <span class="px-4 py-2 bg-orange-500 text-white rounded-full font-bold">Low Stock</span>
+                                        } else {
+                                            <span class="px-4 py-2 bg-red-500 text-white rounded-full font-bold">Out of Stock</span>
+                                        }
+                                    }
+                                </div>
+                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if count > 10 { ... } else { @if count > 0 { ... } }"}</code></pre>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Syntax Reference</h2>
+                                <div class="space-y-4 text-sm">
+                                    <div>
+                                        <h3 class="font-bold mb-2">Supported Comparisons:</h3>
+                                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                            <li>Equality: ==, !=</li>
+                                            <li>Numeric: &lt;, &gt;, &lt;=, &gt;=</li>
+                                            <li>Boolean: true, false</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </main>
