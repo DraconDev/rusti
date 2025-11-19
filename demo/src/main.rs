@@ -8,16 +8,6 @@ use rusti::rusti;
 use serde::Deserialize;
 
 mod examples;
-use examples::{
-    attributes::styled_card,
-    components::components_page,
-    composition::page,
-    conditionals::{conditional_page, status_badge},
-    hello::hello_page,
-    match_demo::{match_page, role_color, role_description},
-    todo::{todo_page, TodoItem},
-    xss_protection::xss_page,
-};
 
 #[derive(Deserialize)]
 struct CounterForm {
