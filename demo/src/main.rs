@@ -78,12 +78,16 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
     }
 }
 
-fn clickable_card<'a>(title: &'a str, description: &'a str, href: &'a str) -> impl rusti::Component + 'a {
+fn clickable_card<'a>(
+    title: &'a str,
+    description: &'a str,
+    href: &'a str,
+) -> impl rusti::Component + 'a {
     rusti! {
         <a href={href} class="block group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-blue-100 hover:border-blue-300 no-underline">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
-                    →
+                    &rarr;
                 </div>
                 <h3 class="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">{ title }</h3>
             </div>
