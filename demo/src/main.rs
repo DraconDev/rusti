@@ -19,6 +19,9 @@ fn page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
 
     
     
+
+
+    
     
     rusti! {
         <html>
