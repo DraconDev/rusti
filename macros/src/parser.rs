@@ -1,7 +1,7 @@
 use nom::{
     branch::alt,
-    bytes::complete::{tag, take_until},
-    character::complete::{alphanumeric1, char, multispace0},
+    bytes::complete::{tag, take_until, take_while1},
+    character::complete::{char, multispace0},
     combinator::value,
     multi::many0,
     sequence::{delimited, preceded},
@@ -40,10 +40,19 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
     alt((parse_expression, parse_call, parse_element, parse_text))(input)
 }
 
+fn is_identifier_char(c: char) -> bool {
+    c.is_alphanumeric() || c == '-' || c == '_' || c == ':'
+}
+
+fn parse_identifier(input: &str) -> IResult<&str, String> {
+    let (input, name) = take_while1(is_identifier_char)(input)?;
+    Ok((input, name.to_string()))
+}
+
 pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('<')(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, name) = alphanumeric1(input)?;
+    let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
 
     // Parse attributes
@@ -63,7 +72,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
         while content_end < remaining.len() {
             if remaining[content_end..].starts_with("</") {
                 let after_slash = &remaining[content_end + 2..];
-                if after_slash.starts_with(name) {
+                if after_slash.starts_with(&name) {
                     // Check if followed by whitespace or >
                     let after_name = &after_slash[name.len()..];
                     if after_name.starts_with('>')
@@ -88,14 +97,14 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
     let (input, _) = char('/')(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, _) = tag(name)(input)?;
+    let (input, _) = tag(name.as_str())(input)?;
     let (input, _) = multispace0(input)?;
     let (input, _) = char('>')(input)?;
 
     Ok((
         input,
         Node::Element {
-            name: name.to_string(),
+            name: name,
             attrs,
             children,
         },
@@ -104,7 +113,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 
 // Parse a single attribute: name="value" or name={expr}
 fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
-    let (input, name) = alphanumeric1(input)?;
+    let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
     let (input, _) = char('=')(input)?;
     let (input, _) = multispace0(input)?;
@@ -112,7 +121,7 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
     // Try dynamic attribute first: name={expr}
     let (input, value) = alt((parse_dynamic_attr_value, parse_static_attr_value))(input)?;
 
-    Ok((input, (name.to_string(), value)))
+    Ok((input, (name, value)))
 }
 
 // Parse dynamic attribute value: {expr}
@@ -137,7 +146,7 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
-    let (input, name) = alphanumeric1(input)?;
+    let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
     let (input, args) = delimited(char('('), take_until(")"), char(')'))(input)?;
     let (input, _) = multispace0(input)?;
@@ -154,7 +163,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     Ok((
         input,
         Node::Call {
-            name: name.to_string(),
+            name: name,
             args: args.to_string(),
             _children: children,
         },
@@ -163,7 +172,6 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 
 fn parse_text(input: &str) -> IResult<&str, Node> {
     // Use take_while1 to ensure at least one character is consumed
-    use nom::bytes::complete::take_while1;
     let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
     Ok((input, Node::Text(text.to_string())))
 }
