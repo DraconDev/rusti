@@ -45,6 +45,10 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 }
 
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
+    println!(
+        "DEBUG: parse_node input: '{}'",
+        input.lines().next().unwrap_or("")
+    );
     // Try structured nodes first, then fall back to text
     // This prevents text from consuming empty strings when input starts with special chars
     alt((
@@ -226,6 +230,10 @@ fn parse_text(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_if(input: &str) -> IResult<&str, Node> {
+    println!(
+        "DEBUG: parse_if input: '{}'",
+        input.lines().next().unwrap_or("")
+    );
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("if")(input)?;
     let (input, _) = multispace0(input)?;
@@ -243,6 +251,7 @@ fn parse_if(input: &str) -> IResult<&str, Node> {
     // Actually, let's stick to take_until("{") for if/for to minimize risk,
     // as `take_balanced` requires a delimiter to start with, but here we are scanning *for* the delimiter.
     let (input, condition) = take_until("{")(input)?;
+    println!("DEBUG: parse_if condition: '{}'", condition);
     let (input, _) = char('{')(input)?;
     let (input, then_branch) = parse_nodes(input)?;
     let (input, _) = char('}')(input)?;
