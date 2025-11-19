@@ -28,6 +28,16 @@ pub enum Node {
         args: String,
         _children: Vec<Node>,
     },
+    If {
+        condition: String,
+        then_branch: Vec<Node>,
+        else_branch: Option<Vec<Node>>,
+    },
+    For {
+        pattern: String,
+        iterator: String,
+        body: Vec<Node>,
+    },
 }
 
 pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
@@ -37,7 +47,14 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
     // Try structured nodes first, then fall back to text
     // This prevents text from consuming empty strings when input starts with special chars
-    alt((parse_expression, parse_call, parse_element, parse_text))(input)
+    alt((
+        parse_if,
+        parse_for,
+        parse_expression,
+        parse_call,
+        parse_element,
+        parse_text,
+    ))(input)
 }
 
 fn is_identifier_char(c: char) -> bool {
@@ -174,4 +191,62 @@ fn parse_text(input: &str) -> IResult<&str, Node> {
     // Use take_while1 to ensure at least one character is consumed
     let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
     Ok((input, Node::Text(text.to_string())))
+}
+
+fn parse_if(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = tag("if")(input)?;
+    let (input, _) = multispace0(input)?;
+    // Parse condition until the opening brace
+    let (input, condition) = take_until("{")(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, then_branch) = parse_nodes(input)?;
+    let (input, _) = char('}')(input)?;
+
+    // Check for else block
+    let (input, else_branch) = match preceded(multispace0, tag("else"))(input) {
+        Ok((input, _)) => {
+            let (input, _) = multispace0(input)?;
+            let (input, _) = char('{')(input)?;
+            let (input, else_nodes) = parse_nodes(input)?;
+            let (input, _) = char('}')(input)?;
+            (input, Some(else_nodes))
+        }
+        Err(_) => (input, None),
+    };
+
+    Ok((
+        input,
+        Node::If {
+            condition: condition.trim().to_string(),
+            then_branch,
+            else_branch,
+        },
+    ))
+}
+
+fn parse_for(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = tag("for")(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse pattern (e.g., "item")
+    let (input, pattern) = take_until(" in ")(input)?;
+    let (input, _) = tag(" in ")(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse iterator until the opening brace
+    let (input, iterator) = take_until("{")(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, body) = parse_nodes(input)?;
+    let (input, _) = char('}')(input)?;
+
+    Ok((
+        input,
+        Node::For {
+            pattern: pattern.trim().to_string(),
+            iterator: iterator.trim().to_string(),
+            body,
+        },
+    ))
 }

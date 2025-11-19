@@ -13,6 +13,7 @@ pub fn status_badge(is_active: bool) -> impl rusti::Component {
             { text }
         </span>
     }
+    .to_string()
 }
 
 pub fn user_status(username: &str, item_count: i32) -> impl rusti::Component + '_ {

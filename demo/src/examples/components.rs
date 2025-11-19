@@ -25,11 +25,12 @@ pub fn button<'a>(
         "px-4 py-2 rounded-lg font-semibold transition-colors duration-200 {}",
         variant.classes()
     );
+    let classes_clone = classes.clone();
 
     let onclick_attr = onclick.unwrap_or("");
 
     rusti! {
-        <button class={classes} onclick={onclick_attr}>
+        <button class={classes_clone} onclick={onclick_attr}>
             { label }
         </button>
     }

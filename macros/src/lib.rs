@@ -161,6 +161,44 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                     rusti::Component::render(&#name_ident(#args_tokens), f)?;
                 }
             }
+            parser::Node::If {
+                condition,
+                then_branch,
+                else_branch,
+            } => {
+                let condition_expr =
+                    syn::parse_str::<syn::Expr>(condition).expect("Failed to parse if condition");
+                let then_code = generate_body(then_branch);
+                let else_code = if let Some(else_nodes) = else_branch {
+                    let else_body = generate_body(else_nodes);
+                    quote! { else { #else_body } }
+                } else {
+                    quote! {}
+                };
+
+                quote! {
+                    if #condition_expr {
+                        #then_code
+                    } #else_code
+                }
+            }
+            parser::Node::For {
+                pattern,
+                iterator,
+                body,
+            } => {
+                let pattern_pat =
+                    syn::parse_str::<syn::Pat>(pattern).expect("Failed to parse for pattern");
+                let iterator_expr =
+                    syn::parse_str::<syn::Expr>(iterator).expect("Failed to parse for iterator");
+                let body_code = generate_body(body);
+
+                quote! {
+                    for #pattern_pat in #iterator_expr {
+                        #body_code
+                    }
+                }
+            }
         };
         stream.extend(chunk);
     }
