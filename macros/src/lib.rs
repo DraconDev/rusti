@@ -187,8 +187,8 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                 iterator,
                 body,
             } => {
-                let pattern_pat =
-                    syn::parse_str::<syn::Pat>(pattern).expect("Failed to parse for pattern");
+                let pattern_pat = proc_macro2::TokenStream::from_str(pattern)
+                    .expect("Failed to parse for pattern");
                 let iterator_expr =
                     syn::parse_str::<syn::Expr>(iterator).expect("Failed to parse for iterator");
                 let body_code = generate_body(body);

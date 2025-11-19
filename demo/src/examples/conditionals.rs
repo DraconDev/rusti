@@ -9,11 +9,10 @@ pub fn status_badge(is_active: bool) -> impl rusti::Component {
     };
 
     rusti! {
-        <span class={"px-3 py-1 rounded-full text-white " + color}>
+        <span class={format!("px-3 py-1 rounded-full text-white {}", color)}>
             { text }
         </span>
     }
-    .to_string()
 }
 
 pub fn user_status(username: &str, item_count: i32) -> impl rusti::Component + '_ {

@@ -10,13 +10,11 @@ pub fn role_badge(role: &str) -> impl rusti::Component + '_ {
     };
 
     rusti! {
-        <div class="p-4 border-l-4" style={"border-color: " + color}>
+        <div class="p-4 border-l-4" style={format!("border-color: {}", color)}>
             <h3 class="font-bold text-lg">{ role }</h3>
             <p class="text-gray-600">{ description }</p>
         </div>
     }
-    .to_string()
-    .to_string()
 }
 
 pub fn score_grade(score: i32) -> impl rusti::Component {
