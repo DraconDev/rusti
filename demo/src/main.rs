@@ -14,6 +14,17 @@ struct CounterForm {
     count: i32,
 }
 
+// Head component - contains page metadata and stylesheets
+fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
+    rusti! {
+        <head>
+            <title>{ title }</title>
+            <link rel="stylesheet" href="https://cdn.tailwindcss.com"></link>
+            <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+        </head>
+    }
+}
+
 // Header component - displays page title and subtitle
 fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component + 'a {
     rusti! {
@@ -47,11 +58,7 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
 
     rusti! {
         <html>
-            <head>
-                <title>{ title }</title>
-                <link rel="stylesheet" href="https://cdn.tailwindcss.com"></link>
-                <script src="https://cdn.tailwindcss.com"></script>
-            </head>
+            @page_head(title)
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header(title, &body)
@@ -59,8 +66,8 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
                         <section class="mb-12">
                             <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
                             <div class="grid md:grid-cols-2 gap-8">
-                                @simple_card("Basic Examples", "Simple component composition")
-                                @simple_card("HTMX Interactivity", "Interactive counter")
+                                @clickable_card("Basic Examples", "Simple component composition", "/")
+                                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
                             </div>
                         </section>
                     </main>
@@ -71,17 +78,17 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
     }
 }
 
-fn simple_card<'a>(title: &'a str, description: &'a str) -> impl rusti::Component + 'a {
+fn clickable_card<'a>(title: &'a str, description: &'a str, href: &'a str) -> impl rusti::Component + 'a {
     rusti! {
-        <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-blue-100 hover:border-blue-300">
+        <a href={href} class="block group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-blue-100 hover:border-blue-300 no-underline">
             <div class="flex items-center gap-3 mb-6">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                    B
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
+                    →
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800">{ title }</h3>
+                <h3 class="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">{ title }</h3>
             </div>
             <p class="text-gray-600">{ description }</p>
-        </div>
+        </a>
     }
 }
 
