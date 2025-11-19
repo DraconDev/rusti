@@ -85,7 +85,7 @@ fn htmx_page() -> impl rusti::Component {
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
                 <div id="counter" class="text-center">
                     // Inject the pre-rendered counter HTML
-                    { counter_html }
+                    { &counter_html }
                 </div>
             </div>
             <div class="bg-white rounded-2xl p-8 shadow-lg">

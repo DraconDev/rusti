@@ -67,7 +67,10 @@ fn parse_identifier(input: &str) -> IResult<&str, String> {
 }
 
 pub fn parse_element(input: &str) -> IResult<&str, Node> {
-    // println!("DEBUG: parse_element input: '{}'", input.lines().next().unwrap_or(""));
+    println!(
+        "DEBUG: parse_element input: '{}'",
+        input.lines().next().unwrap_or("")
+    );
     let (input, _) = char('<')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = parse_identifier(input)?;
@@ -131,7 +134,10 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 
 // Parse a single attribute: name="value" or name={expr}
 fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
-    // println!("DEBUG: parse_attribute input: '{}'", input.lines().next().unwrap_or(""));
+    println!(
+        "DEBUG: parse_attribute input: '{}'",
+        input.lines().next().unwrap_or("")
+    );
     let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
     let (input, _) = char('=')(input)?;
