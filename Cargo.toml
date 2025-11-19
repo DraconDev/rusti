@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "rusti",
+    "rusti-macros",
+    "example",
+]
+resolver = "2"

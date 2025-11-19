@@ -1,0 +1,1 @@
+/home/dracon/_Dev/gemini_project/rusti/target/debug/example: /home/dracon/_Dev/gemini_project/rusti/example/src/main.rs /home/dracon/_Dev/gemini_project/rusti/rusti/src/lib.rs /home/dracon/_Dev/gemini_project/rusti/rusti-macros/src/lib.rs /home/dracon/_Dev/gemini_project/rusti/rusti-macros/src/parser.rs

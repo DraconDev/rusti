@@ -1,7 +1,0 @@
-[workspace]
-members = [
-    "templ",
-    "templ-cli",
-    "example",
-]
-resolver = "2"
