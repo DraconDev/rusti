@@ -98,16 +98,13 @@ fn clickable_card<'a>(
 
 // HTMX Interactive Demo
 fn htmx_page() -> impl rusti::Component {
-    let counter_html = rusti::render_to_string(&counter_partial(0));
-
-    // We need to wrap the counter in the explanation text
+    // Build the body content with the counter embedded
     let body_content = rusti! {
         <div class="space-y-8">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
                 <div id="counter" class="text-center">
-                    // Inject the pre-rendered counter HTML
-                    { &counter_html }
+                    @counter_partial(0)
                 </div>
             </div>
             <div class="bg-white rounded-2xl p-8 shadow-lg">
