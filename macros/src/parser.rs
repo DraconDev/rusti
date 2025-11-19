@@ -141,9 +141,33 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
     Ok((input, (name, value)))
 }
 
+// Helper to take content until a balanced closing delimiter
+fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str> {
+    move |input: &str| {
+        let mut depth = 0;
+        let mut chars = input.char_indices();
+
+        while let Some((i, c)) = chars.next() {
+            if c == open {
+                depth += 1;
+            } else if c == close {
+                if depth == 0 {
+                    return Ok((&input[i..], &input[..i]));
+                }
+                depth -= 1;
+            }
+        }
+
+        Err(nom::Err::Error(nom::error::Error::new(
+            input,
+            nom::error::ErrorKind::TakeUntil,
+        )))
+    }
+}
+
 // Parse dynamic attribute value: {expr}
 fn parse_dynamic_attr_value(input: &str) -> IResult<&str, AttributeValue> {
-    let (input, expr) = delimited(char('{'), take_until("}"), char('}'))(input)?;
+    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
     Ok((input, AttributeValue::Dynamic(expr.trim().to_string())))
 }
 
@@ -157,7 +181,7 @@ fn parse_static_attr_value(input: &str) -> IResult<&str, AttributeValue> {
 }
 
 fn parse_expression(input: &str) -> IResult<&str, Node> {
-    let (input, expr) = delimited(char('{'), take_until("}"), char('}'))(input)?;
+    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
     Ok((input, Node::Expression(expr.trim().to_string())))
 }
 
@@ -165,7 +189,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, args) = delimited(char('('), take_until(")"), char(')'))(input)?;
+    let (input, args) = delimited(char('('), take_balanced('(', ')'), char(')'))(input)?;
     let (input, _) = multispace0(input)?;
 
     let (input, children) = alt((
@@ -198,6 +222,18 @@ fn parse_if(input: &str) -> IResult<&str, Node> {
     let (input, _) = tag("if")(input)?;
     let (input, _) = multispace0(input)?;
     // Parse condition until the opening brace
+    // Condition might contain braces (e.g. struct init), so use balanced parsing?
+    // But standard if condition doesn't end with brace unless it's a block.
+    // Usually `if expr {`.
+    // If expr contains `{`, we need to handle it.
+    // Let's use take_until("{") for now, assuming condition doesn't contain top-level braces.
+    // But wait, `if let Some(x) = foo { ... }` is fine.
+    // `if Foo { x: 1 } == bar { ... }` would fail with take_until.
+    // But `rusti` syntax is `@if condition {`.
+    // If condition has braces, it's tricky.
+    // But for now `take_until("{")` is probably fine for most cases.
+    // Actually, let's stick to take_until("{") for if/for to minimize risk,
+    // as `take_balanced` requires a delimiter to start with, but here we are scanning *for* the delimiter.
     let (input, condition) = take_until("{")(input)?;
     let (input, _) = char('{')(input)?;
     let (input, then_branch) = parse_nodes(input)?;
