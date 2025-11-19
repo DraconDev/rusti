@@ -52,4 +52,54 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn test_components_repro() {
+        let input = r#"<div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+    <div class="p-6 border-b border-gray-100 bg-gray-50">
+        <h3 class="text-xl font-bold text-gray-800">{ title }</h3>
+    </div>
+    <div class="p-6">
+        <p class="text-gray-600 leading-relaxed">{ body }</p>
+    </div>
+    @if let Some(footer_text) = footer {
+        <div class="p-4 bg-gray-50 border-t border-gray-100 text-sm text-gray-500 text-right">
+            { footer_text }
+        </div>
+    }
+</div>"#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:?}", nodes);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
+
+    #[test]
+    fn test_todo_repro() {
+        let input = r#"<div class={format!("{} {}", base_classes, status_classes)}>
+    <span class={text_classes}>{ &item.text }</span>
+    @if item.completed {
+        <span class="px-3 py-1 text-xs font-bold text-green-700 bg-green-200 rounded-full">Done</span>
+    } else {
+        <span class="px-3 py-1 text-xs font-bold text-yellow-700 bg-yellow-200 rounded-full">Pending</span>
+    }
+</div>"#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:?}", nodes);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
