@@ -204,16 +204,17 @@ fn parse_if(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('}')(input)?;
 
     // Check for else block
-    let (input, else_branch) = match preceded(multispace0, tag("else"))(input) {
-        Ok((input, _)) => {
-            let (input, _) = multispace0(input)?;
-            let (input, _) = char('{')(input)?;
-            let (input, else_nodes) = parse_nodes(input)?;
-            let (input, _) = char('}')(input)?;
-            (input, Some(else_nodes))
-        }
-        Err(_) => (input, None),
-    };
+    let (input, else_branch) =
+        match preceded(multispace0::<&str, nom::error::Error<&str>>, tag("else"))(input) {
+            Ok((input, _)) => {
+                let (input, _) = multispace0(input)?;
+                let (input, _) = char('{')(input)?;
+                let (input, else_nodes) = parse_nodes(input)?;
+                let (input, _) = char('}')(input)?;
+                (input, Some(else_nodes))
+            }
+            Err(_) => (input, None),
+        };
 
     Ok((
         input,
