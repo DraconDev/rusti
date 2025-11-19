@@ -14,6 +14,33 @@ struct CounterForm {
     count: i32,
 }
 
+// Header component - displays page title and subtitle
+fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component + 'a {
+    rusti! {
+        <header class="text-center mb-16">
+            <div class="inline-block">
+                <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-4">{ title }</h1>
+                <div class="h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
+            </div>
+            <p class="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">{ subtitle }</p>
+            <div class="flex gap-4 justify-center mt-8">
+                <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Type-Safe</span>
+                <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">Zero-Cost</span>
+                <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">XSS Protected</span>
+            </div>
+        </header>
+    }
+}
+
+// Footer component - displays copyright and attribution
+fn page_footer(year: i32) -> impl rusti::Component {
+    rusti! {
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">Copyright { year } - Built with Rusti</p>
+        </footer>
+    }
+}
+
 // Basic layout component used by other pages in this file
 fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
     let year = 2025;
@@ -27,32 +54,17 @@ fn layout_page<'a>(title: &'a str, body: String) -> impl rusti::Component + 'a {
             </head>
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    <header class="text-center mb-16">
-                        <div class="inline-block">
-                            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-4">{ title }</h1>
-                            <div class="h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-                        </div>
-                        // Use &body to avoid moving the String
-                        <p class="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">{ &body }</p>
-                        <div class="flex gap-4 justify-center mt-8">
-                            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Type-Safe</span>
-                            <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">Zero-Cost</span>
-                            <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">XSS Protected</span>
-                        </div>
-                    </header>
+                    @page_header(title, &body)
                     <main>
                         <section class="mb-12">
                             <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
                             <div class="grid md:grid-cols-2 gap-8">
-                                // Simple Card Component defined locally
                                 @simple_card("Basic Examples", "Simple component composition")
                                 @simple_card("HTMX Interactivity", "Interactive counter")
                             </div>
                         </section>
                     </main>
-                    <footer class="text-center mt-16 pt-8 border-t border-gray-200">
-                        <p class="text-gray-500">Copyright { year } - Built with Rusti</p>
-                    </footer>
+                    @page_footer(year)
                 </div>
             </body>
         </html>
