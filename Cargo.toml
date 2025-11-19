@@ -18,6 +18,4 @@ rusti-macros = { path = "macros" }
 
 [dev-dependencies]
 
-[[example]]
-name = "basic"
-path = "demo/src/main.rs"
+
