@@ -5,3 +5,5 @@ edition = "2021"
 
 [dependencies]
 rusti = { path = "../rusti" }
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }

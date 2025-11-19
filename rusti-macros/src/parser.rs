@@ -1,6 +1,6 @@
 use nom::{
     branch::alt,
-    bytes::complete::{tag, take_until},
+    bytes::complete::{tag, take_until, take_while1},
     character::complete::{alphanumeric1, char, multispace0},
     combinator::value,
     multi::many0,
@@ -9,10 +9,16 @@ use nom::{
 };
 
 #[derive(Debug, Clone)]
+pub enum AttributeValue {
+    Static(String),  // Static value: class="foo"
+    Dynamic(String), // Dynamic value: class={expr}
+}
+
+#[derive(Debug, Clone)]
 pub enum Node {
     Element {
         name: String,
-        _attrs: Vec<(String, String)>,
+        attrs: Vec<(String, AttributeValue)>,
         children: Vec<Node>,
     },
     Text(String),
@@ -29,7 +35,9 @@ pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 }
 
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
-    alt((parse_element, parse_expression, parse_call, parse_text))(input)
+    // Try structured nodes first, then fall back to text
+    // This prevents text from consuming empty strings when input starts with special chars
+    alt((parse_expression, parse_call, parse_element, parse_text))(input)
 }
 
 fn parse_element(input: &str) -> IResult<&str, Node> {
@@ -37,7 +45,11 @@ fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
     let (input, name) = alphanumeric1(input)?;
     let (input, _) = multispace0(input)?;
-    // TODO: Parse attributes
+
+    // Parse attributes
+    let (input, attrs) = many0(preceded(multispace0, parse_attribute))(input)?;
+
+    let (input, _) = multispace0(input)?;
     let (input, _) = char('>')(input)?;
 
     let (input, children) = parse_nodes(input)?;
@@ -55,10 +67,38 @@ fn parse_element(input: &str) -> IResult<&str, Node> {
         input,
         Node::Element {
             name: name.to_string(),
-            _attrs: vec![],
+            attrs,
             children,
         },
     ))
+}
+
+// Parse a single attribute: name="value" or name={expr}
+fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
+    let (input, name) = alphanumeric1(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('=')(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Try dynamic attribute first: name={expr}
+    let (input, value) = alt((parse_dynamic_attr_value, parse_static_attr_value))(input)?;
+
+    Ok((input, (name.to_string(), value)))
+}
+
+// Parse dynamic attribute value: {expr}
+fn parse_dynamic_attr_value(input: &str) -> IResult<&str, AttributeValue> {
+    let (input, expr) = delimited(char('{'), take_until("}"), char('}'))(input)?;
+    Ok((input, AttributeValue::Dynamic(expr.trim().to_string())))
+}
+
+// Parse static attribute value: "text" or 'text'
+fn parse_static_attr_value(input: &str) -> IResult<&str, AttributeValue> {
+    let (input, value) = alt((
+        delimited(char('"'), take_until("\""), char('"')),
+        delimited(char('\''), take_until("'"), char('\'')),
+    ))(input)?;
+    Ok((input, AttributeValue::Static(value.to_string())))
 }
 
 fn parse_expression(input: &str) -> IResult<&str, Node> {
@@ -93,12 +133,8 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_text(input: &str) -> IResult<&str, Node> {
-    let (input, text) = nom::bytes::complete::is_not("<{@}")(input)?;
-    if text.is_empty() {
-        return Err(nom::Err::Error(nom::error::Error::new(
-            input,
-            nom::error::ErrorKind::Fail,
-        )));
-    }
+    // Use take_while1 to ensure at least one character is consumed
+    use nom::bytes::complete::take_while1;
+    let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@' && c != '}')(input)?;
     Ok((input, Node::Text(text.to_string())))
 }
