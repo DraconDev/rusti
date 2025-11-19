@@ -17,7 +17,7 @@ struct CounterForm {
 
 fn page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
     let year = 2025;    
-
+    
     
     
 
