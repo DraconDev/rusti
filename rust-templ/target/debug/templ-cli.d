@@ -1,0 +1,1 @@
+/home/dracon/_Dev/gemini_project/rust-templ/target/debug/templ-cli: /home/dracon/_Dev/gemini_project/rust-templ/templ/src/lib.rs /home/dracon/_Dev/gemini_project/rust-templ/templ-cli/src/generator.rs /home/dracon/_Dev/gemini_project/rust-templ/templ-cli/src/main.rs /home/dracon/_Dev/gemini_project/rust-templ/templ-cli/src/parser.rs
