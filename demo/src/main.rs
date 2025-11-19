@@ -211,6 +211,198 @@ fn conditionals_page() -> impl rusti::Component {
     }
 }
 
+// Lists and iteration demo
+fn lists_page() -> impl rusti::Component {
+    let year = 2025;
+    let fruits = vec!["🍎 Apples", "🍌 Bananas", "🍊 Oranges", "🍇 Grapes"];
+    let scores = vec![95, 87, 92, 78, 88, 96];
+    let tasks = vec![
+        ("Setup project", true),
+        ("Write code", true),
+        ("Add tests", false),
+        ("Deploy", false),
+    ];
+
+    rusti! {
+        <html>
+            @page_head("Lists Demo")
+            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Lists & Iteration", "Dynamic list rendering with @for loops")
+                    <main>
+                        <div class="space-y-8">
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple List</h2>
+                                <ul class="space-y-2">
+                                    @for fruit in fruits {
+                                        <li class="p-3 bg-blue-50 rounded-lg">{ fruit }</li>
+                                    }
+                                </ul>
+                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@for fruit in fruits {\n    <li>{ fruit }</li>\n}"}</code></pre>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Graded Scores</h2>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    @for score in scores {
+                                        <div class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+                                            <span class="text-3xl font-bold text-purple-600">{ score }</span>
+                                            @if score >= 90 {
+                                                <span class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">A</span>
+                                            } else {
+                                                <span class="px-4 py-2 bg-yellow-500 text-white rounded-full font-bold">B</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@for score in scores {\n    @if score >= 90 { <span>A</span> }\n}"}</code></pre>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Task List</h2>
+                                <div class="space-y-2">
+                                    @for task in tasks {
+                                        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                            @if task.1 {
+                                                <span class="text-2xl">✅</span>
+                                                <span class="flex-1 line-through text-gray-500">{ task.0 }</span>
+                                            } else {
+                                                <span class="text-2xl">⬜</span>
+                                                <span class="flex-1 font-semibold text-gray-800">{ task.0 }</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
+// Match pattern demo
+fn match_page() -> impl rusti::Component {
+    let year = 2025;
+    let status = "active";
+    let role = "admin";
+    let priority = 1;
+
+    rusti! {
+        <html>
+            @page_head("Match Demo")
+            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Pattern Matching", "Powerful @match expressions")
+                    <main>
+                        <div class="space-y-8">
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">String Matching</h2>
+                                <div class="p-6 bg-gray-50 rounded-lg">
+                                    <p class="text-gray-600 mb-2">Status: { status }</p>
+                                    @match status {
+                                        "active" => {
+                                            <div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
+                                                <p class="font-bold">✓ Active</p>
+                                                <p>System is running normally</p>
+                                            </div>
+                                        }
+                                        "pending" => {
+                                            <div class="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+                                                <p class="font-bold">⏳ Pending</p>
+                                                <p>Waiting for activation</p>
+                                            </div>
+                                        }
+                                        "inactive" => {
+                                            <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                                                <p class="font-bold">✗ Inactive</p>
+                                                <p>System is stopped</p>
+                                            </div>
+                                        }
+                                        _ => {
+                                            <div class="p-4 bg-gray-100 border-l-4 border-gray-500 text-gray-700">
+                                                <p class="font-bold">? Unknown</p>
+                                                <p>Status not recognized</p>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@match status {\n    \"active\" => { ... }\n    \"pending\" => { ... }\n    _ => { ... }\n}"}</code></pre>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Role-Based UI</h2>
+                                <div class="p-6 bg-gray-50 rounded-lg">
+                                    <p class="text-gray-600 mb-2">Role: { role }</p>
+                                    @match role {
+                                        "admin" => {
+                                            <div class="p-6 bg-red-500 text-white rounded-lg">
+                                                <h3 class="text-2xl font-bold mb-2">👑 Administrator</h3>
+                                                <p>Full system access granted</p>
+                                                <button class="mt-4 px-4 py-2 bg-white text-red-600 rounded font-bold">Manage Users</button>
+                                            </div>
+                                        }
+                                        "editor" => {
+                                            <div class="p-6 bg-blue-500 text-white rounded-lg">
+                                                <h3 class="text-2xl font-bold mb-2">✏️ Editor</h3>
+                                                <p>Content management access</p>
+                                                <button class="mt-4 px-4 py-2 bg-white text-blue-600 rounded font-bold">Edit Content</button>
+                                            </div>
+                                        }
+                                        _ => {
+                                            <div class="p-6 bg-gray-500 text-white rounded-lg">
+                                                <h3 class="text-2xl font-bold mb-2">👤 Viewer</h3>
+                                                <p>Read-only access</p>
+                                                <button class="mt-4 px-4 py-2 bg-white text-gray-600 rounded font-bold">Browse</button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Priority Levels</h2>
+                                <div class="p-6 bg-gray-50 rounded-lg">
+                                    <p class="text-gray-600 mb-2">Priority: { priority }</p>
+                                    @match priority {
+                                        1 => {
+                                            <div class="p-4 bg-red-100 rounded">
+                                                <span class="text-4xl">🔥</span>
+                                                <span class="ml-3 text-xl font-bold text-red-700">Critical Priority</span>
+                                            </div>
+                                        }
+                                        2 => {
+                                            <div class="p-4 bg-orange-100 rounded">
+                                                <span class="text-4xl">⚠️</span>
+                                                <span class="ml-3 text-xl font-bold text-orange-700">High Priority</span>
+                                            </div>
+                                        }
+                                        3 => {
+                                            <div class="p-4 bg-yellow-100 rounded">
+                                                <span class="text-4xl">📌</span>
+                                                <span class="ml-3 text-xl font-bold text-yellow-700">Medium Priority</span>
+                                            </div>
+                                        }
+                                        _ => {
+                                            <div class="p-4 bg-blue-100 rounded">
+                                                <span class="text-4xl">ℹ️</span>
+                                                <span class="ml-3 text-xl font-bold text-blue-700">Low Priority</span>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
 // XSS protection demo
 fn xss_page() -> impl rusti::Component {
     let year = 2025;
