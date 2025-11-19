@@ -3,7 +3,8 @@ use axum::{
     response::{Html, IntoResponse},
     routing::{get, post},
     Form, Router,
-};
+}; 
+mod examples;
 use examples::attributes::styled_card;
 use examples::components::components_page;
 use examples::composition::page;
