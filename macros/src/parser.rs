@@ -286,8 +286,10 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("for")(input)?;
     let (input, _) = multispace0(input)?;
-    // Parse pattern (e.g. "item in items")
-    let (input, pattern) = take_until("{")(input)?;
+    // Parse pattern (e.g. "item in items") - take until { appears
+    let (input, pattern) = take_while1(|c: char| c != '{')(input)?;
+    let pattern = pattern.trim(); // Trim whitespace
+    let (input, _) = multispace0(input)?; // Consume whitespace before {
     let (input, _) = char('{')(input)?;
     let (input, body) = parse_block_nodes(input)?;
     let (input, _) = char('}')(input)?;
@@ -295,9 +297,70 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     Ok((
         input,
         Node::For {
-            pattern: pattern.trim().to_string(),
+            pattern: pattern.to_string(),
             iterator: String::new(), // Iterator is now part of pattern in this simplified parser
             body,
         },
     ))
+}
+
+fn parse_match(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = tag("match")(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse the expression to match against
+    let (input, expr) = take_while1(|c: char| c != '{')(input)?;
+    let expr = expr.trim();
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, _) = multispace0(input)?;
+
+    // Parse match arms: pattern => { body }
+    let (input, arms) = parse_match_arms(input)?;
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('}')(input)?;
+
+    Ok((
+        input,
+        Node::Match {
+            expr: expr.to_string(),
+            arms,
+        },
+    ))
+}
+
+fn parse_match_arms(input: &str) -> IResult<&str, Vec<MatchArm>> {
+    let mut arms = Vec::new();
+    let mut current_input = input;
+
+    loop {
+        // Skip whitespace
+        let (input, _) = multispace0(current_input)?;
+
+        // Check if we've reached the end of the match block
+        if input.starts_with('}') {
+            return Ok((input, arms));
+        }
+
+        // Parse pattern until =>
+        let (input, pattern) = take_until("=>")(input)?;
+        let (input, _) = tag("=>")(input)?;
+        let (input, _) = multispace0(input)?;
+        let (input, _) = char('{')(input)?;
+
+        // Parse the body
+        let (input, body) = parse_block_nodes(input)?;
+
+        let (input, _) = char('}')(input)?;
+
+        arms.push(MatchArm {
+            pattern: pattern.trim().to_string(),
+            body,
+        });
+
+        current_input = input;
+    }
 }
