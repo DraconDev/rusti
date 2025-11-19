@@ -11,19 +11,12 @@ mod examples;
 
 #[derive(Deserialize)]
 struct CounterForm {
-    
     count: i32,
 }
 
 fn page<'a>(title: &'a str, body: &'a str) -> impl rusti::Component + 'a {
-    let year = 2025;    
-    
-    
-    
+    let year = 2025;
 
-
-    
-    
     rusti! {
         <html>
             <head>
@@ -524,12 +517,12 @@ async fn main() {
         .route("/advanced", get(advanced_demo))
         .route("/advanced/dashboard", get(advanced_dashboard))
         .route("/advanced/user/:id", get(advanced_user))
-        .route("/conditional/:status", get(conditional_demo))
-        // .route("/match/:role/:score", get(match_demo))
-        // .route("/htmx", get(htmx_demo))
-        // .route("/htmx/counter/increment", post(htmx_increment))
-        // .route("/htmx/counter/decrement", post(htmx_decrement))
-        // .route("/htmx/counter/reset", post(htmx_reset));
+        .route("/conditional/:status", get(conditional_demo));
+    // .route("/match/:role/:score", get(match_demo))
+    // .route("/htmx", get(htmx_demo))
+    // .route("/htmx/counter/increment", post(htmx_increment))
+    // .route("/htmx/counter/decrement", post(htmx_decrement))
+    // .route("/htmx/counter/reset", post(htmx_reset));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
