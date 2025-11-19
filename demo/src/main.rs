@@ -11,6 +11,7 @@ mod examples;
 
 #[derive(Deserialize)]
 struct CounterForm {
+    
     count: i32,
 }
 
