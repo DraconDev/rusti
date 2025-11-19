@@ -52,30 +52,6 @@ fn page_footer(year: i32) -> impl rusti::Component {
     }
 }
 
-// Flexible layout component that accepts any content
-fn full_page_layout<'a, C: rusti::Component + 'a>(
-    title: &'a str,
-    subtitle: &'a str,
-    content: C,
-) -> impl rusti::Component + 'a {
-    let year = 2025;
-
-    rusti! {
-        <html>
-            @page_head(title)
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
-                <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header(title, subtitle)
-                    <main>
-                        @content()
-                    </main>
-                    @page_footer(year)
-                </div>
-            </body>
-        </html>
-    }
-}
-
 fn clickable_card<'a>(
     title: &'a str,
     description: &'a str,
@@ -94,41 +70,74 @@ fn clickable_card<'a>(
     }
 }
 
+// Home page with example cards
+fn home_page() -> impl rusti::Component {
+    let year = 2025;
+
+    rusti! {
+        <html>
+            @page_head("Rusti Demo")
+            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Rusti Demo", "Welcome to the Rusti demo application!")
+                    <main>
+                        <section class="mb-12">
+                            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                @clickable_card("Basic Examples", "Simple component composition", "/")
+                                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
+                            </div>
+                        </section>
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
 // HTMX Interactive Demo
 fn htmx_page() -> impl rusti::Component {
-    let content = rusti! {
-        <div class="space-y-8">
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
-                <div id="counter" class="text-center">
-                    @counter_partial(0)
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">How It Works</h2>
-                <ul class="space-y-2 text-gray-700">
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-500 font-bold">&gt;</span>
-                        <span>HTMX attributes enable interactivity without JavaScript</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-500 font-bold">&gt;</span>
-                        <span>Rusti attribute support makes HTMX integration seamless</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-500 font-bold">&gt;</span>
-                        <span>Server renders partial HTML updates</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    };
+    let year = 2025;
 
-    full_page_layout(
-        "HTMX + Rusti Demo",
-        "Interactive counter with server-side rendering",
-        content,
-    )
+    rusti! {
+        <html>
+            @page_head("HTMX + Rusti Demo")
+            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("HTMX + Rusti Demo", "Interactive counter with server-side rendering")
+                    <main>
+                        <div class="space-y-8">
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
+                                <div id="counter" class="text-center">
+                                    @counter_partial(0)
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">How It Works</h2>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-pink-500 font-bold">&gt;</span>
+                                        <span>HTMX attributes enable interactivity without JavaScript</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-pink-500 font-bold">&gt;</span>
+                                        <span>Rusti attribute support makes HTMX integration seamless</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-pink-500 font-bold">&gt;</span>
+                                        <span>Server renders partial HTML updates</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
 }
 
 fn counter_partial(count: i32) -> impl rusti::Component {
@@ -157,22 +166,7 @@ fn counter_partial(count: i32) -> impl rusti::Component {
 }
 
 async fn hello_world() -> impl IntoResponse {
-    let content = rusti! {
-        <section class="mb-12">
-            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                @clickable_card("Basic Examples", "Simple component composition", "/")
-                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
-            </div>
-        </section>
-    };
-
-    let component = full_page_layout(
-        "Rusti Demo",
-        "Welcome to the Rusti demo application!",
-        content,
-    );
-    Html(rusti::render_to_string(&component))
+    Html(rusti::render_to_string(&home_page()))
 }
 
 async fn htmx_demo() -> impl IntoResponse {
