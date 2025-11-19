@@ -7,8 +7,6 @@ use axum::{
 use rusti::rusti;
 use serde::Deserialize;
 
-mod examples;
-
 #[derive(Deserialize)]
 struct CounterForm {
     count: i32,
