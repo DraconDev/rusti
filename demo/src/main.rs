@@ -79,14 +79,17 @@ fn home_page() -> impl rusti::Component {
             @page_head("Rusti Demo")
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header("Rusti Demo", "Welcome to the Rusti demo application!")
+                    @page_header("Rusti Demo", "Comprehensive Rust HTML templating demos")
                     <main>
                         <section class="mb-12">
-                            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Examples</h2>
-                            <div class="grid md:grid-cols-3 gap-8">
-                                @clickable_card("Basic Examples", "Simple component composition", "/")
-                                @clickable_card("HTMX Interactivity", "Interactive counter demo", "/htmx")
-                                @clickable_card("Conditionals & Logic", "If/else, pattern matching", "/conditionals")
+                            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Features</h2>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                @clickable_card("Components", "Reusable UI building blocks", "/")
+                                @clickable_card("HTMX", "Server-side interactivity", "/htmx")
+                                @clickable_card("Conditionals", "If/else logic rendering", "/conditionals")
+                                @clickable_card("Lists", "For loops and iteration", "/lists")
+                                @clickable_card("XSS Protection", "Automatic HTML escaping", "/xss")
+                                @clickable_card("Attributes", "Dynamic attribute values", "/attributes")
                             </div>
                         </section>
                     </main>
