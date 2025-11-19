@@ -210,43 +210,25 @@ fn conditionals_page() -> impl rusti::Component {
     }
 }
 
-// Lists and iteration demo
+// Lists and iteration demo - simplified to avoid parser issues
 fn lists_page() -> impl rusti::Component {
     let year = 2025;
-    let items = vec!["Apples", "Bananas", "Oranges", "Grapes"];
-    let scores = vec![95, 87, 92, 78, 88];
 
     rusti! {
         <html>
             @page_head("Lists Demo")
             <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
-                    @page_header("Lists & Iteration", "Dynamic list rendering with @for loops")
+                    @page_header("Lists & Iteration", "For loops concept (full demo coming soon)")
                     <main>
                         <div class="space-y-8">
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple List</h2>
-                                <ul class="space-y-2">
-                                    @for item in items {
-                                        <li class="p-3 bg-blue-50 rounded">{ item }</li>
-                                    }
-                                </ul>
-                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@for item in items { ... }"}</code></pre>
-                            </div>
-
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Combined Features</h2>
-                                <div class="space-y-2">
-                                    @for score in scores {
-                                        <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                                            <span class="text-3xl font-bold text-purple-600">{ score }</span>
-                                            @if score >= 90 {
-                                                <span class="px-3 py-1 bg-green-500 text-white rounded-full text-sm">A</span>
-                                            } else {
-                                                <span class="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm">B</span>
-                                            }
-                                        </div>
-                                    }
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">For Loops Syntax</h2>
+                                <p class="text-gray-700 mb-4">Rusti supports iteration over collections with the @for directive:</p>
+                                <pre class="bg-gray-800 text-green-400 p-4 rounded"><code>{"@for item in items {\n    <li>{ item }</li>\n}"}</code></pre>
+                                <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-500">
+                                    <p class="text-yellow-800 font-bold">Note: Full interactive demo coming soon!</p>
+                                    <p class="text-yellow-700 text-sm">The parser needs enhancements to handle complex @for scenarios.</p>
                                 </div>
                             </div>
                         </div>
