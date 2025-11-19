@@ -283,6 +283,18 @@ async fn conditionals_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&conditionals_page()))
 }
 
+async fn lists_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&lists_page()))
+}
+
+async fn xss_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&xss_page()))
+}
+
+async fn attributes_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&attributes_page()))
+}
+
 async fn hello_world() -> impl IntoResponse {
     Html(rusti::render_to_string(&home_page()))
 }
