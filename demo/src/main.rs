@@ -1,5 +1,3 @@
-use std::net::TcpListener;
-
 use axum::{
     extract::Path,
     response::{Html, IntoResponse},
@@ -526,7 +524,7 @@ async fn main() {
         .route("/htmx/counter/decrement", post(htmx_decrement))
         .route("/htmx/counter/reset", post(htmx_reset));
 
-    let listener = TcpListener::bind("127.0.0.1:3000")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
         .unwrap();
 
