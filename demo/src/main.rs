@@ -434,6 +434,9 @@ async fn main() {
         .route("/", get(hello_world))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
+        .route("/lists", get(lists_demo))
+        .route("/xss", get(xss_demo))
+        .route("/attributes", get(attributes_demo))
         .route("/htmx/counter/increment", post(htmx_increment))
         .route("/htmx/counter/decrement", post(htmx_decrement))
         .route("/htmx/counter/reset", post(htmx_reset));
@@ -446,14 +449,19 @@ async fn main() {
     println!("===================");
     println!("Server running on http://127.0.0.1:3000");
     println!("\n📍 Available routes:");
-    println!("   http://127.0.0.1:3000/");
-    println!("   http://127.0.0.1:3000/htmx");
-    println!("   http://127.0.0.1:3000/conditionals");
+    println!("   http://127.0.0.1:3000/  - Home");
+    println!("   http://127.0.0.1:3000/htmx - HTMX Demo");
+    println!("   http://127.0.0.1:3000/conditionals - Conditionals");
+    println!("   http://127.0.0.1:3000/lists - Lists & Iteration");
+    println!("   http://127.0.0.1:3000/xss - XSS Protection");
+    println!("   http://127.0.0.1:3000/attributes - Dynamic Attributes");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
-    println!("   • Conditional rendering");
-    println!("   • XSS protection");
+    println!("   • Conditional rendering (@if/@else)");
+    println!("   • Lists and iteration (@for)");
+    println!("   • Auto HTML escaping (XSS protection)");
+    println!("   • Dynamic attributes");
     println!("\n");
 
     axum::serve(listener, app).await.unwrap();
