@@ -208,15 +208,14 @@ fn conditionals_page() -> impl rusti::Component {
             </body>
         </html>
     }
+```
 }
 
 // Lists and iteration demo
 fn lists_page() -> impl rusti::Component {
     let year = 2025;
     let items = vec![
-        "Apples", "Bananas", "Oranges", "Gr
-
-apes",
+        "Apples", "Bananas", "Oranges", "Grapes",
     ];
     let scores = vec![95, 87, 92, 78, 88];
 
