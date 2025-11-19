@@ -118,7 +118,7 @@ fn conditionals_page() -> impl rusti::Component {
                                 <div class="space-y-4">
                                     @if is_premium {
                                         <div class="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
-                                            <p class="text-lg font-bold">⭐ Premium User</p>
+                                            <p class="text-lg font-bold">Premium User</p>
                                             <p>You have access to all features!</p>
                                         </div>
                                     } else {
@@ -136,12 +136,12 @@ fn conditionals_page() -> impl rusti::Component {
                                 <div class="space-y-4">
                                     @if user_role == "admin" {
                                         <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
-                                            <p class="font-bold">🔐 Admin Access</p>
+                                            <p class="font-bold">Admin Access</p>
                                             <p>You can manage users and settings</p>
                                         </div>
                                     } else {
                                         <div class="p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
-                                            <p class="font-bold">👤 User Access</p>
+                                            <p class="font-bold">User Access</p>
                                             <p>Limited to viewing content</p>
                                         </div>
                                     }
@@ -155,18 +155,18 @@ fn conditionals_page() -> impl rusti::Component {
                                     <div class="text-6xl font-black text-gray-800">{ score }</div>
                                     @if score >= 90 {
                                         <div class="p-4 bg-green-500 text-white rounded-lg flex-1">
-                                            <p class="text-2xl font-bold">Excellent! 🎉</p>
+                                            <p class="text-2xl font-bold">Excellent!</p>
                                             <p>Outstanding performance!</p>
                                         </div>
                                     } else {
                                         @if score >= 70 {
                                             <div class="p-4 bg-yellow-500 text-white rounded-lg flex-1">
-                                                <p class="text-2xl font-bold">Good Job! 👍</p>
+                                                <p class="text-2xl font-bold">Good Job!</p>
                                                 <p>Keep up the good work!</p>
                                             </div>
                                         } else {
                                             <div class="p-4 bg-orange-500 text-white rounded-lg flex-1">
-                                                <p class="text-2xl font-bold">Needs Improvement 📚</p>
+                                                <p class="text-2xl font-bold">Needs Improvement</p>
                                                 <p>Practice makes perfect!</p>
                                             </div>
                                         }
@@ -266,6 +266,10 @@ fn counter_partial(count: i32) -> impl rusti::Component {
     }
 }
 
+async fn conditionals_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&conditionals_page()))
+}
+
 async fn hello_world() -> impl IntoResponse {
     Html(rusti::render_to_string(&home_page()))
 }
@@ -293,6 +297,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
         .route("/htmx", get(htmx_demo))
+        .route("/conditionals", get(conditionals_demo))
         .route("/htmx/counter/increment", post(htmx_increment))
         .route("/htmx/counter/decrement", post(htmx_decrement))
         .route("/htmx/counter/reset", post(htmx_reset));
@@ -307,9 +312,11 @@ async fn main() {
     println!("\n📍 Available routes:");
     println!("   http://127.0.0.1:3000/");
     println!("   http://127.0.0.1:3000/htmx");
+    println!("   http://127.0.0.1:3000/conditionals");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
+    println!("   • Conditional rendering");
     println!("   • XSS protection");
     println!("\n");
 
