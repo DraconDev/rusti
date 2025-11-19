@@ -524,28 +524,28 @@ async fn main() {
         .route("/htmx/counter/decrement", post(htmx_decrement))
         .route("/htmx/counter/reset", post(htmx_reset));
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3001")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
         .unwrap();
 
     println!("\n🚀 Rusti Web Server");
     println!("===================");
-    println!("Server running on http://127.0.0.1:3001");
+    println!("Server running on http://127.0.0.1:3000");
     println!("\n📍 Available routes:");
-    println!("   http://127.0.0.1:3001/");
-    println!("   http://127.0.0.1:3001/advanced");
-    println!("   http://127.0.0.1:3001/advanced/dashboard");
-    println!("   http://127.0.0.1:3001/advanced/user/123");
+    println!("   http://127.0.0.1:3000/");
+    println!("   http://127.0.0.1:3000/advanced");
+    println!("   http://127.0.0.1:3000/advanced/dashboard");
+    println!("   http://127.0.0.1:3000/advanced/user/123");
     println!("\n🎯 Conditional rendering:");
-    println!("   http://127.0.0.1:3001/conditional/active");
-    println!("   http://127.0.0.1:3001/conditional/pending");
-    println!("   http://127.0.0.1:3001/conditional/inactive");
+    println!("   http://127.0.0.1:3000/conditional/active");
+    println!("   http://127.0.0.1:3000/conditional/pending");
+    println!("   http://127.0.0.1:3000/conditional/inactive");
     println!("\n🔀 Match expressions:");
-    println!("   http://127.0.0.1:3001/match/admin/95");
-    println!("   http://127.0.0.1:3001/match/moderator/82");
-    println!("   http://127.0.0.1:3001/match/user/67");
+    println!("   http://127.0.0.1:3000/match/admin/95");
+    println!("   http://127.0.0.1:3000/match/moderator/82");
+    println!("   http://127.0.0.1:3000/match/user/67");
     println!("\n💫 HTMX interactivity:");
-    println!("   http://127.0.0.1:3001/htmx");
+    println!("   http://127.0.0.1:3000/htmx");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • Nested components");

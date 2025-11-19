@@ -1,5 +1,5 @@
-   0.057649030s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint: fingerprint error for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { kind: "example", name: "basic", tested: false, benched: false, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
-   0.057667144s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-82caa8b914b79f4d/example-basic`
+   0.015915907s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint: fingerprint error for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { kind: "example", name: "basic", tested: false, benched: false, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.015932228s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-82caa8b914b79f4d/example-basic`
 
 Caused by:
     No such file or directory (os error 2)
