@@ -140,13 +140,13 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
 
     // Try to parse dynamic value first (in curly braces)
     let (input, value) = alt((
-        |i| {
+        |i: &str| {
             let (i, _) = char('{')(i)?;
             let (i, expr) = take_balanced(i, '{', '}')?;
             let (i, _) = char('}')(i)?;
             Ok((i, AttributeValue::Dynamic(expr.to_string())))
         },
-        |i| {
+        |i: &str| {
             let (i, val) = delimited(char('"'), take_until("\""), char('"'))(i)?;
             Ok((i, AttributeValue::Static(val.to_string())))
         },
