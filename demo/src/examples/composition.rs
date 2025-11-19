@@ -12,12 +12,12 @@ pub fn header(title: &str) -> impl rusti::Component + '_ {
 pub fn footer() -> impl rusti::Component {
     rusti! {
         <footer class="bg-gray-800 text-white p-4 text-center">
-            <p>© 2025 - Built with Rusti</p>
+            <p>(c) 2025 - Built with Rusti</p>
         </footer>
     }
 }
 
-pub fn page(title: &str, content: &str) -> impl rusti::Component + '__ {
+pub fn page<'a>(title: &'a str, content: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <div class="min-h-screen flex flex-col">
             @header(title)

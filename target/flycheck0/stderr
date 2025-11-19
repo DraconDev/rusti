@@ -1,5 +1,5 @@
-   0.029642427s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint: fingerprint error for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { kind: "example", name: "basic", tested: false, benched: false, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
-   0.029659149s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-82caa8b914b79f4d/example-basic`
+   0.025060546s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint: fingerprint error for rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)/Check { test: false }/TargetInner { kind: "example", name: "basic", tested: false, benched: false, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.025078710s  INFO prepare_target{force=false package_id=rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti) target="basic"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/dracon/_Dev/gemini_project/rusti/target/debug/.fingerprint/rusti-1e598991d236678a/example-basic`
 
 Caused by:
     No such file or directory (os error 2)
@@ -43,5 +43,15 @@ Stack backtrace:
   25: __libc_start_main_impl
              at ./csu/../csu/libc-start.c:360:3
   26: <unknown>
+   0.067345406s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: dependency on `rusti` is newer than we are 1763526818.090819182s > 1763526563.757083502s "/home/dracon/_Dev/gemini_project/rusti/demo"
+   0.067396953s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)/Check { test: false }/TargetInner { name: "rusti-demo", doc: true, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.067404477s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "rusti", dep_mtime: FileTime { seconds: 1763526818, nanos: 90819182 }, max_mtime: FileTime { seconds: 1763526563, nanos: 757083502 } })
+   0.068498691s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: dependency on `rusti` is newer than we are 1763526818.090819182s > 1763526563.756866142s "/home/dracon/_Dev/gemini_project/rusti/demo"
+   0.068518589s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint: fingerprint dirty for rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)/Check { test: true }/TargetInner { name: "rusti-demo", doc: true, ..: with_path("/home/dracon/_Dev/gemini_project/rusti/demo/src/main.rs", Edition2021) }
+   0.068522997s  INFO prepare_target{force=false package_id=rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo) target="rusti-demo"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleDependency { name: "rusti", dep_mtime: FileTime { seconds: 1763526818, nanos: 90819182 }, max_mtime: FileTime { seconds: 1763526563, nanos: 756866142 } })
     Checking rusti v0.1.0 (/home/dracon/_Dev/gemini_project/rusti)
+    Checking rusti-demo v0.1.0 (/home/dracon/_Dev/gemini_project/rusti/demo)
 error: could not compile `rusti` (example "basic") due to 7 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `rusti-demo` (bin "rusti-demo") due to 1 previous error; 1 warning emitted
+error: could not compile `rusti-demo` (bin "rusti-demo" test) due to 1 previous error; 1 warning emitted

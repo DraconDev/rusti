@@ -15,6 +15,7 @@ pub fn role_badge(role: &str) -> impl rusti::Component + '_ {
             <p class="text-gray-600">{ description }</p>
         </div>
     }
+    .to_string()
 }
 
 pub fn score_grade(score: i32) -> impl rusti::Component {
