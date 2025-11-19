@@ -275,8 +275,13 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, _) = tag("for")(input)?;
     let (input, _) = multispace0(input)?;
-    // Parse pattern (e.g. "item in items")
-    let (input, pattern) = take_until("{")(input)?;
+
+    // Parse pattern more carefully - take until we hit whitespace followed by '{'
+    // This handles cases like "@for item in items {" with variable whitespace
+    let (input, pattern) = take_while1(|c: char| c != '{')(input)?;
+    let pattern = pattern.trim(); // Trim whitespace from pattern
+
+    let (input, _) = multispace0(input)?; // Consume any whitespace before '{'
     let (input, _) = char('{')(input)?;
     let (input, body) = parse_block_nodes(input)?;
     let (input, _) = char('}')(input)?;
@@ -284,7 +289,7 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     Ok((
         input,
         Node::For {
-            pattern: pattern.trim().to_string(),
+            pattern: pattern.to_string(),
             iterator: String::new(), // Iterator is now part of pattern in this simplified parser
             body,
         },
