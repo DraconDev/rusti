@@ -15,6 +15,12 @@ pub enum AttributeValue {
 }
 
 #[derive(Debug, Clone)]
+pub struct MatchArm {
+    pub pattern: String,
+    pub body: Vec<Node>,
+}
+
+#[derive(Debug, Clone)]
 pub enum Node {
     Element {
         name: String,
@@ -38,6 +44,10 @@ pub enum Node {
         iterator: String,
         body: Vec<Node>,
     },
+    Match {
+        expr: String,
+        arms: Vec<MatchArm>,
+    },
 }
 
 pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Node>> {
@@ -50,6 +60,7 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
     alt((
         parse_if,
         parse_for,
+        parse_match,
         parse_expression,
         parse_call,
         parse_element,
