@@ -411,22 +411,22 @@ fn xss_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("XSS Protection")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("XSS Protection", "Automatic HTML escaping for security")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Automatic Escaping</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Automatic Escaping</h2>
                                 <div class="space-y-4">
-                                    <div class="p-4 bg-red-50 border-l-4 border-red-500">
-                                        <p class="font-bold text-red-700">Malicious Input:</p>
-                                        <code class="text-sm bg-white p-2 rounded block">{ user_input }</code>
+                                    <div class="p-4 bg-red-900/30 border-l-4 border-red-600">
+                                        <p class="font-bold text-red-200">Malicious Input:</p>
+                                        <code class="text-sm bg-slate-950 p-2 rounded block text-slate-200 border border-slate-800">{ user_input }</code>
                                     </div>
-                                    <div class="p-4 bg-green-50 border-l-4 border-green-500">
-                                        <p class="font-bold text-green-700">Safely Rendered:</p>
-                                        <p class="bg-white p-2 rounded">{ user_input }</p>
-                                        <p class="text-sm text-gray-600 mt-2">No script execution!</p>
+                                    <div class="p-4 bg-green-900/30 border-l-4 border-green-600">
+                                        <p class="font-bold text-green-200">Safely Rendered:</p>
+                                        <p class="bg-slate-950 p-2 rounded text-slate-200 border border-slate-800">{ user_input }</p>
+                                        <p class="text-sm text-slate-400 mt-2">No script execution!</p>
                                     </div>
                                 </div>
                             </div>
@@ -447,15 +447,15 @@ fn attributes_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("Attributes Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("Dynamic Attributes", "Interpolate values into HTML attributes")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Dynamic Classes</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Dynamic Classes</h2>
                                 <button class={btn_class}>Styled Button</button>
-                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"<button class={btn_class}>...</button>"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-3 rounded mt-4 text-sm border border-slate-800"><code>{"<button class={btn_class}>...</button>"}</code></pre>
                             </div>
                         </div>
                     </main>
@@ -473,20 +473,20 @@ fn htmx_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("HTMX + Rusti Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("HTMX + Rusti Demo", "Interactive counter with server-side rendering")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-6">Interactive Counter</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-6">Interactive Counter</h2>
                                 <div id="counter" class="text-center">
                                     @counter_partial(0)
                                 </div>
                             </div>
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">How It Works</h2>
-                                <ul class="space-y-2 text-gray-700">
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">How It Works</h2>
+                                <ul class="space-y-2 text-slate-300">
                                     <li class="flex items-start gap-2">
                                         <span class="text-pink-500 font-bold">&gt;</span>
                                         <span>HTMX attributes enable interactivity without JavaScript</span>
@@ -522,7 +522,7 @@ fn counter_partial(count: i32) -> impl rusti::Component {
             </form>
             <form hx-post="/htmx/counter/decrement" hx-target="#counter" hx-swap="innerHTML">
                 <input type="hidden" name="count" value={count.to_string().as_str()}></input>
-                <button type="submit" class="px-6 py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition">
+                <button type="submit" class="px-6 py-3 bg-slate-700 text-white rounded-lg font-semibold hover:bg-slate-600 transition">
                     Decrement
                 </button>
             </form>
