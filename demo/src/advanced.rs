@@ -38,54 +38,86 @@ pub fn nested_loops_page() -> impl rusti::Component {
     }
 }
 
-// Advanced Match Demo: Enums with Data
-pub enum Message {
-    Quit,
-    Move { x: i32, y: i32 },
-    Write(String),
-    ChangeColor(i32, i32, i32),
-}
-
+// Advanced Pattern Matching with Options
 pub fn advanced_match_page() -> impl rusti::Component {
-    let messages = vec![
-        Message::Write(String::from("Hello, Rusti!")),
-        Message::Move { x: 10, y: 20 },
-        Message::ChangeColor(255, 0, 128),
-        Message::Quit,
-    ];
+    let statuses = vec!["success", "warning", "error", "info"];
+    let priorities = vec![1, 2, 3, 4];
 
     rusti! {
-        <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
-            <h2 class="text-2xl font-bold text-slate-100 mb-4">Advanced Pattern Matching</h2>
-            <div class="space-y-4">
-                @for msg in &messages {
-                    @match msg {
-                        Message::Quit => {
-                            <div class="p-4 bg-red-900/30 border-l-4 border-red-600 text-red-200">
-                                <span class="font-bold">Quit</span>: System shutting down...
-                            </div>
-                        }
-                        Message::Move { x, y } => {
-                            <div class="p-4 bg-blue-900/30 border-l-4 border-blue-600 text-blue-200">
-                                <span class="font-bold">Move</span>: Moving to coordinates ({ x }, { y })
-                            </div>
-                        }
-                        Message::Write(text) => {
-                            <div class="p-4 bg-green-900/30 border-l-4 border-green-600 text-green-200">
-                                <span class="font-bold">Write</span>: "{ text }"
-                            </div>
-                        }
-                        Message::ChangeColor(r, g, b) => {
-                            <div class="p-4 bg-purple-900/30 border-l-4 border-purple-600 text-purple-200 flex items-center gap-4">
-                                <span class="font-bold">Color Change</span>:
-                                <div class="w-8 h-8 rounded-full border border-slate-500" style={format!("background-color: rgb({}, {}, {})", r, g, b)}></div>
-                                <span>RGB({ r }, { g }, { b })</span>
-                            </div>
+        <div class="space-y-8">
+            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                <h2 class="text-2xl font-bold text-slate-100 mb-4">Status Matching</h2>
+                <div class="space-y-4">
+                    @for status in &statuses {
+                        @match status {
+                            "success" => {
+                                <div class="p-4 bg-green-900/30 border-l-4 border-green-600 text-green-200">
+                                    <span class="text-2xl">{ "✓" }</span>
+                                    <span class="ml-3 font-bold">Success</span>: Operation completed
+                                </div>
+                            }
+                            "warning" => {
+                                <div class="p-4 bg-yellow-900/30 border-l-4 border-yellow-600 text-yellow-200">
+                                    <span class="text-2xl">{ "⚠" }</span>
+                                    <span class="ml-3 font-bold">Warning</span>: Proceed with caution
+                                </div>
+                            }
+                            "error" => {
+                                <div class="p-4 bg-red-900/30 border-l-4 border-red-600 text-red-200">
+                                    <span class="text-2xl">{ "✗" }</span>
+                                    <span class="ml-3 font-bold">Error</span>: Operation failed
+                                </div>
+                            }
+                            _ => {
+                                <div class="p-4 bg-blue-900/30 border-l-4 border-blue-600 text-blue-200">
+                                    <span class="text-2xl">{ "ℹ" }</span>
+                                    <span class="ml-3 font-bold">Info</span>: General information
+                                </div>
+                            }
                         }
                     }
-                }
+                </div>
+                <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match status {\n    \"success\" => { ... }\n    \"warning\" => { ... }\n    _ => { ... }\n}"}</code></pre>
             </div>
-            <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match msg {\n    Message::Move { x, y } => { ... }\n    Message::Write(text) => { ... }\n    ... \n}"}</code></pre>
+
+            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                <h2 class="text-2xl font-bold text-slate-100 mb-4">Numeric Priority Matching</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    @for priority in &priorities {
+                        @match priority {
+                            1 => {
+                                <div class="p-6 bg-red-900/30 border border-red-700 rounded-lg text-red-200">
+                                    <div class="text-5xl mb-2">{ "🔥" }</div>
+                                    <div class="text-xl font-bold">Critical</div>
+                                    <div class="text-sm">Immediate action required</div>
+                                </div>
+                            }
+                            2 => {
+                                <div class="p-6 bg-orange-900/30 border border-orange-700 rounded-lg text-orange-200">
+                                    <div class="text-5xl mb-2">{ "⚡" }</div>
+                                    <div class="text-xl font-bold">High</div>
+                                    <div class="text-sm">Address soon</div>
+                                </div>
+                            }
+                            3 => {
+                                <div class="p-6 bg-yellow-900/30 border border-yellow-700 rounded-lg text-yellow-200">
+                                    <div class="text-5xl mb-2">{ "📋" }</div>
+                                    <div class="text-xl font-bold">Medium</div>
+                                    <div class="text-sm">Plan accordingly</div>
+                                </div>
+                            }
+                            _ => {
+                                <div class="p-6 bg-blue-900/30 border border-blue-700 rounded-lg text-blue-200">
+                                    <div class="text-5xl mb-2">{ "📝" }</div>
+                                    <div class="text-xl font-bold">Low</div>
+                                    <div class="text-sm">When time permits</div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match priority {\n    1 => { <div>Critical</div> }\n    2 => { <div>High</div> }\n    _ => { <div>Low</div> }\n}"}</code></pre>
+            </div>
         </div>
     }
 }
