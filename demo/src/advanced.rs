@@ -49,8 +49,6 @@ pub fn advanced_match_page() -> impl rusti::Component {
                 <h2 class="text-2xl font-bold text-slate-100 mb-4">Status Matching</h2>
                 <div class="space-y-4">
                     @for status in &statuses {
-                    @for status in &statuses {
-                        /*
                         @match status {
                             "success" => {
                                 <div class="p-4 bg-green-900/30 border-l-4 border-green-600 text-green-200">
@@ -77,9 +75,6 @@ pub fn advanced_match_page() -> impl rusti::Component {
                                 </div>
                             }
                         }
-                        */
-                        <div>Status: { status }</div>
-                    }
                     }
                 </div>
                 <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match status {\n    \"success\" => { ... }\n    \"warning\" => { ... }\n    _ => { ... }\n}"}</code></pre>
@@ -89,8 +84,6 @@ pub fn advanced_match_page() -> impl rusti::Component {
                 <h2 class="text-2xl font-bold text-slate-100 mb-4">Numeric Priority Matching</h2>
                 <div class="grid md:grid-cols-2 gap-4">
                     @for priority in &priorities {
-                    @for priority in &priorities {
-                        /*
                         @match priority {
                             1 => {
                                 <div class="p-6 bg-red-900/30 border border-red-700 rounded-lg text-red-200">
@@ -121,9 +114,6 @@ pub fn advanced_match_page() -> impl rusti::Component {
                                 </div>
                             }
                         }
-                        */
-                        <div>Priority: { priority }</div>
-                    }
                     }
                 </div>
                 <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match priority {\n    1 => { <div>Critical</div> }\n    2 => { <div>High</div> }\n    _ => { <div>Low</div> }\n}"}</code></pre>
