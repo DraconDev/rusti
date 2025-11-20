@@ -33,7 +33,7 @@ rusti = { path = "path/to/rusti" }
 **From Git:**
 ```toml
 [dependencies]
-rusti = { git = "https://github.com/yourusername/rusti" }
+rusti = { git = "https://github.com/DraconDev/rusti" }
 ```
 
 ---
