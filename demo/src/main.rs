@@ -4,7 +4,7 @@ use axum::{
     Form, Router,
 };
 
-// mod examples; // Disabled for now
+mod advanced;
 
 use rusti::rusti;
 use serde::Deserialize;
@@ -91,6 +91,9 @@ fn home_page() -> impl rusti::Component {
                                 @clickable_card("Match", "Pattern matching", "/match")
                                 @clickable_card("XSS Protection", "Automatic HTML escaping", "/xss")
                                 @clickable_card("Attributes", "Dynamic attribute values", "/attributes")
+                                @clickable_card("Nested Loops", "Grids and tables", "/nested-loops")
+                                @clickable_card("Advanced Match", "Enums and data", "/advanced-match")
+                                @clickable_card("Forms", "Input handling", "/forms")
                             </div>
                         </section>
                     </main>
@@ -577,6 +580,18 @@ async fn match_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&match_page()))
 }
 
+async fn nested_loops_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&nested_loops_page_wrapper()))
+}
+
+async fn advanced_match_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&advanced_match_page_wrapper()))
+}
+
+async fn forms_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&forms_page_wrapper()))
+}
+
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -589,7 +604,10 @@ async fn main() {
         .route("/attributes", get(attributes_demo))
         .route("/htmx/counter/increment", post(htmx_increment))
         .route("/htmx/counter/decrement", post(htmx_decrement))
-        .route("/htmx/counter/reset", post(htmx_reset));
+        .route("/htmx/counter/reset", post(htmx_reset))
+        .route("/nested-loops", get(nested_loops_demo))
+        .route("/advanced-match", get(advanced_match_demo))
+        .route("/forms", get(forms_demo));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
@@ -606,6 +624,9 @@ async fn main() {
     println!("   http://127.0.0.1:3000/match - Pattern Matching");
     println!("   http://127.0.0.1:3000/xss - XSS Protection");
     println!("   http://127.0.0.1:3000/attributes - Dynamic Attributes");
+    println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
+    println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
+    println!("   http://127.0.0.1:3000/forms - Forms");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
