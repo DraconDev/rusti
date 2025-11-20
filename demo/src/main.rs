@@ -234,7 +234,7 @@ fn lists_page() -> impl rusti::Component {
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
                                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple List</h2>
                                 <ul class="space-y-2">
-                                    @for fruit in fruits {
+                                    @for fruit in &fruits {
                                         <li class="p-3 bg-blue-50 rounded-lg">{ fruit }</li>
                                     }
                                 </ul>
@@ -244,10 +244,10 @@ fn lists_page() -> impl rusti::Component {
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
                                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Graded Scores</h2>
                                 <div class="grid md:grid-cols-2 gap-4">
-                                    @for score in scores {
+                                    @for score in &scores {
                                         <div class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
                                             <span class="text-3xl font-bold text-purple-600">{ score }</span>
-                                            @if score >= 90 {
+                                            @if *score >= 90 {
                                                 <span class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">A</span>
                                             } else {
                                                 <span class="px-4 py-2 bg-yellow-500 text-white rounded-full font-bold">B</span>
@@ -261,13 +261,13 @@ fn lists_page() -> impl rusti::Component {
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
                                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Task List</h2>
                                 <div class="space-y-2">
-                                    @for task in tasks {
+                                    @for task in &tasks {
                                         <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                                             @if task.1 {
-                                                <span class="text-2xl">✅</span>
+                                                <span class="text-2xl">{ "✅" }</span>
                                                 <span class="flex-1 line-through text-gray-500">{ task.0 }</span>
                                             } else {
-                                                <span class="text-2xl">⬜</span>
+                                                <span class="text-2xl">{ "⬜" }</span>
                                                 <span class="flex-1 font-semibold text-gray-800">{ task.0 }</span>
                                             }
                                         </div>
@@ -305,19 +305,19 @@ fn match_page() -> impl rusti::Component {
                                     @match status {
                                         "active" => {
                                             <div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
-                                                <p class="font-bold">✓ Active</p>
+                                                <p class="font-bold">{ "✓ Active" }</p>
                                                 <p>System is running normally</p>
                                             </div>
                                         }
                                         "pending" => {
                                             <div class="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
-                                                <p class="font-bold">⏳ Pending</p>
+                                                <p class="font-bold">{ "⏳ Pending" }</p>
                                                 <p>Waiting for activation</p>
                                             </div>
                                         }
                                         "inactive" => {
                                             <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
-                                                <p class="font-bold">✗ Inactive</p>
+                                                <p class="font-bold">{ "✗ Inactive" }</p>
                                                 <p>System is stopped</p>
                                             </div>
                                         }
@@ -339,21 +339,21 @@ fn match_page() -> impl rusti::Component {
                                     @match role {
                                         "admin" => {
                                             <div class="p-6 bg-red-500 text-white rounded-lg">
-                                                <h3 class="text-2xl font-bold mb-2">👑 Administrator</h3>
+                                                <h3 class="text-2xl font-bold mb-2">{ "👑 Administrator" }</h3>
                                                 <p>Full system access granted</p>
                                                 <button class="mt-4 px-4 py-2 bg-white text-red-600 rounded font-bold">Manage Users</button>
                                             </div>
                                         }
                                         "editor" => {
                                             <div class="p-6 bg-blue-500 text-white rounded-lg">
-                                                <h3 class="text-2xl font-bold mb-2">✏️ Editor</h3>
+                                                <h3 class="text-2xl font-bold mb-2">{ "✏️ Editor" }</h3>
                                                 <p>Content management access</p>
                                                 <button class="mt-4 px-4 py-2 bg-white text-blue-600 rounded font-bold">Edit Content</button>
                                             </div>
                                         }
                                         _ => {
                                             <div class="p-6 bg-gray-500 text-white rounded-lg">
-                                                <h3 class="text-2xl font-bold mb-2">👤 Viewer</h3>
+                                                <h3 class="text-2xl font-bold mb-2">{ "👤 Viewer" }</h3>
                                                 <p>Read-only access</p>
                                                 <button class="mt-4 px-4 py-2 bg-white text-gray-600 rounded font-bold">Browse</button>
                                             </div>
@@ -369,25 +369,25 @@ fn match_page() -> impl rusti::Component {
                                     @match priority {
                                         1 => {
                                             <div class="p-4 bg-red-100 rounded">
-                                                <span class="text-4xl">🔥</span>
+                                                <span class="text-4xl">{ "🔥" }</span>
                                                 <span class="ml-3 text-xl font-bold text-red-700">Critical Priority</span>
                                             </div>
                                         }
                                         2 => {
                                             <div class="p-4 bg-orange-100 rounded">
-                                                <span class="text-4xl">⚠️</span>
+                                                <span class="text-4xl">{ "⚠️" }</span>
                                                 <span class="ml-3 text-xl font-bold text-orange-700">High Priority</span>
                                             </div>
                                         }
                                         3 => {
                                             <div class="p-4 bg-yellow-100 rounded">
-                                                <span class="text-4xl">📌</span>
+                                                <span class="text-4xl">{ "📌" }</span>
                                                 <span class="ml-3 text-xl font-bold text-yellow-700">Medium Priority</span>
                                             </div>
                                         }
                                         _ => {
                                             <div class="p-4 bg-blue-100 rounded">
-                                                <span class="text-4xl">ℹ️</span>
+                                                <span class="text-4xl">{ "ℹ️" }</span>
                                                 <span class="ml-3 text-xl font-bold text-blue-700">Low Priority</span>
                                             </div>
                                         }

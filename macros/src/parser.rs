@@ -198,6 +198,7 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, name) = parse_identifier(input)?;
     let (input, _) = multispace0(input)?;
     let (input, args) = delimited(char('('), take_balanced('(', ')'), char(')'))(input)?;
@@ -251,6 +252,7 @@ fn parse_text_exclude_brace(input: &str) -> IResult<&str, Node> {
 
 fn parse_if(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, _) = tag("if")(input)?;
     let (input, _) = multispace0(input)?;
     // Parse condition until the opening brace
@@ -284,6 +286,7 @@ fn parse_if(input: &str) -> IResult<&str, Node> {
 
 fn parse_for(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, _) = tag("for")(input)?;
     let (input, _) = multispace0(input)?;
     // Parse pattern (e.g. "item in items") - take until { appears
@@ -312,6 +315,7 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
 
 fn parse_match(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
     let (input, _) = tag("match")(input)?;
     let (input, _) = multispace0(input)?;
 
