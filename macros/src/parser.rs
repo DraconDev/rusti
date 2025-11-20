@@ -276,6 +276,7 @@ fn parse_block_node(input: &str) -> IResult<&str, Node> {
     alt((
         parse_if,
         parse_for,
+        parse_match,
         parse_expression,
         parse_call,
         parse_element,
