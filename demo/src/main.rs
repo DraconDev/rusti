@@ -569,12 +569,22 @@ async fn htmx_reset() -> impl IntoResponse {
     Html(rusti::render_to_string(&counter_partial(0)))
 }
 
+async fn lists_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&lists_page()))
+}
+
+async fn match_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&match_page()))
+}
+
 #[tokio::main]
 async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
+        .route("/lists", get(lists_demo))
+        .route("/match", get(match_demo))
         .route("/xss", get(xss_demo))
         .route("/attributes", get(attributes_demo))
         .route("/htmx/counter/increment", post(htmx_increment))
@@ -592,12 +602,16 @@ async fn main() {
     println!("   http://127.0.0.1:3000/  - Home");
     println!("   http://127.0.0.1:3000/htmx - HTMX Demo");
     println!("   http://127.0.0.1:3000/conditionals - Conditionals");
+    println!("   http://127.0.0.1:3000/lists - Lists & Iteration");
+    println!("   http://127.0.0.1:3000/match - Pattern Matching");
     println!("   http://127.0.0.1:3000/xss - XSS Protection");
     println!("   http://127.0.0.1:3000/attributes - Dynamic Attributes");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
     println!("   • Conditional rendering (@if/@else)");
+    println!("   • List iteration (@for)");
+    println!("   • Pattern matching (@match)");
     println!("   • Auto HTML escaping (XSS protection)");
     println!("   • Dynamic attributes");
     println!("\n");
