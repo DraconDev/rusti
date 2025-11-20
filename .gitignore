@@ -10,3 +10,4 @@
 *.env
 *.kilocode
 node_modules/
+.vscode
