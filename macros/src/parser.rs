@@ -287,8 +287,14 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     let (input, _) = tag("for")(input)?;
     let (input, _) = multispace0(input)?;
     // Parse pattern (e.g. "item in items") - take until { appears
-    let (input, pattern) = take_while1(|c: char| c != '{')(input)?;
-    let pattern = pattern.trim(); // Trim whitespace
+    let (input, full_pattern) = take_while1(|c: char| c != '{')(input)?;
+    let full_pattern = full_pattern.trim();
+
+    let (pattern, iterator) = full_pattern
+        .split_once(" in ")
+        .map(|(p, i)| (p.trim(), i.trim()))
+        .unwrap_or((full_pattern, ""));
+
     let (input, _) = multispace0(input)?; // Consume whitespace before {
     let (input, _) = char('{')(input)?;
     let (input, body) = parse_block_nodes(input)?;
@@ -298,7 +304,7 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
         input,
         Node::For {
             pattern: pattern.to_string(),
-            iterator: String::new(), // Iterator is now part of pattern in this simplified parser
+            iterator: iterator.to_string(),
             body,
         },
     ))
