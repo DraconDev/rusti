@@ -580,6 +580,8 @@ async fn match_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&match_page()))
 }
 
+use advanced::{advanced_match_page_wrapper, forms_page_wrapper, nested_loops_page_wrapper};
+
 async fn nested_loops_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&nested_loops_page_wrapper()))
 }
@@ -624,6 +626,9 @@ async fn main() {
     println!("   http://127.0.0.1:3000/match - Pattern Matching");
     println!("   http://127.0.0.1:3000/xss - XSS Protection");
     println!("   http://127.0.0.1:3000/attributes - Dynamic Attributes");
+    println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
+    println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
+    println!("   http://127.0.0.1:3000/forms - Forms");
     println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
     println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
     println!("   http://127.0.0.1:3000/forms - Forms");
