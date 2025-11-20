@@ -6,7 +6,6 @@ use nom::{
     error::Error,
     multi::many0,
     sequence::{delimited, preceded, tuple},
-    sequence::{delimited, preceded, tuple},
     IResult,
 };
 
@@ -125,7 +124,6 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
             if slice.starts_with("</")
                 || (slice.starts_with("<") && slice[1..].trim_start().starts_with("/"))
             {
-                // Potential match, try to parse it
                 // Potential match, try to parse it
                 let mut parse_closing = tuple::<_, _, Error<&str>, _>((
                     char('<'),
