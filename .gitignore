@@ -11,3 +11,4 @@
 *.kilocode
 node_modules/
 .vscode
+target

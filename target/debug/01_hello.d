@@ -1,1 +1,0 @@
-/home/dracon/_Dev/gemini_project/rusti/target/debug/01_hello: /home/dracon/_Dev/gemini_project/rusti/demo/src/bin/01_hello.rs /home/dracon/_Dev/gemini_project/rusti/macros/src/lib.rs /home/dracon/_Dev/gemini_project/rusti/macros/src/parser.rs /home/dracon/_Dev/gemini_project/rusti/src/lib.rs

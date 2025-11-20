@@ -1,1 +1,0 @@
-/home/dracon/_Dev/gemini_project/rusti/target/debug/librusti_macros.so: /home/dracon/_Dev/gemini_project/rusti/rusti-macros/src/lib.rs /home/dracon/_Dev/gemini_project/rusti/rusti-macros/src/parser.rs

@@ -1,8 +1,0 @@
-/home/dracon/_Dev/gemini_project/rustii/target/debug/deps/mime-824accea425984dc.d: /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/lib.rs /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/parse.rs
-
-/home/dracon/_Dev/gemini_project/rustii/target/debug/deps/libmime-824accea425984dc.rlib: /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/lib.rs /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/parse.rs
-
-/home/dracon/_Dev/gemini_project/rustii/target/debug/deps/libmime-824accea425984dc.rmeta: /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/lib.rs /home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/parse.rs
-
-/home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/lib.rs:
-/home/dracon/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/mime-0.3.17/src/parse.rs:
