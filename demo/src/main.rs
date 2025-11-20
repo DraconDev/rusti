@@ -30,14 +30,14 @@ fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component +
     rusti! {
         <header class="text-center mb-16">
             <div class="inline-block">
-                <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-4">{ title }</h1>
-                <div class="h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
+                <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-4">{ title }</h1>
+                <div class="h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
             </div>
-            <p class="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">{ subtitle }</p>
+            <p class="text-xl text-slate-400 mt-6 max-w-2xl mx-auto">{ subtitle }</p>
             <div class="flex gap-4 justify-center mt-8">
-                <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Type-Safe</span>
-                <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">Zero-Cost</span>
-                <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">XSS Protected</span>
+                <span class="px-4 py-2 bg-blue-900/30 text-blue-300 border border-blue-800 rounded-full text-sm font-semibold">Type-Safe</span>
+                <span class="px-4 py-2 bg-purple-900/30 text-purple-300 border border-purple-800 rounded-full text-sm font-semibold">Zero-Cost</span>
+                <span class="px-4 py-2 bg-green-900/30 text-green-300 border border-green-800 rounded-full text-sm font-semibold">XSS Protected</span>
             </div>
         </header>
     }
@@ -46,8 +46,8 @@ fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component +
 // Footer component - displays copyright and attribution
 fn page_footer(year: i32) -> impl rusti::Component {
     rusti! {
-        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
-            <p class="text-gray-500">Copyright { year } - Built with Rusti</p>
+        <footer class="text-center mt-16 pt-8 border-t border-slate-800">
+            <p class="text-slate-500">Copyright { year } - Built with Rusti</p>
         </footer>
     }
 }
@@ -58,14 +58,14 @@ fn clickable_card<'a>(
     href: &'a str,
 ) -> impl rusti::Component + 'a {
     rusti! {
-        <a href={href} class="block group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-blue-100 hover:border-blue-300 no-underline">
+        <a href={href} class="block group bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-blue-500/20 transition-all duration-300 border border-slate-700 hover:border-blue-500 no-underline">
             <div class="flex items-center gap-3 mb-6">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
                     &rarr;
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">{ title }</h3>
+                <h3 class="text-2xl font-bold text-slate-100 group-hover:text-blue-400 transition-colors">{ title }</h3>
             </div>
-            <p class="text-gray-600">{ description }</p>
+            <p class="text-slate-400">{ description }</p>
         </a>
     }
 }
@@ -77,12 +77,12 @@ fn home_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("Rusti Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("Rusti Demo", "Comprehensive Rust HTML templating demos")
                     <main>
                         <section class="mb-12">
-                            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Explore Features</h2>
+                            <h2 class="text-4xl font-bold text-slate-100 mb-8 text-center">Explore Features</h2>
                             <div class="grid md:grid-cols-3 gap-6">
                                 @clickable_card("Components", "Reusable UI building blocks", "/")
                                 @clickable_card("HTMX", "Server-side interactivity", "/htmx")
