@@ -3,7 +3,9 @@ use nom::{
     bytes::complete::{tag, take_until, take_while1},
     character::complete::{char, multispace0},
     combinator::value,
+    error::Error,
     multi::many0,
+    sequence::{delimited, preceded, tuple},
     sequence::{delimited, preceded, tuple},
     IResult,
 };
@@ -94,23 +96,6 @@ fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
     Ok((input, name))
 }
 
-fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
-    let (input, first) = parse_identifier(input)?;
-    let (input, rest) = many0(tuple((
-        multispace0,
-        char('-'),
-        multispace0,
-        parse_identifier,
-    )))(input)?;
-
-    let mut name = first;
-    for (_, _, _, part) in rest {
-        name.push('-');
-        name.push_str(&part);
-    }
-    Ok((input, name))
-}
-
 pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('<')(input)?;
     let (input, _) = multispace0(input)?;
@@ -141,7 +126,8 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
                 || (slice.starts_with("<") && slice[1..].trim_start().starts_with("/"))
             {
                 // Potential match, try to parse it
-                let parse_closing = tuple((
+                // Potential match, try to parse it
+                let mut parse_closing = tuple::<_, _, Error<&str>, _>((
                     char('<'),
                     multispace0,
                     char('/'),
