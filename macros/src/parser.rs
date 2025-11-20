@@ -136,7 +136,6 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 
                 if let Ok((_, _)) = parse_closing(slice) {
                     found = true;
-                    found = true;
                     break;
                 }
             }
