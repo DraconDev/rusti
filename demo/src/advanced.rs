@@ -49,8 +49,6 @@ pub fn advanced_match_page() -> impl rusti::Component {
                 <h2 class="text-2xl font-bold text-slate-100 mb-4">Status Matching</h2>
                 <div class="space-y-4">
                     @for status in &statuses {
-                    @for status in &statuses {
-                        /*
                         @match status {
                             "success" => {
                                 <div class="p-4 bg-green-900/30 border-l-4 border-green-600 text-green-200">
