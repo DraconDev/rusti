@@ -4,7 +4,7 @@ use nom::{
     character::complete::{char, multispace0},
     combinator::value,
     multi::many0,
-    sequence::{delimited, preceded},
+    sequence::{delimited, preceded, tuple},
     IResult,
 };
 
@@ -75,6 +75,23 @@ fn is_identifier_char(c: char) -> bool {
 fn parse_identifier(input: &str) -> IResult<&str, String> {
     let (input, name) = take_while1(is_identifier_char)(input)?;
     Ok((input, name.to_string()))
+}
+
+fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
+    let (input, first) = parse_identifier(input)?;
+    let (input, rest) = many0(tuple((
+        multispace0,
+        char('-'),
+        multispace0,
+        parse_identifier,
+    )))(input)?;
+
+    let mut name = first;
+    for (_, _, _, part) in rest {
+        name.push('-');
+        name.push_str(&part);
+    }
+    Ok((input, name))
 }
 
 fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
