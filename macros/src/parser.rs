@@ -77,10 +77,27 @@ fn parse_identifier(input: &str) -> IResult<&str, String> {
     Ok((input, name.to_string()))
 }
 
+fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
+    let (input, first) = parse_identifier(input)?;
+    let (input, rest) = many0(tuple((
+        multispace0,
+        char('-'),
+        multispace0,
+        parse_identifier,
+    )))(input)?;
+
+    let mut name = first;
+    for (_, _, _, part) in rest {
+        name.push('-');
+        name.push_str(&part);
+    }
+    Ok((input, name))
+}
+
 pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('<')(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, name) = parse_identifier(input)?;
+    let (input, name) = parse_extended_identifier(input)?;
     let (input, _) = multispace0(input)?;
 
     // Parse attributes
@@ -95,27 +112,49 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
         // Build the closing tag pattern manually
         let remaining = input;
         let mut content_end = 0;
+        let mut found = false;
+        let mut match_len = 0;
 
-        // Search for </tagname>
+        // Search for </tagname> with optional spaces
         while content_end < remaining.len() {
-            if remaining[content_end..].starts_with("</") {
-                let after_slash = &remaining[content_end + 2..];
-                if after_slash.starts_with(&name) {
-                    // Check if followed by whitespace or >
-                    let after_name = &after_slash[name.len()..];
-                    if after_name.starts_with('>')
-                        || after_name.starts_with(' ')
-                        || after_name.starts_with('\t')
-                        || after_name.starts_with('\n')
-                    {
-                        break;
-                    }
+            let slice = &remaining[content_end..];
+
+            // Check if we are at the start of a closing tag
+            if slice.starts_with("</")
+                || (slice.starts_with("<") && slice[1..].trim_start().starts_with("/"))
+            {
+                // Potential match, try to parse it
+                let parse_closing = tuple((
+                    char('<'),
+                    multispace0,
+                    char('/'),
+                    multispace0,
+                    tag(name.as_str()),
+                    multispace0,
+                    char('>'),
+                ));
+
+                if let Ok((rest, _)) = parse_closing(slice) {
+                    found = true;
+                    match_len = slice.len() - rest.len();
+                    break;
                 }
             }
+
             content_end += 1;
         }
 
-        (&remaining[content_end..], vec![])
+        if !found {
+            return Err(nom::Err::Error(nom::error::Error::new(
+                input,
+                nom::error::ErrorKind::Tag,
+            )));
+        }
+
+        let content = &remaining[..content_end];
+        let input = &remaining[content_end + match_len..];
+
+        (input, vec![Node::Text(content.to_string())])
     } else {
         parse_nodes(input)?
     };
@@ -141,7 +180,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 
 // Parse a single attribute: name="value" or name={expr}
 fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
-    let (input, name) = parse_identifier(input)?;
+    let (input, name) = parse_extended_identifier(input)?;
     let (input, _) = multispace0(input)?;
     let (input, _) = char('=')(input)?;
     let (input, _) = multispace0(input)?;
