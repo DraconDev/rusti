@@ -242,10 +242,27 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
     Ok((input, Node::Expression(expr.trim().to_string())))
 }
 
+fn parse_path(input: &str) -> IResult<&str, String> {
+    let (input, first) = parse_identifier(input)?;
+    let (input, rest) = many0(tuple((
+        multispace0,
+        tag("::"),
+        multispace0,
+        parse_identifier,
+    )))(input)?;
+
+    let mut path = first;
+    for (_, _, _, part) in rest {
+        path.push_str("::");
+        path.push_str(&part);
+    }
+    Ok((input, path))
+}
+
 fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, name) = parse_identifier(input)?;
+    let (input, name) = parse_path(input)?;
     let (input, _) = multispace0(input)?;
     let (input, args) = delimited(char('('), take_balanced('(', ')'), char(')'))(input)?;
     let (input, _) = multispace0(input)?;
