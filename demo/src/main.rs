@@ -112,89 +112,89 @@ fn conditionals_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("Conditionals Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("Conditionals & Logic", "Comprehensive guide to conditional rendering in Rusti")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">1. Simple Boolean Conditional</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">1. Simple Boolean Conditional</h2>
                                 <div class="space-y-4">
                                     @if is_premium {
-                                        <div class="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
+                                        <div class="p-4 bg-gradient-to-r from-purple-900/50 to-pink-900/50 border border-purple-700 text-purple-100 rounded-lg">
                                             <p class="text-lg font-bold">Premium User</p>
                                             <p>You have access to all features!</p>
                                         </div>
                                     } else {
-                                        <div class="p-4 bg-gray-200 text-gray-700 rounded-lg">
+                                        <div class="p-4 bg-slate-700 text-slate-300 rounded-lg">
                                             <p class="text-lg font-bold">Free User</p>
                                             <p>Upgrade to premium for more features</p>
                                         </div>
                                     }
-                                    <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if is_premium { ... } else { ... }"}</code></pre>
+                                    <pre class="bg-slate-950 text-green-400 p-3 rounded mt-4 text-sm border border-slate-800"><code>{"@if is_premium { ... } else { ... }"}</code></pre>
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">2. String Comparison</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">2. String Comparison</h2>
                                 <div class="space-y-4">
                                     @if user_role == "admin" {
-                                        <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                                        <div class="p-4 bg-red-900/30 border-l-4 border-red-600 text-red-200">
                                             <p class="font-bold">Admin Access</p>
                                             <p>Full system permissions granted</p>
                                         </div>
                                     } else {
-                                        <div class="p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
+                                        <div class="p-4 bg-blue-900/30 border-l-4 border-blue-600 text-blue-200">
                                             <p class="font-bold">User Access</p>
                                             <p>Limited permissions</p>
                                         </div>
                                     }
-                                    <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if role == \"admin\" { ... }"}</code></pre>
+                                    <pre class="bg-slate-950 text-green-400 p-3 rounded mt-4 text-sm border border-slate-800"><code>{"@if role == \"admin\" { ... }"}</code></pre>
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">3. Numeric Comparison</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">3. Numeric Comparison</h2>
                                 <div class="flex items-center gap-4">
-                                    <div class="text-6xl font-black text-gray-800">{ score }</div>
+                                    <div class="text-6xl font-black text-slate-100">{ score }</div>
                                     @if score >= 90 {
-                                        <div class="p-4 bg-green-500 text-white rounded-lg flex-1">
+                                        <div class="p-4 bg-green-600 text-white rounded-lg flex-1">
                                             <p class="text-2xl font-bold">Excellent!</p>
                                             <p>Outstanding performance</p>
                                         </div>
                                     } else {
-                                        <div class="p-4 bg-yellow-500 text-white rounded-lg flex-1">
+                                        <div class="p-4 bg-yellow-600 text-white rounded-lg flex-1">
                                             <p class="text-2xl font-bold">Good Job!</p>
                                             <p>Keep improving</p>
                                         </div>
                                     }
                                 </div>
-                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if score >= 90 { ... } else { ... }"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-3 rounded mt-4 text-sm border border-slate-800"><code>{"@if score >= 90 { ... } else { ... }"}</code></pre>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">4. Stock Level Indicator</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">4. Stock Level Indicator</h2>
                                 <div class="flex items-center gap-4">
-                                    <span class="text-4xl font-bold">Stock: { stock_count }</span>
+                                    <span class="text-4xl font-bold text-slate-200">Stock: { stock_count }</span>
                                     @if stock_count > 10 {
-                                        <span class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">In Stock</span>
+                                        <span class="px-4 py-2 bg-green-600 text-white rounded-full font-bold">In Stock</span>
                                     } else {
                                         @if stock_count > 0 {
-                                            <span class="px-4 py-2 bg-orange-500 text-white rounded-full font-bold">Low Stock</span>
+                                            <span class="px-4 py-2 bg-orange-600 text-white rounded-full font-bold">Low Stock</span>
                                         } else {
-                                            <span class="px-4 py-2 bg-red-500 text-white rounded-full font-bold">Out of Stock</span>
+                                            <span class="px-4 py-2 bg-red-600 text-white rounded-full font-bold">Out of Stock</span>
                                         }
                                     }
                                 </div>
-                                <pre class="bg-gray-800 text-green-400 p-3 rounded mt-4 text-sm"><code>{"@if count > 10 { ... } else { @if count > 0 { ... } }"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-3 rounded mt-4 text-sm border border-slate-800"><code>{"@if count > 10 { ... } else { @if count > 0 { ... } }"}</code></pre>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Syntax Reference</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Syntax Reference</h2>
                                 <div class="space-y-4 text-sm">
                                     <div>
-                                        <h3 class="font-bold mb-2">Supported Comparisons:</h3>
-                                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                        <h3 class="font-bold mb-2 text-slate-300">Supported Comparisons:</h3>
+                                        <ul class="list-disc list-inside space-y-1 text-slate-400">
                                             <li>Equality: ==, !=</li>
                                             <li>Numeric: &lt;, &gt;, &lt;=, &gt;=</li>
                                             <li>Boolean: true, false</li>
@@ -226,49 +226,49 @@ fn lists_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("Lists Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("Lists & Iteration", "Dynamic list rendering with @for loops")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simple List</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Simple List</h2>
                                 <ul class="space-y-2">
                                     @for fruit in &fruits {
-                                        <li class="p-3 bg-blue-50 rounded-lg">{ fruit }</li>
+                                        <li class="p-3 bg-slate-700/50 rounded-lg text-slate-200">{ fruit }</li>
                                     }
                                 </ul>
-                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@for fruit in fruits {\n    <li>{ fruit }</li>\n}"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@for fruit in fruits {\n    <li>{ fruit }</li>\n}"}</code></pre>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Graded Scores</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Graded Scores</h2>
                                 <div class="grid md:grid-cols-2 gap-4">
                                     @for score in &scores {
-                                        <div class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                                            <span class="text-3xl font-bold text-purple-600">{ score }</span>
+                                        <div class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-lg border border-purple-900/50">
+                                            <span class="text-3xl font-bold text-purple-400">{ score }</span>
                                             @if *score >= 90 {
-                                                <span class="px-4 py-2 bg-green-500 text-white rounded-full font-bold">A</span>
+                                                <span class="px-4 py-2 bg-green-600 text-white rounded-full font-bold">A</span>
                                             } else {
-                                                <span class="px-4 py-2 bg-yellow-500 text-white rounded-full font-bold">B</span>
+                                                <span class="px-4 py-2 bg-yellow-600 text-white rounded-full font-bold">B</span>
                                             }
                                         </div>
                                     }
                                 </div>
-                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@for score in scores {\n    @if score >= 90 { <span>A</span> }\n}"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@for score in scores {\n    @if score >= 90 { <span>A</span> }\n}"}</code></pre>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Task List</h2>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Task List</h2>
                                 <div class="space-y-2">
                                     @for task in &tasks {
-                                        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                                        <div class="flex items-center gap-3 p-4 bg-slate-700/50 rounded-lg">
                                             @if task.1 {
                                                 <span class="text-2xl">{ "✅" }</span>
-                                                <span class="flex-1 line-through text-gray-500">{ task.0 }</span>
+                                                <span class="flex-1 line-through text-slate-500">{ task.0 }</span>
                                             } else {
                                                 <span class="text-2xl">{ "⬜" }</span>
-                                                <span class="flex-1 font-semibold text-gray-800">{ task.0 }</span>
+                                                <span class="flex-1 font-semibold text-slate-200">{ task.0 }</span>
                                             }
                                         </div>
                                     }
@@ -293,102 +293,102 @@ fn match_page() -> impl rusti::Component {
     rusti! {
         <html>
             @page_head("Match Demo")
-            <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+            <body class="bg-slate-900 min-h-screen text-slate-200">
                 <div class="container mx-auto px-4 py-12 max-w-7xl">
                     @page_header("Pattern Matching", "Powerful @match expressions")
                     <main>
                         <div class="space-y-8">
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">String Matching</h2>
-                                <div class="p-6 bg-gray-50 rounded-lg">
-                                    <p class="text-gray-600 mb-2">Status: { status }</p>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">String Matching</h2>
+                                <div class="p-6 bg-slate-900/50 rounded-lg">
+                                    <p class="text-slate-400 mb-2">Status: { status }</p>
                                     @match status {
                                         "active" => {
-                                            <div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
+                                            <div class="p-4 bg-green-900/30 border-l-4 border-green-600 text-green-200">
                                                 <p class="font-bold">{ "✓ Active" }</p>
                                                 <p>System is running normally</p>
                                             </div>
                                         }
                                         "pending" => {
-                                            <div class="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+                                            <div class="p-4 bg-yellow-900/30 border-l-4 border-yellow-600 text-yellow-200">
                                                 <p class="font-bold">{ "⏳ Pending" }</p>
                                                 <p>Waiting for activation</p>
                                             </div>
                                         }
                                         "inactive" => {
-                                            <div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                                            <div class="p-4 bg-red-900/30 border-l-4 border-red-600 text-red-200">
                                                 <p class="font-bold">{ "✗ Inactive" }</p>
                                                 <p>System is stopped</p>
                                             </div>
                                         }
                                         _ => {
-                                            <div class="p-4 bg-gray-100 border-l-4 border-gray-500 text-gray-700">
+                                            <div class="p-4 bg-slate-700 border-l-4 border-slate-500 text-slate-300">
                                                 <p class="font-bold">? Unknown</p>
                                                 <p>Status not recognized</p>
                                             </div>
                                         }
                                     }
                                 </div>
-                                <pre class="bg-gray-800 text-green-400 p-4 rounded mt-4 text-sm"><code>{"@match status {\n    \"active\" => { ... }\n    \"pending\" => { ... }\n    _ => { ... }\n}"}</code></pre>
+                                <pre class="bg-slate-950 text-green-400 p-4 rounded mt-4 text-sm border border-slate-800"><code>{"@match status {\n    \"active\" => { ... }\n    \"pending\" => { ... }\n    _ => { ... }\n}"}</code></pre>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Role-Based UI</h2>
-                                <div class="p-6 bg-gray-50 rounded-lg">
-                                    <p class="text-gray-600 mb-2">Role: { role }</p>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Role-Based UI</h2>
+                                <div class="p-6 bg-slate-900/50 rounded-lg">
+                                    <p class="text-slate-400 mb-2">Role: { role }</p>
                                     @match role {
                                         "admin" => {
-                                            <div class="p-6 bg-red-500 text-white rounded-lg">
+                                            <div class="p-6 bg-red-600 text-white rounded-lg">
                                                 <h3 class="text-2xl font-bold mb-2">{ "👑 Administrator" }</h3>
                                                 <p>Full system access granted</p>
                                                 <button class="mt-4 px-4 py-2 bg-white text-red-600 rounded font-bold">Manage Users</button>
                                             </div>
                                         }
                                         "editor" => {
-                                            <div class="p-6 bg-blue-500 text-white rounded-lg">
+                                            <div class="p-6 bg-blue-600 text-white rounded-lg">
                                                 <h3 class="text-2xl font-bold mb-2">{ "✏️ Editor" }</h3>
                                                 <p>Content management access</p>
                                                 <button class="mt-4 px-4 py-2 bg-white text-blue-600 rounded font-bold">Edit Content</button>
                                             </div>
                                         }
                                         _ => {
-                                            <div class="p-6 bg-gray-500 text-white rounded-lg">
+                                            <div class="p-6 bg-slate-600 text-white rounded-lg">
                                                 <h3 class="text-2xl font-bold mb-2">{ "👤 Viewer" }</h3>
                                                 <p>Read-only access</p>
-                                                <button class="mt-4 px-4 py-2 bg-white text-gray-600 rounded font-bold">Browse</button>
+                                                <button class="mt-4 px-4 py-2 bg-white text-slate-600 rounded font-bold">Browse</button>
                                             </div>
                                         }
                                     }
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Priority Levels</h2>
-                                <div class="p-6 bg-gray-50 rounded-lg">
-                                    <p class="text-gray-600 mb-2">Priority: { priority }</p>
+                            <div class="bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-700">
+                                <h2 class="text-2xl font-bold text-slate-100 mb-4">Priority Levels</h2>
+                                <div class="p-6 bg-slate-900/50 rounded-lg">
+                                    <p class="text-slate-400 mb-2">Priority: { priority }</p>
                                     @match priority {
                                         1 => {
-                                            <div class="p-4 bg-red-100 rounded">
+                                            <div class="p-4 bg-red-900/30 rounded text-red-200">
                                                 <span class="text-4xl">{ "🔥" }</span>
-                                                <span class="ml-3 text-xl font-bold text-red-700">Critical Priority</span>
+                                                <span class="ml-3 text-xl font-bold">Critical Priority</span>
                                             </div>
                                         }
                                         2 => {
-                                            <div class="p-4 bg-orange-100 rounded">
+                                            <div class="p-4 bg-orange-900/30 rounded text-orange-200">
                                                 <span class="text-4xl">{ "⚠️" }</span>
-                                                <span class="ml-3 text-xl font-bold text-orange-700">High Priority</span>
+                                                <span class="ml-3 text-xl font-bold">High Priority</span>
                                             </div>
                                         }
                                         3 => {
-                                            <div class="p-4 bg-yellow-100 rounded">
+                                            <div class="p-4 bg-yellow-900/30 rounded text-yellow-200">
                                                 <span class="text-4xl">{ "📌" }</span>
-                                                <span class="ml-3 text-xl font-bold text-yellow-700">Medium Priority</span>
+                                                <span class="ml-3 text-xl font-bold">Medium Priority</span>
                                             </div>
                                         }
                                         _ => {
-                                            <div class="p-4 bg-blue-100 rounded">
+                                            <div class="p-4 bg-blue-900/30 rounded text-blue-200">
                                                 <span class="text-4xl">{ "ℹ️" }</span>
-                                                <span class="ml-3 text-xl font-bold text-blue-700">Low Priority</span>
+                                                <span class="ml-3 text-xl font-bold">Low Priority</span>
                                             </div>
                                         }
                                     }
