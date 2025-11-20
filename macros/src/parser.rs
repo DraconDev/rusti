@@ -114,7 +114,6 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
         let remaining = input;
         let mut content_end = 0;
         let mut found = false;
-        let mut found = false;
 
         // Search for </tagname> with optional spaces
         while content_end < remaining.len() {
@@ -135,7 +134,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
                     char('>'),
                 ));
 
-                if let Ok((rest, _)) = parse_closing(slice) {
+                if let Ok((_, _)) = parse_closing(slice) {
                     found = true;
                     found = true;
                     break;
