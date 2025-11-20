@@ -538,6 +538,61 @@ fn counter_partial(count: i32) -> impl rusti::Component {
     }
 }
 
+// Wrappers for Advanced Demos
+fn nested_loops_page_wrapper() -> impl rusti::Component {
+    let year = 2025;
+    rusti! {
+        <html>
+            @page_head("Nested Loops Demo")
+            <body class="bg-slate-900 min-h-screen text-slate-200">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Nested Loops", "Generating grids and tables")
+                    <main>
+                        @advanced::nested_loops_page()
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
+fn advanced_match_page_wrapper() -> impl rusti::Component {
+    let year = 2025;
+    rusti! {
+        <html>
+            @page_head("Advanced Match Demo")
+            <body class="bg-slate-900 min-h-screen text-slate-200">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Advanced Match", "Pattern matching with Enums and Data")
+                    <main>
+                        @advanced::advanced_match_page()
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
+fn forms_page_wrapper() -> impl rusti::Component {
+    let year = 2025;
+    rusti! {
+        <html>
+            @page_head("Forms Demo")
+            <body class="bg-slate-900 min-h-screen text-slate-200">
+                <div class="container mx-auto px-4 py-12 max-w-7xl">
+                    @page_header("Forms & Inputs", "Handling user input")
+                    <main>
+                        @advanced::forms_page()
+                    </main>
+                    @page_footer(year)
+                </div>
+            </body>
+        </html>
+    }
+}
+
 async fn conditionals_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&conditionals_page()))
 }
@@ -579,8 +634,6 @@ async fn lists_demo() -> impl IntoResponse {
 async fn match_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&match_page()))
 }
-
-use advanced::{advanced_match_page_wrapper, forms_page_wrapper, nested_loops_page_wrapper};
 
 async fn nested_loops_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&nested_loops_page_wrapper()))
