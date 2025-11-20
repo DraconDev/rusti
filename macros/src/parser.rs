@@ -59,6 +59,7 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
     // Try structured nodes first, then fall back to text
     // This prevents text from consuming empty strings when input starts with special chars
     alt((
+        parse_comment,
         parse_if,
         parse_for,
         parse_match,
@@ -67,6 +68,13 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
         parse_element,
         parse_text,
     ))(input)
+}
+
+fn parse_comment(input: &str) -> IResult<&str, Node> {
+    let (input, _) = tag("/*")(input)?;
+    let (input, _) = take_until("*/")(input)?;
+    let (input, _) = tag("*/")(input)?;
+    Ok((input, Node::Text("".to_string())))
 }
 
 fn is_identifier_char(c: char) -> bool {
@@ -274,6 +282,7 @@ fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
 fn parse_block_node(input: &str) -> IResult<&str, Node> {
     // Try structured nodes first, then fall back to text (excluding '}')
     alt((
+        parse_comment,
         parse_if,
         parse_for,
         parse_match,
