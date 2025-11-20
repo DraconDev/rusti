@@ -57,22 +57,23 @@ let badge = if is_admin {
 };
 ```
 
-## 3. List Rendering
+## 3. Inline `<style>` and `<script>` Tags
 
-**Status**: Not yet implemented
+**Status**: Partial support
 
-**Issue**: No built-in way to render `Vec<impl Component>` or iterate over collections within templates.
+**Issue**: The parser treats content inside `<style>` and `<script>` tags as potential Rust code.
 
-**Workaround**: Build HTML strings manually or create helper functions.
+**Workaround**:
+- Use external CSS/JS files (Recommended)
+- Use spaced closing tags for scripts: `< / script >` (Parser now supports this)
 
 ## Future Enhancements
 
 These features could be added in future versions:
 
 1. **Raw content support**: Special syntax to include CSS/JS without parsing (e.g., `@raw { ... }`)
-2. **Template control flow**: Built-in `@if`, `@for` syntax
-3. **Fragment rendering**: Support for rendering component collections
-4. **Attribute parsing**: HTML attributes with dynamic values
+2. **Fragment rendering**: Support for rendering component collections without a wrapper element
+3. **More complex pattern matching**: Enhanced `@match` capabilities
 
 ## What Works Great
 
