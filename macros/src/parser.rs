@@ -431,10 +431,17 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     let full_pattern = full_pattern.trim();
     eprintln!("DEBUG: parse_for full_pattern: '{}'", full_pattern);
 
-    let (pattern, iterator) = full_pattern
-        .split_once(" in ")
-        .map(|(p, i)| (p.trim(), i.trim()))
-        .unwrap_or((full_pattern, ""));
+    // Robustly find "in" token
+    let parts: Vec<&str> = full_pattern.split_whitespace().collect();
+    let in_index = parts.iter().position(|&s| s == "in");
+
+    let (pattern, iterator) = if let Some(idx) = in_index {
+        let pattern_parts = &parts[..idx];
+        let iterator_parts = &parts[idx + 1..];
+        (pattern_parts.join(" "), iterator_parts.join(" "))
+    } else {
+        (full_pattern.to_string(), "".to_string())
+    };
 
     eprintln!(
         "DEBUG: parse_for pattern: '{}', iterator: '{}'",
