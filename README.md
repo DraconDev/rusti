@@ -460,9 +460,11 @@ async fn main() {
 1. **Use Tailwind CSS** for styling whenever possible. It eliminates tokenizer issues entirely.
 2. **Prefer inline styles** for dynamic or one-off overrides.
 3. **Use raw strings** (`r#""#`) for complex CSS blocks or JavaScript.
-4. **Extract components early** to keep templates readable.
-5. **Leverage Rust's type system** - pass typed structs instead of primitives.
-6. **Test component rendering** with unit tests using `render_to_string()`.
+4. **Always wrap `<script>` content in raw strings** - even simple scripts can break unexpectedly.
+5. **Link external scripts** (`<script src="...">`) instead of inline JavaScript in production.
+6. **Extract components early** to keep templates readable.
+7. **Leverage Rust's type system** - pass typed structs instead of primitives.
+8. **Test component rendering** with unit tests using `render_to_string()`.
 
 ---
 
