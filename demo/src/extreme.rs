@@ -85,7 +85,7 @@ pub fn loops_example() -> impl rusti::Component {
                     <ul>
                         @for (name, hex) in colors {
                             <li>
-                                <span class="color-box" style={"background-color:"}{hex}></span>
+                                <span class="color-box" style={hex}></span>
                                 <strong>{ name }</strong> - { hex }
                             </li>
                         }
