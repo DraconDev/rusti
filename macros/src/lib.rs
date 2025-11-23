@@ -7,6 +7,7 @@ use std::str::FromStr;
 #[proc_macro]
 pub fn rusti(input: TokenStream) -> TokenStream {
     let input_str = input.to_string();
+    // panic!("DEBUG: input_str: '{}'", input_str);
 
     // Parse the block content
     let nodes = match parser::parse_nodes(&input_str) {
