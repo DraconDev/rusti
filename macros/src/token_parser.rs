@@ -338,12 +338,12 @@ impl Parse for Block {
                     name: path,
                     args,
                     children,
-                    span: path.span(), // Simplified span
+                    span: path.span(),
                 }))
             } else {
                 // Component variable @foo
                 Ok(Block::Component(ComponentBlock {
-                    name: path.clone(),
+                    name: path,
                     span: path.span(),
                 }))
             }
@@ -367,7 +367,7 @@ fn parse_html_name(input: ParseStream) -> Result<String> {
                 name.push_str(&part.to_string());
             } else if input.peek(Token![type]) {
                 // Handle keywords like 'type'
-                let token: Token![type] = input.parse()?;
+                input.parse::<Token![type]>()?;
                 name.push_str("type");
             } else {
                 // Allow numbers?
