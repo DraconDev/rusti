@@ -9,8 +9,8 @@ pub fn base_layout<'a>(
     is_authenticated: bool,
     content: impl rusti::Component + 'a,
 ) -> impl rusti::Component + 'a {
-    // Using format! for the entire HTML structure to avoid parser limitations
-    let navbar_html = rusti::render_to_string(&navbar(is_authenticated));
+    // Render navbar and content to strings to avoid type issues
+    let navbar_html = navbar_html(is_authenticated);
     let content_html = rusti::render_to_string(&content);
 
     let full_html = format!(
@@ -23,10 +23,10 @@ pub fn base_layout<'a>(
     }
 }
 
-/// Navbar component used by the base layout.
-fn navbar(is_authenticated: bool) -> Box<dyn rusti::Component> {
+/// Generate navbar HTML based on authentication status.
+fn navbar_html(is_authenticated: bool) -> String {
     if is_authenticated {
-        Box::new(rusti! {
+        rusti::render_to_string(&rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
@@ -54,7 +54,7 @@ fn navbar(is_authenticated: bool) -> Box<dyn rusti::Component> {
             </nav>
         })
     } else {
-        Box::new(rusti! {
+        rusti::render_to_string(&rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
