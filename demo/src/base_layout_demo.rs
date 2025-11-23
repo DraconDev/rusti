@@ -60,7 +60,7 @@ pub fn base_layout<'a>(
     content: impl rusti::Component + 'a,
 ) -> impl rusti::Component + 'a {
     rusti! {
-        <html lang="en">
+        <html>
             @page_head(title)
             <body class="bg-gray-900 text-white min-h-screen">
                 @navbar(is_authenticated)
