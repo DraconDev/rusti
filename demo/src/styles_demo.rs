@@ -87,6 +87,20 @@ pub fn styles_demo2() -> impl rusti::Component {
                         text-decoration: underline;
                     }
                     .card {
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        align-items: center;
+                        min-height: 150px;
+                        transition: all 0.3s ease-in-out;
+                        border: 1px solid #e0e0e0;
+                        overflow: hidden;
+                        transform: scale(1);
+                        perspective: 1000px;
+                        transform-style: preserve-3d;
+                        z-index: 1;
+                        cursor: pointer;
                         background-color: #ffffff;
                         border-radius: 8px;
                         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

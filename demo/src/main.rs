@@ -8,11 +8,13 @@ mod about;
 mod advanced;
 mod base_layout_demo;
 mod basic_page;
+mod datastar;
 mod extreme;
 mod styles_demo;
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
+use datastar::datastar_demo_handler;
 use styles_demo::styles_demo_handler;
 
 use rusti::rusti;
@@ -681,6 +683,7 @@ async fn main() {
         .route("/advanced-match", get(advanced_match_demo))
         .route("/base-layout", get(base_layout_demo_handler))
         .route("/styles", get(styles_demo_handler))
+        .route("/datastar", get(datastar_demo_handler))
         .route("/styles2", get(styles_demo2_handler))
         .route("/forms", get(forms_demo))
         // Extreme examples - comprehensive feature demos
