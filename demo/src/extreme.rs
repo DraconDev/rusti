@@ -570,6 +570,20 @@ pub fn form_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Form Example</title>
+
+                <style>{r#"
+                    body {
+                        margin: 0;
+                        padding: 20px; /* 20px works fine */
+                        font-family: system-ui;
+                        background: linear-gradient(135deg, #f00 0%, #f00 100%);
+                        min-height: 100vh;
+                    }
+                    .container {
+                        padding: 2em; /* 2em WORKS HERE NOW! */
+                        background: #f00;
+                    }
+                "#}</style>
                 <style>
                     body {
                         margin: 0;
