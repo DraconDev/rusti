@@ -9,7 +9,6 @@ pub fn base_layout<'a>(
     is_authenticated: bool,
     content: impl rusti::Component + 'a,
 ) -> impl rusti::Component + 'a {
-    // Inline CSS as a string to avoid parser issues with style tag content
     let styles = "body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}.glass-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}.glow-effect{box-shadow:0 0 20px rgba(6,182,212,0.3)}";
 
     rusti! {
@@ -23,65 +22,44 @@ pub fn base_layout<'a>(
                 <style>{styles}</style>
             </head>
             <body class="bg-gray-900 text-white min-h-screen">
-                @navbar(is_authenticated)
+                <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-6">
+                            <a href="/" class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                                "Azumi"
+                            </a>
+                            <a href="/" class="text-gray-300 hover:text-white transition-colors">
+                                "Home"
+                            </a>
+                            @if is_authenticated {
+                                <a href="/profile" class="text-gray-300 hover:text-white transition-colors">
+                                    "Profile"
+                                </a>
+                                <a href="/settings" class="text-gray-300 hover:text-white transition-colors">
+                                    "Settings"
+                                </a>
+                            }
+                        </div>
+                        <div>
+                            @if is_authenticated {
+                                <form action="/api/auth/logout" method="post" class="inline">
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                        "Logout"
+                                    </button>
+                                </form>
+                            } @else {
+                                <a href="/login" class="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-2 rounded-lg transition-all">
+                                    "Login"
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </nav>
                 <div class="container mx-auto px-4 py-8">
                     @content
                 </div>
             </body>
         </html>
-    }
-}
-
-/// Navbar component - returns different markup based on auth status
-fn navbar(is_authenticated: bool) -> impl rusti::Component {
-    if is_authenticated {
-        rusti! {
-            <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-6">
-                        <a href="/" class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                            "Azumi"
-                        </a>
-                        <a href="/" class="text-gray-300 hover:text-white transition-colors">
-                            "Home"
-                        </a>
-                        <a href="/profile" class="text-gray-300 hover:text-white transition-colors">
-                            "Profile"
-                        </a>
-                        <a href="/settings" class="text-gray-300 hover:text-white transition-colors">
-                            "Settings"
-                        </a>
-                    </div>
-                    <div>
-                        <form action="/api/auth/logout" method="post" class="inline">
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                "Logout"
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </nav>
-        }
-    } else {
-        rusti! {
-            <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-6">
-                        <a href="/" class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                            "Azumi"
-                        </a>
-                        <a href="/" class="text-gray-300 hover:text-white transition-colors">
-                            "Home"
-                        </a>
-                    </div>
-                    <div>
-                        <a href="/login" class="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-2 rounded-lg transition-all">
-                            "Login"
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        }
     }
 }
 
