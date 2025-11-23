@@ -633,4 +633,38 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_meta_tag() {
+        let input = r#"<meta charset="UTF-8" />"#;
+        println!("Testing: {}", input);
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:#?}", nodes);
+                assert!(remaining.is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
+
+    #[test]
+    fn test_meta_tag_with_multiple_attrs() {
+        let input = r#"<meta name="viewport" content="width=device-width, initial-scale=1.0" />"#;
+        println!("Testing: {}", input);
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:#?}", nodes);
+                assert!(remaining.is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
