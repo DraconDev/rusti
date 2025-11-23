@@ -62,11 +62,9 @@ pub fn base_layout<'a>(
     rusti! {
         <html>
             @page_head(title)
-            <body class="bg-gray-900 text-white min-h-screen">
+            <body>
                 @navbar(is_authenticated)
-                <div class="container mx-auto px-4 py-8">
-                    @content
-                </div>
+                @content
             </body>
         </html>
     }
@@ -77,8 +75,8 @@ pub fn base_layout_demo() -> impl rusti::Component {
     let title = "Base Layout Demo";
     let is_auth = false;
     let content = rusti! {
-        <h1 class="text-4xl font-bold text-center text-white">"Welcome to the Base Layout Demo"</h1>
-        <p class="mt-4 text-center text-gray-300">"This page demonstrates the base_layout component with navbar."</p>
+        <h1>"Welcome to the Base Layout Demo"</h1>
+        <p>"This page demonstrates the base_layout component with navbar."</p>
     };
     base_layout(title, is_auth, content)
 }
