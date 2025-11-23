@@ -287,11 +287,23 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
+    // println!("parse_call input: {}", input);
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = parse_path(input)?;
+    // println!("parse_call name: {}", name);
     let (input, _) = multispace0(input)?;
-    let (input, args) = delimited(char('('), take_balanced('(', ')'), char(')'))(input)?;
+
+    // println!("parse_call before args: {}", input);
+    let (input, args) = match delimited(char('('), take_balanced('(', ')'), char(')'))(input) {
+        Ok(res) => res,
+        Err(e) => {
+            // println!("parse_call args failed: {:?}", e);
+            return Err(e);
+        }
+    };
+    // println!("parse_call args: {}", args);
+
     let (input, _) = multispace0(input)?;
 
     let (input, children) = alt((
@@ -306,7 +318,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     Ok((
         input,
         Node::Call {
-            name: name,
+            name,
             args: args.to_string(),
             _children: children,
         },
