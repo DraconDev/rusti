@@ -39,9 +39,10 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 ### TL;DR: The Golden Rules
 
 1. **Use double quotes** for attributes: `class="foo"` (not `class='foo'`)
-2. **Use Tailwind or inline styles** to avoid CSS headaches entirely
-3. **If you see a compiler error with `2em`**, add quotes: `"2em"`
-4. **For complex CSS/JS**, use raw strings: `r#"..."#`
+2. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
+3. **Use Tailwind or inline styles** to avoid CSS headaches entirely
+4. **If you see a compiler error with `2em`**, add quotes: `"2em"`
+5. **For complex CSS/JS**, use raw strings: `r#"..."#`
 
 ---
 
