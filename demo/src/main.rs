@@ -6,6 +6,7 @@ use axum::{
 
 mod advanced;
 mod base_layout_demo;
+mod basic_page;
 
 use base_layout_demo::base_layout_demo_handler;
 
