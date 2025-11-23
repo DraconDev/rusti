@@ -289,15 +289,84 @@ fn button<'a>(label: &'a str, color: &'a str) -> impl rusti::Component + 'a {
 }
 
 pub fn component_composition_example() -> impl rusti::Component {
-    let _styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom,rgb(30,58,138),rgb(59,130,246));min-height:100vh}.container{max-width:1200px;margin:0 auto}h1{color:white;text-align:center;font-size:2.5rem;margin-bottom:2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}.card{background:white;border-radius:16px;padding:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:transform 0.3s}.card:hover{transform:translateY(-5px)}.card-title{margin-top:0;color:rgb(30,58,138);border-bottom:2px solid rgb(59,130,246);padding-bottom:0.5rem}.card-content{margin-top:1rem}.btn{padding:0.75rem 1.5rem;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-right:0.5rem;margin-top:0.5rem;transition:all 0.2s}.btn:hover{transform:scale(1.05)}.btn-primary{background:rgb(59,130,246);color:white}.btn-success{background:rgb(16,185,129);color:white}.btn-danger{background:rgb(239,68,68);color:white}.btn-warning{background:rgb(245,158,11);color:white}";
-
     rusti! {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Component Composition</title>
-                <style>{_styles}</style>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: system-ui;
+                        background: linear-gradient(to bottom, rgb(30, 58, 138), rgb(59, 130, 246));
+                        min-height: 100vh;
+                    }
+                    .container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                    }
+                    h1 {
+                        color: white;
+                        text-align: center;
+                        font-size: 2.5rem;
+                        margin-bottom: 2rem;
+                    }
+                    .grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        gap: 2rem;
+                    }
+                    .card {
+                        background: white;
+                        border-radius: 16px;
+                        padding: 1.5rem;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                        transition: transform 0.3s;
+                    }
+                    .card:hover {
+                        transform: translateY(-5px);
+                    }
+                    .card-title {
+                        margin-top: 0;
+                        color: rgb(30, 58, 138);
+                        border-bottom: 2px solid rgb(59, 130, 246);
+                        padding-bottom: 0.5rem;
+                    }
+                    .card-content {
+                        margin-top: 1rem;
+                    }
+                    .btn {
+                        padding: 0.75rem 1.5rem;
+                        border: none;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-right: 0.5rem;
+                        margin-top: 0.5rem;
+                        transition: all 0.2s;
+                    }
+                    .btn:hover {
+                        transform: scale(1.05);
+                    }
+                    .btn-primary {
+                        background: rgb(59, 130, 246);
+                        color: white;
+                    }
+                    .btn-success {
+                        background: rgb(16, 185, 129);
+                        color: white;
+                    }
+                    .btn-danger {
+                        background: rgb(239, 68, 68);
+                        color: white;
+                    }
+                    .btn-warning {
+                        background: rgb(245, 158, 11);
+                        color: white;
+                    }
+                </style>
             </head>
             <body>
                 <div class="container">
