@@ -17,11 +17,20 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let mut builder_setters = Vec::new();
     let mut build_logic = Vec::new();
     let mut struct_fields = Vec::new();
+    let mut has_children = false;
+    let mut children_type = None;
 
     for arg in &input.sig.inputs {
         if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = arg {
             if let Pat::Ident(pat_ident) = &**pat {
                 let ident = &pat_ident.ident;
+
+                // Check if this is the special "children" parameter
+                if ident == "children" {
+                    has_children = true;
+                    children_type = Some(ty.clone());
+                    continue; // Don't add to Props
+                }
 
                 // Check for #[prop(default = ...)]
                 let mut default_value = None;
