@@ -19,6 +19,7 @@ pub fn styles_demo() -> impl rusti::Component {
                         background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
                         min-height: 100vh;
                         color: red;
+                        background-color: #f00;
                     }
                 </style>
             </head>

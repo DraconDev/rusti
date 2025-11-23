@@ -1,6 +1,6 @@
 // Comprehensive Examples - Showcasing all Rusti! features with inline styles
 use axum::response::{Html, IntoResponse};
-userusti::rusti;
+use rusti::rusti;
 
 /// Example 1: Basic HTML with inline styles
 pub fn basic_html_example() -> impl rusti::Component {
@@ -29,7 +29,7 @@ pub fn dynamic_content_example() -> impl rusti::Component {
     let message_count = 5;
     let logged_in = true;
     let styles = r"body{margin:0;padding:20px;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(to bottom right,rgb(26,32,44),rgb(45,55,72));color:white;min-height:100vh}.card{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:2rem;max-width:600px;margin:2rem auto}.badge{display:inline-block;background:rgb(245,101,101);color:white;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.875rem;font-weight:bold}.status{color:rgb(104,211,145);font-weight:bold}";
-    
+
     rusti! {
         <html lang="en">
             <head>
@@ -63,7 +63,7 @@ pub fn loops_example() -> impl rusti::Component {
         ("Purple", "rgb(139,92,246)"),
     ];
     let styles = r"body{margin:0;padding:20px;font-family:Arial,sans-serif;background:linear-gradient(45deg,rgb(255,107,107),rgb(78,205,196));min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}h2{color:rgb(45,55,72);border-bottom:3px solid rgb(78,205,196);padding-bottom:0.5rem}ul{list-style:none;padding:0}li{background:rgb(247,250,252);margin:0.5rem 0;padding:1rem;border-radius:8px;border-left:4px solid rgb(78,205,196);transition:transform 0.2s}li:hover{transform:translateX(5px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.color-box{display:inline-block;width:30px;height:30px;border-radius:6px;margin-right:10px;vertical-align:middle;border:2px solid rgb(226,232,240)}";
-    
+
     rusti! {
         <html lang="en">
             <head>
@@ -80,7 +80,7 @@ pub fn loops_example() -> impl rusti::Component {
                             <li>{ fruit }</li>
                         }
                     </ul>
-                    
+
                     <h2>Color Palette</h2>
                     <ul>
                         @for (name, hex) in colors {
@@ -105,10 +105,10 @@ pub fn pattern_matching_example() -> impl rusti::Component {
         Suspended,
         Archived,
     }
-    
+
     let user_status = Status::Active;
-   let styles = r"body{margin:0;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(to right,rgb(67,67,67),rgb(0,0,0));min-height:100vh;display:flex;align-items:center;justify-content:center}.status-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.5);text-align:center;min-width:400px}.status-badge{display:inline-block;padding:1rem 2rem;border-radius:12px;font-size:1.5rem;font-weight:bold;margin:1rem 0}.status-active{background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white}.status-pending{background:linear-gradient(135deg,rgb(240,147,251) 0%,rgb(245,87,108) 100%);color:white}.status-suspended{background:linear-gradient(135deg,rgb(250,112,154) 0%,rgb(254,225,64) 100%);color:rgb(45,55,72)}.status-archived{background:linear-gradient(135deg,rgb(137,247,254) 0%,rgb(102,166,255) 100%);color:white}";
-    
+    let styles = r"body{margin:0;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(to right,rgb(67,67,67),rgb(0,0,0));min-height:100vh;display:flex;align-items:center;justify-content:center}.status-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.5);text-align:center;min-width:400px}.status-badge{display:inline-block;padding:1rem 2rem;border-radius:12px;font-size:1.5rem;font-weight:bold;margin:1rem 0}.status-active{background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white}.status-pending{background:linear-gradient(135deg,rgb(240,147,251) 0%,rgb(245,87,108) 100%);color:white}.status-suspended{background:linear-gradient(135deg,rgb(250,112,154) 0%,rgb(254,225,64) 100%);color:rgb(45,55,72)}.status-archived{background:linear-gradient(135deg,rgb(137,247,254) 0%,rgb(102,166,255) 100%);color:white}";
+
     rusti! {
         <html lang="en">
             <head>
@@ -172,7 +172,7 @@ fn button(label: &str, color: &str) -> impl rusti::Component + '_ {
 
 pub fn component_composition_example() -> impl rusti::Component {
     let styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom,rgb(30,58,138),rgb(59,130,246));min-height:100vh}.container{max-width:1200px;margin:0 auto}h1{color:white;text-align:center;font-size:2.5rem;margin-bottom:2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}.card{background:white;border-radius:16px;padding:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:transform 0.3s}.card:hover{transform:translateY(-5px)}.card-title{margin-top:0;color:rgb(30,58,138);border-bottom:2px solid rgb(59,130,246);padding-bottom:0.5rem}.card-content{margin-top:1rem}.btn{padding:0.75rem 1.5rem;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-right:0.5rem;margin-top:0.5rem;transition:all 0.2s}.btn:hover{transform:scale(1.05)}.btn-primary{background:rgb(59,130,246);color:white}.btn-success{background:rgb(16,185,129);color:white}.btn-danger{background:rgb(239,68,68);color:white}.btn-warning{background:rgb(245,158,11);color:white}";
-    
+
     rusti! {
         <html lang="en">
             <head>
@@ -190,13 +190,13 @@ pub fn component_composition_example() -> impl rusti::Component {
                             @button("Edit Profile", "primary")
                             @button("Change Password", "warning")
                         })
-                        
+
                         @card("Notifications", {
                             <p>You have 3 new notifications waiting for you.</p>
                             @button("View All", "success")
                             @button("Mark as Read", "primary")
                         })
-                        
+
                         @card("Danger Zone", {
                             <p>Irreversible actions. Proceed with caution.</p>
                             @button("Delete Account", "danger")
@@ -217,7 +217,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
         ("Satisfaction", "98%", "2%"),
     ];
     let styles = r"*{margin:0;padding:0;box-sizing:border-box}body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,rgb(15,23,42) 0%,rgb(30,41,59) 100%);color:white;min-height:100vh;padding:2rem}.dashboard{max-width:1400px;margin:0 auto}h1{font-size:3rem;margin-bottom:2rem;background:linear-gradient(to right,rgb(96,165,250),rgb(167,139,250));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem}.stat-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem;transition:all 0.3s}.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(96,165,250,0.3);border-color:rgba(96,165,250,0.5)}.stat-label{font-size:0.875rem;color:rgb(148,163,184);margin-bottom:0.5rem}.stat-value{font-size:2rem;font-weight:bold;margin-bottom:0.25rem}.stat-change{font-size:0.875rem;color:rgb(16,185,129)}.actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}.action-btn{padding:1rem 2rem;border:none;border-radius:12px;font-weight:bold;cursor:pointer;transition:all 0.2s;font-size:1rem}.action-btn:hover{transform:scale(1.05);box-shadow:0 10px 20px rgba(0,0,0,0.3)}.btn-blue{background:linear-gradient(135deg,rgb(59,130,246),rgb(29,78,216));color:white}.btn-purple{background:linear-gradient(135deg,rgb(167,139,250),rgb(124,58,237));color:white}.btn-green{background:linear-gradient(135deg,rgb(16,185,129),rgb(5,150,105));color:white}.content-area{background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:2rem;min-height:200px}@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn 0.5s ease-out}";
-    
+
     rusti! {
         <html lang="en">
             <head>
@@ -230,7 +230,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
             <body>
                 <div class="dashboard">
                     <h1>Analytics Dashboard</h1>
-                    
+
                     <div class="stats-grid">
                         @for (label, value, change) in stats {
                             <div class="stat-card fade-in">
@@ -240,7 +240,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                             </div>
                         }
                     </div>
-                    
+
                     <div class="actions">
                         <button class="action-btn btn-blue" hx-get="/api/data" hx-target="#content">
                             Load Data
@@ -252,7 +252,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                             Export Report
                         </button>
                     </div>
-                    
+
                     <div id="content" class="content-area">
                         <p>Click a button above to load dynamic content...</p>
                     </div>
@@ -265,7 +265,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
 /// Example 7: Form with Validation Styles
 pub fn form_example() -> impl rusti::Component {
     let styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom right,rgb(255,110,127),rgb(191,233,255));min-height:100vh;display:flex;align-items:center;justify-content:center}.form-container{background:white;padding:2.5rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:500px;width:100%}h1{margin-top:0;color:rgb(45,55,72)}.form-group{margin-bottom:1.5rem}label{display:block;margin-bottom:0.5rem;color:rgb(74,85,104);font-weight:600}input,textarea{width:100%;padding:0.75rem;border:2px solid rgb(226,232,240);border-radius:8px;font-size:1rem;transition:all 0.2s}input:focus,textarea:focus{outline:none;border-color:rgb(59,130,246);box-shadow:0 0 0 3px rgba(59,130,246,0.1)}input:invalid{border-color:rgb(239,68,68)}.submit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:transform 0.2s}.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,0.4)}";
-    
+
     rusti! {
         <html lang="en">
             <head>
@@ -282,17 +282,17 @@ pub fn form_example() -> impl rusti::Component {
                             <label for="name">Name</label>
                             <input type="text" id="name" name="name" required />
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" required />
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="message">Message</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
-                        
+
                         <button type="submit" class="submit-btn">
                             Send Message
                         </button>
