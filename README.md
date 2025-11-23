@@ -79,7 +79,41 @@ rusti! {
 
 ---
 
-## 2. The Law of Backticks: "Use Raw Strings"
+
+---
+
+## 2. Emoji & Unicode in Text
+
+**Emojis and Unicode characters work perfectly** - you just need to use Rust variables!
+
+**The Issue:** Rust's tokenizer runs before the `rusti!` macro, so emojis directly in text confuse the lexer.
+
+**The Solution:** Put emoji/Unicode text in Rust string variables:
+
+```rust
+// ❌ FAILS - Direct emoji in text
+rusti! {
+    <p>Status: ✅</p>  // Error: identifiers cannot contain emoji
+}
+
+// ✅ WORKS - Emoji in Rust variable
+let status = "Status: ✅";  // Rust strings support full Unicode
+rusti! {
+    <p>{status}</p>  // Perfect! Emoji renders correctly
+}
+
+// ✅ WORKS - Multiple emojis
+let greeting = "Hello 👋 Welcome! 🎉";
+rusti! {
+    <h1>{greeting}</h1>
+}
+```
+
+**Why this works:** Rust correctly tokenizes strings, then we interpolate them into the template.
+
+---
+
+## 3. The Law of Backticks: "Use Raw Strings"
 
 **Backticks (\`)** are illegal in Rust source code. They do not exist as tokens.
 
