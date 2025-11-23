@@ -1,7 +1,8 @@
 // Basic page – demonstrates basic Rusti usage with comments showing best practices
 use axum::response::{Html, IntoResponse};
-use rusti::rusti;
+use rusti::{component, rusti};
 
+#[component]
 pub fn basic_page() -> impl rusti::Component {
     rusti! {
         <html lang="en">
@@ -24,7 +25,7 @@ pub fn basic_page() -> impl rusti::Component {
                         color: #0056b3;
                     }
                 </style>
-            </hea d>
+            </head>
             <body>
                 <h1>Basic Rusti Page</h1>
                 <p>This demonstrates a simple Rusti component with inline styles.</p>
@@ -42,5 +43,7 @@ pub fn basic_page() -> impl rusti::Component {
 }
 
 pub async fn basic_page_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&basic_page()))
+    Html(rusti::render_to_string(&basic_page::render(
+        basic_page::Props {},
+    )))
 }
