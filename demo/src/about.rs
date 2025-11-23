@@ -4,6 +4,7 @@ use rusti::rusti;
 
 pub fn about_page() -> impl rusti::Component {
     let year = 2025;
+    let home_text = "Back to Home ✅"; // Emoji in Rust string works fine!
     rusti! {
         <html>
             @page_head("About Rusti")
@@ -23,7 +24,7 @@ pub fn about_page() -> impl rusti::Component {
 
                             </p>
                         </section>
-                        <a href="/">Back to Home✅</a>
+                        <a href="/">{"Back to Home ✅"}</a>
                     </main>
                     @page_footer(year)
                 </div>
