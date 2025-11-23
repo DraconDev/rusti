@@ -1,47 +1,45 @@
-// Force rebuild 2
+// Force rebuild 3
 mod component;
-mod parser;
+mod parser; // Keep for tests for now
+mod token_parser;
+
 use proc_macro::TokenStream;
 use quote::quote;
-use std::str::FromStr;
-use syn::parse::Parser;
+use syn::parse::{Parse, ParseStream};
+use syn::Token;
 
 #[proc_macro_attribute]
 pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     component::expand_component(item)
 }
 
+struct NodesWrapper(Vec<token_parser::Node>);
+
+impl Parse for NodesWrapper {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
+        token_parser::parse_nodes(input).map(NodesWrapper)
+    }
+}
+
 #[proc_macro]
 pub fn rusti(input: TokenStream) -> TokenStream {
-    // Try to parse input as a string literal first (for emoji support)
-    let input_str = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
-        // Input is a string literal like rusti!("...")
-        lit.value()
+    // Handle string literal input for emoji support
+    let input_tokens = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
+        match lit.value().parse::<proc_macro2::TokenStream>() {
+            Ok(ts) => ts,
+            Err(e) => {
+                return syn::Error::new(lit.span(), format!("Invalid tokens in string: {}", e))
+                    .to_compile_error()
+                    .into()
+            }
+        }
     } else {
-        // Input is raw tokens like rusti! { ... }
-        input.to_string()
+        proc_macro2::TokenStream::from(input)
     };
 
-    let nodes = match parser::parse_nodes(&input_str) {
-        Ok((remaining, nodes)) => {
-            if !remaining.trim().is_empty() {
-                return syn::Error::new(
-                    proc_macro2::Span::call_site(),
-                    format!("Unexpected input remaining: {}", remaining),
-                )
-                .to_compile_error()
-                .into();
-            }
-            nodes
-        }
-        Err(e) => {
-            return syn::Error::new(
-                proc_macro2::Span::call_site(),
-                format!("Failed to parse template: {}", e),
-            )
-            .to_compile_error()
-            .into()
-        }
+    let nodes = match syn::parse2::<NodesWrapper>(input_tokens) {
+        Ok(wrapper) => wrapper.0,
+        Err(e) => return e.to_compile_error().into(),
     };
 
     let body = generate_body(&nodes);
@@ -56,53 +54,35 @@ pub fn rusti(input: TokenStream) -> TokenStream {
     TokenStream::from(output)
 }
 
-fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
+fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     let mut stream = proc_macro2::TokenStream::new();
     for node in nodes {
         let chunk = match node {
-            parser::Node::Element {
-                name,
-                attrs,
-                children,
-            } => {
-                let children_code = generate_body(children);
+            token_parser::Node::Element(elem) => {
+                let name = &elem.name;
+                let children_code = generate_body(&elem.children);
 
-                // Generate attribute code
                 let mut attr_code = proc_macro2::TokenStream::new();
-                for (attr_name, attr_value) in attrs {
-                    let attr_chunk = match attr_value {
-                        parser::AttributeValue::Static(value) => {
-                            // Static attributes are escaped for XSS safety
-                            quote! {
-                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#value))?;
-                            }
+                for attr in &elem.attrs {
+                    let attr_name = &attr.name;
+                    match &attr.value {
+                        token_parser::AttributeValue::Static(val) => {
+                            attr_code.extend(quote! {
+                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
+                            });
                         }
-                        parser::AttributeValue::Dynamic(expr) => {
-                            // Dynamic attributes - parse expression and escape
-                            match syn::parse_str::<syn::Expr>(expr) {
-                                Ok(parsed_expr) => quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#parsed_expr)))?;
-                                },
-                                Err(_) => {
-                                    use std::str::FromStr;
-                                    match proc_macro2::TokenStream::from_str(expr) {
-                                        Ok(tokens) => quote! {
-                                            write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#tokens)))?;
-                                        },
-                                        Err(e) => syn::Error::new(
-                                            proc_macro2::Span::call_site(),
-                                            format!(
-                                                "Invalid attribute expression '{}': {}",
-                                                expr, e
-                                            ),
-                                        )
-                                        .to_compile_error(),
-                                    }
-                                }
-                            }
+                        token_parser::AttributeValue::Dynamic(expr) => {
+                            attr_code.extend(quote! {
+                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
+                            });
                         }
-                    };
-                    attr_code.extend(attr_chunk);
+                        token_parser::AttributeValue::None => {
+                            // Boolean attribute
+                            attr_code.extend(quote! {
+                                write!(f, " {}", #attr_name)?;
+                            });
+                        }
+                    }
                 }
 
                 quote! {
@@ -113,194 +93,118 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                     write!(f, "</{}>", #name)?;
                 }
             }
-            parser::Node::Text(text) => {
-                if text.is_empty() {
+            token_parser::Node::Text(text) => {
+                let content = &text.content;
+                if content.is_empty() {
                     quote! {}
                 } else {
-                    quote! { write!(f, "{}", #text)?; }
+                    quote! { write!(f, "{}", #content)?; }
                 }
             }
-            parser::Node::Expression(expr) => {
-                // expr is a string like "name". We need to parse it as an expression to quote it safely?
-                // Or just emit it as tokens.
-                // "name" -> Ident(name).
-                // "x + 1" -> Expr...
-                // We can parse it using syn::parse_str::<Expr>
-                match syn::parse_str::<syn::Expr>(expr) {
-                    Ok(parsed_expr) => {
-                        quote! { write!(f, "{}", rusti::Escaped(&(#parsed_expr)))?; }
+            token_parser::Node::Expression(expr) => {
+                let content = &expr.content;
+                quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
+            }
+            token_parser::Node::Comment(_) => {
+                // Ignore comments in output
+                quote! {}
+            }
+            token_parser::Node::Doctype(doctype) => {
+                let content = &doctype.content;
+                quote! { write!(f, "<!DOCTYPE {}>", #content)?; }
+            }
+            token_parser::Node::Fragment(frag) => generate_body(&frag.children),
+            token_parser::Node::Block(block) => match block {
+                token_parser::Block::If(if_block) => {
+                    let condition = &if_block.condition;
+                    let then_code = generate_body(&if_block.then_branch);
+                    let else_code = if let Some(else_branch) = &if_block.else_branch {
+                        let else_body = generate_body(else_branch);
+                        quote! { else { #else_body } }
+                    } else {
+                        quote! {}
+                    };
+                    quote! {
+                        if #condition {
+                            #then_code
+                        } #else_code
                     }
-                    Err(_) => {
-                        // Fallback: just emit as string? No, that won't compile.
-                        // If we can't parse it, it's probably invalid Rust.
-                        // But let's try to emit it as tokens.
-                        use std::str::FromStr;
-                        match proc_macro2::TokenStream::from_str(expr) {
-                            Ok(tokens) => quote! { write!(f, "{}", rusti::Escaped(&(#tokens)))?; },
-                            Err(e) => syn::Error::new(
-                                proc_macro2::Span::call_site(),
-                                format!("Invalid expression '{}': {}", expr, e),
-                            )
-                            .to_compile_error(),
+                }
+                token_parser::Block::For(for_block) => {
+                    let pattern = &for_block.pattern;
+                    let iterator = &for_block.iterator;
+                    let body_code = generate_body(&for_block.body);
+                    quote! {
+                        for #pattern in #iterator {
+                            #body_code
                         }
                     }
                 }
-            }
-            parser::Node::Call {
-                name,
-                args,
-                _children: _,
-            } => {
-                let name_ident = match syn::parse_str::<syn::Path>(name) {
-                    Ok(path) => path,
-                    Err(e) => {
-                        return syn::Error::new(
-                            proc_macro2::Span::call_site(),
-                            format!("Invalid component name '{}': {}", name, e),
-                        )
-                        .to_compile_error();
-                    }
-                };
-
-                // Try to parse as named arguments (key = value)
-                let parser =
-                    syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
-                let named_args = if let Ok(exprs) = parser.parse_str(args) {
-                    if !exprs.is_empty() && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
-                    {
-                        Some(exprs)
-                    } else {
-                        None
-                    }
-                } else {
-                    None
-                };
-
-                if let Some(exprs) = named_args {
-                    // Generate struct construction: name::render(name::Props { key: value, ... })
-                    let fields = exprs.iter().map(|e| {
-                        if let syn::Expr::Assign(assign) = e {
-                            let key = &assign.left;
-                            let value = &assign.right;
-                            quote! { #key: #value }
-                        } else {
-                            unreachable!()
+                token_parser::Block::Match(match_block) => {
+                    let expr = &match_block.expr;
+                    let arms = match_block.arms.iter().map(|arm| {
+                        let pattern = &arm.pattern;
+                        let body = generate_body(&arm.body);
+                        quote! {
+                            #pattern => { #body }
                         }
                     });
-
                     quote! {
-                        rusti::Component::render(&#name_ident::render(#name_ident::Props {
-                            #(#fields),*
-                        }), f)?;
-                    }
-                } else {
-                    // Positional arguments: name(args)
-                    let args_tokens = match proc_macro2::TokenStream::from_str(args) {
-                        Ok(tokens) => tokens,
-                        Err(e) => {
-                            return syn::Error::new(
-                                proc_macro2::Span::call_site(),
-                                format!("Invalid arguments '{}': {}", args, e),
-                            )
-                            .to_compile_error();
+                        match #expr {
+                            #(#arms),*
                         }
+                    }
+                }
+                token_parser::Block::Call(call_block) => {
+                    let name = &call_block.name;
+                    let args = &call_block.args;
+
+                    // Check if args are named or positional
+                    // We can try to parse args as Punctuated<Expr, Comma>
+                    // But here args is TokenStream.
+                    // We can use the same logic as before.
+
+                    let parser = syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
+                    let named_args = if let Ok(exprs) = parser.parse2(args.clone()) {
+                        if !exprs.is_empty()
+                            && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
+                        {
+                            Some(exprs)
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
                     };
 
-                    quote! {
-                        rusti::Component::render(&#name_ident(#args_tokens), f)?;
-                    }
-                }
-            }
-            parser::Node::If {
-                condition,
-                then_branch,
-                else_branch,
-            } => {
-                let condition_expr =
-                    syn::parse_str::<syn::Expr>(condition).expect("Failed to parse if condition");
-                let then_code = generate_body(then_branch);
-                let else_code = if let Some(else_nodes) = else_branch {
-                    let else_body = generate_body(else_nodes);
-                    quote! { else { #else_body } }
-                } else {
-                    quote! {}
-                };
-
-                quote! {
-                    if #condition_expr {
-                        #then_code
-                    } #else_code
-                }
-            }
-            parser::Node::For {
-                pattern,
-                iterator,
-                body,
-            } => {
-                let pattern_pat = proc_macro2::TokenStream::from_str(pattern)
-                    .expect("Failed to parse for pattern");
-                let iterator_expr =
-                    syn::parse_str::<syn::Expr>(iterator).expect("Failed to parse for iterator");
-                let body_code = generate_body(body);
-
-                quote! {
-                    for #pattern_pat in #iterator_expr {
-                        #body_code
-                    }
-                }
-            }
-            parser::Node::Component { name } => {
-                let name_ident = match syn::parse_str::<syn::Path>(name) {
-                    Ok(path) => path,
-                    Err(e) => {
-                        return syn::Error::new(
-                            proc_macro2::Span::call_site(),
-                            format!("Invalid component name '{}': {}", name, e),
-                        )
-                        .to_compile_error();
-                    }
-                };
-
-                quote! {
-                    rusti::Component::render(&#name_ident, f)?;
-                }
-            }
-            parser::Node::Match { expr, arms } => {
-                let match_expr =
-                    syn::parse_str::<syn::Expr>(expr).expect("Failed to parse match expression");
-
-                let match_arms_code: Vec<_> = arms
-                    .iter()
-                    .map(|arm| {
-                        let pattern_str = &arm.pattern;
-                        let body_code = generate_body(&arm.body);
-
-                        // Parse the pattern - handle wildcard _ specially
-                        if pattern_str.trim() == "_" {
-                            quote! {
-                                _ => {
-                                    #body_code
-                                }
+                    if let Some(exprs) = named_args {
+                        let fields = exprs.iter().map(|e| {
+                            if let syn::Expr::Assign(assign) = e {
+                                let key = &assign.left;
+                                let value = &assign.right;
+                                quote! { #key: #value }
+                            } else {
+                                unreachable!()
                             }
-                        } else {
-                            // Try to parse as a pattern
-                            let pattern_pat = proc_macro2::TokenStream::from_str(pattern_str)
-                                .expect("Failed to parse match pattern");
-                            quote! {
-                                #pattern_pat => {
-                                    #body_code
-                                }
-                            }
+                        });
+                        quote! {
+                            rusti::Component::render(&#name::render(#name::Props {
+                                #(#fields),*
+                            }), f)?;
                         }
-                    })
-                    .collect();
-
-                quote! {
-                    match #match_expr {
-                        #(#match_arms_code)*
+                    } else {
+                        quote! {
+                            rusti::Component::render(&#name(#args), f)?;
+                        }
                     }
                 }
-            }
+                token_parser::Block::Component(comp_block) => {
+                    let name = &comp_block.name;
+                    quote! {
+                        rusti::Component::render(&#name, f)?;
+                    }
+                }
+            },
         };
         stream.extend(chunk);
     }
