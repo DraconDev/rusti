@@ -566,7 +566,7 @@ fn styles_demo() -> impl rusti::Component {
 async fn styles_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&styles_demo()))
 }
-    }
+
 }
 
 // Wrappers for Advanced Demos
