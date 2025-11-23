@@ -564,15 +564,79 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
 
 /// Example 7: Form with Validation Styles
 pub fn form_example() -> impl rusti::Component {
-    let _styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom right,rgb(255,110,127),rgb(191,233,255));min-height:100vh;display:flex;align-items:center;justify-content:center}.form-container{background:white;padding:2.5rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:500px;width:100%}h1{margin-top:0;color:rgb(45,55,72)}.form-group{margin-bottom:1.5rem}label{display:block;margin-bottom:0.5rem;color:rgb(74,85,104);font-weight:600}input,textarea{width:100%;padding:0.75rem;border:2px solid rgb(226,232,240);border-radius:8px;font-size:1rem;transition:all 0.2s}input:focus,textarea:focus{outline:none;border-color:rgb(59,130,246);box-shadow:0 0 0 3px rgba(59,130,246,0.1)}input:invalid{border-color:rgb(239,68,68)}.submit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:transform 0.2s}.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,0.4)}";
-
     rusti! {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Form Example</title>
-                <style>{_styles}</style>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: system-ui;
+                        background: linear-gradient(to bottom right, rgb(255, 110, 127), rgb(191, 233, 255));
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .form-container {
+                        background: white;
+                        padding: 2.5rem;
+                        border-radius: 20px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+                        max-width: 500px;
+                        width: 100%;
+                    }
+                    h1 {
+                        margin-top: 0;
+                        color: rgb(45, 55, 72);
+                    }
+                    .form-group {
+                        margin-bottom: 1.5rem;
+                    }
+                    label {
+                        display: block;
+                        margin-bottom: 0.5rem;
+                        color: rgb(74, 85, 104);
+                        font-weight: 600;
+                    }
+                    input,
+                    textarea {
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: 2px solid rgb(226, 232, 240);
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        transition: all 0.2s;
+                    }
+                    input:focus,
+                    textarea:focus {
+                        outline: none;
+                        border-color: rgb(59, 130, 246);
+                        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                    }
+                    input:invalid {
+                        border-color: rgb(239, 68, 68);
+                    }
+                    .submit-btn {
+                        width: 100%;
+                        padding: 1rem;
+                        background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 1.1rem;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: transform 0.2s;
+                    }
+                    .submit-btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+                    }
+                </style>
             </head>
             <body>
                 <div class="form-container">
