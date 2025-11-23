@@ -21,17 +21,3 @@
 - **Goal**: Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
 - **Status**: Completed.
 
----
-
-## Remaining Suggestions
-
-### 5. IDE Support
-- **Goal**: Improve developer experience with IDE integration.
-- **Potential Implementation**: VS Code extension or LSP for `rusti!` macro content.
-- **Priority**: Low - Nice to have but not critical for parser functionality.
-
-### 6. Better Text Parsing
-- **Goal**: Improve whitespace handling in text nodes.
-- **Current State**: `TokenStream` conversion can lose some whitespace information.
-- **Potential Implementation**: Use `syn::spanned::Spanned` or custom lexer to preserve whitespace.
-- **Priority**: Low - Current implementation works for most cases.
