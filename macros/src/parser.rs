@@ -556,4 +556,21 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_basic_page_from_token_stream() {
+        // This is the exact input that TokenStream::to_string() produces
+        let input = r#"<html lang="en"> <head> <!-- Page metadata --> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Basic Page</title> </head> <body> <!-- Main content section --> <h1>Basic Page</h1> <p>This is a basic Rusti page.</p> <!-- Inline script for demonstration --> <script> console.log("Hello from Rusti!"); </script> </body> </html>"#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes count: {}", nodes.len());
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
