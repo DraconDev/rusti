@@ -1,4 +1,5 @@
 // About page demo for Rusti
+use crate::{page_footer, page_head, page_header};
 use rusti::rusti;
 
 pub fn about_page() -> impl rusti::Component {
