@@ -38,3 +38,15 @@ fn test_mismatched_closing_tag() {
         "Mismatched closing tag: expected </div>, found </span>"
     );
 }
+
+#[test]
+fn test_component_block_in_div() {
+    let input = quote! {
+        <div>
+            @content
+        </div>
+    };
+    let parser = parse_nodes_wrapper;
+    let result = parser.parse2(input);
+    assert!(result.is_ok());
+}
