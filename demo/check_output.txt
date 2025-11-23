@@ -1,0 +1,900 @@
+warning: unused import: `syn::Token`
+ --> macros/src/lib.rs:9:5
+  |
+9 | use syn::Token;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: enum `AttributeValue` is never used
+  --> macros/src/parser.rs:13:10
+   |
+13 | pub enum AttributeValue {
+   |          ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `MatchArm` is never constructed
+  --> macros/src/parser.rs:19:12
+   |
+19 | pub struct MatchArm {
+   |            ^^^^^^^^
+
+warning: enum `Node` is never used
+  --> macros/src/parser.rs:25:10
+   |
+25 | pub enum Node {
+   |          ^^^^
+
+warning: function `parse_nodes` is never used
+  --> macros/src/parser.rs:57:8
+   |
+57 | pub fn parse_nodes(input: &str) -> IResult<&str, Vec<Nod...
+   |        ^^^^^^^^^^^
+
+warning: function `parse_node` is never used
+  --> macros/src/parser.rs:61:8
+   |
+61 | pub fn parse_node(input: &str) -> IResult<&str, Node> {
+   |        ^^^^^^^^^^
+
+warning: function `parse_comment` is never used
+  --> macros/src/parser.rs:78:4
+   |
+78 | fn parse_comment(input: &str) -> IResult<&str, Node> {
+   |    ^^^^^^^^^^^^^
+
+warning: function `parse_html_comment` is never used
+  --> macros/src/parser.rs:86:4
+   |
+86 | fn parse_html_comment(input: &str) -> IResult<&str, Node> {
+   |    ^^^^^^^^^^^^^^^^^^
+
+warning: function `is_identifier_char` is never used
+  --> macros/src/parser.rs:93:4
+   |
+93 | fn is_identifier_char(c: char) -> bool {
+   |    ^^^^^^^^^^^^^^^^^^
+
+warning: function `parse_identifier` is never used
+  --> macros/src/parser.rs:97:4
+   |
+97 | fn parse_identifier(input: &str) -> IResult<&str, String> {
+   |    ^^^^^^^^^^^^^^^^
+
+warning: function `parse_path` is never used
+   --> macros/src/parser.rs:103:4
+    |
+103 | fn parse_path(input: &str) -> IResult<&str, String> {
+    |    ^^^^^^^^^^
+
+warning: function `parse_extended_identifier` is never used
+   --> macros/src/parser.rs:118:4
+    |
+118 | fn parse_extended_identifier(input: &str) -> IResult<&s...
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `parse_element` is never used
+   --> macros/src/parser.rs:135:8
+    |
+135 | pub fn parse_element(input: &str) -> IResult<&str, Node> {
+    |        ^^^^^^^^^^^^^
+
+warning: function `parse_attribute` is never used
+   --> macros/src/parser.rs:285:4
+    |
+285 | fn parse_attribute(input: &str) -> IResult<&str, (Strin...
+    |    ^^^^^^^^^^^^^^^
+
+warning: function `take_balanced` is never used
+   --> macros/src/parser.rs:313:4
+    |
+313 | fn take_balanced(open: char, close: char) -> impl Fn(&s...
+    |    ^^^^^^^^^^^^^
+
+warning: function `parse_expression` is never used
+   --> macros/src/parser.rs:335:4
+    |
+335 | fn parse_expression(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^^^^^^^^
+
+warning: function `parse_call` is never used
+   --> macros/src/parser.rs:343:4
+    |
+343 | fn parse_call(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^^
+
+warning: function `parse_component_var` is never used
+   --> macros/src/parser.rs:383:4
+    |
+383 | fn parse_component_var(input: &str) -> IResult<&str, No...
+    |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `parse_text` is never used
+   --> macros/src/parser.rs:392:4
+    |
+392 | fn parse_text(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^^
+
+warning: function `parse_block_nodes` is never used
+   --> macros/src/parser.rs:398:4
+    |
+398 | fn parse_block_nodes(input: &str) -> IResult<&str, Vec<...
+    |    ^^^^^^^^^^^^^^^^^
+
+warning: function `parse_block_node` is never used
+   --> macros/src/parser.rs:402:4
+    |
+402 | fn parse_block_node(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^^^^^^^^
+
+warning: function `parse_text_exclude_brace` is never used
+   --> macros/src/parser.rs:417:4
+    |
+417 | fn parse_text_exclude_brace(input: &str) -> IResult<&st...
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `parse_if` is never used
+   --> macros/src/parser.rs:422:4
+    |
+422 | fn parse_if(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^
+
+warning: function `parse_for` is never used
+   --> macros/src/parser.rs:456:4
+    |
+456 | fn parse_for(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^
+
+warning: function `parse_match` is never used
+   --> macros/src/parser.rs:492:4
+    |
+492 | fn parse_match(input: &str) -> IResult<&str, Node> {
+    |    ^^^^^^^^^^^
+
+warning: function `parse_match_arms` is never used
+   --> macros/src/parser.rs:521:4
+    |
+521 | fn parse_match_arms(input: &str) -> IResult<&str, Vec<M...
+    |    ^^^^^^^^^^^^^^^^
+
+warning: function `clean_text` is never used
+   --> macros/src/parser.rs:764:4
+    |
+764 | fn clean_text(text: &str) -> String {
+    |    ^^^^^^^^^^
+
+warning: field `0` is never read
+  --> macros/src/token_parser.rs:16:13
+   |
+16 |     Comment(Comment),
+   |     ------- ^^^^^^^
+   |     |
+   |     field in this variant
+   |
+   = note: `Node` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or remove the field
+   |
+16 -     Comment(Comment),
+16 +     Comment(()),
+   |
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:27:9
+   |
+23 | pub struct Element {
+   |            ------- field in this struct
+...
+27 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Element` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:34:9
+   |
+31 | pub struct Attribute {
+   |            --------- field in this struct
+...
+34 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Attribute` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:47:9
+   |
+45 | pub struct Text {
+   |            ---- field in this struct
+46 |     pub content: String,
+47 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Text` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:53:9
+   |
+51 | pub struct Expression {
+   |            ---------- field in this struct
+52 |     pub content: TokenStream,
+53 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Expression` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: fields `content` and `span` are never read
+  --> macros/src/token_parser.rs:58:9
+   |
+57 | pub struct Comment {
+   |            ------- fields in this struct
+58 |     pub content: String,
+   |         ^^^^^^^
+59 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Comment` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:65:9
+   |
+63 | pub struct Doctype {
+   |            ------- field in this struct
+64 |     pub content: String,
+65 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Doctype` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:71:9
+   |
+69 | pub struct Fragment {
+   |            -------- field in this struct
+70 |     pub children: Vec<Node>,
+71 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Fragment` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:88:9
+   |
+84 | pub struct IfBlock {
+   |            ------- field in this struct
+...
+88 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `IfBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:96:9
+   |
+92 | pub struct ForBlock {
+   |            -------- field in this struct
+...
+96 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `ForBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+   --> macros/src/token_parser.rs:103:9
+    |
+100 | pub struct MatchBlock {
+    |            ---------- field in this struct
+...
+103 |     pub span: Span,
+    |         ^^^^
+    |
+    = note: `MatchBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: fields `children` and `span` are never read
+   --> macros/src/token_parser.rs:116:9
+    |
+113 | pub struct CallBlock {
+    |            --------- fields in this struct
+...
+116 |     pub children: Vec<Node>,
+    |         ^^^^^^^^
+117 |     pub span: Span,
+    |         ^^^^
+    |
+    = note: `CallBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+   --> macros/src/token_parser.rs:123:9
+    |
+121 | pub struct ComponentBlock {
+    |            -------------- field in this struct
+122 |     pub name: syn::Path,
+123 |     pub span: Span,
+    |         ^^^^
+    |
+    = note: `ComponentBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: `rusti-macros` (lib) generated 40 warnings (run `cargo fix --lib -p rusti-macros` to apply 1 suggestion)
+    Checking rusti-demo v0.1.0 (/home/dracon/_Dev/_Fun/rusti/demo)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </th> (expected </th>)
+Found closing tag: </th> (expected </th>)
+Found closing tag: </tr> (expected </tr>)
+Found closing tag: </thead> (expected </thead>)
+Found closing tag: </th> (expected </th>)
+Found closing tag: </td> (expected </td>)
+Found closing tag: </tr> (expected </tr>)
+Found closing tag: </tbody> (expected </tbody>)
+Found closing tag: </table> (expected </table>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </option> (expected </option>)
+Found closing tag: </option> (expected </option>)
+Found closing tag: </option> (expected </option>)
+Found closing tag: </select> (expected </select>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </textarea> (expected </textarea>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </nav> (expected </nav>)
+error: expected one of: `for`, parentheses, `fn`, `unsafe`, `extern`, identifier, `::`, `<`, `dyn`, square brackets, `*`, `&`, `!`, `impl`, `_`, lifetime
+  --> demo/src/base_layout_demo.rs:70:18
+   |
+70 |                 </div>
+   |                  ^
+
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </ul> (expected </ul>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </strong> (expected </strong>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </ul> (expected </ul>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h3> (expected </h3>)
+error: expected one of: `for`, parentheses, `fn`, `unsafe`, `extern`, identifier, `::`, `<`, `dyn`, square brackets, `*`, `&`, `!`, `impl`, `_`, lifetime
+   --> demo/src/extreme.rs:279:14
+    |
+279 |             </div>
+    |              ^
+
+Found closing tag: </button> (expected </button>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </textarea> (expected </textarea>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </path> (expected </path>)
+Found closing tag: </svg> (expected </svg>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </nav> (expected </nav>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </label> (expected </label>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h4> (expected </h4>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h4> (expected </h4>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h4> (expected </h4>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h4> (expected </h4>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </header> (expected </header>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </footer> (expected </footer>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </a> (expected </a>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </section> (expected </section>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </ul> (expected </ul>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </ul> (expected </ul>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h3> (expected </h3>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </code> (expected </code>)
+Found closing tag: </pre> (expected </pre>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </h2> (expected </h2>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </span> (expected </span>)
+Found closing tag: </li> (expected </li>)
+Found closing tag: </ul> (expected </ul>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </button> (expected </button>)
+Found closing tag: </form> (expected </form>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </main> (expected </main>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+Found closing tag: </div> (expected </div>)
+Found closing tag: </title> (expected </title>)
+Found closing tag: </style> (expected </style>)
+Found closing tag: </head> (expected </head>)
+Found closing tag: </h1> (expected </h1>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </p> (expected </p>)
+Found closing tag: </script> (expected </script>)
+Found closing tag: </body> (expected </body>)
+Found closing tag: </html> (expected </html>)
+error: could not compile `rusti-demo` (bin "rusti-demo") due to 2 previous errors

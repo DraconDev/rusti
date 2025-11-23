@@ -1,6 +1,7 @@
 use proc_macro2::{Span, TokenStream, TokenTree};
 use quote::ToTokens;
 use syn::{
+    ext::IdentExt,
     parse::{Parse, ParseStream},
     spanned::Spanned,
     token::{Brace, Paren},
