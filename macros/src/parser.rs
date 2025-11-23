@@ -2,7 +2,7 @@ use nom::{
     branch::alt,
     bytes::complete::{tag, take_until, take_while1},
     character::complete::{char, multispace0},
-    combinator::value,
+    combinator::{map, value},
     error::Error,
     multi::many0,
     sequence::{delimited, preceded, tuple},
@@ -242,16 +242,17 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
     let (input, _) = char('=')(input)?;
     let (input, _) = multispace0(input)?;
 
+    let name_clone = name.clone();
     alt((
         // Static value: "foo"
         map(
             delimited(char('"'), take_until("\""), char('"')),
-            |s: &str| (name.clone(), AttributeValue::Static(s.to_string())),
+            move |s: &str| (name.clone(), AttributeValue::Static(s.to_string())),
         ),
         // Dynamic value: {expr}
         map(
             delimited(char('{'), take_balanced('{', '}'), char('}')),
-            |s: &str| (name.clone(), AttributeValue::Dynamic(s.to_string())),
+            move |s: &str| (name_clone.clone(), AttributeValue::Dynamic(s.to_string())),
         ),
     ))(input)
 }
