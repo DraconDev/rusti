@@ -191,19 +191,19 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                         };
 
                     if let Some(exprs) = named_args {
-                        let fields = exprs.iter().map(|e| {
+                        let setters = exprs.iter().map(|e| {
                             if let syn::Expr::Assign(assign) = e {
                                 let key = &assign.left;
                                 let value = &assign.right;
-                                quote! { #key: #value }
+                                quote! { .#key(#value) }
                             } else {
                                 unreachable!()
                             }
                         });
                         quote! {
-                            rusti::Component::render(&#name::render(#name::Props {
-                                #(#fields),*
-                            }), f)?;
+                            rusti::Component::render(&#name::render(#name::Props::builder()
+                                #(#setters)*
+                                .build().expect("Failed to build props")), f)?;
                         }
                     } else {
                         quote! {
