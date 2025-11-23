@@ -183,15 +183,56 @@ pub fn pattern_matching_example() -> impl rusti::Component {
     }
 
     let user_status = Status::Active;
-    let _styles = r"body{margin:0;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(to right,rgb(67,67,67),rgb(0,0,0));min-height:100vh;display:flex;align-items:center;justify-content:center}.status-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.5);text-align:center;min-width:400px}.status-badge{display:inline-block;padding:1rem 2rem;border-radius:12px;font-size:1.5rem;font-weight:bold;margin:1rem 0}.status-active{background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white}.status-pending{background:linear-gradient(135deg,rgb(240,147,251) 0%,rgb(245,87,108) 100%);color:white}.status-suspended{background:linear-gradient(135deg,rgb(250,112,154) 0%,rgb(254,225,64) 100%);color:rgb(45,55,72)}.status-archived{background:linear-gradient(135deg,rgb(137,247,254) 0%,rgb(102,166,255) 100%);color:white}";
-
     rusti! {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Pattern Matching Example</title>
-                <style>{_styles}</style>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: Inter, sans-serif;
+                        background: linear-gradient(to right, rgb(67, 67, 67), rgb(0, 0, 0));
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .status-card {
+                        background: white;
+                        padding: 3rem;
+                        border-radius: 24px;
+                        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+                        text-align: center;
+                        min-width: 400px;
+                    }
+                    .status-badge {
+                        display: inline-block;
+                        padding: 1rem 2rem;
+                        border-radius: 12px;
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                        margin: 1rem 0;
+                    }
+                    .status-active {
+                        background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%);
+                        color: white;
+                    }
+                    .status-pending {
+                        background: linear-gradient(135deg, rgb(240, 147, 251) 0%, rgb(245, 87, 108) 100%);
+                        color: white;
+                    }
+                    .status-suspended {
+                        background: linear-gradient(135deg, rgb(250, 112, 154) 0%, rgb(254, 225, 64) 100%);
+                        color: rgb(45, 55, 72);
+                    }
+                    .status-archived {
+                        background: linear-gradient(135deg, rgb(137, 247, 254) 0%, rgb(102, 166, 255) 100%);
+                        color: white;
+                    }
+                </style>
             </head>
             <body>
                 <div class="status-card">
