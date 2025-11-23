@@ -1,8 +1,14 @@
 // Force rebuild 2
+mod component;
 mod parser;
 use proc_macro::TokenStream;
 use quote::quote;
 use std::str::FromStr;
+
+#[proc_macro_attribute]
+pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    component::expand_component(item)
+}
 
 #[proc_macro]
 pub fn rusti(input: TokenStream) -> TokenStream {
