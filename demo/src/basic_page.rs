@@ -6,45 +6,33 @@ pub fn basic_page() -> impl rusti::Component {
     rusti! {
         <html lang="en">
             <head>
-                <!-- Page metadata -->
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic Page</title>
-                <!-- Add your CSS stylesheets here -->
-                <!-- <link rel="stylesheet" href="/styles.css" /> -->
-
-                <!-- Add any meta tags for SEO or social media here -->
-                <!-- <meta name="description" content="A simple Rusti application." /> -->
-                <!-- <meta property="og:title" content="Basic Page" /> -->
-
-                <!-- You can also include inline styles if necessary -->
+                
+                {/* Inline styles demonstration */}
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: "2em";
+                        margin: "2em";              {/* Quoted to avoid 2e lexer error */}
                         background-color: #f4f4f4;
                         color: #333;
-                        padding: "10px";
+                        padding: 10px;
                     }
                     h1 {
-                        color: "#0056b3";
+                        color: #0056b3;
                     }
                 </style>
             </head>
             <body>
-                <!-- Main content section -->
-                <h1>Basic Page</h1>
-                <p style="color: red; font-size: 12em;">Basic Page</p>
-                <p>This is a basic Rusti page.</p>
-                <!-- Inline script for demonstration -->
-                <script>
+                <h1>Basic Rusti Page</h1>
+                <p>This demonstrates a simple Rusti component with inline CSS.</p>
+                <p>Note: The margin uses quoted "2em" to avoid Rust's scientific notation parser.</p>
+                
+                {/* Best practice: Use raw strings for scripts */}
+                <script>{r#"
                     console.log("Hello from Rusti!");
-                </script>
-                '_ 'a 'a 'a 'a 'a'
-                dont
-                "''''''''"
-                "````````"
-                <a href="https://google.com"> Google </a>
+                "#}</script>
             </body>
         </html>
     }
