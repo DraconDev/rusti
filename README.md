@@ -185,7 +185,7 @@ rusti! {
 
 ---
 
-## 3. The Law of CSS: "5 Ways to Style"
+## 4. The Law of CSS: "5 Ways to Style"
 
 Rusti is flexible. Because it runs at compile-time, you can choose the styling strategy that fits your project. However, because you are writing inside Rust code, you must respect the Rust Tokenizer.
 
