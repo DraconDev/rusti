@@ -335,7 +335,8 @@ impl Parse for Block {
                 remaining.to_string()
             );
 
-            let path: syn::Path = match input.parse() {
+            // Use parse_mod_style to avoid parsing generics (which might confuse < with HTML tags)
+            let path: syn::Path = match syn::Path::parse_mod_style(input) {
                 Ok(p) => p,
                 Err(e) => {
                     eprintln!("Block::parse: Failed to parse path: {}", e);
