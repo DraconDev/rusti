@@ -573,7 +573,7 @@ pub fn form_example() -> impl rusti::Component {
 
                 <style>{style}</style>
 
-                <style>{r#"
+                <style>{"
                     body {
                         margin: 0;
                         padding: 20px; /* 20px works fine */
@@ -585,7 +585,7 @@ pub fn form_example() -> impl rusti::Component {
                         padding: 2em; /* 2em WORKS HERE NOW! */
                         background: #f00;
                     }
-                "#}</style>
+                "}</style>
                 <style>
                     body {
                         margin: 0;
