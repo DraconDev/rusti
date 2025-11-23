@@ -4,8 +4,7 @@
 
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
-- **Current State**: Errors often point to the macro invocation site.
-- **Implementation**: Refactor parser to use `syn` to parse `TokenStream` directly instead of converting to string. Use `syn::spanned::Spanned` to attach span information to nodes.
+- **Status**: Completed.
 
 
 ### 2. Optional Props & Defaults
