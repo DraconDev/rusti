@@ -1,5 +1,5 @@
 # Rusti 🦀
-**A Type-Safe, Rust-Native HTML Templating Library**
+**The Most Robust HTML Parser for Rust** - Type-Safe, Feature-Rich, Production-Ready
 
 Rusti is a powerful, zero-cost, type-safe HTML templating engine for Rust. It allows you to write HTML-like syntax directly in your Rust code using the `rusti!` macro.
 
@@ -7,13 +7,17 @@ Inspired by Go's `templ` library, Rusti brings the component model to server-sid
 
 ## 🚀 Key Features
 
-- **Type-Safe**: All variables and expressions are checked at compile time.
-- **Zero-Cost Abstraction**: Compiles directly to `std::fmt::Write` calls. No runtime parsing, no virtual DOM.
-- **Rust-Native Control Flow**: Use `@if`, `@for`, and `@match` directly in your templates.
-- **Component Composition**: Build complex UIs from small, reusable Rust functions.
-- **Automatic XSS Protection**: All dynamic content is HTML-escaped by default.
-- **Framework Agnostic**: Works with Axum, Actix-web, Rocket, or any Rust program.
-- **Multiple Styling Strategies**: Choose between Tailwind, inline styles, raw CSS, or syntax-highlighted CSS blocks.
+- **Type-Safe**: All variables and expressions are checked at compile time
+- **Zero-Cost Abstraction**: Compiles directly to `std::fmt::Write` calls - no runtime parsing, no virtual DOM
+- **Rust-Native Control Flow**: Use `@if`, `@for`, and `@match` directly in your templates
+- **Component Composition**: Build complex UIs from small, reusable Rust functions
+  - 🆕 **Optional Props with Defaults**: Use the Builder pattern with `#[prop(default = "...")]`
+  - 🆕 **Typed Children**: Components can accept child content with `children: impl Component`
+- **Namespaced Attributes**: Full support for HTMX (`hx-on:click`), Vue (`v-bind:class`), XML (`xml:lang`), and other modern frameworks
+- **Automatic XSS Protection**: All dynamic content is HTML-escaped by default
+- **External Styles**: Include CSS files at compile time with `<style src="path/to/file.css" />`
+- **Framework Agnostic**: Works with Axum, Actix-web, Rocket, or any Rust program
+- **Multiple Styling Strategies**: Choose between Tailwind, inline styles, raw CSS, or syntax-highlighted CSS blocks
 
 ---
 
@@ -29,336 +33,11 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 > **📊 How does Rusti compare to Maud, Askama, or Leptos?**  
 > See our [detailed competitive analysis](#-competitive-analysis) for a technical breakdown of trade-offs, performance, and design philosophy.
 
-
 ---
 
-## ⚠️ Syntax Rules: How to Appease the Rust Compiler
+## 🎯 Quick Start
 
-`rusti!` is a macro that runs **after** the Rust compiler tokenizes your code. This means you must write valid Rust tokens first, or the compiler will crash before your template even parses.
-
-### TL;DR: The Golden Rules
-
-1. **Use double quotes** for attributes: `class="foo"` (not `class='foo'`)
-2. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
-3. **Use Tailwind or inline styles** to avoid CSS headaches entirely
-4. **CSS Units**: `2em` works fine without quotes (we fix the tokenizer spacing for you!)
-5. **External Styles**: Use `<style src="path/to/style.css" />` to include external CSS files at compile time.
-6. **For complex CSS/JS**, use raw strings: `r#"..."#`
-
----
-
-## 1. The Law of Strings: "Double Quotes Only"
-
-In Rust, **Single Quotes (`'`)** and **Double Quotes (`"`)** are completely different data types:
-- `'a'` is a `char` (a single 4-byte number).
-- `"a"` is a `&str` (a string of text).
-
-**The Rule:** HTML attributes are text, so they must always use **Double Quotes**.
-
-| Syntax | Status | Why? |
-|--------|--------|------|
-| `<div class="box">` | ✅ Valid | Standard String. |
-| `<div class='box'>` | ❌ Crash | Rust thinks `'b` is a character literal, but it's too long. |
-| `<div class=box>` | ❌ Crash | Rust keywords (like `type`, `for`) or symbols (`//`) will break parsing. |
-
-### Examples
-
-```rust
-// ✅ CORRECT
-rusti! {
-    <div class="container">
-        <a href="/home">Link</a>
-    </div>
-}
-
-// ❌ WRONG - Single quotes crash the compiler
-rusti! {
-    <div class='container'>  // Error: character literal may only contain one codepoint
-        <a href='/home'>Link</a>
-    </div>
-}
-```
-
----
-
-
----
-
-## 2. Emoji & Unicode in Text ⚠️
-
-**Important:** Emojis and Unicode characters **cannot** be used directly in template text due to Rust's tokenizer. Use variables instead!
-
-### ❌ This Doesn't Work
-```rust
-rusti! {
-    <p>Status: ✅</p>  // ERROR: identifiers cannot contain emoji
-    <h1>Hello 👋</h1>  // ERROR: identifiers cannot contain emoji
-}
-```
-
-### ✅ This Works - Use Variables
-```rust
-let status = "Status: ✅";       // Rust strings support full Unicode
-let greeting = "Hello 👋 Welcome! 🎉";
-
-rusti! {
-    <p>{status}</p>      // Perfect! Emoji renders correctly
-    <h1>{greeting}</h1>  // Works great!
-}
-```
-
-**Why:** Rust's tokenizer runs before the `rusti!` macro and treats emojis after whitespace as invalid identifier tokens. Rust string literals tokenize correctly, so we use variable interpolation.
-
-**Bonus:** This is actually better because:
-- You can use any Rust expression: `{format!("Count: {} ✅", count)}`
-- Type-safe and validated at compile-time
-- Follows standard Rust patterns
-
----
-
-## 3. The Law of Backticks: "Use Raw Strings"
-
-**Backticks (\`)** are illegal in Rust source code. They do not exist as tokens.
-
-If you need to write JSON, inline JavaScript, or attributes containing quotes, use Rust's **Raw String** syntax: `r#" ... "#`.
-
-| Use Case | Solution |
-|----------|----------|
-| JSON Attribute | `data-val=r#"{ "id": 1 }"#` |
-| Inline JS | `<script>{r#" console.log("Hello") "#}</script>` |
-| Quotes inside Quotes | `hx-vals=r#"{"count": 1}"#` |
-
-### Examples
-
-```rust
-// ✅ CORRECT - Using raw strings for JSON
-rusti! {
-    <div hx-vals=r#"{"userId": 42, "action": "update"}"#>
-        Update Profile
-    </div>
-}
-
-// ✅ CORRECT - Using raw strings for inline JS
-rusti! {
-    <script>{r#"
-        console.log("Rusti rocks!");
-    "#}</script>
-}
-
-// ❌ WRONG - Backticks are illegal
-rusti! {
-    <script>{`console.log("nope")`}</script>  // Syntax error
-}
-
-### ⚠️ Special Case: Inline JavaScript
-
-While simple scripts like `console.log("Hello")` might accidentally work, **always use raw strings** for `<script>` tags:
-
-```rust
-// ❌ FRAGILE - Works by accident, breaks easily
-rusti! {
-    <script>
-        console.log("This works...");
-        // But this breaks: let x = 2e10;  (scientific notation error)
-        // And this breaks: const msg = 'hello';  (character literal error)
-    </script>
-}
-
-// ✅ ROBUST - Use raw strings for all JavaScript
-rusti! {
-    <script>{r#"
-        console.log("Safe!");
-        const config = { timeout: 2e10 };  // Scientific notation OK
-        const msg = 'hello';                // Single quotes OK
-        document.querySelector('#app').textContent = "Rusti";
-    "#}</script>
-}
-
-// ✅ BEST - Link external scripts (recommended for production)
-rusti! {
-    <script src="/static/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org"></script>
-}
-```
-
-> **💡 Does using raw strings reduce type safety?**  
-> No! CSS and JavaScript are not Rust code, so no templating library can type-check them (Maud, Askama, Leptos all treat them as opaque strings). Raw strings make this boundary **explicit** rather than hiding it. Your Rust expressions (`{variables}`, `@if`, etc.) are still fully type-checked at compile-time.
-
-
-
----
-
-## 4. The Law of CSS: "5 Ways to Style"
-
-Rusti is flexible. Because it runs at compile-time, you can choose the styling strategy that fits your project. However, because you are writing inside Rust code, you must respect the Rust Tokenizer.
-
-### Which CSS method should I use?
-
-- 📱 **Modern project?** → **Option A: Tailwind** (zero issues, recommended)
-- 🎨 **Writing CSS by hand?** → **Option D: Naked Syntax** (syntax highlighting)
-- 📋 **Pasting large CSS blocks?** → **Option C: Raw Strings** (paste anything)
-- ⚡ **Quick override?** → **Option B: Inline Styles** (always safe)
-- 🛠️ **Design tokens/theming?** → **Option E: Variables** (type-safe theming)
-
----
-
-### Option A: Tailwind CSS (The Happy Path) 🌊
-
-**Best for:** Modern web development.
-
-Since Tailwind classes are just strings, they fly through the Rust compiler without issues. You can even use arbitrary values like `[2em]` safely.
-
-```rust
-rusti! {
-    <div class="p-[2em] m-4 bg-slate-900 text-white rounded-lg shadow-xl">
-        <h1 class="text-4xl font-bold">Tailwind works perfectly.</h1>
-        <p class="mt-2 text-gray-300">No compiler errors, ever.</p>
-    </div>
-}
-```
-
-**Why this works:** Tailwind classes are simple string literals. The Rust tokenizer never tries to parse them as code.
-
----
-
-### Option B: Inline Styles (The Safe Bet) ✅
-
-**Best for:** Dynamic values or quick overrides.
-
-Inline styles are written as string literals. The Rust tokenizer does not look inside strings, so you can write **anything** here—even `2em`—and it will just work.
-
-```rust
-rusti! {
-    // 2em is safe here because it's inside a string!
-    <div style="margin: 2em; color: #ff0000; font-size: 16px;">
-        Inline styles are bulletproof.
-    </div>
-}
-```
-
-**Why this works:** The entire `style` attribute is a Rust string literal. The compiler treats it as opaque text.
-
----
-
-### Option C: Style Blocks with Raw Strings (The "Paste" Method) 📋
-
-**Best for:** Pasting large CSS blocks or using AI-generated CSS.
-
-If you don't care about syntax highlighting inside your Rust file, wrap your CSS in a **Raw String** (`r#""#`). This turns off the tokenizer, letting you write whatever you want (media queries, keyframes, `2em`).
-
-```rust
-rusti! {
-    <style>{r#"
-        /* The compiler treats this as one big text blob */
-        @media (min-width: 700px) {
-            body {
-                margin: 2em;
-                background: url('img.png');
-                font-family: 'Inter', sans-serif;
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    "#}</style>
-}
-```
-
-**Why this works:** Raw strings (`r#""#`) tell Rust to ignore all special characters inside. No tokenization happens.
-
----
-
-### Option D: "Naked" Rust Syntax (The IDE Method) 🎨
-
-**Best for:** Writing CSS manually while keeping **Syntax Highlighting**.
-
-Most CSS is actually valid Rust syntax! You can write standard CSS directly in the `rusti!` macro.
-
-**The Catch:** Only one specific pattern breaks: `<digit>e<letter>` (e.g., `2em`, `1ex`).  
-This is because Rust thinks you're writing scientific notation like `2e10` (2 × 10¹⁰).
-
-| CSS Value | Rust Tokenizer Status | How to write it |
-|-----------|----------------------|-----------------|
-| `10px` | ✅ Valid (Integer + Suffix) | `padding: 10px;` |
-| `#fff` | ✅ Valid (Punct + Ident) | `color: #fff;` |
-| `100%` | ✅ Valid (Integer + Punct) | `width: 100%;` |
-| `0.5em` | ✅ Valid (Float + Suffix) | `margin: 0.5em;` |
-| `2rem` | ✅ Valid (Integer + Suffix) | `font-size: 2rem;` |
-| `2em` | ❌ Invalid (Scientific Notation) | `margin: "2em";` (quote it!) |
-| `1ex` | ❌ Invalid (Scientific Notation) | `line-height: "1ex";` (quote it!) |
-
-```rust
-rusti! {
-    <style>
-        .container {
-            background-color: #f4f4f4;  /* ✅ Syntax highlighting works! */
-            padding: 20px;              /* ✅ 20px is valid Rust */
-            width: 100%;                /* ✅ 100% is valid Rust */
-            font-size: 1.5rem;          /* ✅ Float + suffix works */
-            
-            /* ⚠️ The only rule: Quote 'em' if it's an integer */
-            margin: "2em";              /* Must quote to avoid 2e crash */
-            line-height: "1.5ex";       /* Must quote 'ex' units too */
-        }
-    </style>
-}
-```
-
-**Why this works (mostly):** CSS syntax coincidentally overlaps with Rust tokens. The only exception is the scientific notation edge case.
-
-**Note:** You may wrap **any** CSS value in quotes for consistency if you prefer, but it's only **required** for units starting with `e` (`em`, `ex`).
-
----
-
-### Option E: Variables (The Theme Method) 🛠️
-
-**Best for:** Theming and shared design tokens.
-
-You can inject Rust variables directly into your CSS using curly braces `{}`.
-
-```rust
-let primary_color = "#3b82f6";
-let spacing = "2em";  // Note: Use a string to avoid the 2em issue
-let border_radius = "8px";
-
-rusti! {
-    <style>
-        .btn {
-            background-color: {primary_color};
-            margin-top: {spacing};
-            border-radius: {border_radius};
-        }
-    </style>
-}
-```
-
-**Why this works:** Variables are injected as strings at runtime, bypassing the tokenizer entirely.
-
----
-
-## 🧱 Quick Translation Guide (JS/HTML → Rust)
-
-Coming from web development? Here's how to translate common patterns:
-
-| Feature | JavaScript / HTML | Rusti (Rust) | Reason |
-|---------|------------------|--------------|--------|
-| **Quotes** | `<div id='app'>` | `<div id="app">` | Single quotes are for `char` only. |
-| **Templates** | `` `Hello ${name}` `` | `r#"Hello {name}"#` | Backticks are illegal tokens. |
-| **CSS Unit** | `margin: 2em` | `margin: "2em"` | `2e` looks like broken math. |
-| **URL** | `href=http://...` | `href="http://..."` | `//` looks like a comment start. |
-| **Variables** | `id="${id}"` | `id={id}` | Use curly braces for Rust variables. |
-| **Control** | `{% if %}` / `{#if}` | `@if` | Distinct syntax for logic. |
-| **Loops** | `{% for %}` / `{#each}` | `@for` | Rust-native iteration. |
-| **JSON** | `data='{"x":1}'` | `data=r#"{"x":1}"#` | Raw strings for nested quotes. |
-| **Inline Script** | `<script>alert('hi')</script>` | `<script>{r#"alert('hi')"#}</script>` | Wrap JS in raw strings. |
-
----
-
-## 📖 Usage Guide
-
-### 1. Basic Component
+### Basic Component
 
 ```rust
 use rusti::rusti;
@@ -372,46 +51,196 @@ fn hello_world() -> impl rusti::Component {
 }
 ```
 
----
-
-### 2. Dynamic Content & Attributes
-
-Inject Rust variables using curly braces `{ }`.
+### Component with Props (Named Arguments)
 
 ```rust
-fn greeting(name: &str, is_admin: bool) -> impl rusti::Component + '_ {
-    let role_color = if is_admin { "text-red-500" } else { "text-blue-500" };
-    
+use rusti::component;
+
+#[component]
+fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl rusti::Component {
     rusti! {
-        <div class="card">
-            {/* Interpolate text */}
-            <h1>Hello, { name }!</h1>
-            
-            {/* Interpolate attributes (no quotes needed for variables!) */}
-            <span class={role_color}>User Role</span>
-            
-            {/* Complex logic in attributes */}
-            <button disabled={!is_admin}>Delete</button>
+        <div class={ if is_highlighted { "card highlighted" } else { "card" } }>
+            <h2>{title}</h2>
         </div>
+    }
+}
+
+// Usage - optional props can be omitted!
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            @card(title = "My Card".to_string())
+            @card(title = "Important!".to_string(), is_highlighted = true)
+        </div>
+    }
+}
+```
+
+### Components with Children
+
+```rust
+#[component]
+fn layout(title: String, children: impl rusti::Component) -> impl rusti::Component {
+    rusti! {
+        <div class="layout">
+            <header><h1>{title}</h1></header>
+            <main>
+                @children
+            </main>
+        </div>
+    }
+}
+
+// Usage - pass JSX-like children!
+fn page() -> impl rusti::Component {
+    rusti! {
+        @layout(title = "My Page".to_string()) {
+            <p>This is the page content</p>
+            <button>Click me</button>
+        }
+    }
+}
+```
+
+### HTMX Integration (Namespaced Attributes)
+
+```rust
+fn search_box() -> impl rusti::Component {
+    rusti! {
+        <input 
+            type="search"
+            name="q"
+            hx-get="/search"
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="#results"
+            hx-on:htmx:after-request="console.log('Done!')"
+        />
+        <div id="results"></div>
     }
 }
 ```
 
 ---
 
-### 3. Control Flow
+## 🧩 Component Patterns
 
-Rusti provides first-class support for control flow using `@`.
+### 1. Simple Functions (Positional Arguments)
 
 ```rust
-fn user_list(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_ {
+fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <button class={class}>{ label }</button>
+    }
+}
+
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            @button("Submit", "btn-primary")
+            @button("Cancel", "btn-secondary")
+        </div>
+    }
+}
+```
+
+### 2. The `#[component]` Macro (Named Arguments & Builder Pattern)
+
+For complex components with multiple props, use the `#[component]` attribute. This generates a typed `Props` struct with a builder pattern, enabling:
+- **Named arguments** for clarity
+- **Optional props** with default values
+- **Type safety** at compile time
+
+```rust
+use rusti::component;
+
+#[component]
+fn alert_box(
+    message: String, 
+    #[prop(default = "false")] is_error: bool,
+    #[prop(default = "\"Alert\"".to_string())] title: String
+) -> impl rusti::Component {
+    let bg_color = if is_error { "bg-red-500" } else { "bg-blue-500" };
+    
+    rusti! {
+        <div class={bg_color}>
+            <h3>{title}</h3>
+            <p>{message}</p>
+        </div>
+    }
+}
+
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            {/* All props specified */}
+            @alert_box(
+                message = "Operation failed!".to_string(),
+                is_error = true,
+                title = "Error".to_string()
+            )
+            
+            {/* Using defaults */}
+            @alert_box(message = "Info message".to_string())
+        </div>
+    }
+}
+```
+
+### 3. Typed Children (Component Composition)
+
+Components can accept children, enabling powerful composition patterns:
+
+```rust
+#[component]
+fn card(title: String, children: impl rusti::Component) -> impl rusti::Component {
+    rusti! {
+        <div class="card border rounded shadow p-4">
+            <h2 class="text-xl font-bold">{title}</h2>
+            <div class="card-body">
+                @children
+            </div>
+        </div>
+    }
+}
+
+#[component]
+fn button_group(children: impl rusti::Component) -> impl rusti::Component {
+    rusti! {
+        <div class="flex gap-2">
+            @children
+        </div>
+    }
+}
+
+fn dashboard() -> impl rusti::Component {
+    rusti! {
+        @card(title = "User Actions".to_string()) {
+            @button_group {
+                <button class="btn-primary">Save</button>
+                <button class="btn-secondary">Cancel</button>
+                <button class="btn-danger">Delete</button>
+            }
+        }
+    }
+}
+```
+
+---
+
+## 🎨 Control Flow
+
+Rusti provides first-class support for control flow using `@`:
+
+```rust
+fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_ {
     rusti! {
         <div>
             {/* Pattern Matching */}
             @match role {
-                Some("admin") => { <button>Delete User</button> }
-                Some(_)       => { <span>Read Only</span> }
-                None          => { <a href="/login">Log in</a> }
+                Some("admin") => { <button>Admin Panel</button> }
+                Some("moderator") => { <button>Moderate</button> }
+                Some(_) => { <span>Read Only</span> }
+                None => { <a href="/login">Log in</a> }
             }
 
             {/* Loops */}
@@ -434,60 +263,145 @@ fn user_list(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_
 
 ---
 
-### 4. Component Composition
+## 🌐 Modern Web Framework Support
 
-Components are just Rust functions. Compose them using `@`:
-## 🧩 Component Composition
+### HTMX Integration
 
-Rusti components are just Rust functions. You can compose them easily!
-
-### 1. Basic Functions (Positional Arguments)
+Rusti has full support for HTMX attributes, including event handlers and namespaced attributes:
 
 ```rust
-fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
+fn live_search() -> impl rusti::Component {
     rusti! {
-        <button class={class}>{ label }</button>
+        <div>
+            <input 
+                type="search"
+                name="q"
+                placeholder="Search..."
+                hx-get="/search"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#search-results"
+                hx-indicator="#spinner"
+                hx-on:htmx:before-request="console.log('Searching...')"
+            />
+            <div id="spinner" class="htmx-indicator">Loading...</div>
+            <div id="search-results"></div>
+        </div>
     }
 }
 
-fn page() -> impl rusti::Component {
+fn delete_button(id: i32) -> impl rusti::Component {
+    let confirm_msg = format!("Are you sure you want to delete item {}?", id);
+    
     rusti! {
-        <div>
-            @button("Submit", "primary")
-            @button("Cancel", "secondary")
+        <button
+            hx-delete={format!("/api/items/{}", id)}
+            hx-confirm={confirm_msg}
+            hx-on:htmx:after-request="alert('Deleted!')"
+            class="btn-danger"
+        >
+            Delete
+        </button>
+    }
+}
+```
+
+### Vue-style Attributes
+
+```rust
+fn vue_component(is_active: bool) -> impl rusti::Component {
+    rusti! {
+        <div 
+            v-bind:class={ if is_active { "active" } else { "" } }
+            v-on:click="handleClick"
+        >
+            Click me
         </div>
     }
 }
 ```
 
-### 2. The `#[component]` Macro (Named Arguments)
+---
 
-For more readable components with named props, use the `#[component]` attribute. This generates a typed `Props` struct and enables named argument syntax:
+## 💅 Styling Strategies
+
+### Option A: Tailwind CSS (Recommended) 🌊
 
 ```rust
-use rusti::component;
-
-#[component]
-fn alert_box(message: String, is_error: bool) -> impl rusti::Component {
-    rusti! {
-        <div class={ if is_error { "bg-red-500" } else { "bg-blue-500" } }>
-            {message}
-        </div>
-    }
-}
-
-fn page() -> impl rusti::Component {
-    rusti! {
-        <div>
-            <!-- Named arguments are type-checked! -->
-            @alert_box(
-                message = "Operation Successful".to_string(),
-                is_error = false
-            )
-        </div>
-    }
+rusti! {
+    <div class="p-8 m-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-2xl">
+        <h1 class="text-4xl font-bold">Tailwind works perfectly.</h1>
+        <p class="mt-2 text-gray-100">No compiler errors, ever.</p>
+    </div>
 }
 ```
+
+### Option B: Inline Styles ✅
+
+```rust
+rusti! {
+    <div style="margin: 2em; color: #ff0000; font-size: 16px;">
+        Inline styles are bulletproof.
+    </div>
+}
+```
+
+### Option C: External Stylesheets 📋
+
+Include external CSS files at compile time:
+
+```rust
+rusti! {
+    <style src="styles/main.css" />
+    <div class="custom-component">
+        Content styled by external CSS
+    </div>
+}
+```
+
+### Option D: Raw String CSS
+
+```rust
+rusti! {
+    <style>{r#"
+        .container {
+            background-color: #f4f4f4;
+            padding: 2em;
+            border-radius: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+    "#}</style>
+}
+```
+
+---
+
+## ⚠️ Syntax Rules
+
+### The Golden Rules
+
+1. **Use double quotes** for attributes: `class="foo"` (not `class='foo'`)
+2. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
+3. **Use Tailwind or inline styles** to avoid CSS headaches
+4. **External styles**: Use `<style src="path/to/style.css" />` for external CSS
+5. **For complex CSS/JS**, use raw strings: `r#"..."#`
+
+### Quick Translation Guide (JS/HTML → Rust)
+
+| Feature | JavaScript / HTML | Rusti (Rust) |
+|---------|------------------|--------------|
+| **Quotes** | `<div id='app'>` | `<div id="app">` |
+| **Templates** | `` `Hello ${name}` `` | `r#"Hello {name}"#` |
+| **URL** | `href=http://...` | `href="http://..."` |
+| **Variables** | `id="${id}"` | `id={id}` |
+| **Control** | `{% if %}` | `@if` |
+| **Loops** | `{% for %}` | `@for` |
+| **JSON** | `data='{"x":1}'` | `data=r#"{"x":1}"#` |
+| **HTMX Events** | `hx-on::click` | `hx-on:click` |
 
 ---
 
@@ -506,11 +420,20 @@ async fn handler() -> impl IntoResponse {
                 <meta charset="UTF-8" />
                 <title>Rusti + Axum</title>
                 <script src="https://cdn.tailwindcss.com"></script>
+                <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             </head>
             <body class="bg-gray-100 p-8">
                 <h1 class="text-4xl font-bold text-indigo-600">
                     Hello from Axum + Rusti!
                 </h1>
+                <button 
+                    hx-get="/api/data"
+                    hx-target="#result"
+                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                    Load Data
+                </button>
+                <div id="result"></div>
             </body>
         </html>
     };
@@ -530,48 +453,35 @@ async fn main() {
 
 ## 🎯 Best Practices
 
-1. **Use Tailwind CSS** for styling whenever possible. It eliminates tokenizer issues entirely.
-2. **Prefer inline styles** for dynamic or one-off overrides.
-3. **Use raw strings** (`r#""#`) for complex CSS blocks or JavaScript.
-4. **Always wrap `<script>` content in raw strings** - even simple scripts can break unexpectedly.
-5. **Link external scripts** (`<script src="...">`) instead of inline JavaScript in production.
-6. **Extract components early** to keep templates readable.
-7. **Leverage Rust's type system** - pass typed structs instead of primitives.
-8. **Test component rendering** with unit tests using `render_to_string()`.
+1. **Use Tailwind CSS** for styling whenever possible
+2. **Use the `#[component]` macro** for components with multiple props
+3. **Leverage optional props** to make components flexible without boilerplate
+4. **Use typed children** for layout components and wrappers
+5. **Always wrap `<script>` content in raw strings** - even simple scripts can break
+6. **Link external scripts** (`<script src="...">`) instead of inline JavaScript
+7. **Extract components early** to keep templates readable
+8. **Leverage Rust's type system** - pass typed structs instead of primitives
+9. **Test component rendering** with unit tests using `render_to_string()`
 
 ---
 
 ## 🧠 Lifetime Management
 
-Rusti components are just Rust functions, so they follow standard lifetime rules. Here are the common patterns:
+Rusti components follow standard Rust lifetime rules:
 
-### 1. Borrowed Data (The `'_` Pattern) - Recommended
-When your component takes references (like `&str`), use lifetime elision with `impl rusti::Component + '_`. This tells Rust "the output component lives as long as the input data".
+### Borrowed Data (The `'_` Pattern) - Recommended
 
 ```rust
-// ✅ Clean and idiomatic
 fn user_card(name: &str) -> impl rusti::Component + '_ {
     rusti! { <div>{name}</div> }
 }
 ```
 
-### 2. Owned Data (No Lifetimes)
-If you pass owned data (like `String` or `i32`), no lifetime syntax is needed.
+### Owned Data (No Lifetimes)
 
 ```rust
-// ✅ No lifetime needed
 fn counter(count: i32) -> impl rusti::Component {
     rusti! { <div>Count: {count}</div> }
-}
-```
-
-### 3. Static Data
-Constants have a `'static` lifetime, so they don't need annotations.
-
-```rust
-fn footer() -> impl rusti::Component {
-    const YEAR: &str = "2025";
-    rusti! { <footer>© {YEAR}</footer> }
 }
 ```
 
@@ -579,42 +489,40 @@ fn footer() -> impl rusti::Component {
 
 ## 📊 Competitive Analysis
 
-How does Rusti compare to other Rust templating solutions?
-
-| Feature | Rusti | Maud | Askama | Leptos | Tera |
-|---------|-------|------|--------|--------|------|
-| **Syntax** | HTML-like | Rust DSL | Jinja2-like | JSX-like | Jinja2-like |
-| **Type Safety** | ✅ Full Compile-time | ✅ Full | ✅ Full | ✅ Full | ❌ Runtime |
-| **Runtime Cost** | ✅ Zero (Native Code) | ✅ Zero | ✅ Zero | ⚠️ Virtual DOM | ❌ Parsing |
-| **Learning Curve** | Low (HTML) | Medium | Low | Medium | Low |
-| **Reactivity** | ❌ (Use HTMX) | ❌ | ❌ | ✅ Signals | ❌ |
+| Feature | Rusti | Maud | Askama | Leptos |
+|---------|-------|------|--------|--------|
+| **Syntax** | HTML-like | Rust DSL | Jinja2-like | JSX-like |
+| **Type Safety** | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| **Runtime Cost** | ✅ Zero | ✅ Zero | ✅ Zero | ⚠️ Virtual DOM |
+| **Optional Props** | ✅ Builder Pattern | ❌ | ❌ | ✅ |
+| **Typed Children** | ✅ Native | ❌ | ❌ | ✅ |
+| **HTMX Support** | ✅ Namespaced Attrs | ⚠️ Manual | ⚠️ Manual | ❌ |
+| **Learning Curve** | Low (HTML) | Medium | Low | Medium |
 
 ### Why Rusti?
-- **vs Maud**: Rusti uses actual HTML syntax, making it easier for web developers and copy-pasting from UI kits.
-- **vs Askama/Tera**: Rusti components are Rust functions, allowing full composition and IDE support without context switching to external files.
-- **vs Leptos**: Rusti is lighter weight (no WASM/Signals overhead) and framework-agnostic, perfect for server-side rendering.
 
-> **The "Rigor" Question**: Does using raw strings (`r#""#`) for CSS/JS sacrifice safety?
-> **No.** No Rust templating engine can type-check CSS or JS. Rusti is just explicit about this boundary, whereas others might hide it or treat it as opaque text.
+- **vs Maud**: Rusti uses actual HTML syntax, making it easier to copy-paste from UI kits and work with designers
+- **vs Askama**: Rusti components are Rust functions with full composition support, no external files needed
+- **vs Leptos**: Rusti is lighter weight (no WASM/Signals overhead), perfect for server-side rendering with HTMX
 
 ---
 
 ## 📚 More Examples
 
-Check out **[EXAMPLES.md](EXAMPLES.md)** for copy-paste patterns including:
-- **HTMX Integration**
-- **Datastar Integration**
-- **Complex Forms**
-- **Layouts & Nesting**
-- **CSS Strategies**
+Check out **[EXAMPLES.md](EXAMPLES.md)** and the **[demo/](demo/)** directory for:
+- HTMX Integration patterns
+- Complex forms with validation
+- Layouts & nesting
+- Dynamic styling
+- External CSS integration
 
 ---
 
 ## 🛠️ Project Structure
 
-- **`src/`**: Runtime library (Component trait, escaping logic).
-- **`macros/`**: The procedural macro implementation (Parser, Code Generator).
-- **`demo/`**: A complete example application using Axum, HTMX, and Tailwind CSS.
+- **`src/`**: Runtime library (Component trait, escaping logic)
+- **`macros/`**: Procedural macro implementation (Parser, Code Generator)
+- **`demo/`**: Complete example application using Axum, HTMX, and Tailwind CSS
 
 ---
 
