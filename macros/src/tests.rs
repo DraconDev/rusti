@@ -102,4 +102,20 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn test_attributes() {
+        let input = r#"<div class="bg-white" id="main"></div>"#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:?}", nodes);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+                assert_eq!(nodes.len(), 1);
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
