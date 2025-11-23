@@ -15,10 +15,10 @@ pub fn basic_page() -> impl rusti::Component {
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: 2em;                /* No quotes needed! Rusti handles 2em correctly */
+                        margin: 2 em;               /* Space required for 'em' due to Rust float syntax, but parser fixes it! */
                         background-color: #f4f4f4;  /* Hex colors work fine */
                         color: #333;
-                        padding: 20px;              /* px, rem, % all work without quotes */
+                        padding: 10px;              /* px works fine without space! */
                     }
                     h1 {
                         color: #0056b3;
