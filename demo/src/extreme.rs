@@ -187,20 +187,26 @@ pub fn component_composition_example() -> impl rusti::Component {
                     <h1>Component Composition Demo</h1>
                     <div class="grid">
                         @card("User Profile", {
-                            <p>Manage your profile settings and preferences.</p>
-                            @button("Edit Profile", "primary")
-                            @button("Change Password", "warning")
+                            <div>
+                                <p>Manage your profile settings and preferences.</p>
+                                @button("Edit Profile", "primary")
+                                @button("Change Password", "warning")
+                            </div>
                         })
 
                         @card("Notifications", {
-                            <p>You have 3 new notifications waiting for you.</p>
-                            @button("View All", "success")
-                            @button("Mark as Read", "primary")
+                            <div>
+                                <p>You have 3 new notifications waiting for you.</p>
+                                @button("View All", "success")
+                                @button("Mark as Read", "primary")
+                            </div>
                         })
 
                         @card("Danger Zone", {
-                            <p>Irreversible actions. Proceed with caution.</p>
-                            @button("Delete Account", "danger")
+                            <div>
+                                <p>Irreversible actions. Proceed with caution.</p>
+                                @button("Delete Account", "danger")
+                            </div>
                         })
                     </div>
                 </div>
