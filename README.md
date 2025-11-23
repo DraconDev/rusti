@@ -225,9 +225,6 @@ async fn main() {
     *   The parser can struggle with complex JS/CSS inside `<script>` or `<style>` tags because it might mistake content for Rust syntax.
     *   **Workaround**: Use external files (`<script src="...">`) or use spaced closing tags like `< / script >` if you must inline.
 
-2.  **HTML Comments**:
-    *   Standard HTML comments `<!-- ... -->` are not currently supported and will cause parse errors. Use standard Rust comments `//` outside the macro or rely on the fact that the macro is Rust code.
-
 3.  **Rust-Analyzer Errors**:
     *   You might see "Unexpected input remaining" errors in your IDE. These are often cosmetic issues with how `rust-analyzer` expands macros. If `cargo build` passes, your code is correct.
 
