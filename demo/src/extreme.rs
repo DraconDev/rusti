@@ -445,3 +445,5 @@ pub async fn dashboard_handler() -> impl IntoResponse {
 pub async fn form_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&form_example()))
 }
+
+
