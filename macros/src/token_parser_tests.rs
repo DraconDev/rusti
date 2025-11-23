@@ -50,3 +50,25 @@ fn test_component_block_in_div() {
     let result = parser.parse2(input);
     assert!(result.is_ok());
 }
+
+#[test]
+fn test_namespaced_attributes() {
+    let input = quote! {
+        <button hx-on:click="alert('clicked')" v-bind:class="active">Click me</button>
+    };
+    let parser = parse_nodes_wrapper;
+    let result = parser.parse2(input);
+    match result {
+        Ok(nodes) => {
+            if let Node::Element(elem) = &nodes[0] {
+                assert_eq!(elem.name, "button");
+                assert_eq!(elem.attrs.len(), 2);
+                assert_eq!(elem.attrs[0].name, "hx-on:click");
+                assert_eq!(elem.attrs[1].name, "v-bind:class");
+            } else {
+                panic!("Expected Element node");
+            }
+        }
+        Err(e) => panic!("Parse failed: {}", e),
+    }
+}
