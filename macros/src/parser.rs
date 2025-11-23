@@ -35,6 +35,9 @@ pub enum Node {
         args: String,
         _children: Vec<Node>,
     },
+    Component {
+        name: String,
+    },
     If {
         condition: String,
         then_branch: Vec<Node>,
