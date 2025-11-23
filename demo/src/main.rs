@@ -685,7 +685,6 @@ async fn main() {
         .route("/styles", get(styles_demo_handler))
         .route("/datastar", get(datastar_demo_handler))
         .route("/styles2", get(styles_demo2_handler))
-        .route("/datastar", get(datastar_demo_handler))
         .route("/forms", get(forms_demo))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
