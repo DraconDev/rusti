@@ -1,6 +1,7 @@
 // Tests for Rusti parser improvements
 
 use rusti::{render_to_string, rusti, Component};
+use rusti_macros::rusti;
 
 #[test]
 fn script_tag_is_handled() {
