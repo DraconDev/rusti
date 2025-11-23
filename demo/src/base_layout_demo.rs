@@ -24,9 +24,9 @@ pub fn base_layout<'a>(
 }
 
 /// Navbar component used by the base layout.
-fn navbar(is_authenticated: bool) -> impl rusti::Component {
+fn navbar(is_authenticated: bool) -> Box<dyn rusti::Component> {
     if is_authenticated {
-        rusti! {
+        Box::new(rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
@@ -52,9 +52,9 @@ fn navbar(is_authenticated: bool) -> impl rusti::Component {
                     </div>
                 </div>
             </nav>
-        }
+        })
     } else {
-        rusti! {
+        Box::new(rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
@@ -72,7 +72,7 @@ fn navbar(is_authenticated: bool) -> impl rusti::Component {
                     </div>
                 </div>
             </nav>
-        }
+        })
     }
 }
 
