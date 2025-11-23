@@ -2,7 +2,7 @@ use nom::{
     branch::alt,
     bytes::complete::{tag, take_until, take_while1},
     character::complete::{char, multispace0},
-    combinator::{map, value},
+    combinator::{map, success, value},
     error::Error,
     multi::many0,
     sequence::{delimited, preceded, tuple},
@@ -259,22 +259,28 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
     let (input, name) = parse_extended_identifier(input)?;
     let (input, _) = multispace0(input)?;
-    let (input, _) = char('=')(input)?;
-    let (input, _) = multispace0(input)?;
 
-    let name_clone = name.clone();
-    alt((
-        // Static value: "foo"
-        map(
-            delimited(char('"'), take_until("\""), char('"')),
-            move |s: &str| (name.clone(), AttributeValue::Static(s.to_string())),
+    let (input, value) = alt((
+        preceded(
+            tuple((char('='), multispace0)),
+            alt((
+                // Static value: "foo"
+                map(
+                    delimited(char('"'), take_until("\""), char('"')),
+                    |s: &str| AttributeValue::Static(s.to_string()),
+                ),
+                // Dynamic value: {expr}
+                map(
+                    delimited(char('{'), take_balanced('{', '}'), char('}')),
+                    |s: &str| AttributeValue::Dynamic(s.to_string()),
+                ),
+            )),
         ),
-        // Dynamic value: {expr}
-        map(
-            delimited(char('{'), take_balanced('{', '}'), char('}')),
-            move |s: &str| (name_clone.clone(), AttributeValue::Dynamic(s.to_string())),
-        ),
-    ))(input)
+        // Boolean attribute (no value)
+        success(AttributeValue::Static("".to_string())),
+    ))(input)?;
+
+    Ok((input, (name, value)))
 }
 
 // Helper to take content balanced by delimiters
@@ -429,7 +435,6 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     // Parse pattern (e.g. "item in items") - take until { appears
     let (input, full_pattern) = take_while1(|c: char| c != '{')(input)?;
     let full_pattern = full_pattern.trim();
-    eprintln!("DEBUG: parse_for full_pattern: '{}'", full_pattern);
 
     // Robustly find "in" token
     let parts: Vec<&str> = full_pattern.split_whitespace().collect();
@@ -442,11 +447,6 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     } else {
         (full_pattern.to_string(), "".to_string())
     };
-
-    eprintln!(
-        "DEBUG: parse_for pattern: '{}', iterator: '{}'",
-        pattern, iterator
-    );
 
     let (input, _) = multispace0(input)?; // Consume whitespace before {
     let (input, _) = char('{')(input)?;
