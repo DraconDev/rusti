@@ -707,7 +707,56 @@ fn clean_text(text: &str) -> String {
     let mut i = 0;
     while i < chars.len() {
         let c = chars[i];
-        // Check for space between digit and unit
+
+        // Check for quoted units: "2em" -> 2em
+        if c == '"' {
+            // Look ahead to see if this is a quoted unit
+            let mut j = i + 1;
+            let mut has_digit = false;
+            while j < chars.len() && chars[j].is_ascii_digit() {
+                has_digit = true;
+                j += 1;
+            }
+
+            if has_digit {
+                let rest: String = chars[j..].iter().take(3).collect();
+                let mut unit_len = 0;
+                if rest.starts_with("px")
+                    || rest.starts_with("em")
+                    || rest.starts_with("vh")
+                    || rest.starts_with("vw")
+                {
+                    unit_len = 2;
+                } else if rest.starts_with("%") || rest.starts_with("s") {
+                    unit_len = 1;
+                } else if rest.starts_with("rem") {
+                    unit_len = 3;
+                }
+
+                if unit_len > 0 {
+                    // Check for closing quote
+                    if j + unit_len < chars.len() && chars[j + unit_len] == '"' {
+                        // Found quoted unit! Skip the opening quote.
+                        i += 1;
+                        // Push the number
+                        while i < j {
+                            output.push(chars[i]);
+                            i += 1;
+                        }
+                        // Push the unit
+                        for _ in 0..unit_len {
+                            output.push(chars[i]);
+                            i += 1;
+                        }
+                        // Skip the closing quote
+                        i += 1;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        // Check for space between digit and unit (existing logic)
         if c.is_whitespace() && i > 0 && chars[i - 1].is_ascii_digit() {
             let rest: String = chars[i + 1..].iter().take(3).collect();
             if rest.starts_with("px")
@@ -717,12 +766,9 @@ fn clean_text(text: &str) -> String {
                 || rest.starts_with("vw")
                 || rest.starts_with("s")
             {
-                // Skip this space
                 i += 1;
                 continue;
             }
-            // Check for rem specially since it overlaps with em check if we aren't careful,
-            // but "rem" starts with "r", so it's distinct.
             if rest.starts_with("re") && chars[i + 1..].iter().take(3).collect::<String>() == "rem"
             {
                 i += 1;
