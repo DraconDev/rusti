@@ -108,7 +108,38 @@ rusti! {
 rusti! {
     <script>{`console.log("nope")`}</script>  // Syntax error
 }
+
+### ⚠️ Special Case: Inline JavaScript
+
+While simple scripts like `console.log("Hello")` might accidentally work, **always use raw strings** for `<script>` tags:
+
+```rust
+// ❌ FRAGILE - Works by accident, breaks easily
+rusti! {
+    <script>
+        console.log("This works...");
+        // But this breaks: let x = 2e10;  (scientific notation error)
+        // And this breaks: const msg = 'hello';  (character literal error)
+    </script>
+}
+
+// ✅ ROBUST - Use raw strings for all JavaScript
+rusti! {
+    <script>{r#"
+        console.log("Safe!");
+        const config = { timeout: 2e10 };  // Scientific notation OK
+        const msg = 'hello';                // Single quotes OK
+        document.querySelector('#app').textContent = "Rusti";
+    "#}</script>
+}
+
+// ✅ BEST - Link external scripts (recommended for production)
+rusti! {
+    <script src="/static/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org"></script>
+}
 ```
+
 
 ---
 
