@@ -315,6 +315,7 @@ impl Parse for Expression {
 
 impl Parse for Block {
     fn parse(input: ParseStream) -> Result<Self> {
+        eprintln!("Block::parse: entering");
         input.parse::<Token![@]>()?;
         let lookahead = input.lookahead1();
         if lookahead.peek(Token![if]) {
