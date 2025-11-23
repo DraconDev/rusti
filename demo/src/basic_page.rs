@@ -38,7 +38,7 @@ pub fn basic_page() -> impl rusti::Component {
                 <script>
                     console.log("Hello from Rusti!");
                 </script>
-                '_
+                '_ 'a 'a 'a 'a 'a'
             </body>
         </html>
     }
