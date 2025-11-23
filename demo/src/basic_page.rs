@@ -25,3 +25,19 @@ pub fn basic_page() -> impl rusti::Component {
 }
 
 
+pub fn extension_page() -> impl rusti::Component {
+    rusti! {
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Extension Page Example</title>
+            </head>
+            <body>
+                <h1>Welcome to the Extension Page!</h1>
+                <p>This is an additional page demonstrating more Rusti capabilities.</p>
+                <a href="/">Back to Basic Page</a>
+            </body>
+        </html>
+    }
+}
