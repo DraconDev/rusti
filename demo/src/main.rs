@@ -22,7 +22,10 @@ use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
 
-use crate::{basic_page::basic_page_handler, styles_demo::styles_demo2_handler};
+use crate::{
+    basic_page::basic_page_handler, quote_demo::quote_demo_handler,
+    styles_demo::styles_demo2_handler,
+};
 
 #[derive(Deserialize)]
 struct CounterForm {
