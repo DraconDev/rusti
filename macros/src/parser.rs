@@ -260,6 +260,7 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
 // Helper to take content balanced by delimiters
 fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str> {
     move |input: &str| {
+        // eprintln!("take_balanced input: '{}'", input);
         let mut depth = 0;
         let mut len = 0;
         for c in input.chars() {
@@ -273,6 +274,7 @@ fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str
             }
             len += c.len_utf8();
         }
+        // eprintln!("take_balanced len: {}, content: '{}'", len, &input[..len]);
         let (input, content) = input.split_at(len);
         Ok((input, content))
     }
