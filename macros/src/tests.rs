@@ -116,6 +116,28 @@ mod tests {
             Err(e) => {
                 panic!("Parse failed: {:?}", e);
             }
+            #[test]
+    fn test_parse_call() {
+        use crate::parser::parse_node;
+        let input = r#"@page_head("Title")"#;
+        let result = parse_node(input);
+        match result {
+            Ok((remaining, node)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Node: {:?}", node);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+                if let crate::parser::Node::Call { name, args, .. } = node {
+                    assert_eq!(name, "page_head");
+                    assert_eq!(args, "\"Title\"");
+                } else {
+                    panic!("Expected Call node, got {:?}", node);
+                }
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
         }
+    }
+}
     }
 }
