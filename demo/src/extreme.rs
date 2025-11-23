@@ -174,6 +174,7 @@ pub fn loops_example() -> impl rusti::Component {
 /// Example 4: Pattern Matching
 pub fn pattern_matching_example() -> impl rusti::Component {
     #[derive(Clone)]
+    #[allow(dead_code)] // Example enum - not all variants used
     enum Status {
         Active,
         Pending,
