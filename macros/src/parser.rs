@@ -275,7 +275,7 @@ fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str
             len += c.len_utf8();
         }
         // eprintln!("take_balanced len: {}, content: '{}'", len, &input[..len]);
-        let (input, content) = input.split_at(len);
+        let (content, input) = input.split_at(len);
         Ok((input, content))
     }
 }
