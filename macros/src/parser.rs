@@ -598,4 +598,22 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_html_with_space_after() {
+        let input = r#"<html lang="en"> <head></head></html>"#;
+        println!("Testing: {}", input);
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes count: {}", nodes.len());
+                assert_eq!(nodes.len(), 1);
+                assert!(remaining.is_empty());
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
