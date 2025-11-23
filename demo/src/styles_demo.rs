@@ -10,16 +10,16 @@ pub fn styles_demo() -> impl rusti::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Styles Demo</title>
                 <style>
-                    :root {
-                        --gradient-start: #0f172a;
-                        --gradient-end: #1e293b;
-                    }
+                    // :root {
+                    //     --gradient-start: #0f172a;
+                    //     --gradient-end: #1e293b;
+                    // }
                     body {
                         margin: 0;
                         background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
                         min-height: 100vh;
                         color: red;
-                        // background-color: #f00;
+                        background-color: #f00;
                     }
                 </style>
             </head>

@@ -7,7 +7,7 @@ use axum::{
 mod advanced;
 mod base_layout_demo;
 mod basic_page;
-// mod extreme;
+mod extreme;
 mod styles_demo;
 
 use base_layout_demo::base_layout_demo_handler;
@@ -671,24 +671,24 @@ async fn main() {
         .route("/advanced-match", get(advanced_match_demo))
         .route("/base-layout", get(base_layout_demo_handler))
         .route("/styles", get(styles_demo_handler))
-        .route("/forms", get(forms_demo));
+        .route("/forms", get(forms_demo))
         // Extreme examples - comprehensive feature demos
-        // .route("/examples/basic-html", get(extreme::basic_html_handler))
-        // .route(
-        //     "/examples/dynamic-content",
-        //     get(extreme::dynamic_content_handler),
-        // )
-        // .route("/examples/loops", get(extreme::loops_handler))
-        // .route(
-        //     "/examples/pattern-matching",
-        //     get(extreme::pattern_matching_handler),
-        // )
-        // .route(
-        //     "/examples/components",
-        //     get(extreme::component_composition_handler),
-        // )
-        // .route("/examples/dashboard", get(extreme::dashboard_handler))
-        // .route("/examples/form", get(extreme::form_handler));
+        .route("/examples/basic-html", get(extreme::basic_html_handler))
+        .route(
+            "/examples/dynamic-content",
+            get(extreme::dynamic_content_handler),
+        )
+        .route("/examples/loops", get(extreme::loops_handler))
+        .route(
+            "/examples/pattern-matching",
+            get(extreme::pattern_matching_handler),
+        )
+        .route(
+            "/examples/components",
+            get(extreme::component_composition_handler),
+        )
+        .route("/examples/dashboard", get(extreme::dashboard_handler))
+        .route("/examples/form", get(extreme::form_handler));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
