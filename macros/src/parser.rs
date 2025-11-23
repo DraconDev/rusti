@@ -295,11 +295,10 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     // eprintln!("parse_call name: {}", name);
     let (input, _) = multispace0(input)?;
 
-    panic!("parse_call before args: '{}'", input);
     let (input, args) = match delimited(char('('), take_balanced('(', ')'), char(')'))(input) {
         Ok(res) => res,
         Err(e) => {
-            // eprintln!("parse_call args failed: {:?}", e);
+            panic!("parse_call args failed: {:?}", e);
             return Err(e);
         }
     };
