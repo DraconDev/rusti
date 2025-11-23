@@ -15,7 +15,7 @@ If you write `margin: 2em;` (or `margin: 1ex;`), the compiler crashes before Rus
 - ✅ Valid: `margin: "2em";` (quotes prevent the lexer issue; Rusti will strip them)
 - ✅ Valid: `margin: 2.0em;` (adding a decimal point avoids the scientific notation)
 - ✅ Valid: `margin: 20px;` (units that don't start with `e` work without quotes)
-
+- ✅ You may wrap any CSS value in quotes for consistency, but it is only required for units that start with `e`.
 ### 2. No Backticks (\`) or Single Quotes (')
 - **Backticks**: Rust does not support backticks (\`) in source code. They are illegal tokens.
   Fix: Use Raw Strings (`r#" ... "#`).
