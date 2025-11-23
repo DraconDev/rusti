@@ -24,3 +24,4 @@ pub fn basic_page() -> impl rusti::Component {
     }
 }
 
+
