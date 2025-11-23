@@ -671,7 +671,7 @@ async fn main() {
         .route("/advanced-match", get(advanced_match_demo))
         .route("/base-layout", get(base_layout_demo_handler))
         .route("/styles", get(styles_demo_handler))
-        .route("/forms", get(forms_demo))
+        .route("/forms", get(forms_demo));
         // Extreme examples - comprehensive feature demos
         // .route("/examples/basic-html", get(extreme::basic_html_handler))
         // .route(
