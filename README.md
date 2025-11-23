@@ -513,6 +513,75 @@ async fn main() {
 
 ---
 
+## 🧠 Lifetime Management
+
+Rusti components are just Rust functions, so they follow standard lifetime rules. Here are the common patterns:
+
+### 1. Borrowed Data (The `'_` Pattern) - Recommended
+When your component takes references (like `&str`), use lifetime elision with `impl rusti::Component + '_`. This tells Rust "the output component lives as long as the input data".
+
+```rust
+// ✅ Clean and idiomatic
+fn user_card(name: &str) -> impl rusti::Component + '_ {
+    rusti! { <div>{name}</div> }
+}
+```
+
+### 2. Owned Data (No Lifetimes)
+If you pass owned data (like `String` or `i32`), no lifetime syntax is needed.
+
+```rust
+// ✅ No lifetime needed
+fn counter(count: i32) -> impl rusti::Component {
+    rusti! { <div>Count: {count}</div> }
+}
+```
+
+### 3. Static Data
+Constants have a `'static` lifetime, so they don't need annotations.
+
+```rust
+fn footer() -> impl rusti::Component {
+    const YEAR: &str = "2025";
+    rusti! { <footer>© {YEAR}</footer> }
+}
+```
+
+---
+
+## 📊 Competitive Analysis
+
+How does Rusti compare to other Rust templating solutions?
+
+| Feature | Rusti | Maud | Askama | Leptos | Tera |
+|---------|-------|------|--------|--------|------|
+| **Syntax** | HTML-like | Rust DSL | Jinja2-like | JSX-like | Jinja2-like |
+| **Type Safety** | ✅ Full Compile-time | ✅ Full | ✅ Full | ✅ Full | ❌ Runtime |
+| **Runtime Cost** | ✅ Zero (Native Code) | ✅ Zero | ✅ Zero | ⚠️ Virtual DOM | ❌ Parsing |
+| **Learning Curve** | Low (HTML) | Medium | Low | Medium | Low |
+| **Reactivity** | ❌ (Use HTMX) | ❌ | ❌ | ✅ Signals | ❌ |
+
+### Why Rusti?
+- **vs Maud**: Rusti uses actual HTML syntax, making it easier for web developers and copy-pasting from UI kits.
+- **vs Askama/Tera**: Rusti components are Rust functions, allowing full composition and IDE support without context switching to external files.
+- **vs Leptos**: Rusti is lighter weight (no WASM/Signals overhead) and framework-agnostic, perfect for server-side rendering.
+
+> **The "Rigor" Question**: Does using raw strings (`r#""#`) for CSS/JS sacrifice safety?
+> **No.** No Rust templating engine can type-check CSS or JS. Rusti is just explicit about this boundary, whereas others might hide it or treat it as opaque text.
+
+---
+
+## 📚 More Examples
+
+Check out **[EXAMPLES.md](EXAMPLES.md)** for copy-paste patterns including:
+- **HTMX Integration**
+- **Datastar Integration**
+- **Complex Forms**
+- **Layouts & Nesting**
+- **CSS Strategies**
+
+---
+
 ## 🛠️ Project Structure
 
 - **`src/`**: Runtime library (Component trait, escaping logic).
