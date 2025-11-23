@@ -4,6 +4,7 @@ mod parser;
 use proc_macro::TokenStream;
 use quote::quote;
 use std::str::FromStr;
+use syn::parse::Parser;
 
 #[proc_macro_attribute]
 pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {

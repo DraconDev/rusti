@@ -20,7 +20,10 @@ pub fn component_macro_page() -> impl rusti::Component {
     rusti! {
         <div>
             <h1>Component Macro Demo</h1>
-            @alert
+            @alert_box(
+                message = "Hello from Named Args!".to_string(),
+                is_error = false
+            )
         </div>
     }
 }
