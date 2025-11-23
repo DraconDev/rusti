@@ -14,11 +14,11 @@ pub fn quote_demo() -> impl rusti::Component {
                 <style>{css}</style>
             </head>
             <body class="p-8">
-                <h1 class='text-3xl font-bold text-center'>Quote & Braces Demo</h1>
+                <h1 class="text-3xl font-bold text-center">Quote & Braces Demo</h1>
                 <p class="mt-4">
                     This example shows how to embed <strong>single quotes</strong>, "double quotes", and JSON-like <code>{"key": "value"}</code> inside HTML attributes.
                 </p>
-                <button class='mt-6 px-4 py-2 bg-blue-600 text-white' data-info='{"action":"test","id":42}'>
+                <button class="mt-6 px-4 py-2 bg-blue-600 text-white" data-info="{\"action\":\"test\",\"id\":42}">
                     Click Me (data-info with JSON)
                 </button>
             </body>
