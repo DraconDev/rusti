@@ -33,3 +33,21 @@ pub fn styles_demo() -> impl rusti::Component {
 pub async fn styles_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&styles_demo()))
 }
+
+pub fn styles_demo2() -> impl rusti::Component {
+    rusti! {
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Styles Demo</title>
+                <style>
+        
+                </style>
+            </head>
+            <body class="flex items-center justify-center">
+                <h1 class="text-4xl font-bold text-white">Styles Demo</h1>
+            </body>
+        </html>
+    }
+}
