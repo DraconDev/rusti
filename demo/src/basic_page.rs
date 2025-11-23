@@ -26,7 +26,7 @@ pub fn basic_page() -> impl rusti::Component {
             <body>
                 <h1>Basic Rusti Page</h1>
                 <p>This demonstrates a simple Rusti component with inline CSS.</p>
-                <p>Note: The margin uses quoted "2em" to avoid Rust's scientific notation parser.</p>
+                <p>Note: The margin property uses quotes around 2em to avoid parser issues.</p>
                 
                 <script>{r#"
                     console.log("Hello from Rusti!");
