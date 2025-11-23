@@ -142,7 +142,27 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, attrs) = many0(preceded(multispace0, parse_attribute))(input)?;
 
     let (input, _) = multispace0(input)?;
-    let (input, _) = char('>')(input)?;
+
+    // Check for self-closing tag syntax: />
+    let (input, self_closing) = alt((
+        value(
+            true,
+            tuple((multispace0, char('/'), multispace0, char('>'))),
+        ),
+        value(false, char('>')),
+    ))(input)?;
+
+    // If it's a self-closing tag, return immediately
+    if self_closing {
+        return Ok((
+            input,
+            Node::Element {
+                name,
+                attrs,
+                children: vec![],
+            },
+        ));
+    }
 
     // List of void/self-closing HTML elements that don't have closing tags
     let void_elements = [
