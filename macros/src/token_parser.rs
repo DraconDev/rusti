@@ -360,20 +360,26 @@ impl Parse for Block {
 
 fn parse_html_name(input: ParseStream) -> Result<String> {
     let mut name = String::new();
-    if input.peek(Ident) {
-        let ident: Ident = input.parse()?;
+    if input.peek(Ident)
+        || input.peek(Token![type])
+        || input.peek(Token![for])
+        || input.peek(Token![match])
+        || input.peek(Token![async])
+    {
+        // We can't use Ident::parse_any easily because it's an extension trait method on Ident type?
+        // No, it's `Ident::parse_any(input)`.
+        // Wait, `Ident::parse_any` is a function in `ext::IdentExt` trait?
+        // `fn parse_any(input: ParseStream) -> Result<Self>`
+        // Yes.
+        let ident = Ident::parse_any(input)?;
         name.push_str(&ident.to_string());
 
         while input.peek(Token![-]) {
             input.parse::<Token![-]>()?;
             name.push('-');
-            if input.peek(Ident) {
-                let part: Ident = input.parse()?;
+            if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
+                let part = Ident::parse_any(input)?;
                 name.push_str(&part.to_string());
-            } else if input.peek(Token![type]) {
-                // Handle keywords like 'type'
-                input.parse::<Token![type]>()?;
-                name.push_str("type");
             } else {
                 // Allow numbers?
                 if input.peek(syn::Lit) {
