@@ -15,9 +15,7 @@
 
 ### 3. Typed Children
 - **Goal**: Better support for passing components as children.
-- **Implementation**:
-    - Support `children: impl Component` prop automatically?
-    - Slot mechanism?
+- **Status**: Completed.
 
 ### 4. Namespaced Attributes
 - [/] Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
