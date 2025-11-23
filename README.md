@@ -83,34 +83,35 @@ rusti! {
 
 ---
 
-## 2. Emoji & Unicode in Text
+## 2. Emoji & Unicode in Text ⚠️
 
-**Emojis and Unicode characters work perfectly** - you just need to use Rust variables!
+**Important:** Emojis and Unicode characters **cannot** be used directly in template text due to Rust's tokenizer. Use variables instead!
 
-**The Issue:** Rust's tokenizer runs before the `rusti!` macro, so emojis directly in text confuse the lexer.
-
-**The Solution:** Put emoji/Unicode text in Rust string variables:
-
+### ❌ This Doesn't Work
 ```rust
-// ❌ FAILS - Direct emoji in text
 rusti! {
-    <p>Status: ✅</p>  // Error: identifiers cannot contain emoji
-}
-
-// ✅ WORKS - Emoji in Rust variable
-let status = "Status: ✅";  // Rust strings support full Unicode
-rusti! {
-    <p>{status}</p>  // Perfect! Emoji renders correctly
-}
-
-// ✅ WORKS - Multiple emojis
-let greeting = "Hello 👋 Welcome! 🎉";
-rusti! {
-    <h1>{greeting}</h1>
+    <p>Status: ✅</p>  // ERROR: identifiers cannot contain emoji
+    <h1>Hello 👋</h1>  // ERROR: identifiers cannot contain emoji
 }
 ```
 
-**Why this works:** Rust correctly tokenizes strings, then we interpolate them into the template.
+### ✅ This Works - Use Variables
+```rust
+let status = "Status: ✅";       // Rust strings support full Unicode
+let greeting = "Hello 👋 Welcome! 🎉";
+
+rusti! {
+    <p>{status}</p>      // Perfect! Emoji renders correctly
+    <h1>{greeting}</h1>  // Works great!
+}
+```
+
+**Why:** Rust's tokenizer runs before the `rusti!` macro and treats emojis after whitespace as invalid identifier tokens. Rust string literals tokenize correctly, so we use variable interpolation.
+
+**Bonus:** This is actually better because:
+- You can use any Rust expression: `{format!("Count: {} ✅", count)}`
+- Type-safe and validated at compile-time
+- Follows standard Rust patterns
 
 ---
 
