@@ -21,7 +21,7 @@
     - Slot mechanism?
 
 ### 4. Namespaced Attributes
-- **Goal**: Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
+- [/] Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
 - **Implementation**: Update `parse_html_name` to handle `:`.
 
 ### 5. IDE Support
