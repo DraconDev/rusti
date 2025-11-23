@@ -2,4 +2,4 @@ datastar doesnt seem to work, the advanced examples also seems to cause trouble 
 
 we need to update the docs to include the "" or {} exceptions for rate cases like 2em
 
-ask how leptos and dioxus and other frameworks handle this like we are doing but other templating langs too 
+ask how leptos and dioxus and other frameworks handle this like we are doing but other templating langs too, like askama, 
