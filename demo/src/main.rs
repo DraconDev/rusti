@@ -521,13 +521,13 @@ fn counter_partial(count: i32) -> impl rusti::Component {
         <div class="text-6xl font-black text-pink-600 mb-6">{ count }</div>
         <div class="flex gap-4 justify-center">
             <form hx-post="/htmx/counter/increment" hx-target="#counter" hx-swap="innerHTML">
-                <input type="hidden" name="count" value={count.to_string().as_str()}></input>
+                <input type="hidden" name="count" value={count.to_string().as_str()}>
                 <button type="submit" class="px-6 py-3 bg-pink-600 text-white rounded-lg font-semibold hover:bg-pink-700 transition">
                     Increment
                 </button>
             </form>
             <form hx-post="/htmx/counter/decrement" hx-target="#counter" hx-swap="innerHTML">
-                <input type="hidden" name="count" value={count.to_string().as_str()}></input>
+                <input type="hidden" name="count" value={count.to_string().as_str()}>
                 <button type="submit" class="px-6 py-3 bg-slate-700 text-white rounded-lg font-semibold hover:bg-slate-600 transition">
                     Decrement
                 </button>
