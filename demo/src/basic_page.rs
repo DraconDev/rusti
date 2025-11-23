@@ -34,6 +34,7 @@ pub fn basic_page() -> impl rusti::Component {
             <body>
                 <!-- Main content section -->
                 <h1>Basic Page</h1>
+                <p class="">Basic Page</p>
                 <p>This is a basic Rusti page.</p>
                 <!-- Inline script for demonstration -->
                 <script>
