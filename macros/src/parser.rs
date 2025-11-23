@@ -726,6 +726,40 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_clean_text_units() {
+        assert_eq!(clean_text("margin: 2 em;"), "margin: 2em;");
+        assert_eq!(clean_text("padding: 10 px;"), "padding: 10px;");
+        assert_eq!(clean_text("width: 100 %;"), "width: 100%;");
+        assert_eq!(clean_text("height: 50 vh;"), "height: 50vh;");
+        assert_eq!(
+            clean_text("transform: rotate(45 deg);"),
+            "transform: rotate(45deg);"
+        );
+        assert_eq!(clean_text("font-size: 1.5 rem;"), "font-size: 1.5rem;");
+        // Quoted units
+        assert_eq!(clean_text("margin: \"2em\";"), "margin: 2em;");
+    }
+
+    #[test]
+    fn test_style_src() {
+        let input = r#"<style src="styles.css" />"#;
+        let result = parse_nodes(input);
+        if let Ok((_, nodes)) = result {
+            if let Node::Element { children, .. } = &nodes[0] {
+                if let Node::Expression(expr) = &children[0] {
+                    assert_eq!(expr, "include_str!(\"styles.css\")");
+                } else {
+                    panic!("Expected Expression child, got {:?}", children[0]);
+                }
+            } else {
+                panic!("Expected Element node");
+            }
+        } else {
+            panic!("Parse failed");
+        }
+    }
 }
 fn clean_text(text: &str) -> String {
     let mut output = String::with_capacity(text.len());
