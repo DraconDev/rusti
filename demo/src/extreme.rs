@@ -447,3 +447,84 @@ pub async fn form_handler() -> impl IntoResponse {
 }
 
 
+pub fn progress_tracker_example() -> impl rusti::Component {
+    #[derive(Debug, Clone)]
+    struct Task {
+        id: u32,
+        name: String,
+        progress: u8, // 0-100
+    }
+
+    let tasks = vec![
+        Task { id: 1, name: "Design UI mockups".to_string(), progress: 100 },
+        Task { id: 2, name: "Develop API endpoints".to_string(), progress: 75 },
+        Task { id: 3, name: "Implement frontend components".to_string(), progress: 50 },
+        Task { id: 4, name: "Write unit tests".to_string(), progress: 20 },
+        Task { id: 5, name: "Deploy to staging".to_string(), progress: 0 },
+    ];
+
+    let styles = r#"
+        body { margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f0f4f8, #d9e2ec); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .tracker-container { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+        h1 { margin-top: 0; color: #2d3748; text-align: center; margin-bottom: 2rem; }
+        .task-list { list-style: none; padding: 0; }
+        .task-item { background: #edf2f7; border-radius: 12px; margin-bottom: 1rem; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .task-header { display: flex; justify-content: space-between; align-items: center; }
+        .task-name { font-weight: 600; color: #4a5568; font-size: 1.1rem; }
+        .task-progress-text { font-size: 0.9rem; color: #718096; }
+        .progress-bar-container { width: 100%; background: #e2e8f0; border-radius: 9999px; height: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; border-radius: 9999px; transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out; }
+        .progress-bar.red { background-color: #fc8181; }
+        .progress-bar.orange { background-color: #f6ad55; }
+        .progress-bar.yellow { background-color: #fbd38d; }
+        .progress-bar.green { background-color: #68d391; }
+        .progress-bar.blue { background-color: #63b3ed; }
+    "#;
+
+    rusti! {
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Progress Tracker</title>
+                <style>{ styles }</style>
+            </head>
+            <body>
+                <div class="tracker-container">
+                    <h1>Project Progress</h1>
+                    <ul class="task-list">
+                        @for task in tasks.iter() {
+                            <li class="task-item">
+                                <div class="task-header">
+                                    <span class="task-name">{ task.name }</span>
+                                    <span class="task-progress-text">{ format!("{}%", task.progress) }</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div
+                                        class={
+                                            format!(
+                                                "progress-bar {}",
+                                                match task.progress {
+                                                    0..=25 => "red",
+                                                    26..=50 => "orange",
+                                                    51..=75 => "yellow",
+                                                    76..=99 => "blue",
+                                                    _ => "green", // 100
+                                                }
+                                            )
+                                        }
+                                        style={ format!("width: {}%;", task.progress) }
+                                    ></div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </body>
+        </html>
+    }
+}
+
+pub async fn progress_tracker_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&progress_tracker_example()))
+}
