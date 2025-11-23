@@ -669,6 +669,7 @@ async fn main() {
         .route("/nested-loops", get(nested_loops_demo))
         .route("/advanced-match", get(advanced_match_demo))
         .route("/base-layout", get(base_layout_demo_handler))
+        .route("/styles", get(styles_demo))
         .route("/forms", get(forms_demo));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
