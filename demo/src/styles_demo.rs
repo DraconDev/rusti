@@ -23,7 +23,7 @@ pub fn styles_demo() -> impl rusti::Component {
                     }
                 </style>
             </head>
-            <body class="flex items-center justify-center">
+            <body class="flex items-center justify-center body">
                 <h1 class="text-4xl font-bold text-white">Styles Demo</h1>
             </body>
         </html>
@@ -47,6 +47,9 @@ pub fn styles_demo2() -> impl rusti::Component {
                         padding: 20px;
                         background-color: #f0f0f0;
                         border-radius: 8px;
+                    }
+                    .body {
+                        background-color: #222222;
                     }
                     .extension-item {
                         margin-bottom: 15px;
@@ -123,7 +126,7 @@ pub fn styles_demo2() -> impl rusti::Component {
                 </style>
             </head>
             <body class="flex items-center justify-center">
-                <h1 class="text-4xl font-bold text-white">Styles Demo</h1>
+                <h1 class="text-4xl font-bold text-white">Styles Demo2</h1>
             </body>
         </html>
     }
