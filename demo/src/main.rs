@@ -24,7 +24,7 @@ use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
 
-use crate::styles_demo::styles_demo2_handler;
+use crate::{basic_page::basic_page_handler, styles_demo::styles_demo2_handler};
 
 #[derive(Deserialize)]
 struct CounterForm {
@@ -673,6 +673,7 @@ async fn forms_demo() -> impl IntoResponse {
 async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
+        .route("/basic", get(basic_page_handler))
         .route("/about", get(about_demo))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
