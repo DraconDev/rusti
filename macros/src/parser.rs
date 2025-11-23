@@ -580,4 +580,22 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_simple_element_with_quotes() {
+        let input = r#"<html lang="en"></html>"#;
+        println!("Testing: {}", input);
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:#?}", nodes);
+                assert_eq!(nodes.len(), 1);
+                assert!(remaining.is_empty());
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
