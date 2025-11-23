@@ -16,35 +16,35 @@ pub fn quote_demo() -> impl rusti::Component {
                     <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
                         Quotes & Special Cases
                     </h1>
-                    
+
                     <!-- Example 1: Attributes always use double quotes -->
                     <section class="bg-gray-800 p-6 rounded-lg">
                         <h2 class="text-2xl font-bold mb-4">1. Attributes Use Double Quotes</h2>
                         <p class="text-gray-300">All HTML attributes must use double quotes in Rusti.</p>
                         <code class="block bg-gray-700 p-4 mt-2 rounded">class="container"</code>
                     </section>
-                    
+
                     <!-- Example 2: JSON in attributes needs raw strings -->
                     <section class="bg-gray-800 p-6 rounded-lg">
                         <h2 class="text-2xl font-bold mb-4">2. JSON in Attributes</h2>
                         <p class="text-gray-300 mb-2">For HTMX, Alpine.js, or Datastar:</p>
-                        <div data-config={r#"{"theme": "dark", "timeout": 1000}"#} 
+                        <div data-config={r#"{"theme": "dark", "timeout": 1000}"#}
                              class="bg-gray-700 p-4 rounded">
                             This div has JSON in data-config (check the source!)
                         </div>
                     </section>
-                    
+
                     <!-- Example 3: Inline scripts with raw strings -->
                     <section class="bg-gray-800 p-6 rounded-lg">
                         <h2 class="text-2xl font-bold mb-4">3. Inline JavaScript</h2>
                         <p class="text-gray-300">Always use raw strings for script content:</p>
-                        <button 
+                        <button
                             onclick={r#"alert('Single quotes work in raw strings!')"#}
                             class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded mt-2">
                             Click Me
                         </button>
                     </section>
-                    
+
                     <!-- Example 4: CSS units -->
                     <section class="bg-gray-800 p-6 rounded-lg">
                         <h2 class="text-2xl font-bold mb-4">4. CSS Units</h2>
@@ -57,7 +57,7 @@ pub fn quote_demo() -> impl rusti::Component {
                             }
                         "#}</style>
                         <div class="demo-box">
-                            This uses 2em margin (via raw string in style tag)
+                            This uses margin with em units (via raw string in style tag)
                         </div>
                     </section>
                 </div>
