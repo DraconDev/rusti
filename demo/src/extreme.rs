@@ -587,7 +587,7 @@ pub fn form_example() -> impl rusti::Component {
                 <style>
                     body {
                         margin: 0;
-                        padding: 20px;
+                        padding: 20p;
                         font-family: system-ui;
                         background: linear-gradient(to bottom right, rgb(255, 110, 127), rgb(191, 233, 255));
                         min-height: 100vh;
