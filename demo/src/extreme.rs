@@ -225,6 +225,7 @@
 
 // These examples should give you a solid foundation for using the `rusti!` macro in a variety of real‑world scenarios.
 
+use rusti::rusti;
 use crate::base_layout_demo::base_layout;
 
 fn extreme_example(is_authenticated: bool, user_name: &str, items: &[&str]) -> impl rusti::Component + '_ {
