@@ -19,7 +19,7 @@ pub fn base_layout<'a>(
                 <title>{title}</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
                 <script src="https://cdn.tailwindcss.com"></script>
-                <style>body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}.glass-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}.glow-effect{box-shadow:0 0 20px rgba(6,182,212,0.3)}</style>
+                <style></style>
             </head>
             <body class="bg-gray-900 text-white min-h-screen">
                 <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
