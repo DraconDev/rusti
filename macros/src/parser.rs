@@ -295,12 +295,20 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     // eprintln!("parse_call name: {}", name);
     let (input, _) = multispace0(input)?;
 
-    let (input, args) = match delimited(char('('), take_balanced('(', ')'), char(')'))(input) {
+    // Manual parsing for debugging
+    let (input, _) = match char('(')(input) {
         Ok(res) => res,
-        Err(e) => {
-            panic!("parse_call args failed: {:?}", e);
-            return Err(e);
-        }
+        Err(e) => panic!("parse_call failed at '(': {:?}", e),
+    };
+
+    let (input, args) = match take_balanced('(', ')')(input) {
+        Ok(res) => res,
+        Err(e) => panic!("parse_call failed at args content: {:?}", e),
+    };
+
+    let (input, _) = match char(')')(input) {
+        Ok(res) => res,
+        Err(e) => panic!("parse_call failed at ')': {:?}, input: '{}'", e, input),
     };
     // eprintln!("parse_call args: {}", args);
 
