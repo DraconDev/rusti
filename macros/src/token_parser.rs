@@ -195,6 +195,7 @@ impl Parse for Element {
 
                 // Expect closing tag
                 if input.peek(Token![<]) && input.peek2(Token![/]) {
+                    eprintln!("Element::parse: Found closing tag sequence");
                     input.parse::<Token![<]>()?;
                     input.parse::<Token![/]>()?;
                     let closing_name = parse_html_name(input)?;
