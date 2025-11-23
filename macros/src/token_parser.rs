@@ -328,7 +328,13 @@ impl Parse for Block {
         } else {
             // Component or Call
             // Check if it's a path
-            let path: syn::Path = input.parse()?;
+            let path: syn::Path = match input.parse() {
+                Ok(p) => p,
+                Err(e) => {
+                    eprintln!("Block::parse: Failed to parse path: {}", e);
+                    return Err(e);
+                }
+            };
             eprintln!(
                 "Block::parse: Parsed path: {:?}",
                 path.to_token_stream().to_string()
