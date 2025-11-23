@@ -276,10 +276,10 @@ pub fn form_example() -> impl rusti::Component {
     rusti! {
         <html lang="en">
             <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Form Example</title>
-                <style>{styles}</style>
+                // <meta charset="UTF-8" />
+                // <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                // <title>Form Example</title>
+                // <style>{styles}</style>
             </head>
             <body>
                 <div class="form-container">
@@ -290,15 +290,15 @@ pub fn form_example() -> impl rusti::Component {
                             <input type="text" id="name" name="name" required />
                         </div>
 
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required />
-                        </div>
+                        // <div class="form-group">
+                        //     <label for="email">Email</label>
+                        //     <input type="email" id="email" name="email" required />
+                        // </div>
 
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
+                        // <div class="form-group">
+                        //     <label for="message">Message</label>
+                        //     <textarea id="message" name="message" rows="5" required></textarea>
+                        // </div>
 
                         <button type="submit" class="submit-btn">
                             Send Message
