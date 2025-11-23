@@ -7,6 +7,8 @@ use axum::{
 mod advanced;
 mod base_layout_demo;
 
+use base_layout_demo::base_layout_demo_handler;
+
 use rusti::rusti;
 use serde::Deserialize;
 
