@@ -10,6 +10,25 @@ pub fn basic_page() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic Page</title>
+                <!-- Add your CSS stylesheets here -->
+                <!-- <link rel="stylesheet" href="/styles.css" /> -->
+
+                <!-- Add any meta tags for SEO or social media here -->
+                <!-- <meta name="description" content="A simple Rusti application." /> -->
+                <!-- <meta property="og:title" content="Basic Page" /> -->
+
+                <!-- You can also include inline styles if necessary -->
+                <style>
+                    body {
+                        font-family: sans-serif;
+                        margin: 2em;
+                        background-color: #f4f4f4;
+                        color: #333;
+                    }
+                    h1 {
+                        color: #0056b3;
+                    }
+                </style>
             </head>
             <body>
                 <!-- Main content section -->
