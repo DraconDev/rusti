@@ -571,6 +571,8 @@ pub fn form_example() -> impl rusti::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Form Example</title>
 
+                <style>{style}</style>
+
                 <style>{r#"
                     body {
                         margin: 0;
