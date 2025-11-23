@@ -162,10 +162,9 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                 };
 
                 // Try to parse as named arguments (key = value)
-                let named_args = if let Ok(exprs) = syn::parse_str::<
-                    syn::punctuated::Punctuated<syn::Expr, syn::token::Comma>,
-                >(args)
-                {
+                let parser =
+                    syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
+                let named_args = if let Ok(exprs) = parser.parse_str(args) {
                     if !exprs.is_empty() && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
                     {
                         Some(exprs)
