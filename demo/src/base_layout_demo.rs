@@ -42,7 +42,7 @@ fn navbar(is_authenticated: bool) -> impl rusti::Component {
                                 "Logout"
                             </button>
                         </form>
-                    } @else {
+                    } else {
                         <a href="/login" class="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-2 rounded-lg transition-all">
                             "Login"
                         </a>
