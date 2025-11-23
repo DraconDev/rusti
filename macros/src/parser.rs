@@ -287,7 +287,7 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
-    panic!("parse_call called with: {}", input);
+    // panic!("parse_call called with: {}", input);
     // eprintln!("parse_call input: {}", input);
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
