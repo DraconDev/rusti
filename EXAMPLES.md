@@ -128,7 +128,7 @@ where
     rusti! {
         @if data.is_empty() {
             <p class="text-gray-500 italic">{empty_message}</p>
-        } @else {
+        } else {
             <table class={table_classes}>
                 <tbody>
                     @for (idx, item) in data.iter().enumerate() {
@@ -388,7 +388,7 @@ fn login_form(error: Option<&str>) -> impl rusti::Component {
                 <div id="login-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                     {err}
                 </div>
-            } @else {
+            } else {
                 <div id="login-error"></div>
             }
             
@@ -511,7 +511,7 @@ where
     rusti! {
         @if is_authenticated {
             @(render_content())
-        } @else {
+        } else {
             <div class="text-center p-8">
                 <p class="text-xl mb-4">"Please log in to continue"</p>
                 <a href="/login" class="px-4 py-2 bg-blue-500 text-white rounded">
@@ -700,7 +700,7 @@ fn dynamic_button(is_primary: bool, is_loading: bool) -> impl rusti::Component {
         <button class={classes} disabled={is_loading}>
             @if is_loading {
                 <span>"Loading..."</span>
-            } @else {
+            } else {
                 <span>"Submit"</span>
             }
         </button>

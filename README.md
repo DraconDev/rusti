@@ -253,7 +253,7 @@ fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component
             {/* Conditionals */}
             @if users.is_empty() {
                 <p>No users found.</p>
-            } @else {
+            } else {
                 <p>Found { users.len() } users.</p>
             }
         </div>
