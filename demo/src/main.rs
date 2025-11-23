@@ -24,7 +24,7 @@ struct CounterForm {
 }
 
 // Head component - contains page metadata and stylesheets
-fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
+pub fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <head>
             <title>{ title }</title>
@@ -35,7 +35,7 @@ fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
 }
 
 // Header component - displays page title and subtitle
-fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component + 'a {
+pub fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <header class="text-center mb-16">
             <div class="inline-block">
@@ -53,7 +53,7 @@ fn page_header<'a>(title: &'a str, subtitle: &'a str) -> impl rusti::Component +
 }
 
 // Footer component - displays copyright and attribution
-fn page_footer(year: i32) -> impl rusti::Component {
+pub fn page_footer(year: i32) -> impl rusti::Component {
     rusti! {
         <footer class="text-center mt-16 pt-8 border-t border-slate-800">
             <p class="text-slate-500">Copyright { year } - Built with Rusti</p>
@@ -548,6 +548,11 @@ fn counter_partial(count: i32) -> impl rusti::Component {
 }
 
 // Wrappers for Advanced Demos
+
+// About page handler
+async fn about_demo() -> impl IntoResponse {
+    Html(rusti::render_to_string(&about_page_wrapper()))
+}
 fn nested_loops_page_wrapper() -> impl rusti::Component {
     let year = 2025;
     rusti! {
@@ -660,7 +665,7 @@ async fn forms_demo() -> impl IntoResponse {
 async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
-        .route("/about", get(about_page_wrapper))
+        .route("/about", get(about_demo))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
         .route("/lists", get(lists_demo))

@@ -1,4 +1,5 @@
 // About page demo for Rusti
+use rusti::rusti;
 
 pub fn about_page() -> impl rusti::Component {
     let year = 2025;
@@ -13,7 +14,7 @@ pub fn about_page() -> impl rusti::Component {
                             <h2 class="text-4xl font-bold text-slate-100 mb-8 text-center">What is Rusti?</h2>
                             <p class="text-slate-300 max-w-3xl mx-auto">
                                 Rusti is a Rust macro that lets you write HTML-like syntax directly in Rust,
-                                providing zero‑cost, type‑safe UI rendering with automatic XSS protection.
+                                providing zero-cost, type-safe UI rendering with automatic XSS protection.
                             </p>
                             <p class="text-slate-300 max-w-3xl mx-auto mt-4">
                                 This demo showcases components, conditionals, loops, pattern matching,
