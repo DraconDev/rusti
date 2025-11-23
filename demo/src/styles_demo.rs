@@ -43,7 +43,7 @@ pub fn styles_demo2() -> impl rusti::Component {
                 <title>Styles Demo</title>
                 <style>
                     .extension-container {
-                        border: 1px solid #ccc; 
+                        border: 1px solid #ccc;
                         padding: 20px;
                         background-color: #f0f0f0;
                         border-radius: 8px;
@@ -82,9 +82,44 @@ pub fn styles_demo2() -> impl rusti::Component {
                     a:hover {
                         text-decoration: underline;
                     }
-                    
-
-        
+                    .card {
+                        background-color: #ffffff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        padding: 20px;
+                        margin: 20px;
+                        max-width: 400px;
+                    }
+                    .card:hover {
+                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+                    }
+                    .card-title {
+                        font-size: 24px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                    }
+                    .card-content {
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+                    .card-footer {
+                        margin-top: 20px;
+                        text-align: center;
+                    }
+                    .card-footer a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                    .card-footer a:hover {
+                        text-decoration: underline;
+                    }
+                    .card-footer a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                    .card-footer a:hover {
+                        text-decoration: underline;
+                    }
                 </style>
             </head>
             <body class="flex items-center justify-center">
