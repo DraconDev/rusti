@@ -55,6 +55,34 @@ pub fn styles_demo2() -> impl rusti::Component {
                         border-radius: 5px;
                         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     }
+                    .button {
+                        background-color: #007bff;
+                        color: white;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    }
+                    .button:hover {
+                        background-color: #0056b3;
+                    }
+                    .input-field {
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                    }
+                    a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                    
 
         
                 </style>
