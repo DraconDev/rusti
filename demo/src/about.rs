@@ -24,7 +24,7 @@ pub fn about_page() -> impl rusti::Component {
 
                             </p>
                         </section>
-                        <a href="/">{"Back to Home ✅"}</a>
+                        <a href="/">{home_text}</a>
                     </main>
                     @page_footer(year)
                 </div>
