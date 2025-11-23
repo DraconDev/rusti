@@ -44,7 +44,7 @@ pub fn dynamic_content_example() -> impl rusti::Component {
                     <p>You have <span class="badge">{ message_count }</span> new messages.</p>
                     @if logged_in {
                         <p class="status">Status: Logged In</p>
-                    } @else {
+                    } else {
                         <p>Please log in to continue.</p>
                     }
                 </div>
@@ -165,8 +165,9 @@ fn card(title: &str, content: impl rusti::Component) -> impl rusti::Component + 
 }
 
 fn button(label: &str, color: &str) -> impl rusti::Component + '_ {
+    let class_name = format!("btn btn-{}", color);
     rusti! {
-        <button class={"btn btn-"}{color}>{ label }</button>
+        <button class={class_name.as_str()}>{ label }</button>
     }
 }
 
