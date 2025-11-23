@@ -34,13 +34,13 @@ pub fn basic_page() -> impl rusti::Component {
             <body>
                 <!-- Main content section -->
                 <h1>Basic Page</h1>
-                <p class="">Basic Page</p>
+                // <p style="color: blue;">Basic Page</p>
                 <p>This is a basic Rusti page.</p>
                 <!-- Inline script for demonstration -->
                 <script>
                     console.log("Hello from Rusti!");
                 </script>
-                '_ 'a 'a 'a 'a 'a'
+                // '_ 'a 'a 'a 'a 'a'
                 <a href="https://google.com">
             </body>
         </html>
