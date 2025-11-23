@@ -18,8 +18,9 @@ pub fn base_layout<'a>(
         title, navbar_html, content_html
     );
 
+    let html_clone = full_html.clone();
     rusti! {
-        {full_html}
+        {html_clone}
     }
 }
 
