@@ -167,6 +167,7 @@ impl Parse for Element {
         let start_span = input.span();
         input.parse::<Token![<]>()?;
         let name = parse_html_name(input)?;
+        // eprintln!("Parsing element: {}", name);
 
         let mut attrs = Vec::new();
         while !input.peek(Token![>]) && !input.peek(Token![/]) {
