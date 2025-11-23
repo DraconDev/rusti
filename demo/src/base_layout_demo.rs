@@ -2,7 +2,6 @@
 
 use axum::response::{Html, IntoResponse};
 use rusti::rusti;
-use std::rc::Rc;
 
 /// Base layout component that wraps provided content with a full HTML page.
 pub fn base_layout<'a>(
@@ -10,24 +9,33 @@ pub fn base_layout<'a>(
     is_authenticated: bool,
     content: impl rusti::Component + 'a,
 ) -> impl rusti::Component + 'a {
-    // Render navbar and content to strings
-    let navbar_html = navbar_html(is_authenticated);
-    let content_html = rusti::render_to_string(&content);
-
-    let full_html = Rc::new(format!(
-        r#"<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{}</title><script src="https://unpkg.com/htmx.org@1.9.10"></script><script src="https://cdn.tailwindcss.com"></script><style>body{{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}}.glass-card{{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}}.glow-effect{{box-shadow:0 0 20px rgba(6,182,212,0.3)}}</style></head><body class="bg-gray-900 text-white min-h-screen">{}<div class="container mx-auto px-4 py-8">{}</div></body></html>"#,
-        title, navbar_html, content_html
-    ));
+    // Inline CSS as a string to avoid parser issues with style tag content
+    let styles = "body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}.glass-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}.glow-effect{box-shadow:0 0 20px rgba(6,182,212,0.3)}";
 
     rusti! {
-        {full_html.as_ref()}
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{title}</title>
+                <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <style>{styles}</style>
+            </head>
+            <body class="bg-gray-900 text-white min-h-screen">
+                @navbar(is_authenticated)
+                <div class="container mx-auto px-4 py-8">
+                    @content
+                </div>
+            </body>
+        </html>
     }
 }
 
-/// Generate navbar HTML based on authentication status.
-fn navbar_html(is_authenticated: bool) -> String {
+/// Navbar component - returns different markup based on auth status
+fn navbar(is_authenticated: bool) -> impl rusti::Component {
     if is_authenticated {
-        rusti::render_to_string(&rusti! {
+        rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
@@ -53,9 +61,9 @@ fn navbar_html(is_authenticated: bool) -> String {
                     </div>
                 </div>
             </nav>
-        })
+        }
     } else {
-        rusti::render_to_string(&rusti! {
+        rusti! {
             <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-6">
@@ -73,7 +81,7 @@ fn navbar_html(is_authenticated: bool) -> String {
                     </div>
                 </div>
             </nav>
-        })
+        }
     }
 }
 
