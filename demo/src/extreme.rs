@@ -564,6 +564,8 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
 /// Example 7: Form with Validation Styles
 pub fn form_example() -> impl rusti::Component {
     let style = " margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f00 0%, #f00 100%); min-height: 100vh; ";
+
+    let style2 = r#" margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f00 0%, #f00 100%); min-height: 100vh; "#;
     rusti! {
         <html lang="en">
             <head>
@@ -572,8 +574,9 @@ pub fn form_example() -> impl rusti::Component {
                 <title>Form Example</title>
 
                 <style>{style}</style>
+                <style>{style2}</style>
 
-                <style>{"
+                <style>{r#"
                     body {
                         margin: 0;
                         padding: 20px; /* 20px works fine */
@@ -585,7 +588,7 @@ pub fn form_example() -> impl rusti::Component {
                         padding: 2em; /* 2em WORKS HERE NOW! */
                         background: #f00;
                     }
-                "}</style>
+                "#}</style>
                 <style>
                     body {
                         margin: 0;
