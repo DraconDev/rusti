@@ -297,35 +297,13 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     // eprintln!("parse_call name: {}", name);
     let (input, _) = multispace0(input)?;
 
-    // Manual parsing for debugging
-    let (input, _) = match char::<&str, nom::error::Error<&str>>('(')(input) {
+    // panic!("parse_call before args: '{}'", input);
+    let (input, args) = match delimited(char('('), take_balanced('(', ')'), char(')'))(input) {
         Ok(res) => res,
-        Err(e) => panic!("parse_call failed at '(': {:?}", e),
-    };
-
-    // Inline take_balanced logic for debugging
-    let mut depth = 0;
-    let mut len = 0;
-    let open = '(';
-    let close = ')';
-    for c in input.chars() {
-        // eprintln!("Char: '{}', depth: {}", c, depth);
-        if c == open {
-            depth += 1;
-        } else if c == close {
-            if depth == 0 {
-                break;
-            }
-            depth -= 1;
+        Err(e) => {
+            // eprintln!("parse_call args failed: {:?}", e);
+            return Err(e);
         }
-        len += c.len_utf8();
-    }
-    // eprintln!("Calculated len: {}", len);
-    let (input, args) = input.split_at(len);
-
-    let (input, _) = match char::<&str, nom::error::Error<&str>>(')')(input) {
-        Ok(res) => res,
-        Err(e) => panic!("parse_call failed at ')': {:?}, input: '{}'", e, input),
     };
     // eprintln!("parse_call args: {}", args);
 
@@ -351,7 +329,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_component_var(input: &str) -> IResult<&str, Node> {
-    panic!("parse_component_var called with: {}", input);
+    // panic!("parse_component_var called with: {}", input);
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = parse_path(input)?;
