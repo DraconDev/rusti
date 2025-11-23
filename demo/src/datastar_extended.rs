@@ -1,5 +1,5 @@
 use axum::response::{Html, IntoResponse};
-use rusti::{Component, rusti};
+use rusti::rusti;
 
 /// A more complex Datastar demo with nested state, computed values, and event handling.
 pub fn datastar_extended_demo() -> impl rusti::Component {
@@ -36,15 +36,15 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                         newUserName: '',
                         newUserRole: 'User'
                     }">
-                        
+
                         <!-- Search and Filter Controls -->
                         <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 space-y-6">
                             <div class="flex flex-col md:flex-row gap-4">
                                 <div class="flex-1">
                                     <label class="block text-sm font-medium text-gray-400 mb-1">Search Users</label>
-                                    <input type="text" 
-                                           data-model="search" 
-                                           placeholder="Type to filter..." 
+                                    <input type="text"
+                                           data-model="search"
+                                           placeholder="Type to filter..."
                                            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-500 focus:outline-none transition" />
                                 </div>
                                 <div class="flex items-end">
@@ -78,13 +78,13 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-700">
-                                    <!-- 
+                                    <!--
                                         Note: In a real Datastar app, we might use a backend loop or a client-side repeater.
-                                        Since Rusti is server-side, we will render the initial list, but for this demo 
-                                        we are testing the PARSER'S ability to handle these complex data attributes.
+                                        Since Rusti is server-side, we will render the initial list, but for this demo
+                                        we are testing the parsers ability to handle these complex data attributes.
                                         We will simulate client-side visibility toggling.
                                     -->
-                                    <tr class="hover:bg-gray-700/50 transition" 
+                                    <tr class="hover:bg-gray-700/50 transition"
                                         data-show="$showInactive || true"> <!-- Hardcoded true for demo visibility, normally logic -->
                                         <td class="px-6 py-4">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -99,7 +99,7 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-gray-700/50 transition" 
+                                    <tr class="hover:bg-gray-700/50 transition"
                                         data-show="$showInactive"> <!-- This row toggles based on checkbox -->
                                         <td class="px-6 py-4">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -123,20 +123,20 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                             <h3 class="text-xl font-bold mb-4 text-white">Add New User</h3>
                             <form data-on-submit__prevent="alert('Added user: ' + $newUserName + ' as ' + $newUserRole); $newUserName = '';">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <input type="text" 
-                                           data-model="newUserName" 
-                                           placeholder="Username" 
-                                           class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-500 focus:outline-none text-white" 
+                                    <input type="text"
+                                           data-model="newUserName"
+                                           placeholder="Username"
+                                           class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-500 focus:outline-none text-white"
                                            required />
-                                    
-                                    <select data-model="newUserRole" 
+
+                                    <select data-model="newUserRole"
                                             class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-500 focus:outline-none text-white">
                                         <option value="User">User</option>
                                         <option value="Manager">Manager</option>
                                         <option value="Admin">Admin</option>
                                     </select>
 
-                                    <button type="submit" 
+                                    <button type="submit"
                                             class="bg-gradient-to-r from-pink-600 to-violet-600 hover:from-pink-500 hover:to-violet-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition hover:-translate-y-0.5">
                                         Add User
                                     </button>

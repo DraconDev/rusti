@@ -1,5 +1,5 @@
 use axum::response::{Html, IntoResponse};
-use rusti::{rusti, Component};
+use rusti::rusti;
 
 /// Demonstrates Tailwind CSS utilities via a Rusti component.
 pub fn tailwind_demo() -> impl rusti::Component {
