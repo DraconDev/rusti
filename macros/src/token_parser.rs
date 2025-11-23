@@ -373,7 +373,7 @@ fn parse_html_name(input: ParseStream) -> Result<String> {
                 // Allow numbers?
                 if input.peek(syn::Lit) {
                     let lit: syn::Lit = input.parse()?;
-                    name.push_str(&lit.to_string());
+                    name.push_str(&lit.to_token_stream().to_string());
                 }
             }
         }
