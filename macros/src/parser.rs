@@ -287,22 +287,22 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
-    // println!("parse_call input: {}", input);
+    // eprintln!("parse_call input: {}", input);
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = parse_path(input)?;
-    // println!("parse_call name: {}", name);
+    // eprintln!("parse_call name: {}", name);
     let (input, _) = multispace0(input)?;
 
-    // println!("parse_call before args: {}", input);
+    // eprintln!("parse_call before args: {}", input);
     let (input, args) = match delimited(char('('), take_balanced('(', ')'), char(')'))(input) {
         Ok(res) => res,
         Err(e) => {
-            // println!("parse_call args failed: {:?}", e);
+            // eprintln!("parse_call args failed: {:?}", e);
             return Err(e);
         }
     };
-    // println!("parse_call args: {}", args);
+    // eprintln!("parse_call args: {}", args);
 
     let (input, _) = multispace0(input)?;
 
