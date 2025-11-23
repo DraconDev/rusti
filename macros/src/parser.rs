@@ -327,6 +327,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
 }
 
 fn parse_component_var(input: &str) -> IResult<&str, Node> {
+    panic!("parse_component_var called with: {}", input);
     let (input, _) = char('@')(input)?;
     let (input, _) = multispace0(input)?;
     let (input, name) = parse_path(input)?;
