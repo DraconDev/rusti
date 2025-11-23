@@ -378,9 +378,15 @@ fn parse_html_name(input: ParseStream) -> Result<String> {
         let ident = Ident::parse_any(input)?;
         name.push_str(&ident.to_string());
 
-        while input.peek(Token![-]) {
-            input.parse::<Token![-]>()?;
-            name.push('-');
+        while input.peek(Token![-]) || input.peek(Token![:]) {
+            if input.peek(Token![-]) {
+                input.parse::<Token![-]>()?;
+                name.push('-');
+            } else {
+                input.parse::<Token![:]>()?;
+                name.push(':');
+            }
+
             if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
                 let part = Ident::parse_any(input)?;
                 name.push_str(&part.to_string());
