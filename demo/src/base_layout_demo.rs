@@ -7,6 +7,8 @@ use rusti::rusti;
 fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{ title }</title>
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             <script src="https://cdn.tailwindcss.com"></script>
@@ -14,13 +16,16 @@ fn page_head<'a>(title: &'a str) -> impl rusti::Component + 'a {
     }
 }
 
-/// Test function with parameters and component calls
-fn test_with_params<'a>(title: &'a str) -> impl rusti::Component + 'a {
+/// Test function with content parameter
+fn test_with_content<'a>(
+    title: &'a str,
+    content: impl rusti::Component + 'a,
+) -> impl rusti::Component + 'a {
     rusti! {
         <html lang="en">
             @page_head(title)
             <body>
-                <h1>"Hello"</h1>
+                @content
             </body>
         </html>
     }
@@ -28,7 +33,11 @@ fn test_with_params<'a>(title: &'a str) -> impl rusti::Component + 'a {
 
 /// Wrapper function to expose a demo page using the base layout.
 pub fn base_layout_demo() -> impl rusti::Component {
-    test_with_params("Test Title")
+    let content = rusti! {
+        <h1>"Welcome to the Base Layout Demo"</h1>
+        <p>"This page demonstrates the base_layout component with navbar."</p>
+    };
+    test_with_content("Test Title", content)
 }
 
 /// Axum handler for the `/base-layout` route.
