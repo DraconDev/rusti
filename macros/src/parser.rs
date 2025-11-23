@@ -69,6 +69,7 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
         parse_match,
         parse_expression,
         parse_call,
+        parse_component_var,
         parse_element,
         parse_text,
     ))(input)
@@ -96,6 +97,22 @@ fn is_identifier_char(c: char) -> bool {
 fn parse_identifier(input: &str) -> IResult<&str, String> {
     let (input, name) = take_while1(is_identifier_char)(input)?;
     Ok((input, name.to_string()))
+}
+
+// Parse path like foo::bar::baz
+fn parse_path(input: &str) -> IResult<&str, String> {
+    let (input, parts) = many0(tuple((parse_identifier, tag("::"))))(input)?;
+
+    let (input, last) = parse_identifier(input)?;
+
+    let mut full_path = String::new();
+    for (part, _) in parts {
+        full_path.push_str(&part);
+        full_path.push_str("::");
+    }
+    full_path.push_str(&last);
+
+    Ok((input, full_path))
 }
 
 fn parse_extended_identifier(input: &str) -> IResult<&str, String> {
@@ -225,71 +242,47 @@ fn parse_attribute(input: &str) -> IResult<&str, (String, AttributeValue)> {
     let (input, _) = char('=')(input)?;
     let (input, _) = multispace0(input)?;
 
-    // Try dynamic attribute first: name={expr}
-    let (input, value) = alt((parse_dynamic_attr_value, parse_static_attr_value))(input)?;
-
-    Ok((input, (name, value)))
+    alt((
+        // Static value: "foo"
+        map(
+            delimited(char('"'), take_until("\""), char('"')),
+            |s: &str| (name.clone(), AttributeValue::Static(s.to_string())),
+        ),
+        // Dynamic value: {expr}
+        map(
+            delimited(char('{'), take_balanced('{', '}'), char('}')),
+            |s: &str| (name.clone(), AttributeValue::Dynamic(s.to_string())),
+        ),
+    ))(input)
 }
 
-// Helper to take content until a balanced closing delimiter
+// Helper to take content balanced by delimiters
 fn take_balanced(open: char, close: char) -> impl Fn(&str) -> IResult<&str, &str> {
     move |input: &str| {
         let mut depth = 0;
-        let mut chars = input.char_indices();
-
-        while let Some((i, c)) = chars.next() {
+        let mut len = 0;
+        for c in input.chars() {
             if c == open {
                 depth += 1;
             } else if c == close {
                 if depth == 0 {
-                    return Ok((&input[i..], &input[..i]));
+                    break;
                 }
                 depth -= 1;
             }
+            len += c.len_utf8();
         }
-
-        Err(nom::Err::Error(nom::error::Error::new(
-            input,
-            nom::error::ErrorKind::TakeUntil,
-        )))
+        let (input, content) = input.split_at(len);
+        Ok((input, content))
     }
-}
-
-// Parse dynamic attribute value: {expr}
-fn parse_dynamic_attr_value(input: &str) -> IResult<&str, AttributeValue> {
-    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
-    Ok((input, AttributeValue::Dynamic(expr.trim().to_string())))
-}
-
-// Parse static attribute value: "text" or 'text'
-fn parse_static_attr_value(input: &str) -> IResult<&str, AttributeValue> {
-    let (input, value) = alt((
-        delimited(char('"'), take_until("\""), char('"')),
-        delimited(char('\''), take_until("'"), char('\'')),
-    ))(input)?;
-    Ok((input, AttributeValue::Static(value.to_string())))
 }
 
 fn parse_expression(input: &str) -> IResult<&str, Node> {
-    let (input, expr) = delimited(char('{'), take_balanced('{', '}'), char('}'))(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, expr) = take_balanced('{', '}')(input)?;
+    let (input, _) = char('}')(input)?;
     Ok((input, Node::Expression(expr.trim().to_string())))
-}
-
-fn parse_path(input: &str) -> IResult<&str, String> {
-    let (input, first) = parse_identifier(input)?;
-    let (input, rest) = many0(tuple((
-        multispace0,
-        tag("::"),
-        multispace0,
-        parse_identifier,
-    )))(input)?;
-
-    let mut path = first;
-    for (_, _, _, part) in rest {
-        path.push_str("::");
-        path.push_str(&part);
-    }
-    Ok((input, path))
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
@@ -319,6 +312,14 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     ))
 }
 
+fn parse_component_var(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, name) = parse_path(input)?;
+
+    Ok((input, Node::Component { name: name }))
+}
+
 fn parse_text(input: &str) -> IResult<&str, Node> {
     // Use take_while1 to ensure at least one character is consumed
     let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@')(input)?;
@@ -338,6 +339,7 @@ fn parse_block_node(input: &str) -> IResult<&str, Node> {
         parse_match,
         parse_expression,
         parse_call,
+        parse_component_var,
         parse_element,
         parse_text_exclude_brace,
     ))(input)
