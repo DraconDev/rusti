@@ -316,7 +316,6 @@ impl Parse for Expression {
 
 impl Parse for Block {
     fn parse(input: ParseStream) -> Result<Self> {
-        eprintln!("Block::parse: entering");
         input.parse::<Token![@]>()?;
         let lookahead = input.lookahead1();
         if lookahead.peek(Token![if]) {
@@ -328,25 +327,8 @@ impl Parse for Block {
         } else {
             // Component or Call
             // Check if it's a path
-            let fork = input.fork();
-            let remaining: proc_macro2::TokenStream = fork.parse().unwrap();
-            eprintln!(
-                "Block::parse: Remaining tokens: {:?}",
-                remaining.to_string()
-            );
-
             // Use parse_mod_style to avoid parsing generics (which might confuse < with HTML tags)
-            let path: syn::Path = match syn::Path::parse_mod_style(input) {
-                Ok(p) => p,
-                Err(e) => {
-                    eprintln!("Block::parse: Failed to parse path: {}", e);
-                    return Err(e);
-                }
-            };
-            eprintln!(
-                "Block::parse: Parsed path: {:?}",
-                path.to_token_stream().to_string()
-            );
+            let path: syn::Path = syn::Path::parse_mod_style(input)?;
             if input.peek(Paren) {
                 // Call @foo(...)
                 let content;

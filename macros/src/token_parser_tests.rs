@@ -43,7 +43,7 @@ fn test_mismatched_closing_tag() {
 fn test_component_block_in_div() {
     let input = quote! {
         <div>
-            @foo
+            @content
         </div>
     };
     let parser = parse_nodes_wrapper;
