@@ -31,18 +31,21 @@ CSS and JavaScript are **not Rust**. No Rust templating library can type-check t
 
 ## Competitive Landscape Analysis
 
-| Feature | Rusti | Maud | Askama | Leptos/Dioxus | Tera |
-|---------|-------|------|--------|---------------|------|
-| **Compile-time safety** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ❌ Runtime |
-| **Syntax style** | HTML-like | Rust-like | Jinja2-like | RSX (React-like) | Jinja2-like |
-| **CSS handling** | Raw strings or naked | Rust strings | External files | Raw strings | Templates |
-| **JS handling** | Raw strings or external | Rust strings | External files | Raw strings | Templates |
-| **Learning curve** | Low (HTML) | Medium (custom) | Low (Jinja2) | Medium (React) | Low (Jinja2) |
-| **Type-checked attributes** | ✅ Yes | ✅ Yes | ⚠️ Partial | ✅ Yes | ❌ No |
-| **Component composition** | ✅ Rust functions | ✅ Rust functions | ❌ Templates only | ✅ Rust components | ❌ Templates only |
-| **Zero-cost abstraction** | ✅ Yes | ✅ Yes | ✅ Yes | ⚠️ Virtual DOM | ❌ Runtime |
-| **Works with any framework** | ✅ Yes | ✅ Yes | ✅ Yes | Leptos/Dioxus only | ✅ Yes |
-| **Inline styles safe?** | ✅ Always | ⚠️ Fragile | ✅ Yes | ✅ Yes | ✅ Yes |
+| Category | Feature | Rusti | Maud | Askama | Leptos/Dioxus | Tera |
+|----------|---------|-------|------|--------|---------------|------|
+| **Safety & Compilation** | Compile‑time safety | ✅ Full (all Rust expressions validated) | ✅ Full | ✅ Full | ✅ Full | ❌ Runtime checks only |
+| | Type‑checked attributes | ✅ Yes (attributes are Rust strings) | ✅ Yes | ⚠️ Partial (only simple interpolations) | ✅ Yes | ❌ No |
+| **Syntax & Learning** | Syntax style | HTML‑like (familiar to web devs) | Rust‑like (custom DSL) | Jinja2‑like (template files) | RSX (React‑like JSX) | Jinja2‑like |
+| | Learning curve | Low (HTML) | Medium (custom macro) | Low (Jinja2) | Medium (React concepts) | Low (Jinja2) |
+| **Styling & Scripting** | CSS handling | Raw strings, naked CSS, Tailwind | Rust strings (requires raw strings for complex CSS) | External files only | Raw strings | Template strings |
+| | JS handling | Raw strings, external scripts | Rust strings (raw strings needed) | External files only | Raw strings | Template strings |
+| | Inline style safety | ✅ Always safe (inside Rust string) | ⚠️ Fragile (needs quoting for `2em`) | ✅ Safe (treated as string) | ✅ Safe | ✅ Safe |
+| **Component Model** | Component composition | ✅ Rust functions (full IDE support) | ✅ Rust functions | ❌ Templates only | ✅ Rust components (signals) | ❌ Templates only |
+| | Reactivity / state | ❌ Not built‑in (use HTMX/Alpine) | ❌ No reactivity | ❌ No reactivity | ✅ Built‑in signals & reactivity | ❌ No reactivity |
+| **Performance & Runtime** | Zero‑cost abstraction | ✅ Yes (no runtime parsing) | ✅ Yes | ✅ Yes | ⚠️ Virtual DOM overhead | ❌ Runtime template rendering |
+| | Build‑time impact | Minimal (macro expands) | Minimal | Minimal (template compilation) | Higher (generated RSX code) | Higher (template compilation) |
+| **Ecosystem** | Framework agnostic | ✅ Works with Axum, Actix, Rocket, etc. | ✅ Works with any framework | ✅ Works with any framework | ❌ Tied to Leptos/Dioxus | ✅ Works with any framework |
+| | Community & docs | Growing, focused on hypermedia | Mature, smaller community | Mature, many examples | Emerging, active development | Mature, many plugins |
 
 ---
 
