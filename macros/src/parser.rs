@@ -429,11 +429,17 @@ fn parse_for(input: &str) -> IResult<&str, Node> {
     // Parse pattern (e.g. "item in items") - take until { appears
     let (input, full_pattern) = take_while1(|c: char| c != '{')(input)?;
     let full_pattern = full_pattern.trim();
+    eprintln!("DEBUG: parse_for full_pattern: '{}'", full_pattern);
 
     let (pattern, iterator) = full_pattern
         .split_once(" in ")
         .map(|(p, i)| (p.trim(), i.trim()))
         .unwrap_or((full_pattern, ""));
+
+    eprintln!(
+        "DEBUG: parse_for pattern: '{}', iterator: '{}'",
+        pattern, iterator
+    );
 
     let (input, _) = multispace0(input)?; // Consume whitespace before {
     let (input, _) = char('{')(input)?;
