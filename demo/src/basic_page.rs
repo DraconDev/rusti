@@ -15,7 +15,7 @@ pub fn basic_page() -> impl rusti::Component {
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: "2em";              /* Quote em units to avoid 2e parser error */
+                        margin: 2em;                /* No quotes needed! Rusti handles 2em correctly */
                         background-color: #f4f4f4;  /* Hex colors work fine */
                         color: #333;
                         padding: 20px;              /* px, rem, % all work without quotes */
