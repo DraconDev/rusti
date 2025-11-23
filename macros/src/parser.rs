@@ -287,7 +287,7 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 }
 
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
-    // panic!("parse_node called with: {}", input);
+    panic!("parse_node called with: {}", input);
     // eprintln!("parse_node input: {}", input);
     alt((
         parse_html_comment,
