@@ -616,4 +616,21 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_html_with_script() {
+        let input = r#"<html><body><script>console.log("Hello");</script></body></html>"#;
+        println!("Testing: {}", input);
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes count: {}", nodes.len());
+                assert!(remaining.is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }

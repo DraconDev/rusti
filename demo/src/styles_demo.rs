@@ -4,10 +4,10 @@ use rusti::rusti;
 
 pub fn styles_demo() -> impl rusti::Component {
     rusti! {
-        <html lang=\"en\">
+        <html lang="en">
             <head>
-                <meta charset=\"UTF-8\" />
-                <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Styles Demo</title>
                 <style>
                     :root {
@@ -21,8 +21,8 @@ pub fn styles_demo() -> impl rusti::Component {
                     }
                 </style>
             </head>
-            <body class=\"flex items-center justify-center\">
-                <h1 class=\"text-4xl font-bold text-white\">Styles Demo</h1>
+            <body class="flex items-center justify-center">
+                <h1 class="text-4xl font-bold text-white">Styles Demo</h1>
             </body>
         </html>
     }
