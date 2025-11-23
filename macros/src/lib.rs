@@ -6,8 +6,14 @@ use std::str::FromStr;
 
 #[proc_macro]
 pub fn rusti(input: TokenStream) -> TokenStream {
-    let input_str = input.to_string();
-    // panic!("DEBUG: input_str: '{}'", input_str);
+    // Try to parse input as a string literal first (for emoji support)
+    let input_str = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
+        // Input is a string literal like rusti!("...")
+        lit.value()
+    } else {
+        // Input is raw tokens like rusti! { ... }
+        input.to_string()
+    };
 
     let nodes = match parser::parse_nodes(&input_str) {
         Ok((remaining, nodes)) => {
