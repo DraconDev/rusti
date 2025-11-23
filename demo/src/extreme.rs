@@ -62,7 +62,7 @@ pub fn loops_example() -> impl rusti::Component {
         ("Blue", "rgb(59,130,246)"),
         ("Purple", "rgb(139,92,246)"),
     ];
-    let styles = r"body{margin:0;padding:20px;font-family:Arial,sans-serif;background:linear-gradient(45deg,rgb(255,107,107),rgb(78,205,196));min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}h2{color:rgb(45,55,72);border-bottom:3px solid rgb(78,205,196);padding-bottom:0.5rem}ul{list-style:none;padding:0}li{background:rgb(247,250,252);margin:0.5rem 0;padding:1rem;border-radius:8px;border-left:4px solid rgb(78,205,196);transition:transform 0.2s}li:hover{transform:translateX(5px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.color-box{display:inline-block;width:30px;height:30px;border-radius:6px;margin-right:10px;vertical-align:middle;border:2px solid rgb(226,232,240)}";
+    let _styles = r"body{margin:0;padding:20px;font-family:Arial,sans-serif;background:linear-gradient(45deg,rgb(255,107,107),rgb(78,205,196));min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}h2{color:rgb(45,55,72);border-bottom:3px solid rgb(78,205,196);padding-bottom:0.5rem}ul{list-style:none;padding:0}li{background:rgb(247,250,252);margin:0.5rem 0;padding:1rem;border-radius:8px;border-left:4px solid rgb(78,205,196);transition:transform 0.2s}li:hover{transform:translateX(5px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.color-box{display:inline-block;width:30px;height:30px;border-radius:6px;margin-right:10px;vertical-align:middle;border:2px solid rgb(226,232,240)}";
 
     rusti! {
         <html lang="en">
@@ -70,20 +70,20 @@ pub fn loops_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Loops Example</title>
-                <style>{styles}</style>
+                <style>{_styles}</style>
             </head>
             <body>
                 <div class="container">
                     <h2>Fruit List</h2>
                     <ul>
-                        @for fruit in fruits {
+                        @for fruit in &fruits {
                             <li>{ fruit }</li>
                         }
                     </ul>
 
                     <h2>Color Palette</h2>
                     <ul>
-                        @for (name, hex) in colors {
+                        @for (name, hex) in &colors {
                             <li>
                                 <span class="color-box" style={hex}></span>
                                 <strong>{ name }</strong> - { hex }
@@ -107,7 +107,7 @@ pub fn pattern_matching_example() -> impl rusti::Component {
     }
 
     let user_status = Status::Active;
-    let styles = r"body{margin:0;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(to right,rgb(67,67,67),rgb(0,0,0));min-height:100vh;display:flex;align-items:center;justify-content:center}.status-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.5);text-align:center;min-width:400px}.status-badge{display:inline-block;padding:1rem 2rem;border-radius:12px;font-size:1.5rem;font-weight:bold;margin:1rem 0}.status-active{background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white}.status-pending{background:linear-gradient(135deg,rgb(240,147,251) 0%,rgb(245,87,108) 100%);color:white}.status-suspended{background:linear-gradient(135deg,rgb(250,112,154) 0%,rgb(254,225,64) 100%);color:rgb(45,55,72)}.status-archived{background:linear-gradient(135deg,rgb(137,247,254) 0%,rgb(102,166,255) 100%);color:white}";
+    let _styles = r"body{margin:0;padding:20px;font-family:Inter,sans-serif;background:linear-gradient(to right,rgb(67,67,67),rgb(0,0,0));min-height:100vh;display:flex;align-items:center;justify-content:center}.status-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.5);text-align:center;min-width:400px}.status-badge{display:inline-block;padding:1rem 2rem;border-radius:12px;font-size:1.5rem;font-weight:bold;margin:1rem 0}.status-active{background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white}.status-pending{background:linear-gradient(135deg,rgb(240,147,251) 0%,rgb(245,87,108) 100%);color:white}.status-suspended{background:linear-gradient(135deg,rgb(250,112,154) 0%,rgb(254,225,64) 100%);color:rgb(45,55,72)}.status-archived{background:linear-gradient(135deg,rgb(137,247,254) 0%,rgb(102,166,255) 100%);color:white}";
 
     rusti! {
         <html lang="en">
@@ -115,7 +115,7 @@ pub fn pattern_matching_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Pattern Matching Example</title>
-                <style>{styles}</style>
+                <style>{_styles}</style>
             </head>
             <body>
                 <div class="status-card">
@@ -153,7 +153,7 @@ pub fn pattern_matching_example() -> impl rusti::Component {
 }
 
 /// Example 5: Component Composition
-fn card(title: &str, content: impl rusti::Component) -> impl rusti::Component + '_ {
+fn card<'a>(title: &'a str, content: impl rusti::Component + 'a) -> impl rusti::Component + 'a {
     rusti! {
         <div class="card">
             <h3 class="card-title">{ title }</h3>
@@ -172,7 +172,7 @@ fn button(label: &str, color: &str) -> impl rusti::Component + '_ {
 }
 
 pub fn component_composition_example() -> impl rusti::Component {
-    let styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom,rgb(30,58,138),rgb(59,130,246));min-height:100vh}.container{max-width:1200px;margin:0 auto}h1{color:white;text-align:center;font-size:2.5rem;margin-bottom:2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}.card{background:white;border-radius:16px;padding:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:transform 0.3s}.card:hover{transform:translateY(-5px)}.card-title{margin-top:0;color:rgb(30,58,138);border-bottom:2px solid rgb(59,130,246);padding-bottom:0.5rem}.card-content{margin-top:1rem}.btn{padding:0.75rem 1.5rem;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-right:0.5rem;margin-top:0.5rem;transition:all 0.2s}.btn:hover{transform:scale(1.05)}.btn-primary{background:rgb(59,130,246);color:white}.btn-success{background:rgb(16,185,129);color:white}.btn-danger{background:rgb(239,68,68);color:white}.btn-warning{background:rgb(245,158,11);color:white}";
+    let _styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom,rgb(30,58,138),rgb(59,130,246));min-height:100vh}.container{max-width:1200px;margin:0 auto}h1{color:white;text-align:center;font-size:2.5rem;margin-bottom:2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}.card{background:white;border-radius:16px;padding:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:transform 0.3s}.card:hover{transform:translateY(-5px)}.card-title{margin-top:0;color:rgb(30,58,138);border-bottom:2px solid rgb(59,130,246);padding-bottom:0.5rem}.card-content{margin-top:1rem}.btn{padding:0.75rem 1.5rem;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-right:0.5rem;margin-top:0.5rem;transition:all 0.2s}.btn:hover{transform:scale(1.05)}.btn-primary{background:rgb(59,130,246);color:white}.btn-success{background:rgb(16,185,129);color:white}.btn-danger{background:rgb(239,68,68);color:white}.btn-warning{background:rgb(245,158,11);color:white}";
 
     rusti! {
         <html lang="en">
@@ -180,7 +180,7 @@ pub fn component_composition_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Component Composition</title>
-                <style>{styles}</style>
+                <style>{_styles}</style>
             </head>
             <body>
                 <div class="container">
@@ -223,7 +223,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
         ("Orders", "892", "3%"),
         ("Satisfaction", "98%", "2%"),
     ];
-    let styles = r"*{margin:0;padding:0;box-sizing:border-box}body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,rgb(15,23,42) 0%,rgb(30,41,59) 100%);color:white;min-height:100vh;padding:2rem}.dashboard{max-width:1400px;margin:0 auto}h1{font-size:3rem;margin-bottom:2rem;background:linear-gradient(to right,rgb(96,165,250),rgb(167,139,250));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem}.stat-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem;transition:all 0.3s}.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(96,165,250,0.3);border-color:rgba(96,165,250,0.5)}.stat-label{font-size:0.875rem;color:rgb(148,163,184);margin-bottom:0.5rem}.stat-value{font-size:2rem;font-weight:bold;margin-bottom:0.25rem}.stat-change{font-size:0.875rem;color:rgb(16,185,129)}.actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}.action-btn{padding:1rem 2rem;border:none;border-radius:12px;font-weight:bold;cursor:pointer;transition:all 0.2s;font-size:1rem}.action-btn:hover{transform:scale(1.05);box-shadow:0 10px 20px rgba(0,0,0,0.3)}.btn-blue{background:linear-gradient(135deg,rgb(59,130,246),rgb(29,78,216));color:white}.btn-purple{background:linear-gradient(135deg,rgb(167,139,250),rgb(124,58,237));color:white}.btn-green{background:linear-gradient(135deg,rgb(16,185,129),rgb(5,150,105));color:white}.content-area{background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:2rem;min-height:200px}@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn 0.5s ease-out}";
+    let _styles = r"*{margin:0;padding:0;box-sizing:border-box}body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,rgb(15,23,42) 0%,rgb(30,41,59) 100%);color:white;min-height:100vh;padding:2rem}.dashboard{max-width:1400px;margin:0 auto}h1{font-size:3rem;margin-bottom:2rem;background:linear-gradient(to right,rgb(96,165,250),rgb(167,139,250));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem}.stat-card{background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem;transition:all 0.3s}.stat-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(96,165,250,0.3);border-color:rgba(96,165,250,0.5)}.stat-label{font-size:0.875rem;color:rgb(148,163,184);margin-bottom:0.5rem}.stat-value{font-size:2rem;font-weight:bold;margin-bottom:0.25rem}.stat-change{font-size:0.875rem;color:rgb(16,185,129)}.actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}.action-btn{padding:1rem 2rem;border:none;border-radius:12px;font-weight:bold;cursor:pointer;transition:all 0.2s;font-size:1rem}.action-btn:hover{transform:scale(1.05);box-shadow:0 10px 20px rgba(0,0,0,0.3)}.btn-blue{background:linear-gradient(135deg,rgb(59,130,246),rgb(29,78,216));color:white}.btn-purple{background:linear-gradient(135deg,rgb(167,139,250),rgb(124,58,237));color:white}.btn-green{background:linear-gradient(135deg,rgb(16,185,129),rgb(5,150,105));color:white}.content-area{background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:2rem;min-height:200px}@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn 0.5s ease-out}";
 
     rusti! {
         <html lang="en">
@@ -232,14 +232,14 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Interactive Dashboard</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-                <style>{styles}</style>
+                <style>{_styles}</style>
             </head>
             <body>
                 <div class="dashboard">
                     <h1>Analytics Dashboard</h1>
 
                     <div class="stats-grid">
-                        @for (label, value, change) in stats {
+                        @for (label, value, change) in &stats {
                             <div class="stat-card fade-in">
                                 <div class="stat-label">{ label }</div>
                                 <div class="stat-value">{ value }</div>
@@ -271,7 +271,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
 
 /// Example 7: Form with Validation Styles
 pub fn form_example() -> impl rusti::Component {
-    let styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom right,rgb(255,110,127),rgb(191,233,255));min-height:100vh;display:flex;align-items:center;justify-content:center}.form-container{background:white;padding:2.5rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:500px;width:100%}h1{margin-top:0;color:rgb(45,55,72)}.form-group{margin-bottom:1.5rem}label{display:block;margin-bottom:0.5rem;color:rgb(74,85,104);font-weight:600}input,textarea{width:100%;padding:0.75rem;border:2px solid rgb(226,232,240);border-radius:8px;font-size:1rem;transition:all 0.2s}input:focus,textarea:focus{outline:none;border-color:rgb(59,130,246);box-shadow:0 0 0 3px rgba(59,130,246,0.1)}input:invalid{border-color:rgb(239,68,68)}.submit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:transform 0.2s}.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,0.4)}";
+    let _styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(to bottom right,rgb(255,110,127),rgb(191,233,255));min-height:100vh;display:flex;align-items:center;justify-content:center}.form-container{background:white;padding:2.5rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:500px;width:100%}h1{margin-top:0;color:rgb(45,55,72)}.form-group{margin-bottom:1.5rem}label{display:block;margin-bottom:0.5rem;color:rgb(74,85,104);font-weight:600}input,textarea{width:100%;padding:0.75rem;border:2px solid rgb(226,232,240);border-radius:8px;font-size:1rem;transition:all 0.2s}input:focus,textarea:focus{outline:none;border-color:rgb(59,130,246);box-shadow:0 0 0 3px rgba(59,130,246,0.1)}input:invalid{border-color:rgb(239,68,68)}.submit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%);color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;transition:transform 0.2s}.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,0.4)}";
 
     rusti! {
         <html lang="en">
