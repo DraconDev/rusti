@@ -42,6 +42,20 @@ pub fn styles_demo2() -> impl rusti::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Styles Demo</title>
                 <style>
+                    .extension-container {
+                        border: 1px solid #ccc; 
+                        padding: 20px;
+                        background-color: #f0f0f0;
+                        border-radius: 8px;
+                    }
+                    .extension-item {
+                        margin-bottom: 15px;
+                        padding: 10px;
+                        background-color: #ffffff;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+
         
                 </style>
             </head>
