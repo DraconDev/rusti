@@ -93,7 +93,6 @@ pub fn loops_example() -> impl rusti::Component {
         ("Blue", "rgb(59,130,246)"),
         ("Purple", "rgb(139,92,246)"),
     ];
-    let _styles = r"body{margin:0;padding:20px;font-family:Arial,sans-serif;background:linear-gradient(45deg,rgb(255,107,107),rgb(78,205,196));min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}h2{color:rgb(45,55,72);border-bottom:3px solid rgb(78,205,196);padding-bottom:0.5rem}ul{list-style:none;padding:0}li{background:rgb(247,250,252);margin:0.5rem 0;padding:1rem;border-radius:8px;border-left:4px solid rgb(78,205,196);transition:transform 0.2s}li:hover{transform:translateX(5px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.color-box{display:inline-block;width:30px;height:30px;border-radius:6px;margin-right:10px;vertical-align:middle;border:2px solid rgb(226,232,240)}";
 
     rusti! {
         <html lang="en">
@@ -101,7 +100,53 @@ pub fn loops_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Loops Example</title>
-                <style>{_styles}</style>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: Arial, sans-serif;
+                        background: linear-gradient(45deg, rgb(255, 107, 107), rgb(78, 205, 196));
+                        min-height: 100vh;
+                    }
+                    .container {
+                        max-width: 800px;
+                        margin: 0 auto;
+                        background: white;
+                        padding: 2rem;
+                        border-radius: 20px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    }
+                    h2 {
+                        color: rgb(45, 55, 72);
+                        border-bottom: 3px solid rgb(78, 205, 196);
+                        padding-bottom: 0.5rem;
+                    }
+                    ul {
+                        list-style: none;
+                        padding: 0;
+                    }
+                    li {
+                        background: rgb(247, 250, 252);
+                        margin: 0.5rem 0;
+                        padding: 1rem;
+                        border-radius: 8px;
+                        border-left: 4px solid rgb(78, 205, 196);
+                        transition: transform 0.2s;
+                    }
+                    li:hover {
+                        transform: translateX(5px);
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+                    .color-box {
+                        display: inline-block;
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 6px;
+                        margin-right: 10px;
+                        vertical-align: middle;
+                        border: 2px solid rgb(226, 232, 240);
+                    }
+                </style>
             </head>
             <body>
                 <div class="container">
