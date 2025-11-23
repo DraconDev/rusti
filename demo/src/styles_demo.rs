@@ -44,10 +44,10 @@ pub fn styles_demo2() -> impl rusti::Component {
                 <title>Styles Demo</title>
                 <style>
                     .extension-container {
-                        "border: 1px solid #ccc";
-                        "padding: 20px";
-                        "background-color: #f0f0f0";
-                        "border-radius: 8px";
+                        border: 1px solid #ccc;
+                        padding: 20px;
+                        background-color: #f0f0f0;
+                        border-radius: 8px;
                     }
                     body {
                         background-color: #222222;
