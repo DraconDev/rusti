@@ -126,14 +126,16 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                 // "x + 1" -> Expr...
                 // We can parse it using syn::parse_str::<Expr>
                 match syn::parse_str::<syn::Expr>(expr) {
-                    Ok(parsed_expr) => quote! { write!(f, "{}", rusti::Escaped(#parsed_expr))?; },
+                    Ok(parsed_expr) => {
+                        quote! { write!(f, "{}", rusti::Escaped(&(#parsed_expr)))?; }
+                    }
                     Err(_) => {
                         // Fallback: just emit as string? No, that won't compile.
                         // If we can't parse it, it's probably invalid Rust.
                         // But let's try to emit it as tokens.
                         use std::str::FromStr;
                         match proc_macro2::TokenStream::from_str(expr) {
-                            Ok(tokens) => quote! { write!(f, "{}", rusti::Escaped(#tokens))?; },
+                            Ok(tokens) => quote! { write!(f, "{}", rusti::Escaped(&(#tokens)))?; },
                             Err(e) => syn::Error::new(
                                 proc_macro2::Span::call_site(),
                                 format!("Invalid expression '{}': {}", expr, e),
