@@ -327,6 +327,10 @@ impl Parse for Block {
             // Component or Call
             // Check if it's a path
             let path: syn::Path = input.parse()?;
+            eprintln!(
+                "Block::parse: Parsed path: {:?}",
+                path.to_token_stream().to_string()
+            );
             if input.peek(Paren) {
                 // Call @foo(...)
                 let content;
