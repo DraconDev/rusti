@@ -59,6 +59,7 @@ pub fn parse_node(input: &str) -> IResult<&str, Node> {
     // Try structured nodes first, then fall back to text
     // This prevents text from consuming empty strings when input starts with special chars
     alt((
+        parse_html_comment,
         parse_comment,
         parse_if,
         parse_for,
@@ -74,6 +75,14 @@ fn parse_comment(input: &str) -> IResult<&str, Node> {
     let (input, _) = tag("/*")(input)?;
     let (input, _) = take_until("*/")(input)?;
     let (input, _) = tag("*/")(input)?;
+    Ok((input, Node::Text("".to_string())))
+}
+
+// Parse HTML comments <!-- ... --> and discard them
+fn parse_html_comment(input: &str) -> IResult<&str, Node> {
+    let (input, _) = tag("<!--")(input)?;
+    let (input, _) = take_until("-->")(input)?;
+    let (input, _) = tag("-->")(input)?;
     Ok((input, Node::Text("".to_string())))
 }
 
