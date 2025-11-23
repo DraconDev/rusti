@@ -286,6 +286,20 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
     Ok((input, Node::Expression(expr.trim().to_string())))
 }
 
+pub fn parse_node(input: &str) -> IResult<&str, Node> {
+    panic!("parse_node called with: {}", input);
+    // eprintln!("parse_node input: {}", input);
+    let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, name) = parse_path(input)?;
+    // eprintln!("parse_call name: {}", name);
+    let (input, _) = multispace0(input)?;
+    // This function definition is incomplete based on the provided snippet.
+    // Assuming the user only wants to insert this partial definition.
+    // If this is meant to be a complete function, the rest of its body is missing.
+    unimplemented!("parse_node is a placeholder for now");
+}
+
 fn parse_call(input: &str) -> IResult<&str, Node> {
     // eprintln!("parse_call input: {}", input);
     let (input, _) = char('@')(input)?;
