@@ -328,6 +328,13 @@ impl Parse for Block {
         } else {
             // Component or Call
             // Check if it's a path
+            let fork = input.fork();
+            let remaining: proc_macro2::TokenStream = fork.parse().unwrap();
+            eprintln!(
+                "Block::parse: Remaining tokens: {:?}",
+                remaining.to_string()
+            );
+
             let path: syn::Path = match input.parse() {
                 Ok(p) => p,
                 Err(e) => {
