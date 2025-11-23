@@ -94,6 +94,23 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     }
 
     // Generate the output
+    let render_fn = if has_children {
+        let children_ty = children_type.as_ref().unwrap();
+        quote! {
+            pub fn render(props: Props, children: #children_ty) #fn_output {
+                #(#props_init)*
+                #fn_block
+            }
+        }
+    } else {
+        quote! {
+            pub fn render(props: Props) #fn_output {
+                #(#props_init)*
+                #fn_block
+            }
+        }
+    };
+
     let expanded = quote! {
         #[allow(non_snake_case)]
         #fn_vis mod #fn_name {
@@ -127,10 +144,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 }
             }
 
-            pub fn render(props: Props) #fn_output {
-                #(#props_init)*
-                #fn_block
-            }
+            #render_fn
         }
     };
 
