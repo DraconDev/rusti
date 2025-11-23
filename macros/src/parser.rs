@@ -529,4 +529,31 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_parse_html_comments() {
+        let input = r#"
+            <html>
+                <head>
+                    <!-- This is a comment -->
+                    <title>Test</title>
+                </head>
+                <body>
+                    <!-- Another comment -->
+                    <h1>Hello</h1>
+                </body>
+            </html>
+        "#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                println!("Nodes: {:#?}", nodes);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
 }
