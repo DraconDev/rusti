@@ -124,6 +124,27 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
     let (input, _) = char('>')(input)?;
 
+    // List of void/self-closing HTML elements that don't have closing tags
+    let void_elements = [
+        "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param",
+        "source", "track", "wbr",
+    ];
+
+    // Check if this is a void element
+    let is_void = void_elements.contains(&name.as_str());
+
+    if is_void {
+        // Void elements have no children and no closing tag
+        return Ok((
+            input,
+            Node::Element {
+                name,
+                attrs,
+                children: vec![],
+            },
+        ));
+    }
+
     // Special handling for script and style tags - skip their content
     let (input, children) = if name == "script" || name == "style" {
         // For script/style tags, consume everything until the closing tag
