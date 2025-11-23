@@ -26,22 +26,19 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 // Check for #[prop(default = ...)]
                 let mut default_value = None;
                 for attr in attrs {
-                    if attr.path.is_ident("prop") {
-                        if let Ok(syn::Meta::List(meta_list)) = attr.parse_meta() {
-                            for nested in meta_list.nested {
-                                if let syn::NestedMeta::Meta(syn::Meta::NameValue(nv)) = nested {
-                                    if nv.path.is_ident("default") {
-                                        if let syn::Lit::Str(lit_str) = nv.lit {
-                                            default_value = Some(
-                                                lit_str
-                                                    .parse::<syn::Expr>()
-                                                    .expect("Invalid default value expression"),
-                                            );
-                                        }
-                                    }
-                                }
+                    if attr.path().is_ident("prop") {
+                        let _ = attr.parse_nested_meta(|meta| {
+                            if meta.path.is_ident("default") {
+                                let value = meta.value()?;
+                                let lit_str: syn::LitStr = value.parse()?;
+                                default_value = Some(
+                                    lit_str
+                                        .parse::<syn::Expr>()
+                                        .expect("Invalid default value expression"),
+                                );
                             }
-                        }
+                            Ok(())
+                        });
                     }
                 }
 
