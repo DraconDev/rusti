@@ -116,7 +116,10 @@ mod tests {
             Err(e) => {
                 panic!("Parse failed: {:?}", e);
             }
-            #[test]
+        }
+    }
+
+    #[test]
     fn test_parse_call() {
         use crate::parser::parse_node;
         let input = r#"@page_head("Title")"#;
@@ -137,7 +140,5 @@ mod tests {
                 panic!("Parse failed: {:?}", e);
             }
         }
-    }
-}
     }
 }
