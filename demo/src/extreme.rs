@@ -186,7 +186,7 @@ pub fn component_composition_example() -> impl rusti::Component {
                 <div class="container">
                     <h1>Component Composition Demo</h1>
                     <div class="grid">
-                        @card("User Profile", {
+                        @card("User Profile", rusti! {
                             <div>
                                 <p>Manage your profile settings and preferences.</p>
                                 @button("Edit Profile", "primary")
@@ -194,7 +194,7 @@ pub fn component_composition_example() -> impl rusti::Component {
                             </div>
                         })
 
-                        @card("Notifications", {
+                        @card("Notifications", rusti! {
                             <div>
                                 <p>You have 3 new notifications waiting for you.</p>
                                 @button("View All", "success")
@@ -202,7 +202,7 @@ pub fn component_composition_example() -> impl rusti::Component {
                             </div>
                         })
 
-                        @card("Danger Zone", {
+                        @card("Danger Zone", rusti! {
                             <div>
                                 <p>Irreversible actions. Proceed with caution.</p>
                                 @button("Delete Account", "danger")
