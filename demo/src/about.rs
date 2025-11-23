@@ -20,10 +20,10 @@ pub fn about_page() -> impl rusti::Component {
                             <p class="text-slate-300 max-w-3xl mx-auto mt-4">
                                 This demo showcases components, conditionals, loops, pattern matching,
                                 HTMX interactivity, dynamic attributes, and more.
-                                
+
                             </p>
                         </section>
-                        <a href="/">Back to Home✅</a>
+                        <a href="/">Back to Home</a>
                     </main>
                     @page_footer(year)
                 </div>
