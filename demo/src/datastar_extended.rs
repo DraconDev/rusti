@@ -121,7 +121,7 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                         <!-- Add User Form (Testing Event Modifiers) -->
                         <div class="mt-8 bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
                             <h3 class="text-xl font-bold mb-4 text-white">Add New User</h3>
-                            <form data-on-submit__prevent="alert(\"Added user: \" + $newUserName + \" as \" + $newUserRole); $newUserName = \"\";">
+                            <form data-on-submit__prevent={r#"alert('Added user: ' + $newUserName + ' as ' + $newUserRole); $newUserName = '';"#}>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <input type="text"
                                            data-model="newUserName"
