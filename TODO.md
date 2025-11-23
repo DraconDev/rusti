@@ -39,3 +39,8 @@
 ### 9. IDE Support
 - **Goal**: Improve developer experience.
 - **Implementation**: VS Code extension or LSP for `rusti!` macro content.
+
+### 10. Better Text Parsing
+- **Goal**: Improve whitespace handling in text nodes.
+- **Current State**: `TokenStream` conversion loses some whitespace information.
+- **Implementation**: Use `syn::spanned::Spanned` or custom lexer to preserve whitespace.
