@@ -719,19 +719,33 @@ fn clean_text(text: &str) -> String {
             }
 
             if has_digit {
-                let rest: String = chars[j..].iter().take(3).collect();
-                let mut unit_len = 0;
-                if rest.starts_with("px")
+                // Check for unit
+                let rest: String = chars[j..].iter().take(4).collect();
+                let unit_len = if rest.starts_with("px")
                     || rest.starts_with("em")
                     || rest.starts_with("vh")
                     || rest.starts_with("vw")
+                    || rest.starts_with("fr")
+                    || rest.starts_with("ch")
+                    || rest.starts_with("cm")
+                    || rest.starts_with("mm")
+                    || rest.starts_with("in")
+                    || rest.starts_with("pt")
+                    || rest.starts_with("pc")
                 {
-                    unit_len = 2;
+                    2
                 } else if rest.starts_with("%") || rest.starts_with("s") {
-                    unit_len = 1;
-                } else if rest.starts_with("rem") {
-                    unit_len = 3;
-                }
+                    1
+                } else if rest.starts_with("rem")
+                    || rest.starts_with("deg")
+                    || rest.starts_with("rad")
+                {
+                    3
+                } else if rest.starts_with("vmin") || rest.starts_with("vmax") {
+                    4
+                } else {
+                    0
+                };
 
                 if unit_len > 0 {
                     // Check for closing quote
@@ -756,21 +770,30 @@ fn clean_text(text: &str) -> String {
             }
         }
 
-        // Check for space between digit and unit (existing logic)
+        // Check for space between digit and unit (e.g. "2 em" -> "2em")
+        // This fixes the Rust tokenizer inserting spaces in CSS values
         if c.is_whitespace() && i > 0 && chars[i - 1].is_ascii_digit() {
-            let rest: String = chars[i + 1..].iter().take(3).collect();
-            if rest.starts_with("px")
+            let rest: String = chars[i + 1..].iter().take(4).collect();
+            let is_unit = rest.starts_with("px")
                 || rest.starts_with("em")
                 || rest.starts_with("%")
                 || rest.starts_with("vh")
                 || rest.starts_with("vw")
+                || rest.starts_with("fr")
+                || rest.starts_with("ch")
+                || rest.starts_with("cm")
+                || rest.starts_with("mm")
+                || rest.starts_with("in")
+                || rest.starts_with("pt")
+                || rest.starts_with("pc")
                 || rest.starts_with("s")
-            {
-                i += 1;
-                continue;
-            }
-            if rest.starts_with("re") && chars[i + 1..].iter().take(3).collect::<String>() == "rem"
-            {
+                || (rest.starts_with("rem") && rest.len() >= 3)
+                || (rest.starts_with("deg") && rest.len() >= 3)
+                || (rest.starts_with("rad") && rest.len() >= 3)
+                || (rest.starts_with("vmin") && rest.len() >= 4)
+                || (rest.starts_with("vmax") && rest.len() >= 4);
+
+            if is_unit {
                 i += 1;
                 continue;
             }
