@@ -11,7 +11,7 @@ pub fn quote_demo() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Quote & Braces Demo</title>
-                <style>{css}</style>
+                <style>{css}``</style>
             </head>
             <body class="p-8">
                 <h1 class='text-3xl font-bold text-center'>Quote & Braces Demo</h1>
