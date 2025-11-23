@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rusti::{rusti, render_to_string};
+    use rusti::{render_to_string, rusti};
 
     #[test]
     fn script_tag_is_handled() {
@@ -12,7 +12,7 @@ mod tests {
                         let x = 5;
                         console.log(x);
                     </script>
-                    <div>"Content"</div>    
+                    <div>"Content"</div>
                 </body>
             </html>
         };
