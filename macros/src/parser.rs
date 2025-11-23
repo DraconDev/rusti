@@ -303,10 +303,25 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
         Err(e) => panic!("parse_call failed at '(': {:?}", e),
     };
 
-    let (input, args) = match take_balanced('(', ')')(input) {
-        Ok(res) => res,
-        Err(e) => panic!("parse_call failed at args content: {:?}", e),
-    };
+    // Inline take_balanced logic for debugging
+    let mut depth = 0;
+    let mut len = 0;
+    let open = '(';
+    let close = ')';
+    for c in input.chars() {
+        // eprintln!("Char: '{}', depth: {}", c, depth);
+        if c == open {
+            depth += 1;
+        } else if c == close {
+            if depth == 0 {
+                break;
+            }
+            depth -= 1;
+        }
+        len += c.len_utf8();
+    }
+    // eprintln!("Calculated len: {}", len);
+    let (input, args) = input.split_at(len);
 
     let (input, _) = match char::<&str, nom::error::Error<&str>>(')')(input) {
         Ok(res) => res,
