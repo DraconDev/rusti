@@ -60,6 +60,18 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
         let chunk = match node {
             token_parser::Node::Element(elem) => {
                 let name = &elem.name;
+
+                // Special handling for <style src="...">
+                if name == "style" {
+                    if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
+                        if let token_parser::AttributeValue::Static(path) = &src_attr.value {
+                            return quote! {
+                                write!(f, "<style>{}</style>", include_str!(#path))?;
+                            };
+                        }
+                    }
+                }
+
                 let children_code = generate_body(&elem.children);
 
                 let mut attr_code = proc_macro2::TokenStream::new();
