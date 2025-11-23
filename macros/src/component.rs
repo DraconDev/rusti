@@ -16,12 +16,13 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let mut builder_init = Vec::new();
     let mut builder_setters = Vec::new();
     let mut build_logic = Vec::new();
+    let mut struct_fields = Vec::new();
 
     for arg in &input.sig.inputs {
         if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = arg {
             if let Pat::Ident(pat_ident) = &**pat {
                 let ident = &pat_ident.ident;
-                
+
                 // Check for #[prop(default = ...)]
                 let mut default_value = None;
                 for attr in attrs {
@@ -31,16 +32,11 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                                 if let syn::NestedMeta::Meta(syn::Meta::NameValue(nv)) = nested {
                                     if nv.path.is_ident("default") {
                                         if let syn::Lit::Str(lit_str) = nv.lit {
-                                            default_value = Some(lit_str.parse::<syn::Expr>().expect("Invalid default value expression"));
-                                        } else {
-                                            // Handle other literal types or error
-                                            // For simplicity, let's assume string containing expr for now, or just raw tokens?
-                                            // Actually, nv.lit is a Lit. If user writes default = "foo", it's a string.
-                                            // If user writes default = 10, it's an int.
-                                            // But standard attribute syntax default = expr is not valid Rust syntax for key-value unless it's a literal.
-                                            // So users might have to write default = "expr".
-                                            // Or we can parse `default = ...` if we use custom parsing.
-                                            // Let's stick to default = "expr" string for now as it's easier with standard syn::Meta.
+                                            default_value = Some(
+                                                lit_str
+                                                    .parse::<syn::Expr>()
+                                                    .expect("Invalid default value expression"),
+                                            );
                                         }
                                     }
                                 }
@@ -75,7 +71,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                         #ident: None
                     });
                     build_logic.push(quote! {
-                        let #ident = self.#ident.ok_or("Missing required field: #ident")?;
+                        let #ident = self.#ident.ok_or(concat!("Missing required field: ", stringify!(#ident)))?;
                     });
                 }
 
@@ -85,12 +81,13 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                         self
                     }
                 });
+
+                struct_fields.push(ident);
             }
         }
     }
 
     // Generate the output
-    // We use a module to namespace the Props struct
     let expanded = quote! {
         #[allow(non_snake_case)]
         #fn_vis mod #fn_name {
@@ -119,16 +116,17 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 pub fn build(self) -> Result<Props, &'static str> {
                     #(#build_logic)*
                     Ok(Props {
-                        #(#props_fields: #props_fields),* // This is wrong, need ident
+                        #(#struct_fields: #struct_fields),*
                     })
                 }
             }
-            
-            // We need to fix the build method construction
+
+            pub fn render(props: Props) #fn_output {
+                #(#props_init)*
+                #fn_block
+            }
         }
     };
-    
-    // Wait, I need to extract idents for the final struct construction
-    // Let's redo the loop to capture idents cleanly.
-    
-    // ... (re-implementing cleanly below)
+
+    proc_macro::TokenStream::from(expanded)
+}
