@@ -363,10 +363,20 @@ fn parse_component_var(input: &str) -> IResult<&str, Node> {
     Ok((input, Node::Component { name: name }))
 }
 
+// Helper function to clean text nodes
+fn clean_text(text: &str) -> String {
+    // Replace multiple whitespace characters with a single space, then trim
+    text.split_whitespace()
+        .collect::<Vec<&str>>()
+        .join(" ")
+        .trim()
+        .to_string()
+}
+
 fn parse_text(input: &str) -> IResult<&str, Node> {
     // Use take_while1 to ensure at least one character is consumed
     let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@')(input)?;
-    Ok((input, Node::Text(text.to_string())))
+    Ok((input, Node::Text(clean_text(text))))
 }
 
 fn parse_block_nodes(input: &str) -> IResult<&str, Vec<Node>> {
@@ -700,4 +710,37 @@ mod tests {
             }
         }
     }
+}
+fn clean_text(text: &str) -> String {
+    let mut output = String::with_capacity(text.len());
+    let chars: Vec<char> = text.chars().collect();
+    let mut i = 0;
+    while i < chars.len() {
+        let c = chars[i];
+        // Check for space between digit and unit
+        if c.is_whitespace() && i > 0 && chars[i - 1].is_ascii_digit() {
+            let rest: String = chars[i + 1..].iter().take(3).collect();
+            if rest.starts_with("px")
+                || rest.starts_with("em")
+                || rest.starts_with("%")
+                || rest.starts_with("vh")
+                || rest.starts_with("vw")
+                || rest.starts_with("s")
+            {
+                // Skip this space
+                i += 1;
+                continue;
+            }
+            // Check for rem specially since it overlaps with em check if we aren't careful,
+            // but "rem" starts with "r", so it's distinct.
+            if rest.starts_with("re") && chars[i + 1..].iter().take(3).collect::<String>() == "rem"
+            {
+                i += 1;
+                continue;
+            }
+        }
+        output.push(c);
+        i += 1;
+    }
+    output
 }
