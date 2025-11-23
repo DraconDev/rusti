@@ -693,6 +693,7 @@ async fn main() {
         .route("/styles2", get(styles_demo2_handler))
         .route("/forms", get(forms_demo))
         .route("/tailwind", get(tailwind_demo_handler))
+        .route("/quote-demo", get(quote_demo_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
