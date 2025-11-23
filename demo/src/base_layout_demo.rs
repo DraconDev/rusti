@@ -38,7 +38,11 @@ pub fn base_layout<'a>(
                             <a href="/" class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
                                 "Azumi"
                             </a>
-                            @if 
+                            @if true {
+                                <div>"Hello"</div>
+                            } else {
+                                <div>"Goodbye"</div>
+                            }
                             <a href="/" class="text-gray-300 hover:text-white transition-colors">
                                 "Home"
                             </a>
