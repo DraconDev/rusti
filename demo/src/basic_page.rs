@@ -41,7 +41,7 @@ pub fn basic_page() -> impl rusti::Component {
                     console.log("Hello from Rusti!");
                 </script>
                 // '_ 'a 'a 'a 'a 'a'
-                <a href="https://google.com">
+                <a href="https://google.com"> Google </a>
             </body>
         </html>
     }
