@@ -307,6 +307,7 @@ Coming from web development? Here's how to translate common patterns:
 | **Control** | `{% if %}` / `{#if}` | `@if` | Distinct syntax for logic. |
 | **Loops** | `{% for %}` / `{#each}` | `@for` | Rust-native iteration. |
 | **JSON** | `data='{"x":1}'` | `data=r#"{"x":1}"#` | Raw strings for nested quotes. |
+| **Inline Script** | `<script>alert('hi')</script>` | `<script>{r#"alert('hi')"#}</script>` | Wrap JS in raw strings. |
 
 ---
 
