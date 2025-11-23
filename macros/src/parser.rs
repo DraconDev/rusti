@@ -287,17 +287,20 @@ fn parse_expression(input: &str) -> IResult<&str, Node> {
 }
 
 pub fn parse_node(input: &str) -> IResult<&str, Node> {
-    panic!("parse_node called with: {}", input);
+    // panic!("parse_node called with: {}", input);
     // eprintln!("parse_node input: {}", input);
-    let (input, _) = char('@')(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, name) = parse_path(input)?;
-    // eprintln!("parse_call name: {}", name);
-    let (input, _) = multispace0(input)?;
-    // This function definition is incomplete based on the provided snippet.
-    // Assuming the user only wants to insert this partial definition.
-    // If this is meant to be a complete function, the rest of its body is missing.
-    unimplemented!("parse_node is a placeholder for now");
+    alt((
+        parse_html_comment,
+        parse_comment,
+        parse_if,
+        parse_for,
+        parse_match,
+        parse_expression,
+        parse_call,
+        parse_component_var,
+        parse_element,
+        parse_text,
+    ))(input)
 }
 
 fn parse_call(input: &str) -> IResult<&str, Node> {
