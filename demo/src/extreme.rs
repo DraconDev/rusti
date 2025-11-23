@@ -447,84 +447,41 @@ pub async fn form_handler() -> impl IntoResponse {
 }
 
 
-pub fn progress_tracker_example() -> impl rusti::Component {
-    #[derive(Debug, Clone)]
-    struct Task {
-        id: u32,
-        name: String,
-        progress: u8, // 0-100
-    }
 
-    let tasks = vec![
-        Task { id: 1, name: "Design UI mockups".to_string(), progress: 100 },
-        Task { id: 2, name: "Develop API endpoints".to_string(), progress: 75 },
-        Task { id: 3, name: "Implement frontend components".to_string(), progress: 50 },
-        Task { id: 4, name: "Write unit tests".to_string(), progress: 20 },
-        Task { id: 5, name: "Deploy to staging".to_string(), progress: 0 },
-    ];
-
-    let styles = r#"
-        body { margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f0f4f8, #d9e2ec); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .tracker-container { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
-        h1 { margin-top: 0; color: #2d3748; text-align: center; margin-bottom: 2rem; }
-        .task-list { list-style: none; padding: 0; }
-        .task-item { background: #edf2f7; border-radius: 12px; margin-bottom: 1rem; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .task-header { display: flex; justify-content: space-between; align-items: center; }
-        .task-name { font-weight: 600; color: #4a5568; font-size: 1.1rem; }
-        .task-progress-text { font-size: 0.9rem; color: #718096; }
-        .progress-bar-container { width: 100%; background: #e2e8f0; border-radius: 9999px; height: 10px; overflow: hidden; }
-        .progress-bar { height: 100%; border-radius: 9999px; transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out; }
-        .progress-bar.red { background-color: #fc8181; }
-        .progress-bar.orange { background-color: #f6ad55; }
-        .progress-bar.yellow { background-color: #fbd38d; }
-        .progress-bar.green { background-color: #68d391; }
-        .progress-bar.blue { background-color: #63b3ed; }
-    "#;
+/// Example 8: Inline Styling and Conditional Rendering
+pub fn inline_styling_example() -> impl rusti::Component {
+    let is_active = true;
+    let button_style = if is_active {
+        "background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;"
+    } else {
+        "background-color: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: not-allowed; font-size: 16px;"
+    };
 
     rusti! {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Progress Tracker</title>
-                <style>{ styles }</style>
+                <title>Inline Styling Example</title>
             </head>
-            <body>
-                <div class="tracker-container">
-                    <h1>Project Progress</h1>
-                    <ul class="task-list">
-                        @for task in tasks.iter() {
-                            <li class="task-item">
-                                <div class="task-header">
-                                    <span class="task-name">{ task.name }</span>
-                                    <span class="task-progress-text">{ format!("{}%", task.progress) }</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div
-                                        class={
-                                            format!(
-                                                "progress-bar {}",
-                                                match task.progress {
-                                                    0..=25 => "red",
-                                                    26..=50 => "orange",
-                                                    51..=75 => "yellow",
-                                                    76..=99 => "blue",
-                                                    _ => "green", // 100
-                                                }
-                                            )
-                                        }
-                                        style={ format!("width: {}%;", task.progress) }
-                                    ></div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
+            <body style="font-family: sans-serif; padding: 20px; text-align: center; background-color: #f0f2f5;">
+                <div style="max-width: 600px; margin: 50px auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <h1 style="color: #333; margin-bottom: 15px;">Dynamic Content with Inline Styles</h1>
+                    <p style="color: #666; margin-bottom: 25px;">This button and text are styled and rendered based on a Rust variable.</p>
+                    <button style="{button_style}">
+                        { if is_active { "Click Me (Active)" } else { "Disabled (Inactive)" } }
+                    </button>
+                    { if is_active {
+                        <p style="color: #28a745; margin-top: 20px; font-weight: bold;">Status: Online and Ready!</p>
+                    } else {
+                        <p style="color: #dc3545; margin-top: 20px; font-weight: bold;">Status: Offline. Please check your connection.</p>
+                    }}
                 </div>
             </body>
         </html>
     }
 }
 
-pub async fn progress_tracker_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&progress_tracker_example()))
+pub async fn inline_styling_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&inline_styling_example()))
 }
