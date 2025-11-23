@@ -182,13 +182,14 @@ impl Parse for Element {
             input.parse::<Token![>]>()?;
 
             // Parse children
-            // Special handling for script/style?
-            if name == "script" || name == "style" {
-                children.push(parse_raw_text_until_tag(input, &name)?);
-            } else if is_void_element(&name) {
+            if is_void_element(&name) {
                 // Void element, no children, no closing tag
             } else {
-                children = parse_nodes(input)?;
+                if name == "script" || name == "style" {
+                    children.push(parse_raw_text_until_tag(input, &name)?);
+                } else {
+                    children = parse_nodes(input)?;
+                }
 
                 // Expect closing tag
                 if input.peek(Token![<]) && input.peek2(Token![/]) {
