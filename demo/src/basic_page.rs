@@ -21,7 +21,7 @@ pub fn basic_page() -> impl rusti::Component {
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: "2em";
+                        margin: 2em;
                         background-color: #f4f4f4;
                         color: #333;
                     }
