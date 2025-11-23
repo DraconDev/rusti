@@ -9,6 +9,7 @@ use syn::{
 };
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum Node {
     Element(Element),
     Text(Text),
@@ -263,7 +264,6 @@ impl Parse for Text {
     fn parse(input: ParseStream) -> Result<Self> {
         let span = input.span();
         let mut content = String::new();
-        eprintln!("Text::parse: entering");
         // Consume tokens until <, @, {, or }
         // Note: } is a delimiter for blocks, so we stop there too?
         // But text can contain } if it's not part of our structure?
