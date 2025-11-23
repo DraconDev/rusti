@@ -363,16 +363,6 @@ fn parse_component_var(input: &str) -> IResult<&str, Node> {
     Ok((input, Node::Component { name: name }))
 }
 
-// Helper function to clean text nodes
-fn clean_text(text: &str) -> String {
-    // Replace multiple whitespace characters with a single space, then trim
-    text.split_whitespace()
-        .collect::<Vec<&str>>()
-        .join(" ")
-        .trim()
-        .to_string()
-}
-
 fn parse_text(input: &str) -> IResult<&str, Node> {
     // Use take_while1 to ensure at least one character is consumed
     let (input, text) = take_while1(|c: char| c != '<' && c != '{' && c != '@')(input)?;

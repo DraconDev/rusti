@@ -448,40 +448,4 @@ pub async fn form_handler() -> impl IntoResponse {
 
 
 
-/// Example 8: Inline Styling and Conditional Rendering
-pub fn inline_styling_example() -> impl rusti::Component {
-    let is_active = true;
-    let button_style = if is_active {
-        "background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;"
-    } else {
-        "background-color: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: not-allowed; font-size: 16px;"
-    };
 
-    rusti! {
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Inline Styling Example</title>
-            </head>
-            <body style="font-family: sans-serif; padding: 20px; text-align: center; background-color: #f0f2f5;">
-                <div style="max-width: 600px; margin: 50px auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                    <h1 style="color: #333; margin-bottom: 15px;">Dynamic Content with Inline Styles</h1>
-                    <p style="color: #666; margin-bottom: 25px;">This button and text are styled and rendered based on a Rust variable.</p>
-                    <button style="{button_style}">
-                        { if is_active { "Click Me (Active)" } else { "Disabled (Inactive)" } }
-                    </button>
-                    { if is_active {
-                        <p style="color: #28a745; margin-top: 20px; font-weight: bold;">Status: Online and Ready!</p>
-                    } else {
-                        <p style="color: #dc3545; margin-top: 20px; font-weight: bold;">Status: Offline. Please check your connection.</p>
-                    }}
-                </div>
-            </body>
-        </html>
-    }
-}
-
-pub async fn inline_styling_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&inline_styling_example()))
-}
