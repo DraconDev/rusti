@@ -48,7 +48,7 @@ pub fn styles_demo2() -> impl rusti::Component {
                         background-color: #f0f0f0;
                         border-radius: 8px;
                     }
-                    .body {
+                    body {
                         background-color: #222222;
                     }
                     .extension-item {
