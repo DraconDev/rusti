@@ -566,6 +566,8 @@ pub fn form_example() -> impl rusti::Component {
     let style = " margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f00 0%, #f00 100%); min-height: 100vh; ";
 
     let style2 = r#" margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f00 0%, #f00 100%); min-height: 100vh; "#;
+
+    // let style3 = {body { margin: 0; padding: 20px; font-family: system-ui; background: linear-gradient(135deg, #f00 0%, #f00 100%); min-height: 100vh; }};
     rusti! {
         <html lang="en">
             <head>
