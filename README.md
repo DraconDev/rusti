@@ -144,6 +144,10 @@ rusti! {
 }
 ```
 
+> **💡 Does using raw strings reduce type safety?**  
+> No! CSS and JavaScript are not Rust code, so no templating library can type-check them (Maud, Askama, Leptos all treat them as opaque strings). Raw strings make this boundary **explicit** rather than hiding it. Your Rust expressions (`{variables}`, `@if`, etc.) are still fully type-checked at compile-time.
+
+
 
 ---
 
