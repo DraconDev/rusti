@@ -24,10 +24,10 @@ pub fn basic_page() -> impl rusti::Component {
                         margin: "2em";
                         background-color: #f4f4f4;
                         color: #333;
-                        padding: 10px;
+                        padding: "10px";
                     }
                     h1 {
-                        color: #0056b3;
+                        color: "#0056b3";
                     }
                 </style>
             </head>
