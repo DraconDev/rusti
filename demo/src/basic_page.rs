@@ -3,17 +3,6 @@ use axum::response::{Html, IntoResponse};
 use rusti::rusti;
 
 pub fn basic_page() -> impl rusti::Component {
-    let styles = r#"
-        body {
-            font-family: sans-serif;
-            margin: 2em;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        h1 {
-            color: #0056b3;
-        }
-    "#;
     rusti! {
         <html lang="en">
             <head>
@@ -29,7 +18,17 @@ pub fn basic_page() -> impl rusti::Component {
                 <!-- <meta property="og:title" content="Basic Page" /> -->
 
                 <!-- You can also include inline styles if necessary -->
-                <style>{styles}</style>
+                <style>
+                    body {
+                        font-family: sans-serif;
+                        margin: 2em;
+                        background-color: #f4f4f4;
+                        color: #333;
+                    }
+                    h1 {
+                        color: #0056b3;
+                    }
+                </style>
             </head>
             <body>
                 <!-- Main content section -->
