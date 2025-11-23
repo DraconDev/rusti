@@ -165,17 +165,18 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                     // We can use the same logic as before.
 
                     let parser = syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
-                    let named_args = if let Ok(exprs) = parser.parse2(args.clone()) {
-                        if !exprs.is_empty()
-                            && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
-                        {
-                            Some(exprs)
+                    let named_args =
+                        if let Ok(exprs) = syn::parse::Parser::parse2(parser, args.clone()) {
+                            if !exprs.is_empty()
+                                && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
+                            {
+                                Some(exprs)
+                            } else {
+                                None
+                            }
                         } else {
                             None
-                        }
-                    } else {
-                        None
-                    };
+                        };
 
                     if let Some(exprs) = named_args {
                         let fields = exprs.iter().map(|e| {

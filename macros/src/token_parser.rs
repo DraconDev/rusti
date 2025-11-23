@@ -334,18 +334,17 @@ impl Parse for Block {
                     Vec::new()
                 };
 
+                let span = path.span();
                 Ok(Block::Call(CallBlock {
                     name: path,
                     args,
                     children,
-                    span: path.span(),
+                    span,
                 }))
             } else {
                 // Component variable @foo
-                Ok(Block::Component(ComponentBlock {
-                    name: path,
-                    span: path.span(),
-                }))
+                let span = path.span();
+                Ok(Block::Component(ComponentBlock { name: path, span }))
             }
         }
     }
