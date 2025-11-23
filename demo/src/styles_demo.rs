@@ -4,25 +4,30 @@ use rusti::rusti;
 
 pub fn styles_demo() -> impl rusti::Component {
     rusti! {
-        <html lang=\"en\">
+        <html lang="en">
             <head>
-                <meta charset=\"UTF-8\" />
-                <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Styles Demo</title>
-                <style>       :root {\
-            --gradient-start: #0f172a;\
-            --gradient-end: #1e293b;\
-        }\
-        body {\
-            margin: 0;\
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);\
-            min-height: 100vh;\
-        }\</style>
+                <style>
+                    :root {
+                        --gradient-start: #0f172a;
+                        --gradient-end: #1e293b;
+                    }
+                    body {
+                        margin: 0;
+                        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+                        min-height: 100vh;
+                    }
+                </style>
             </head>
-            <body class=\"flex items-center justify-center\">
-                <h1 class=\"text-4xl font-bold text-white\">Styles Demo</h1>
+            <body class="flex items-center justify-center">
+                <h1 class="text-4xl font-bold text-white">Styles Demo</h1>
             </body>
         </html>
     }
-                
+}
 
+pub async fn styles_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&styles_demo()))
+}
