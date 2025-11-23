@@ -8,13 +8,13 @@ Inspired by Go's templ library, Rusti brings the component model to server-side 
 Please read this first.
 Because `rusti!` runs after the Rust compiler parses your code, you must respect the Rust Tokenizer. You are writing HTML inside Rust code, so Rust's syntax rules still apply.
 
-### 1. The "2em" CSS Problem
-Rust treats `2e...` as the start of Scientific Notation (e.g., `2e10`).
-If you write `margin: 2em;`, the Rust compiler crashes before Rusti can even run.
-- ❌ Invalid: `margin: 2em;` (Looks like a broken float)
-- ✅ Valid: `margin: "2em";` (Recommended - Rusti strips the quotes for you)
-- ✅ Valid: `margin: 2.0em;` (The decimal point breaks the scientific notation check)
-- ✅ Valid: `margin: 20px;` (Other units like px, rem, % work fine without quotes)
+### 1. The "2em" CSS Problem (and any unit starting with `e`)
+Rust treats literals like `2e...` as the start of scientific notation, causing a lexer error.
+If you write `margin: 2em;` (or `margin: 1ex;`), the compiler crashes before Rusti runs.
+- ❌ Invalid: `margin: 2em;` (looks like a broken float)
+- ✅ Valid: `margin: "2em";` (quotes prevent the lexer issue; Rusti will strip them)
+- ✅ Valid: `margin: 2.0em;` (adding a decimal point avoids the scientific notation)
+- ✅ Valid: `margin: 20px;` (units that don't start with `e` work without quotes)
 
 ### 2. No Backticks (\`) or Single Quotes (')
 - **Backticks**: Rust does not support backticks (\`) in source code. They are illegal tokens.
