@@ -11,14 +11,15 @@ mod basic_page;
 mod datastar;
 mod extreme;
 mod styles_demo;
+mod tailwind_demo;
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
-use styles_demo::styles_demo_handler;
-
 use rusti::rusti;
 use serde::Deserialize;
+use styles_demo::styles_demo_handler;
+use tailwind_demo::tailwind_demo_handler;
 
 use crate::styles_demo::styles_demo2_handler;
 
@@ -686,6 +687,7 @@ async fn main() {
         .route("/datastar", get(datastar_demo_handler))
         .route("/styles2", get(styles_demo2_handler))
         .route("/forms", get(forms_demo))
+        .route("/tailwind", get(tailwind_demo_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
