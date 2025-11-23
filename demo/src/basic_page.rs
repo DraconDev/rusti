@@ -10,11 +10,10 @@ pub fn basic_page() -> impl rusti::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic Page</title>
                 
-                {/* Inline styles demonstration */}
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: "2em";              {/* Quoted to avoid 2e lexer error */}
+                        margin: "2em";              /* Quoted to avoid 2e lexer error */
                         background-color: #f4f4f4;
                         color: #333;
                         padding: 10px;
@@ -29,7 +28,6 @@ pub fn basic_page() -> impl rusti::Component {
                 <p>This demonstrates a simple Rusti component with inline CSS.</p>
                 <p>Note: The margin uses quoted "2em" to avoid Rust's scientific notation parser.</p>
                 
-                {/* Best practice: Use raw strings for scripts */}
                 <script>{r#"
                     console.log("Hello from Rusti!");
                 "#}</script>
