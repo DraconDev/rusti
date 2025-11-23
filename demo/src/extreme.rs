@@ -4,13 +4,15 @@ use rusti::rusti;
 
 /// Example 1: Basic HTML with inline styles
 pub fn basic_html_example() -> impl rusti::Component {
+    let styles = r"body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}h1{color:#667eea;margin-top:0}";
+    
     rusti! {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic HTML Example</title>
-                <style>body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}h1{color:#667eea;margin-top:0}</style>
+                <style>{styles}</style>
             </head>
             <body>
                 <div class="container">
