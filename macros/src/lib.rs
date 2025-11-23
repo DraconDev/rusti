@@ -170,12 +170,20 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                 token_parser::Block::Call(call_block) => {
                     let name = &call_block.name;
                     let args = &call_block.args;
+                    let has_children = !call_block.children.is_empty();
+                    let children_code = if has_children {
+                        let children_body = generate_body(&call_block.children);
+                        quote! {
+                            , rusti::from_fn(move |f| {
+                                #children_body
+                                Ok(())
+                            })
+                        }
+                    } else {
+                        quote! {}
+                    };
 
                     // Check if args are named or positional
-                    // We can try to parse args as Punctuated<Expr, Comma>
-                    // But here args is TokenStream.
-                    // We can use the same logic as before.
-
                     let parser = syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
                     let named_args =
                         if let Ok(exprs) = syn::parse::Parser::parse2(parser, args.clone()) {
@@ -203,11 +211,12 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                         quote! {
                             rusti::Component::render(&#name::render(#name::Props::builder()
                                 #(#setters)*
-                                .build().expect("Failed to build props")), f)?;
+                                .build().expect("Failed to build props")
+                                #children_code), f)?;
                         }
                     } else {
                         quote! {
-                            rusti::Component::render(&#name(#args), f)?;
+                            rusti::Component::render(&#name(#args #children_code), f)?;
                         }
                     }
                 }
