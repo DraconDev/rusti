@@ -19,3 +19,11 @@
 - **Implementation**:
     - Support `children: impl Component` prop automatically?
     - Slot mechanism?
+
+### 5. Fix Compilation Errors (Immediate)
+- **Goal**: Fix `expected one of ...` errors in `base_layout_demo.rs` and `extreme.rs`.
+- **Status**: In Progress.
+- **Plan**:
+    - Analyze macro expansion for `Block::Component`.
+    - Fix `rusti!` macro code generation.
+    - Verify with `cargo check`.
