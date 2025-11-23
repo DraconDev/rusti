@@ -296,7 +296,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
 
     // Manual parsing for debugging
-    let (input, _) = match char('(')(input) {
+    let (input, _) = match char::<&str, nom::error::Error<&str>>('(')(input) {
         Ok(res) => res,
         Err(e) => panic!("parse_call failed at '(': {:?}", e),
     };
@@ -306,7 +306,7 @@ fn parse_call(input: &str) -> IResult<&str, Node> {
         Err(e) => panic!("parse_call failed at args content: {:?}", e),
     };
 
-    let (input, _) = match char(')')(input) {
+    let (input, _) = match char::<&str, nom::error::Error<&str>>(')')(input) {
         Ok(res) => res,
         Err(e) => panic!("parse_call failed at ')': {:?}, input: '{}'", e, input),
     };
