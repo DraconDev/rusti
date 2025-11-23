@@ -11,6 +11,7 @@ mod basic_page;
 mod datastar;
 mod datastar_extended;
 mod extreme;
+mod quote_demo;
 mod styles_demo;
 mod tailwind_demo;
 
