@@ -19,7 +19,7 @@ pub fn base_layout<'a>(
                 <title>{title}</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
                 <script src="https://cdn.tailwindcss.com"></script>
-                <style></style>
+                <style>{styles}</style>
             </head>
             <body class="bg-gray-900 text-white min-h-screen">
                 <nav class="glass-card rounded-2xl shadow-2xl p-4 mb-8">
