@@ -76,14 +76,14 @@ pub fn loops_example() -> impl rusti::Component {
                 <div class="container">
                     <h2>Fruit List</h2>
                     <ul>
-                        @for fruit in &fruits {
+                        @for fruit in fruits.iter() {
                             <li>{ fruit }</li>
                         }
                     </ul>
 
                     <h2>Color Palette</h2>
                     <ul>
-                        @for (name, hex) in &colors {
+                        @for (name, hex) in colors.iter() {
                             <li>
                                 <span class="color-box" style={hex}></span>
                                 <strong>{ name }</strong> - { hex }
@@ -239,7 +239,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                     <h1>Analytics Dashboard</h1>
 
                     <div class="stats-grid">
-                        @for (label, value, change) in &stats {
+                        @for (label, value, change) in stats.iter() {
                             <div class="stat-card fade-in">
                                 <div class="stat-label">{ label }</div>
                                 <div class="stat-value">{ value }</div>
