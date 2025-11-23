@@ -24,7 +24,7 @@ pub fn basic_page() -> impl rusti::Component {
                         color: #0056b3;
                     }
                 </style>
-            </head>
+            </hea d>
             <body>
                 <h1>Basic Rusti Page</h1>
                 <p>This demonstrates a simple Rusti component with inline styles.</p>
