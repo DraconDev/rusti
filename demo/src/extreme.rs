@@ -587,7 +587,7 @@ pub fn form_example() -> impl rusti::Component {
                         border-radius: 20px;
                         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
                         max-width: 500px;
-                        width: "100%";
+                        width: 100%;
                     }
                     h1 {
                         margin-top: 0;
