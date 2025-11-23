@@ -8,10 +8,10 @@ pub fn styles_demo() -> impl rusti::Component {
             --gradient-start: #0f172a;\
             --gradient-end: #1e293b;\
         }\
-        .gradient-demo {\
-            width: 100vw;\
-            height: 100vh;\
+        body {\
+            margin: 0;\
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);\
+            min-height: 100vh;\
         }\
     ";
     rusti! {
@@ -23,7 +23,7 @@ pub fn styles_demo() -> impl rusti::Component {
                 <style>{styles}</style>
             </head>
             <body class=\"flex items-center justify-center\">
-                <div class=\"gradient-demo\"></div>
+                <h1 class=\"text-4xl font-bold text-white\">Styles Demo</h1>
             </body>
         </html>
     }
