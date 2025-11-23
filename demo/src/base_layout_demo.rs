@@ -1,7 +1,7 @@
 // Demo for base_layout and navbar using rusti macro
 
+use axum::response::{Html, IntoResponse};
 use rusti::rusti;
-use rusti::Component;
 
 pub fn base_layout<'a>(
     title: &'a str,
@@ -42,7 +42,7 @@ pub fn base_layout<'a>(
         <div class="container mx-auto px-4 py-8">
             @content
         </div>
-        "</body></html>"
+        </body></html>
     }
 }
 
@@ -93,4 +93,9 @@ pub fn base_layout_demo() -> impl rusti::Component {
         <p class="mt-4 text-center text-gray-300">"This page demonstrates the base_layout component with navbar."</p>
     };
     base_layout(title, is_auth, content)
+}
+
+// Handler for Axum route
+pub async fn base_layout_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&base_layout_demo()))
 }
