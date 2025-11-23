@@ -1,4 +1,4 @@
-// Basic page – demonstrates basic Rusti usage
+// Basic page – demonstrates basic Rusti usage with comments showing best practices
 use axum::response::{Html, IntoResponse};
 use rusti::rusti;
 
@@ -6,17 +6,19 @@ pub fn basic_page() -> impl rusti::Component {
     rusti! {
         <html lang="en">
             <head>
+                <!-- Meta tags work with standard HTML comments -->
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic Page</title>
-                
+
+                <!-- Inline styles work great! Just quote "2em" to avoid lexer issues -->
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: "2em";              /* Quoted to avoid 2e lexer error */
-                        background-color: #f4f4f4;
+                        margin: "2em";              /* Quote em units to avoid 2e parser error */
+                        background-color: #f4f4f4;  /* Hex colors work fine */
                         color: #333;
-                        padding: 10px;
+                        padding: 20px;              /* px, rem, % all work without quotes */
                     }
                     h1 {
                         color: #0056b3;
@@ -25,11 +27,14 @@ pub fn basic_page() -> impl rusti::Component {
             </head>
             <body>
                 <h1>Basic Rusti Page</h1>
-                <p>This demonstrates a simple Rusti component with inline CSS.</p>
-                <p>Note: The margin property uses quotes around 2em to avoid parser issues.</p>
-                
+                <p>This demonstrates a simple Rusti component with inline styles.</p>
+                <p>Check the source to see comment examples!</p>
+
+                <!-- Use raw strings for inline scripts - best practice -->
                 <script>{r#"
                     console.log("Hello from Rusti!");
+                    // You can use single quotes inside raw strings
+                    const msg = 'This works!';
                 "#}</script>
             </body>
         </html>
@@ -38,25 +43,4 @@ pub fn basic_page() -> impl rusti::Component {
 
 pub async fn basic_page_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&basic_page()))
-}
-
-pub fn extension_page() -> impl rusti::Component {
-    rusti! {
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Extension Page Example</title>
-            </head>
-            <body>
-                <h1>Welcome to the Extension Page!</h1>
-                <p>This is an additional page demonstrating more Rusti capabilities.</p>
-                <a href="/">Back to Basic Page</a>
-            </body>
-        </html>
-    }
-}
-
-pub async fn extension_page_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&extension_page()))
 }
