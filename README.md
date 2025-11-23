@@ -437,15 +437,14 @@ fn user_list(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_
 ### 4. Component Composition
 
 Components are just Rust functions. Compose them using `@`:
+## 🧩 Component Composition
+
+Rusti components are just Rust functions. You can compose them easily!
+
+### 1. Basic Functions (Positional Arguments)
 
 ```rust
-fn button(label: &str, variant: &str) -> impl rusti::Component + '_ {
-    let class = match variant {
-        "primary" => "bg-blue-600 text-white",
-        "danger" => "bg-red-600 text-white",
-        _ => "bg-gray-200 text-black",
-    };
-    
+fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
     rusti! {
         <button class={class}>{ label }</button>
     }
@@ -456,7 +455,35 @@ fn page() -> impl rusti::Component {
         <div>
             @button("Submit", "primary")
             @button("Cancel", "secondary")
-            @button("Delete", "danger")
+        </div>
+    }
+}
+```
+
+### 2. The `#[component]` Macro (Named Arguments)
+
+For more readable components with named props, use the `#[component]` attribute. This generates a typed `Props` struct and enables named argument syntax:
+
+```rust
+use rusti::component;
+
+#[component]
+fn alert_box(message: String, is_error: bool) -> impl rusti::Component {
+    rusti! {
+        <div class={ if is_error { "bg-red-500" } else { "bg-blue-500" } }>
+            {message}
+        </div>
+    }
+}
+
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <!-- Named arguments are type-checked! -->
+            @alert_box(
+                message = "Operation Successful".to_string(),
+                is_error = false
+            )
         </div>
     }
 }

@@ -11,12 +11,6 @@ fn alert_box(message: String, is_error: bool) -> impl rusti::Component {
 }
 
 pub fn component_macro_page() -> impl rusti::Component {
-    // Manual usage for now, until parser supports named args
-    let alert = alert_box::render(alert_box::Props {
-        message: "Hello from Component Macro!".to_string(),
-        is_error: false,
-    });
-
     rusti! {
         <div>
             <h1>Component Macro Demo</h1>
