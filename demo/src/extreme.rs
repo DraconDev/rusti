@@ -622,7 +622,7 @@ pub fn form_example() -> impl rusti::Component {
                     }
                     .submit-btn {
                         width: 100%;
-                        padding: 1rem;
+                        padding: "1em";
                         background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%);
                         color: white;
                         border: none;
@@ -639,7 +639,7 @@ pub fn form_example() -> impl rusti::Component {
                 </style>
             </head>
             <body>
-                <div class="form-container">
+                <div class="form-container font-size">
                     <h1>Contact Us</h1>
                     <form action="/submit" method="post">
                         <div class="form-group">
