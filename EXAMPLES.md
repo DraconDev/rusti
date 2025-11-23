@@ -451,16 +451,49 @@ fn datastar_input() -> impl rusti::Component {
 - Inline styles (any unit)
 - Raw strings for CSS/JS
 - Quoted `"2em"` units
+- Unquoted `2 em` (with space) - parser fixes it!
 - Emojis in Rust variables
 - JSON in raw string attributes
 - HTMX/Datastar/Alpine.js
+- Named arguments in components (`@alert(msg="Hi")`)
 
 ### ❌ Doesn't Work
 - Single quotes for attributes: `class='foo'`
 - Backticks: `` `code` ``
 - Direct emoji in text: `<p>✅</p>`
-- Unquoted em units: `margin: 2em;`
+- Unquoted `2em` (without space) - crashes Rust lexer
 - JavaScript without raw strings
+
+---
+
+## Component Macro (Named Arguments)
+
+Use the `#[component]` attribute to create components with named arguments:
+
+```rust
+use rusti::component;
+
+#[component]
+fn alert_box(message: String, is_error: bool) -> impl rusti::Component {
+    rusti! {
+        <div class={ if is_error { "bg-red-500" } else { "bg-blue-500" } }>
+            {message}
+        </div>
+    }
+}
+
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <!-- Named arguments are type-checked! -->
+            @alert_box(
+                message = "Operation Successful".to_string(),
+                is_error = false
+            )
+        </div>
+    }
+}
+```
 
 ---
 
