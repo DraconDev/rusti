@@ -124,6 +124,9 @@ pub fn styles_demo2() -> impl rusti::Component {
                     .card-footer a:hover {
                         text-decoration: underline;
                     }
+                    h1 {
+                        color: #ff22ff;
+                    }
                 </style>
             </head>
             <body class="flex items-center justify-center">
