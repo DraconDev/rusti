@@ -9,6 +9,7 @@ mod advanced;
 mod base_layout_demo;
 mod basic_page;
 mod datastar;
+mod datastar_extended;
 mod extreme;
 mod styles_demo;
 mod tailwind_demo;
@@ -16,6 +17,7 @@ mod tailwind_demo;
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
+use datastar_extended::datastar_extended_handler;
 use rusti::rusti;
 use serde::Deserialize;
 use styles_demo::styles_demo_handler;
@@ -685,6 +687,7 @@ async fn main() {
         .route("/base-layout", get(base_layout_demo_handler))
         .route("/styles", get(styles_demo_handler))
         .route("/datastar", get(datastar_demo_handler))
+        .route("/datastar-extended", get(datastar_extended_handler))
         .route("/styles2", get(styles_demo2_handler))
         .route("/forms", get(forms_demo))
         .route("/tailwind", get(tailwind_demo_handler))
