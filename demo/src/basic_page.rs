@@ -24,6 +24,3 @@ pub fn basic_page() -> impl rusti::Component {
     }
 }
 
-pub async fn basic_page_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&basic_page()))
-}
