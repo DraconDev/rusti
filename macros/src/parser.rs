@@ -139,7 +139,18 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     let (input, _) = multispace0(input)?;
 
     // Parse attributes
-    let (input, attrs) = many0(preceded(multispace0, parse_attribute))(input)?;
+    let (input, mut attrs) = many0(preceded(multispace0, parse_attribute))(input)?;
+
+    // Check for <style src="...">
+    let mut style_src_child = None;
+    if name == "style" {
+        if let Some(pos) = attrs.iter().position(|(n, _)| n == "src") {
+            if let AttributeValue::Static(path) = &attrs[pos].1 {
+                style_src_child = Some(Node::Expression(format!("include_str!(\"{}\")", path)));
+                attrs.remove(pos);
+            }
+        }
+    }
 
     let (input, _) = multispace0(input)?;
 
@@ -154,12 +165,17 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 
     // If it's a self-closing tag, return immediately
     if self_closing {
+        let children = if let Some(child) = style_src_child {
+            vec![child]
+        } else {
+            vec![]
+        };
         return Ok((
             input,
             Node::Element {
                 name,
                 attrs,
-                children: vec![],
+                children,
             },
         ));
     }
@@ -186,7 +202,7 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
     }
 
     // Special handling for script and style tags - skip their content
-    let (input, children) = if name == "script" || name == "style" {
+    let (input, mut children) = if name == "script" || name == "style" {
         // For script/style tags, consume everything until the closing tag
         // Build the closing tag pattern manually
         let remaining = input;
@@ -231,10 +247,20 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
         let content = &remaining[..content_end];
         let input = &remaining[content_end..];
 
-        (input, vec![Node::Text(content.to_string())])
+        // If we have a style src, we ignore the content (or prepend it?)
+        // Usually <style src> is empty. If not empty, we keep the content too.
+        let mut kids = vec![];
+        if !content.is_empty() {
+            kids.push(Node::Text(content.to_string()));
+        }
+        (input, kids)
     } else {
         parse_nodes(input)?
     };
+
+    if let Some(child) = style_src_child {
+        children.insert(0, child);
+    }
 
     let (input, _) = multispace0(input)?;
     let (input, _) = char('<')(input)?;
