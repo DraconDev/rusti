@@ -4,12 +4,14 @@ use axum::{
     Form, Router,
 };
 
+mod about;
 mod advanced;
 mod base_layout_demo;
 mod basic_page;
 mod extreme;
 mod styles_demo;
 
+use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use styles_demo::styles_demo_handler;
 
@@ -658,6 +660,7 @@ async fn forms_demo() -> impl IntoResponse {
 async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
+        .route("/about", get(about_page_wrapper))
         .route("/htmx", get(htmx_demo))
         .route("/conditionals", get(conditionals_demo))
         .route("/lists", get(lists_demo))
