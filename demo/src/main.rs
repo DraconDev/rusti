@@ -18,6 +18,8 @@ use styles_demo::styles_demo_handler;
 use rusti::rusti;
 use serde::Deserialize;
 
+use crate::styles_demo::styles_demo2_handler;
+
 #[derive(Deserialize)]
 struct CounterForm {
     count: i32,
@@ -679,6 +681,7 @@ async fn main() {
         .route("/advanced-match", get(advanced_match_demo))
         .route("/base-layout", get(base_layout_demo_handler))
         .route("/styles", get(styles_demo_handler))
+        .route("/styles2", get(styles_demo2_handler))
         .route("/forms", get(forms_demo))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))

@@ -128,3 +128,7 @@ pub fn styles_demo2() -> impl rusti::Component {
         </html>
     }
 }
+
+pub async fn styles_demo2_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&styles_demo2()))
+}
