@@ -20,7 +20,7 @@ pub fn component_macro_page() -> impl rusti::Component {
     rusti! {
         <div>
             <h1>Component Macro Demo</h1>
-            {alert}
+            @alert
         </div>
     }
 }

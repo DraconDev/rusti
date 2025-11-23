@@ -80,13 +80,13 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                             // Dynamic attributes - parse expression and escape
                             match syn::parse_str::<syn::Expr>(expr) {
                                 Ok(parsed_expr) => quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#parsed_expr))?;
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#parsed_expr)))?;
                                 },
                                 Err(_) => {
                                     use std::str::FromStr;
                                     match proc_macro2::TokenStream::from_str(expr) {
                                         Ok(tokens) => quote! {
-                                            write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#tokens))?;
+                                            write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#tokens)))?;
                                         },
                                         Err(e) => syn::Error::new(
                                             proc_macro2::Span::call_site(),
