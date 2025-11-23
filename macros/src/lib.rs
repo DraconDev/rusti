@@ -161,19 +161,54 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                     }
                 };
 
-                let args_tokens = match proc_macro2::TokenStream::from_str(args) {
-                    Ok(tokens) => tokens,
-                    Err(e) => {
-                        return syn::Error::new(
-                            proc_macro2::Span::call_site(),
-                            format!("Invalid arguments '{}': {}", args, e),
-                        )
-                        .to_compile_error();
+                // Try to parse as named arguments (key = value)
+                let named_args = if let Ok(exprs) = syn::parse_str::<
+                    syn::punctuated::Punctuated<syn::Expr, syn::token::Comma>,
+                >(args)
+                {
+                    if !exprs.is_empty() && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
+                    {
+                        Some(exprs)
+                    } else {
+                        None
                     }
+                } else {
+                    None
                 };
 
-                quote! {
-                    rusti::Component::render(&#name_ident(#args_tokens), f)?;
+                if let Some(exprs) = named_args {
+                    // Generate struct construction: name::render(name::Props { key: value, ... })
+                    let fields = exprs.iter().map(|e| {
+                        if let syn::Expr::Assign(assign) = e {
+                            let key = &assign.left;
+                            let value = &assign.right;
+                            quote! { #key: #value }
+                        } else {
+                            unreachable!()
+                        }
+                    });
+
+                    quote! {
+                        rusti::Component::render(&#name_ident::render(#name_ident::Props {
+                            #(#fields),*
+                        }), f)?;
+                    }
+                } else {
+                    // Positional arguments: name(args)
+                    let args_tokens = match proc_macro2::TokenStream::from_str(args) {
+                        Ok(tokens) => tokens,
+                        Err(e) => {
+                            return syn::Error::new(
+                                proc_macro2::Span::call_site(),
+                                format!("Invalid arguments '{}': {}", args, e),
+                            )
+                            .to_compile_error();
+                        }
+                    };
+
+                    quote! {
+                        rusti::Component::render(&#name_ident(#args_tokens), f)?;
+                    }
                 }
             }
             parser::Node::If {
