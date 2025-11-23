@@ -7,6 +7,7 @@ use axum::{
 mod advanced;
 mod base_layout_demo;
 mod basic_page;
+mod extreme;
 mod styles_demo;
 
 use base_layout_demo::base_layout_demo_handler;
