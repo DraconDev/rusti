@@ -80,9 +80,9 @@ pub fn datastar_extended_demo() -> impl rusti::Component {
                                 <tbody class="divide-y divide-gray-700">
                                     <!-- 
                                         Note: In a real Datastar app, we might use a backend loop or a client-side repeater.
-                                        Since Rusti is server-side, we'll render the initial list, but for this demo 
+                                        Since Rusti is server-side, we will render the initial list, but for this demo 
                                         we are testing the PARSER'S ability to handle these complex data attributes.
-                                        We'll simulate client-side visibility toggling.
+                                        We will simulate client-side visibility toggling.
                                     -->
                                     <tr class="hover:bg-gray-700/50 transition" 
                                         data-show="$showInactive || true"> <!-- Hardcoded true for demo visibility, normally logic -->
