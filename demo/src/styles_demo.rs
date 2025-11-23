@@ -14,12 +14,12 @@ pub fn styles_demo() -> impl rusti::Component {
         <html lang=\"en\">
             <head>
                 <meta charset=\"UTF-8\" />
-                <div class=\"gradient-demo\"></div>
                 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
                 <title>Styles Demo</title>
                 <style>{styles}</style>
             </head>
             <body class=\"min-h-screen flex items-center justify-center\">
+                <div class=\"gradient-demo\"></div>
             </body>
         </html>
     }
