@@ -36,7 +36,38 @@ pub fn dynamic_content_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Dynamic Content Example</title>
-                <style>body{margin:0;padding:20px;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(to bottom right,rgb(26,32,44),rgb(45,55,72));color:white;min-height:100vh}.card{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:2rem;max-width:600px;margin:2rem auto}.badge{display:inline-block;background:rgb(245,101,101);color:white;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.875rem;font-weight:bold}.status{color:rgb(104,211,145);font-weight:bold}</style>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+                        background: linear-gradient(to bottom right, rgb(26, 32, 44), rgb(45, 55, 72));
+                        color: white;
+                        min-height: 100vh;
+                    }
+                    .card {
+                        background: rgba(255, 255, 255, 0.1);
+                        backdrop-filter: blur(10px);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 16px;
+                        padding: 2rem;
+                        max-width: 600px;
+                        margin: 2rem auto;
+                    }
+                    .badge {
+                        display: inline-block;
+                        background: rgb(245, 101, 101);
+                        color: white;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: 9999px;
+                        font-size: 0.875rem;
+                        font-weight: bold;
+                    }
+                    .status {
+                        color: rgb(104, 211, 145);
+                        font-weight: bold;
+                    }
+                </style>
             </head>
             <body>
                 <div class="card">
