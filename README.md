@@ -27,7 +27,7 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 ```
 
 > **📊 How does Rusti compare to Maud, Askama, or Leptos?**  
-> See our [detailed competitive analysis](COMPETITIVE_ANALYSIS.md) for a technical breakdown of trade-offs, performance, and design philosophy.
+> See our [detailed competitive analysis](#-competitive-analysis) for a technical breakdown of trade-offs, performance, and design philosophy.
 
 
 ---
