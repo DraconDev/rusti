@@ -200,6 +200,22 @@ fn generate_body(nodes: &[parser::Node]) -> proc_macro2::TokenStream {
                     }
                 }
             }
+            parser::Node::Component { name } => {
+                let name_ident = match syn::parse_str::<syn::Path>(name) {
+                    Ok(path) => path,
+                    Err(e) => {
+                        return syn::Error::new(
+                            proc_macro2::Span::call_site(),
+                            format!("Invalid component name '{}': {}", name, e),
+                        )
+                        .to_compile_error();
+                    }
+                };
+
+                quote! {
+                    rusti::Component::render(&#name_ident, f)?;
+                }
+            }
             parser::Node::Match { expr, arms } => {
                 let match_expr =
                     syn::parse_str::<syn::Expr>(expr).expect("Failed to parse match expression");
