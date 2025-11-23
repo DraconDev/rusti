@@ -6,13 +6,8 @@ use std::str::FromStr;
 
 #[proc_macro]
 pub fn rusti(input: TokenStream) -> TokenStream {
-    // Check if input is a string literal
-    let input_str = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
-        lit.value()
-    } else {
-        // Fallback to token stream stringification (legacy behavior)
-        input.to_string()
-    };
+    let input_str = input.to_string();
+    // panic!("DEBUG: input_str: '{}'", input_str);
 
     // Parse the block content
     let nodes = match parser::parse_nodes(&input_str) {
