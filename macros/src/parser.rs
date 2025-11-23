@@ -491,3 +491,37 @@ fn parse_match_arms(input: &str) -> IResult<&str, Vec<MatchArm>> {
         current_input = input;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_loose_styles() {
+        let input = r#"
+            <style>
+                body {
+                    background: red;
+                }
+            </style>
+        "#;
+        let result = parse_nodes(input);
+        match result {
+            Ok((remaining, nodes)) => {
+                println!("Remaining: '{}'", remaining);
+                assert!(remaining.trim().is_empty(), "Should consume all input");
+                // Verify we got a style element with text content
+                if let Some(Node::Element { name, children, .. }) = nodes.get(0) {
+                    assert_eq!(name, "style");
+                    // We expect the text content to be preserved, including braces
+                    // But currently parse_text_exclude_brace stops at '{'
+                } else {
+                    panic!("Expected Element node");
+                }
+            }
+            Err(e) => {
+                panic!("Parse failed: {:?}", e);
+            }
+        }
+    }
+}
