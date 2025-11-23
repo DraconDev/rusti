@@ -18,7 +18,7 @@ pub fn quote_demo() -> impl rusti::Component {
                     </h1>
 
                     <!-- Example 1: Attributes always use double quotes -->
-                    <secti on class="bg-gray-800 p-6 rounded-lg">
+                    <section class="bg-gray-800 p-6 rounded-lg">
                         <h2 class="text-2xl font-bold mb-4">1. Attributes Use Double Quotes</h2>
                         <p class="text-gray-300">All HTML attributes must use double quotes in Rusti.</p>
                         <code class="block bg-gray-700 p-4 mt-2 rounded">class="container"</code>
