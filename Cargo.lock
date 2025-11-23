@@ -371,7 +371,7 @@ dependencies = [
 
 [[package]]
 name = "rusti"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "rusti-macros",
 ]
