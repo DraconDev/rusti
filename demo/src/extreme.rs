@@ -10,7 +10,7 @@ pub fn basic_html_example() -> impl rusti::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Basic HTML Example</title>
-                <style>body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}.container{max-width:800px;margin:0 auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}h1{color:#667eea;margin-top:0}</style>
+                <style>body{margin:0;padding:20px;font-family:system-ui;background:linear-gradient(135deg,#f00 0%,#f00 100%);min-height:100vh}.container{max-width:800px;margin:0 auto;background:#f00;padding:2rem;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}h1{color:#fff;margin-top:0}</style>
             </head>
             <body>
                 <div class="container">
