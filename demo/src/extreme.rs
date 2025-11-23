@@ -244,7 +244,7 @@ fn extreme_example(is_authenticated: bool, user_name: &str, items: &[&str]) -> i
         }
     ";
 
-    base_layout("Extreme Rusti! Example", custom_styles, rusti! {
+    base_layout("Extreme Rusti! Example", true, rusti! {
         <div class="container mx-auto p-8">
             <h1 class="text-5xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-pulse-slow">
                 The Ultimate Rusti! Macro Showcase
