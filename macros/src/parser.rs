@@ -513,8 +513,13 @@ mod tests {
                 // Verify we got a style element with text content
                 if let Some(Node::Element { name, children, .. }) = nodes.get(0) {
                     assert_eq!(name, "style");
-                    // We expect the text content to be preserved, including braces
-                    // But currently parse_text_exclude_brace stops at '{'
+                    println!("Style children: {:?}", children);
+                    // Check if children are all text nodes
+                    for child in children {
+                        if let Node::Expression { .. } = child {
+                            panic!("Found Expression node in style tag! CSS content was parsed as Rust code.");
+                        }
+                    }
                 } else {
                     panic!("Expected Element node");
                 }
