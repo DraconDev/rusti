@@ -735,7 +735,7 @@ async fn working_scripts_handler() -> impl IntoResponse {
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&simple_script_test()))
+    Html(rusti::render_to_string(&simple_script_test::simple_script_test()))
 }
 
 #[tokio::main]
