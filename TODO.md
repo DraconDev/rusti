@@ -2,6 +2,12 @@
 
 ## 🚀 Future Improvements
 
+feature idea: 
+
+@let = inside the rusti! macro 
+like 
+@let items = vec!["Apple", "Banana", "Cherry"];
+
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
 - **Status**: Completed.
@@ -21,4 +27,5 @@
 - **Goal**: Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
 - **Status**: Completed.
 
-fixes style and script tags
+
+

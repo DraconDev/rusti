@@ -38,12 +38,14 @@ pub fn script_style_demo() -> impl rusti::Component {
 
                 /* Control flow in CSS */
                 @if show_debug {
+                    @{ "
                     .debug-info {
                         border: 1px dashed red;
                         padding: 10px;
                         margin-top: 20px;
                         background: #fff0f0;
                     }
+                    " }
                 }
             </style>
         </head>
