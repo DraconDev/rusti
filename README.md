@@ -532,6 +532,18 @@ When writing CSS directly in `<style>` tags, most units work fine:
 - ⚠️ `padding: 2em;` - Rarely, may cause lexer issues
 - ✅ `padding: "2em";` - Use quoted string if needed
 
+**💡 Simplicity Recommendation:**
+
+For the easiest development experience, **avoid using em units and hex colors without quotes** in inline CSS:
+- ❌ `padding: 2em;` — May cause lexer issues
+- ❌ `color: #fff;` — May be interpreted as Rust syntax  
+- ✅ `padding: "2em";` — Quoted em units work perfectly
+- ✅ `color: "#fff";` — Quoted hex colors work perfectly
+- ✅ `padding: 2rem;` — rem units typically work as-is
+- ✅ `padding: 16px;` — px and most other units work as-is
+
+**Best Practice:** Use Tailwind CSS (recommended) or external stylesheets to completely avoid these edge cases.
+
 ### Quick Translation Guide (JS/HTML → Rust)
 
 | Feature | JavaScript / HTML | Rusti (Rust) |
