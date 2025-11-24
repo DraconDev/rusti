@@ -743,10 +743,15 @@ async fn main() {
     println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
     println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
     println!("   http://127.0.0.1:3000/forms - Forms");
-    println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
-    println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
-    println!("   http://127.0.0.1:3000/forms - Forms");
     println!("   http://127.0.0.1:3000/script-style - Script & Style Demo");
+    println!("\n🎯 Extreme Examples:");
+    println!("   http://127.0.0.1:3000/examples/basic-html - Basic HTML");
+    println!("   http://127.0.0.1:3000/examples/dynamic-content - Dynamic Content");
+    println!("   http://127.0.0.1:3000/examples/loops - Loops");
+    println!("   http://127.0.0.1:3000/examples/pattern-matching - Pattern Matching");
+    println!("   http://127.0.0.1:3000/examples/component-composition - Component Composition");
+    println!("   http://127.0.0.1:3000/examples/dashboard - Interactive Dashboard");
+    println!("   http://127.0.0.1:3000/examples/form - Form Example");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
