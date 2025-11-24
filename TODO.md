@@ -21,3 +21,4 @@
 - **Goal**: Support attributes with colons (e.g., `xml:lang`, `v-bind:class`, `hx-on:click`).
 - **Status**: Completed.
 
+fixes style and script tags
