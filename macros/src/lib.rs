@@ -256,6 +256,13 @@ fn generate_body_with_context(
                         rusti::Component::render(&#name, f)?;
                     }
                 }
+                token_parser::Block::Let(let_block) => {
+                    let pattern = &let_block.pattern;
+                    let value = &let_block.value;
+                    quote! {
+                        let #pattern = #value;
+                    }
+                }
             },
         };
         stream.extend(chunk);
