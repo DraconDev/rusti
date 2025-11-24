@@ -16,6 +16,22 @@ This document provides comprehensive, copy-paste examples demonstrating Rusti's 
 
 ---
 
+## 💡 Quick Tip: Text and Quotes
+
+Rusti **automatically strips outer quotes** from string literals in text content. This means both of these produce the same output:
+
+```rust
+<h1>"Welcome"</h1>  // Renders: Welcome
+<h1>Welcome</h1>    // Renders: Welcome
+```
+
+**To show literal quotes**, use raw strings with expression syntax:
+```rust
+<p>{r#""This shows quotes""#}</p>  // Renders: "This shows quotes"
+```
+
+---
+
 ## Basic Components
 
 ### Simple Button
