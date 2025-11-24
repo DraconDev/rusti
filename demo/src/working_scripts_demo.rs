@@ -169,49 +169,49 @@ pub fn working_scripts_demo() -> impl rusti::Component {
 
             <script>
                 // Test tracking
-                const testResults = {{
+                const testResults = {
                     passed: 0,
                     failed: 0,
                     total: 8
-                }};
+                };
 
-                function markSuccess(testId, message) {{
+                function markSuccess(testId, message) {
                     const element = document.getElementById('result-' + testId);
                     element.className = 'test-result success';
                     element.innerHTML = '<strong>✅ PASSED:</strong> ' + message;
                     testResults.passed++;
-                }}
+                }
 
-                function markFailure(testId, message, error) {{
+                function markFailure(testId, message, error) {
                     const element = document.getElementById('result-' + testId);
                     element.className = 'test-result error';
                     element.innerHTML = '<strong>❌ FAILED:</strong> ' + message + '<br><code>' + error + '</code>';
                     testResults.failed++;
-                }}
+                }
 
-                function updateSummary() {{
+                function updateSummary() {
                     const summaryElement = document.getElementById('summary-content');
                     const percentage = ((testResults.passed / testResults.total) * 100).toFixed(1);
                     summaryElement.innerHTML = `
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin-top: 1em;">
                             <div style="text-align: center; padding: 1em; background: #d1fae5; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #10b981; font-weight: bold;">${{testResults.passed}}</div>
+                                <div style="font-size: 2em; color: #10b981; font-weight: bold;">${testResults.passed}</div>
                                 <div style="color: #065f46;">Passed</div>
                             </div>
                             <div style="text-align: center; padding: 1em; background: #fee2e2; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #ef4444; font-weight: bold;">${{testResults.failed}}</div>
+                                <div style="font-size: 2em; color: #ef4444; font-weight: bold;">${testResults.failed}</div>
                                 <div style="color: #991b1b;">Failed</div>
                             </div>
                             <div style="text-align: center; padding: 1em; background: #dbeafe; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #3b82f6; font-weight: bold;">${{percentage}}%</div>
+                                <div style="font-size: 2em; color: #3b82f6; font-weight: bold;">${percentage}%</div>
                                 <div style="color: #1e40af;">Success Rate</div>
                             </div>
                         </div>
                     `;
-                }}
+                }
 
                 // TEST 1: Basic Variable Injection
-                try {{
+                try {
                     const injectedString = "@{ test_string }";
                     const injectedNumber = @{ test_number };
                     const injectedFloat = @{ test_float };
@@ -220,164 +220,164 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     if (injectedString === "Hello, Rusti!" && 
                         injectedNumber === 42 && 
                         Math.abs(injectedFloat - 3.14159) < 0.0001 && 
-                        injectedBool === true) {{
-                        markSuccess(1, `Successfully injected string="${{injectedString}}", number=${{injectedNumber}}, float=${{injectedFloat}}, bool=${{injectedBool}}`);
-                    }} else {{
+                        injectedBool === true) {
+                        markSuccess(1, `Successfully injected string="${injectedString}", number=${injectedNumber}, float=${injectedFloat}, bool=${injectedBool}`);
+                    } else {
                         markFailure(1, "Variable values don't match expected", "Validation failed");
-                    }}
-                }} catch (e) {{
+                    }
+                } catch (e) {
                     markFailure(1, "Error injecting basic variables", e.toString());
-                }}
+                }
 
                 // TEST 2: Number Operations
-                try {{
+                try {
                     const num = @{ test_number };
                     const doubled = num * 2;
                     const squared = num * num;
                     
-                    if (doubled === 84 && squared === 1764) {{
-                        markSuccess(2, `Number operations work: ${{num}} * 2 = ${{doubled}}, ${{num}}² = ${{squared}}`);
-                    }} else {{
-                        markFailure(2, "Number operations produced unexpected results", `doubled=${{doubled}}, squared=${{squared}}`);
-                    }}
-                }} catch (e) {{
+                    if (doubled === 84 && squared === 1764) {
+                        markSuccess(2, `Number operations work: ${num} * 2 = ${doubled}, ${num}² = ${squared}`);
+                    } else {
+                        markFailure(2, "Number operations produced unexpected results", `doubled=${doubled}, squared=${squared}`);
+                    }
+                } catch (e) {
                     markFailure(2, "Error performing number operations", e.toString());
-                }}
+                }
 
                 // TEST 3: Array Iteration with @for
-                try {{
+                try {
                     const fruits = [
-                        @for item in &items {{
+                        @for item in &items {
                             "@{ item }",
-                        }}
+                        }
                     ];
                     
                     const expectedFruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
                     const match = fruits.length === expectedFruits.length && 
                                   fruits.every((val, idx) => val === expectedFruits[idx]);
                     
-                    if (match) {{
-                        markSuccess(3, `Generated array with ${{fruits.length}} items: [${{fruits.join(', ')}}]`);
-                    }} else {{
-                        markFailure(3, "Array doesn't match expected", `Got: [${{fruits.join(', ')}}]`);
-                    }}
-                }} catch (e) {{
+                    if (match) {
+                        markSuccess(3, `Generated array with ${fruits.length} items: [${fruits.join(', ')}]`);
+                    } else {
+                        markFailure(3, "Array doesn't match expected", `Got: [${fruits.join(', ')}]`);
+                    }
+                } catch (e) {
                     markFailure(3, "Error generating array with @for", e.toString());
-                }}
+                }
 
                 // TEST 4: Conditional Logic with @if
-                try {{
+                try {
                     let conditionalResult = "default";
                     
-                    @if debug_mode {{
+                    @if debug_mode {
                         conditionalResult = "debug enabled";
-                    }}
+                    }
                     
-                    @if !debug_mode {{
+                    @if !debug_mode {
                         conditionalResult = "debug disabled";
-                    }}
+                    }
                     
-                    if (conditionalResult === "debug enabled") {{
-                        markSuccess(4, `Conditional executed correctly: debug_mode=true → "${{conditionalResult}}"`);
-                    }} else {{
-                        markFailure(4, "Conditional logic failed", `Expected "debug enabled", got "${{conditionalResult}}"`);
-                    }}
-                }} catch (e) {{
+                    if (conditionalResult === "debug enabled") {
+                        markSuccess(4, `Conditional executed correctly: debug_mode=true → "${conditionalResult}"`);
+                    } else {
+                        markFailure(4, "Conditional logic failed", `Expected "debug enabled", got "${conditionalResult}"`);
+                    }
+                } catch (e) {
                     markFailure(4, "Error in conditional logic", e.toString());
-                }}
+                }
 
                 // TEST 5: Match Patterns in Scripts
-                try {{
+                try {
                     let statusMessage = "";
                     
-                    @match status {{
-                        "success" => {{
+                    @match status {
+                        "success" => {
                             statusMessage = "Operation successful";
-                        }}
-                        "error" => {{
+                        }
+                        "error" => {
                             statusMessage = "Operation failed";
-                        }}
-                        _ => {{
+                        }
+                        _ => {
                             statusMessage = "Unknown status";
-                        }}
-                    }}
+                        }
+                    }
                     
-                    if (statusMessage === "Operation successful") {{
-                        markSuccess(5, `Match pattern worked: status="@{status}" → "${{statusMessage}}"`);
-                    }} else {{
-                        markFailure(5, "Match pattern failed", `Got "${{statusMessage}}"`);
-                    }}
-                }} catch (e) {{
+                    if (statusMessage === "Operation successful") {
+                        markSuccess(5, `Match pattern worked: status="@{ status }" → "${statusMessage}"`);
+                    } else {
+                        markFailure(5, "Match pattern failed", `Got "${statusMessage}"`);
+                    }
+                } catch (e) {
                     markFailure(5, "Error in match pattern", e.toString());
-                }}
+                }
 
                 // TEST 6: Complex Data Structures
-                try {{
+                try {
                     const userData = [
-                        @for (name, age) in &user_data {{
-                            {{ name: "@{ name }", age: @{ age } }},
-                        }}
+                        @for (name, age) in &user_data {
+                            { name: "@{ name }", age: @{ age } },
+                        }
                     ];
                     
                     if (userData.length === 3 && 
                         userData[0].name === "Alice" && 
                         userData[0].age === 25 &&
                         userData[1].name === "Bob" && 
-                        userData[1].age === 30) {{
-                        markSuccess(6, `Complex data structure created: ${{userData.length}} users with name/age pairs`);
-                    }} else {{
+                        userData[1].age === 30) {
+                        markSuccess(6, `Complex data structure created: ${userData.length} users with name/age pairs`);
+                    } else {
                         markFailure(6, "Complex data structure validation failed", JSON.stringify(userData));
-                    }}
-                }} catch (e) {{
+                    }
+                } catch (e) {
                     markFailure(6, "Error creating complex data structure", e.toString());
-                }}
+                }
 
                 // TEST 7: Nested Loops
-                try {{
+                try {
                     const matrix = [
-                        @for row in &nested_array {{
+                        @for row in &nested_array {
                             [
-                                @for num in row {{
+                                @for num in row {
                                     @{ num },
-                                }}
+                                }
                             ],
-                        }}
+                        }
                     ];
                     
                     const flatSum = matrix.flat().reduce((a, b) => a + b, 0);
                     
-                    if (matrix.length === 3 && flatSum === 45) {{
-                        markSuccess(7, `Nested loops generated 3x3 matrix with sum=${{flatSum}}`);
-                    }} else {{
-                        markFailure(7, "Nested loop validation failed", `length=${{matrix.length}}, sum=${{flatSum}}`);
-                    }}
-                }} catch (e) {{
+                    if (matrix.length === 3 && flatSum === 45) {
+                        markSuccess(7, `Nested loops generated 3x3 matrix with sum=${flatSum}`);
+                    } else {
+                        markFailure(7, "Nested loop validation failed", `length=${matrix.length}, sum=${flatSum}`);
+                    }
+                } catch (e) {
                     markFailure(7, "Error in nested loops", e.toString());
-                }}
+                }
 
                 // TEST 8: Combined Control Flow
-                try {{
+                try {
                     const results = [];
                     
-                    @for num in &numbers {{
-                        @if *num % 2 == 0 {{
-                            results.push({{ value: @{ num }, parity: "even" }});
-                        }} else {{
-                            results.push({{ value: @{ num }, parity: "odd" }});
-                        }}
-                    }}
+                    @for num in &numbers {
+                        @if *num % 2 == 0 {
+                            results.push({ value: @{ num }, parity: "even" });
+                        } else {
+                            results.push({ value: @{ num }, parity: "odd" });
+                        }
+                    }
                     
                     const evenCount = results.filter(r => r.parity === "even").length;
                     const oddCount = results.filter(r => r.parity === "odd").length;
                     
-                    if (evenCount === 2 && oddCount === 3) {{
-                        markSuccess(8, `Combined @for + @if: found ${{evenCount}} even and ${{oddCount}} odd numbers`);
-                    }} else {{
-                        markFailure(8, "Combined control flow validation failed", `even=${{evenCount}}, odd=${{oddCount}}`);
-                    }}
-                }} catch (e) {{
+                    if (evenCount === 2 && oddCount === 3) {
+                        markSuccess(8, `Combined @for + @if: found ${evenCount} even and ${oddCount} odd numbers`);
+                    } else {
+                        markFailure(8, "Combined control flow validation failed", `even=${evenCount}, odd=${oddCount}`);
+                    }
+                } catch (e) {
                     markFailure(8, "Error in combined control flow", e.toString());
-                }}
+                }
 
                 // Update summary
                 updateSummary();
