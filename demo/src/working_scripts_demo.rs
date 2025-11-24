@@ -192,22 +192,21 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 function updateSummary() {
                     const summaryElement = document.getElementById("summary-content");
                     const percentage = ((testResults.passed / testResults.total) * 100).toFixed(1);
-                    summaryElement.innerHTML = `
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin-top: 1em;">
-                            <div style="text-align: center; padding: 1em; background: #d1fae5; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #10b981; font-weight: bold;">${testResults.passed}</div>
-                                <div style="color: #065f46;">Passed</div>
-                            </div>
-                            <div style="text-align: center; padding: 1em; background: #fee2e2; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #ef4444; font-weight: bold;">${testResults.failed}</div>
-                                <div style="color: #991b1b;">Failed</div>
-                            </div>
-                            <div style="text-align: center; padding: 1em; background: #dbeafe; border-radius: 8px;">
-                                <div style="font-size: 2em; color: #3b82f6; font-weight: bold;">${percentage}%</div>
-                                <div style="color: #1e40af;">Success Rate</div>
-                            </div>
-                        </div>
-                    `;
+                    summaryElement.innerHTML = 
+                        "<div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin-top: 1em;\">" +
+                            "<div style=\"text-align: center; padding: 1em; background: #d1fae5; border-radius: 8px;\">" +
+                                "<div style=\"font-size: 2em; color: #10b981; font-weight: bold;\">" + testResults.passed + "</div>" +
+                                "<div style=\"color: #065f46;\">Passed</div>" +
+                            "</div>" +
+                            "<div style=\"text-align: center; padding: 1em; background: #fee2e2; border-radius: 8px;\">" +
+                                "<div style=\"font-size: 2em; color: #ef4444; font-weight: bold;\">" + testResults.failed + "</div>" +
+                                "<div style=\"color: #991b1b;\">Failed</div>" +
+                            "</div>" +
+                            "<div style=\"text-align: center; padding: 1em; background: #dbeafe; border-radius: 8px;\">" +
+                                "<div style=\"font-size: 2em; color: #3b82f6; font-weight: bold;\">" + percentage + "%</div>" +
+                                "<div style=\"color: #1e40af;\">Success Rate</div>" +
+                            "</div>" +
+                        "</div>";
                 }
 
                 // TEST 1: Basic Variable Injection
