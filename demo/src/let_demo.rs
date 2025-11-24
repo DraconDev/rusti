@@ -11,7 +11,7 @@ pub fn let_demo() -> impl rusti::Component {
                 </style>
             </head>
             <body>
-                <h1>Variables with @let</h1>
+                <h1>Variable Declarations Demo</h1>
 
                 @let greeting = "Hello";
                 @let name = "Rust Developer";
