@@ -27,7 +27,8 @@ pub fn basic_page() -> impl rusti::Component {
                 </style>
             </head>
             <body>
-                <h1>Basic Rusti Page</h1>
+                @let name = "Basic Rusti Page";
+                <h1>{name}</h1>
                 <p>This demonstrates a simple Rusti component with inline styles.</p>
                 <p>Check the source to see comment examples!</p>
 
