@@ -14,6 +14,9 @@ Dream: id=f"task-{task.id}" (If Rust eventually stabilizes f-strings, you are re
 
 scoped css
 
+optional props with default values
+
+
 
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
