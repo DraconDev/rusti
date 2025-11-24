@@ -9,7 +9,7 @@ Inspired by Go's `templ` library, Rusti brings the component model to server-sid
 
 - **Type-Safe**: All variables and expressions are checked at compile time
 - **Zero-Cost Abstraction**: Compiles directly to `std::fmt::Write` calls - no runtime parsing, no virtual DOM
-- **Rust-Native Control Flow**: Use `@if`, `@for`, and `@match` directly in your templates
+- **Rust-Native Control Flow**: Use `@if`, `@for`, `@match`, and `@let` directly in your templates
 - **Component Composition**: Build complex UIs from small, reusable Rust functions
   - 🆕 **Optional Props with Defaults**: Use the Builder pattern with `#[prop(default = "...")]`
   - 🆕 **Typed Children**: Components can accept child content with `children: impl Component`
