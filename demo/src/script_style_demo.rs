@@ -1,3 +1,4 @@
+use axum::response::{Html, IntoResponse};
 use rusti::rusti;
 
 pub fn script_style_demo() -> impl rusti::Component {
@@ -103,4 +104,12 @@ pub fn script_style_demo() -> impl rusti::Component {
         </body>
         </html>
     }
+}
+
+// async fn let_demo_handler() -> impl IntoResponse {
+//     Html(rusti::render_to_string(&let_demo()))
+// }
+
+async fn script_style_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&script_style_demo()))
 }
