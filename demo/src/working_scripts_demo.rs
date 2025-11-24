@@ -49,7 +49,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
                 }
 
-                .test-section h2 {
+                h2 {
                     color: "#2aa";
                     margin-top: 0;
                     border-bottom: 2px solid "#667eea";
