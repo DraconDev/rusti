@@ -201,59 +201,9 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
         ));
     }
 
-    // Special handling for script and style tags - skip their content
+    // Special handling for script and style tags
     let (input, mut children) = if name == "script" || name == "style" {
-        // For script/style tags, consume everything until the closing tag
-        // Build the closing tag pattern manually
-        let remaining = input;
-        let mut content_end = 0;
-        let mut found = false;
-
-        // Search for </tagname> with optional spaces
-        while content_end < remaining.len() {
-            let slice = &remaining[content_end..];
-
-            // Check if we are at the start of a closing tag
-            if slice.starts_with("</")
-                || (slice.starts_with("<") && slice[1..].trim_start().starts_with("/"))
-            {
-                // Potential match, try to parse it
-                let mut parse_closing = tuple::<_, _, Error<&str>, _>((
-                    char('<'),
-                    multispace0,
-                    char('/'),
-                    multispace0,
-                    tag(name.as_str()),
-                    multispace0,
-                    char('>'),
-                ));
-
-                if let Ok((_, _)) = parse_closing(slice) {
-                    found = true;
-                    break;
-                }
-            }
-
-            content_end += 1;
-        }
-
-        if !found {
-            return Err(nom::Err::Error(nom::error::Error::new(
-                input,
-                nom::error::ErrorKind::Tag,
-            )));
-        }
-
-        let content = &remaining[..content_end];
-        let input = &remaining[content_end..];
-
-        // If we have a style src, we ignore the content (or prepend it?)
-        // Usually <style src> is empty. If not empty, we keep the content too.
-        let mut kids = vec![];
-        if !content.is_empty() {
-            kids.push(Node::Text(content.to_string()));
-        }
-        (input, kids)
+        parse_script_nodes(input, &name)?
     } else {
         parse_nodes(input)?
     };
@@ -279,6 +229,136 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
             children,
         },
     ))
+}
+
+fn parse_script_nodes<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Vec<Node>> {
+    let mut nodes = Vec::new();
+    let mut current_input = input;
+
+    loop {
+        // Check for closing tag
+        let closing_tag = format!("</{}>", tag_name);
+        // Also check for </ tag > with spaces
+        if current_input.starts_with(&closing_tag) {
+            break;
+        }
+        // Check for loose closing tag </ script >
+        if current_input.starts_with("</") {
+            let after_slash = &current_input[2..];
+            let trimmed = after_slash.trim_start();
+            if trimmed.starts_with(tag_name) {
+                let after_name = &trimmed[tag_name.len()..];
+                let trimmed_after = after_name.trim_start();
+                if trimmed_after.starts_with('>') {
+                    break;
+                }
+            }
+        }
+
+        if current_input.is_empty() {
+            break;
+        }
+
+        // Try to parse script nodes
+        match parse_script_node(current_input, tag_name) {
+            Ok((next_input, node)) => {
+                nodes.push(node);
+                current_input = next_input;
+            }
+            Err(_) => {
+                // Should not happen if parse_script_text is robust
+                break;
+            }
+        }
+    }
+
+    Ok((current_input, nodes))
+}
+
+fn parse_script_node<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Node> {
+    alt((
+        parse_comment,
+        parse_if,
+        parse_for,
+        parse_match,
+        parse_at_expression,
+        |i| parse_script_text(i, tag_name),
+    ))(input)
+}
+
+fn parse_at_expression(input: &str) -> IResult<&str, Node> {
+    let (input, _) = char('@')(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, _) = char('{')(input)?;
+    let (input, expr) = take_balanced('{', '}')(input)?;
+    let (input, _) = char('}')(input)?;
+    Ok((input, Node::Expression(expr.trim().to_string())))
+}
+
+fn parse_script_text<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Node> {
+    let mut chars = input.char_indices();
+    let mut end = 0;
+
+    while let Some((i, c)) = chars.next() {
+        // Stop at @ (start of block/expr)
+        if c == '@' {
+            if i == 0 {
+                return Err(nom::Err::Error(nom::error::Error::new(
+                    input,
+                    nom::error::ErrorKind::Tag,
+                )));
+            }
+            break;
+        }
+
+        // Stop at /* (start of comment)
+        if c == '/' {
+            if let Some(next_c) = input[i + 1..].chars().next() {
+                if next_c == '*' {
+                    if i == 0 {
+                        return Err(nom::Err::Error(nom::error::Error::new(
+                            input,
+                            nom::error::ErrorKind::Tag,
+                        )));
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Stop at closing tag </tagname>
+        if c == '<' {
+            let remaining = &input[i..];
+            if remaining.starts_with("</") {
+                let after_slash = &remaining[2..];
+                let trimmed = after_slash.trim_start();
+                if trimmed.starts_with(tag_name) {
+                    let after_name = &trimmed[tag_name.len()..];
+                    let trimmed_after = after_name.trim_start();
+                    if trimmed_after.starts_with('>') {
+                        if i == 0 {
+                            // Let the caller handle the closing tag
+                            return Err(nom::Err::Error(nom::error::Error::new(
+                                input,
+                                nom::error::ErrorKind::Tag,
+                            )));
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        end = i + c.len_utf8();
+    }
+
+    if end == 0 {
+        return Err(nom::Err::Error(nom::error::Error::new(
+            input,
+            nom::error::ErrorKind::Eof,
+        )));
+    }
+
+    Ok((&input[end..], Node::Text(input[..end].to_string())))
 }
 
 // Parse a single attribute: name="value" or name={expr}
