@@ -33,15 +33,15 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 }
                 
                 h1 {
-                    color: #667eea;
+                    color: "#667eea";
                     font-size: 2.5rem;
                     margin-bottom: 1rem;
                     text-align: center;
                 }
                 
                 .feature-box {
-                    background: #f8f9fa;
-                    border-left: 4px solid #667eea;
+                    background: "#f8f9fa";
+                    border-left: 4px solid "#667eea";
                     padding: 1.5rem;
                     margin: 1.5rem 0;
                     border-radius: 8px;
