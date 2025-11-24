@@ -187,19 +187,19 @@ pub fn comprehensive_demo() -> impl rusti::Component {
             </div>
 
             <script>
-                function incrementCounter() {
+                function/**/incrementCounter() {
                     app.increment();
                 }
 
-                function decrementCounter() {
+                function/**/decrementCounter() {
                     app.decrement();
                 }
 
-                function resetCounter() {
+                function/**/resetCounter() {
                     app.reset();
                 }
 
-                const app = {
+                const/**/app = {
                     count: 0,
                     maxCount: 10,
 
