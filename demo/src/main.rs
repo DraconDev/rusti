@@ -15,8 +15,10 @@ mod quote_demo;
 use component_macro_demo::component_macro_handler;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
+mod script_style_demo;
 mod styles_demo;
 mod tailwind_demo;
+use script_style_demo::script_style_demo;
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
@@ -674,6 +676,10 @@ async fn forms_demo() -> impl IntoResponse {
     Html(rusti::render_to_string(&forms_page_wrapper()))
 }
 
+async fn script_style_handler() -> impl IntoResponse {
+    Html(script_style_demo())
+}
+
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -699,6 +705,7 @@ async fn main() {
         .route("/tailwind", get(tailwind_demo_handler))
         .route("/quote-demo", get(quote_demo_handler))
         .route("/style-src", get(style_src_handler))
+        .route("/script-style", get(script_style_handler))
         .route("/component-macro", get(component_macro_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
@@ -739,6 +746,7 @@ async fn main() {
     println!("   http://127.0.0.1:3000/nested-loops - Nested Loops");
     println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
     println!("   http://127.0.0.1:3000/forms - Forms");
+    println!("   http://127.0.0.1:3000/script-style - Script & Style Demo");
     println!("\n✨ Features demonstrated:");
     println!("   • Component composition");
     println!("   • HTMX interactivity");
