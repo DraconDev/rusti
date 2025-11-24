@@ -4,6 +4,8 @@
 
 bug: < > are not parsed correctly they are interpreted as html tags !!!
 
+add fragment support
+
 
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
