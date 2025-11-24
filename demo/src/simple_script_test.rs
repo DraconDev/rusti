@@ -2,7 +2,7 @@ use rusti::rusti;
 
 pub fn simple_script_test() -> impl rusti::Component {
     let my_number = 42;
-    let my_string = "Hello";
+    // let my_string = "Hello";
 
     rusti! {
         <!DOCTYPE html>
@@ -15,6 +15,7 @@ pub fn simple_script_test() -> impl rusti::Component {
             <div id="output"></div>
 
             <script>
+                @let my_string = "Hello";
                 const num = @{ my_number };
                 const name = @{ my_string };
 
