@@ -590,6 +590,39 @@ impl Parse for ForBlock {
     }
 }
 
+impl Parse for LetBlock {
+    fn parse(input: ParseStream) -> Result<Self> {
+        let span = input.span();
+        input.parse::<Token![let]>()?;
+
+        // Parse pattern (variable name or destructuring pattern) until =
+        let mut pattern = TokenStream::new();
+        while !input.peek(Token![=]) && !input.peek(Token![;]) {
+            let tt: TokenTree = input.parse()?;
+            pattern.extend(Some(tt));
+        }
+
+        // Parse = token
+        input.parse::<Token![=]>()?;
+
+        // Parse value until semicolon
+        let mut value = TokenStream::new();
+        while !input.peek(Token![;]) {
+            let tt: TokenTree = input.parse()?;
+            value.extend(Some(tt));
+        }
+
+        // Parse semicolon
+        input.parse::<Token![;]>()?;
+
+        Ok(LetBlock {
+            pattern,
+            value,
+            span,
+        })
+    }
+}
+
 impl Parse for MatchBlock {
     fn parse(input: ParseStream) -> Result<Self> {
         let span = input.span();
