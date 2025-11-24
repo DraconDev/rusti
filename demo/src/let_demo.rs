@@ -6,8 +6,8 @@ pub fn let_demo() -> impl rusti::Component {
             <head>
                 <title>Let Demo</title>
                 <style>
-                    body @{ "{ font-family: Arial, sans-serif; padding: 20px; }" }
-                    .box @{ "{ padding: 20px; margin: 10px 0; border-radius: 8px; background: #3b82f6; color: white; }" }
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    .box { padding: 20px; margin: 10px 0; border-radius: 8px; background: #3b82f6; color: white; }
                 </style>
             </head>
             <body>
