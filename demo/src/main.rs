@@ -37,7 +37,7 @@ use working_scripts_demo::working_scripts_demo;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
-    simple_script_test::simple_script_test_handler, styles_demo::styles_demo2_handler,
+    styles_demo::styles_demo2_handler,
 };
 
 #[derive(Deserialize)]
