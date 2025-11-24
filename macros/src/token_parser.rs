@@ -338,6 +338,8 @@ impl Parse for Block {
             Ok(Block::For(input.parse()?))
         } else if lookahead.peek(Token![match]) {
             Ok(Block::Match(input.parse()?))
+        } else if lookahead.peek(Token![let]) {
+            Ok(Block::Let(input.parse()?))
         } else {
             // Component or Call
             // Check if it's a path
