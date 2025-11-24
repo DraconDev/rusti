@@ -34,5 +34,11 @@ mod tests {
         let ts_complex = TokenStream::from_str(complex_css).unwrap();
         println!("Original Complex: {}", complex_css);
         println!("TokenStream Cplx: {}", ts_complex.to_string());
-    }
-}
+
+        // Check 1px structure
+        let unit_css = "padding: 1px;";
+        let ts_unit = TokenStream::from_str(unit_css).unwrap();
+        println!("Unit CSS: {}", unit_css);
+        for tt in ts_unit {
+            println!("Token: {:?} (String: '{}')", tt, tt.to_string());
+        }
