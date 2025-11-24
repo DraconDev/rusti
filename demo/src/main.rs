@@ -122,6 +122,40 @@ fn home_page() -> impl rusti::Component {
                                 @clickable_card("Forms", "Input handling", "/forms")
                             </div>
                         </section>
+                        <div class="mt-8">
+                            <h2 class="text-3xl font-bold text-slate-100 mb-4 text-center">All Routes</h2>
+                            <div class="flex flex-wrap gap-4 justify-center">
+                                <a href="/" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Home</a>
+                                <a href="/basic" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Basic</a>
+                                <a href="/about" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">About</a>
+                                <a href="/htmx" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">HTMX</a>
+                                <a href="/conditionals" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Conditionals</a>
+                                <a href="/lists" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Lists</a>
+                                <a href="/match" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Match</a>
+                                <a href="/xss" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">XSS</a>
+                                <a href="/attributes" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Attributes</a>
+                                <a href="/nested-loops" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Nested Loops</a>
+                                <a href="/advanced-match" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Advanced Match</a>
+                                <a href="/base-layout" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Base Layout</a>
+                                <a href="/styles" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Styles</a>
+                                <a href="/datastar" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Datastar</a>
+                                <a href="/styles2" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Styles2</a>
+                                <a href="/forms" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Forms</a>
+                                <a href="/tailwind" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Tailwind</a>
+                                <a href="/quote-demo" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Quote Demo</a>
+                                <a href="/style-src" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Style Src</a>
+                                <a href="/script-style" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Script Style</a>
+                                <a href="/let-demo" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Let Demo</a>
+                                <a href="/component-macro" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Component Macro</a>
+                                <a href="/examples/basic-html" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Basic HTML</a>
+                                <a href="/examples/dynamic-content" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Dynamic Content</a>
+                                <a href="/examples/loops" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Loops</a>
+                                <a href="/examples/pattern-matching" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Pattern Matching</a>
+                                <a href="/examples/components" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Components</a>
+                                <a href="/examples/dashboard" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Dashboard</a>
+                                <a href="/examples/form" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Form</a>
+                            </div>
+                        </div>
                     </main>
                     @page_footer(year)
                 </div>
