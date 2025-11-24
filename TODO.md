@@ -9,6 +9,8 @@ add fragment support
 f string solution for ?
 hx-post={format!("/api/tasks/{}/toggle", task.id)}
 hx-target={format!("#task-{}", task.id)}
+Current: id={format!("task-{}", task.id)}
+Dream: id=f"task-{task.id}" (If Rust eventually stabilizes f-strings, you are ready).
 
 
 ### 1. Surgical Error Reporting (High Priority)
