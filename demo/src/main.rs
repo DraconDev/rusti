@@ -15,9 +15,11 @@ mod quote_demo;
 use component_macro_demo::component_macro_handler;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
+mod let_demo;
 mod script_style_demo;
 mod styles_demo;
 mod tailwind_demo;
+use let_demo::let_demo;
 use script_style_demo::script_style_demo;
 
 use about::about_page_wrapper;
@@ -680,6 +682,10 @@ async fn script_style_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&script_style_demo()))
 }
 
+async fn let_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&let_demo()))
+}
+
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -706,6 +712,7 @@ async fn main() {
         .route("/quote-demo", get(quote_demo_handler))
         .route("/style-src", get(style_src_handler))
         .route("/script-style", get(script_style_handler))
+        .route("/let-demo", get(let_demo_handler))
         .route("/component-macro", get(component_macro_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
@@ -744,6 +751,7 @@ async fn main() {
     println!("   http://127.0.0.1:3000/advanced-match - Advanced Match");
     println!("   http://127.0.0.1:3000/forms - Forms");
     println!("   http://127.0.0.1:3000/script-style - Script & Style Demo");
+    println!("   http://127.0.0.1:3000/let-demo - @let Syntax Demo");
     println!("\n🎯 Extreme Examples:");
     println!("   http://127.0.0.1:3000/examples/basic-html - Basic HTML");
     println!("   http://127.0.0.1:3000/examples/dynamic-content - Dynamic Content");
