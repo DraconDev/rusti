@@ -42,3 +42,5 @@ mod tests {
         for tt in ts_unit {
             println!("Token: {:?} (String: '{}')", tt, tt.to_string());
         }
+    }
+}
