@@ -29,84 +29,84 @@ pub fn working_scripts_demo() -> impl rusti::Component {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Working Scripts Test Demo</title>
             <style>
-                body {{
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                    background: linear-gradient(135deg, "#667eea" 0%, "#764ba2" 100%);
                     padding: "2em";
                     min-height: 100vh;
-                }}
+                }
 
-                .container {{
+                .container {
                     max-width: 1200px;
                     margin: 0 auto;
-                }}
+                }
 
-                h1 {{
+                h1 {
                     color: white;
                     text-align: center;
                     font-size: "3em";
                     margin-bottom: "1em";
                     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                }}
+                }
 
-                .test-section {{
+                .test-section {
                     background: rgba(255, 255, 255, 0.95);
                     border-radius: 16px;
                     padding: "2em";
                     margin-bottom: "2em";
                     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-                }}
+                }
 
-                .test-section h2 {{
-                    color: #2aa;
+                .test-section h2 {
+                    color: "#2aa";
                     margin-top: 0;
-                    border-bottom: 2px solid #667eea;
+                    border-bottom: 2px solid "#667eea";
                     padding-bottom: "0.5em";
-                }}
+                }
 
-                .test-result {{
-                    background: #f0f9ff;
-                    border-left: 4px solid #3b82f6;
+                .test-result {
+                    background: "#f0f9ff";
+                    border-left: 4px solid "#3b82f6";
                     padding: "1em";
                     margin: "1em" 0;
-                    font-family: 'Courier New', monospace;
-                }}
+                    font-family: "Courier New", monospace;
+                }
 
-                .success {{
-                    border-left-color: #10b981;
-                    background: #d1fae5;
-                }}
+                .success {
+                    border-left-color: "#10b981";
+                    background: "#d1fae5";
+                }
 
-                .error {{
-                    border-left-color: #ef4444;
-                    background: #fee2e2;
-                }}
+                .error {
+                    border-left-color: "#ef4444";
+                    background: "#fee2e2";
+                }
 
-                .code-block {{
-                    background: #1e293b;
-                    color: #e2e8f0;
+                .code-block {
+                    background: "#1e293b";
+                    color: "#e2e8f0";
                     padding: "1em";
                     border-radius: 8px;
                     overflow-x: auto;
                     margin: "1em" 0;
-                }}
+                }
 
-                .nav-button {{
+                .nav-button {
                     display: inline-block;
                     background: white;
-                    color: #667eea;
+                    color: "#667eea";
                     padding: 12px 24px;
                     border-radius: 8px;
                     text-decoration: none;
                     font-weight: bold;
                     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                     transition: transform 0.2s;
-                }}
+                }
 
-                .nav-button:hover {{
+                .nav-button:hover {
                     transform: translateY(-2px);
                     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-                }}
+                }
             </style>
         </head>
         <body>
