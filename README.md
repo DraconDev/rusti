@@ -339,12 +339,12 @@ rusti! {
             count: 0,
             increment() {
                 this.count++;
-                console.log('Count:', this.count);
+                console.log("Count:", this.count);
             }
         };
         
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('App initialized');
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("App initialized");
         });
     </script>
 }
@@ -539,7 +539,18 @@ rusti! {
 2. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
 3. **Use Tailwind or inline styles** to avoid CSS headaches
 4. **External styles**: Use `<style src="path/to/style.css" />` for external CSS
-5. **For complex CSS/JS**, use raw strings: `r#"..."#`
+5. **Inline CSS**: Standard CSS works, but integer units need a space (`2 em` not `2em`)
+6. **Inline JavaScript**: Standard JS works perfectly in `<script>` tags
+7. **For complex CSS/JS**, use raw strings: `{r#"..."#}` to bypass the parser
+
+### CSS Unit Rules
+
+When writing CSS directly in `<style>` tags:
+- ❌ `padding: 2em;` - Rust lexer error (integer + identifier)
+- ✅ `padding: 2 em;` - Parser auto-fixes to `2em`
+- ✅ `padding: 0.5em;` - Decimals work fine as-is
+- ✅ `padding: 16px;` - px, %, and other units work fine
+- ✅ Use raw strings `{r#"padding: 2em;"#}` to bypass this entirely
 
 ### Quick Translation Guide (JS/HTML → Rust)
 
@@ -553,8 +564,11 @@ rusti! {
 | **Variables** | `id="${id}"` | `id={id}` |
 | **Control** | `{% if %}` | `@if` |
 | **Loops** | `{% for %}` | `@for` |
+| **Variables** | `{% let %}` | `@let` |
 | **JSON** | `data='{"x":1}'` | `data=r#"{"x":1}"#` |
 | **HTMX Events** | `hx-on::click` | `hx-on:click` |
+| **Inline Script** | `<script>...</script>` | `<script>...</script>` (standard JS works!) |
+| **Inline Style** | `<style>...</style>` | `<style>...</style>` (standard CSS works!) |
 
 ---
 
