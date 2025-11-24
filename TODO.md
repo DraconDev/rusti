@@ -48,10 +48,7 @@ rusti! {
 }
 
 
-we cna just update the readme, that either user has to care about "" or styling body or just not use 2em or hexa colors, albeit they work fine if you put them in quotes
-
 <!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
-
 
 
 f string solution for ?
