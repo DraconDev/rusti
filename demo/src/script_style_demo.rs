@@ -78,7 +78,9 @@ pub fn script_style_demo() -> impl rusti::Component {
                 console.log("Config loaded:", config);
 
                 // Injecting Rust variables using @{ ... }
-                const userName = "@{ user_name }";
+                // const str = @{ format!("\"{}\"", my_string) };
+
+                const userName = @{ format!("\"{}\"", user_name) };
                 const items = [
                     // Using @for loop to generate JS array elements
                     @for item in &items {
