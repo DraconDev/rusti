@@ -1,6 +1,6 @@
 use rusti::rusti;
 
-pub fn script_style_demo() -> String {
+pub fn script_style_demo() -> impl rusti::Component {
     let primary_color = "#3b82f6"; // Blue-500
     let font_size = 16;
     let user_name = "Rustacean";

@@ -677,7 +677,7 @@ async fn forms_demo() -> impl IntoResponse {
 }
 
 async fn script_style_handler() -> impl IntoResponse {
-    Html(script_style_demo())
+    Html(rusti::render_to_string(&script_style_demo()))
 }
 
 #[tokio::main]
