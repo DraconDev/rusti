@@ -2,6 +2,7 @@ use rusti::rusti;
 
 pub fn simple_script_test() -> impl rusti::Component {
     let my_number = 42;
+    // let my_string = "Hello";
 
     rusti! {
         <!DOCTYPE html>
@@ -14,15 +15,15 @@ pub fn simple_script_test() -> impl rusti::Component {
             <div id="output"></div>
 
             <script>
-                @let my_string = "Hello";
+                @let my_string = "Hello".to_string();
                 const num = @{ my_number };
-                const name = @{ format!("{}", my_string.to_string()) };
+                const str = @{ format!("\"{}\"", my_string) };
 
                 document.getElementById("output").innerHTML =
-                    "Number: " + num + "<br>Name: " + name;
+                    "Number: " + num + "<br>String: " + str;
 
                 console.log("num =", num);
-                console.log("name =", name);
+                console.log("str =", str);
             </script>
         </body>
         </html>
