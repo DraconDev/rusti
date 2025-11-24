@@ -2,7 +2,10 @@
 
 ## 🚀 Future Improvements
 
+we cna just update the readme, that either user has to care about 
+
 bug: < > are not parsed correctly they are interpreted as html tags !!!
+
 
 add fragment support
 
