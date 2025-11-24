@@ -15,10 +15,12 @@ mod quote_demo;
 use component_macro_demo::component_macro_handler;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
+mod comprehensive_demo;
 mod let_demo;
 mod script_style_demo;
 mod styles_demo;
 mod tailwind_demo;
+use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
 
@@ -720,6 +722,10 @@ async fn let_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&let_demo()))
 }
 
+async fn comprehensive_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&comprehensive_demo()))
+}
+
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -747,6 +753,7 @@ async fn main() {
         .route("/style-src", get(style_src_handler))
         .route("/script-style", get(script_style_handler))
         .route("/let-demo", get(let_demo_handler))
+        .route("/comprehensive", get(comprehensive_demo_handler))
         .route("/component-macro", get(component_macro_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
