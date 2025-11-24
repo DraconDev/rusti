@@ -58,7 +58,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 }}
 
                 .test-section h2 {{
-                    color: #667eea;
+                    color: #2aa;
                     margin-top: 0;
                     border-bottom: 2px solid #667eea;
                     padding-bottom: "0.5em";
