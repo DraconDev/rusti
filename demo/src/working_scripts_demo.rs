@@ -122,12 +122,12 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 </div>
 
                 <div id="test-3" class="test-section">
-                    <h2>Test 3: Array Iteration with @for</h2>
+                    <h2>Test 3: Array Iteration with "@for"</h2>
                     <div id="result-3">Loading...</div>
                 </div>
 
                 <div id="test-4" class="test-section">
-                    <h2>Test 4: Conditional Logic with @if</h2>
+                    <h2>Test 4: Conditional Logic with "@if"</h2>
                     <div id="result-4">Loading...</div>
                 </div>
 
