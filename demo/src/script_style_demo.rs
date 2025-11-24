@@ -25,7 +25,7 @@ pub fn script_style_demo() -> impl rusti::Component {
                     background: white;
                     border-radius: 8px;
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                    padding: 2rem;
+                    padding: "2em";
                     max_width: 600px;
                     margin: 0 auto;
                 }
