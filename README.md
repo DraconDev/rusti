@@ -516,21 +516,21 @@ rusti! {
 ### The Golden Rules
 
 1. **Use double quotes** for attributes: `class="foo"` (not `class='foo'`)
-2. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
-3. **Use Tailwind or inline styles** to avoid CSS headaches
-4. **External styles**: Use `<style src="path/to/style.css" />` for external CSS
-5. **Inline CSS**: Standard CSS works, but integer units need a space (`2 em` not `2em`)
-6. **Inline JavaScript**: Standard JS works perfectly in `<script>` tags
-7. **For complex CSS/JS**, use raw strings: `{r#"..."#}` to bypass the parser
+2. **Scripts use double quotes only**: Always `""`, never `''` in `<script>` tags
+3. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
+4. **Use Tailwind or inline styles** to avoid CSS headaches
+5. **External styles**: Use `<style src="path/to/style.css" />` for external CSS
+6. **Inline CSS**: Standard CSS works fine; use `"2em"` (quoted) if lexer complains
+7. **Inline JavaScript**: Standard JS works perfectly in `<script>` tags
 
 ### CSS Unit Rules
 
-When writing CSS directly in `<style>` tags:
-- ❌ `padding: 2em;` - Rust lexer error (integer + identifier)
-- ✅ `padding: 2 em;` - Parser auto-fixes to `2em`
-- ✅ `padding: 0.5em;` - Decimals work fine as-is
+When writing CSS directly in `<style>` tags, most units work fine:
+- ✅ `padding: 3rem;` - Works fine
+- ✅ `padding: 0.5em;` - Decimals work fine
 - ✅ `padding: 16px;` - px, %, and other units work fine
-- ✅ Use raw strings `{r#"padding: 2em;"#}` to bypass this entirely
+- ⚠️ `padding: 2em;` - Rarely, may cause lexer issues
+- ✅ `padding: "2em";` - Use quoted string if needed
 
 ### Quick Translation Guide (JS/HTML → Rust)
 
