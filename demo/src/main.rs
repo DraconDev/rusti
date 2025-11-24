@@ -32,10 +32,11 @@ use rusti::rusti;
 use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
+use working_scripts_demo::working_scripts_demo;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
-    styles_demo::styles_demo2_handler, working_scripts_demo::working_scripts_handler,
+    styles_demo::styles_demo2_handler,
 };
 
 #[derive(Deserialize)]
@@ -726,6 +727,10 @@ async fn let_demo_handler() -> impl IntoResponse {
 
 async fn comprehensive_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&comprehensive_demo()))
+}
+
+async fn working_scripts_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&working_scripts_demo()))
 }
 
 #[tokio::main]
