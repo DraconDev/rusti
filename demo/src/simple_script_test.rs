@@ -14,7 +14,7 @@ pub fn simple_script_test() -> impl rusti::Component {
             <div id="output"></div>
 
             <script>
-                @let my_string = "Hello";
+                @let my_string = r#"Hello"#;
                 const num = @{ my_number };
                 const str = @{ my_string };
 
