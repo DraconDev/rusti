@@ -223,13 +223,13 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     },
 
                     updateDisplay() {
-                        const display = document.getElementById("counter");
+                        const/**/display = document.getElementById("counter");
                         if (display) {
                             display.textContent = this.count;
 
                             if (this.count === 0) {
                                 display.style.color = "#6c757d";
-                            } else if (this.count >= this.maxCount) {
+                            } else/**/if (this.count >= this.maxCount) {
                                 display.style.color = "#dc3545";
                             } else {
                                 display.style.color = "#667eea";
@@ -240,7 +240,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
 
 
 
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function/**/() {
                     console.log("Rusti Comprehensive Demo Loaded!");
                     app.updateDisplay();
                 });
