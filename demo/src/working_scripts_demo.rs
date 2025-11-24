@@ -8,18 +8,10 @@ pub fn working_scripts_demo() -> impl rusti::Component {
     let test_bool = true;
     let items = vec!["Apple", "Banana", "Cherry", "Date", "Elderberry"];
     let numbers = vec![1, 2, 3, 4, 5];
-    let user_data = vec![
-        ("Alice", 25),
-        ("Bob", 30),
-        ("Charlie", 35),
-    ];
+    let user_data = vec![("Alice", 25), ("Bob", 30), ("Charlie", 35)];
     let status = "success";
     let debug_mode = true;
-    let nested_array = vec![
-        vec![1, 2, 3],
-        vec![4, 5, 6],
-        vec![7, 8, 9],
-    ];
+    let nested_array = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
 
     rusti! {
         <!DOCTYPE html>
@@ -192,7 +184,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 function updateSummary() {
                     const summaryElement = document.getElementById("summary-content");
                     const percentage = ((testResults.passed / testResults.total) * 100).toFixed(1);
-                    summaryElement.innerHTML = 
+                    summaryElement.innerHTML =
                         "<div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin-top: 1em;\">" +
                             "<div style=\"text-align: center; padding: 1em; background: #d1fae5; border-radius: 8px;\">" +
                                 "<div style=\"font-size: 2em; color: #10b981; font-weight: bold;\">" + testResults.passed + "</div>" +
@@ -216,11 +208,11 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     const injectedFloat = @{ test_float };
                     const injectedBool = @{ test_bool };
 
-                    if (injectedString === "Hello, Rusti!" && 
-                        injectedNumber === 42 && 
-                        Math.abs(injectedFloat - 3.14159) < 0.0001 && 
+                    if (injectedString === "Hello, Rusti!" &&
+                        injectedNumber === 42 &&
+                        Math.abs(injectedFloat - 3.14159) < 0.0001 &&
                         injectedBool === true) {
-                        markSuccess(1, `Successfully injected string="${injectedString}", number=${injectedNumber}, float=${injectedFloat}, bool=${injectedBool}`);
+                        markSuccess(1, "Successfully injected string=\"" + injectedString + "\", number=" + injectedNumber + ", float=" + injectedFloat + ", bool=" + injectedBool);
                     } else {
                         markFailure(1, "Variable values don't match expected", "Validation failed");
                     }
@@ -233,11 +225,11 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     const num = @{ test_number };
                     const doubled = num * 2;
                     const squared = num * num;
-                    
+
                     if (doubled === 84 && squared === 1764) {
-                        markSuccess(2, `Number operations work: ${num} * 2 = ${doubled}, ${num}² = ${squared}`);
+                        markSuccess(2, "Number operations work: " + num + " * 2 = " + doubled + ", " + num + "² = " + squared);
                     } else {
-                        markFailure(2, "Number operations produced unexpected results", `doubled=${doubled}, squared=${squared}`);
+                        markFailure(2, "Number operations produced unexpected results", "doubled=" + doubled + ", squared=" + squared);
                     }
                 } catch (e) {
                     markFailure(2, "Error performing number operations", e.toString());
@@ -250,15 +242,15 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                             "@{ item }",
                         }
                     ];
-                    
+
                     const expectedFruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
-                    const match = fruits.length === expectedFruits.length && 
+                    const match = fruits.length === expectedFruits.length &&
                                   fruits.every((val, idx) => val === expectedFruits[idx]);
-                    
+
                     if (match) {
-                        markSuccess(3, `Generated array with ${fruits.length} items: [${fruits.join(", ")}]`);
+                        markSuccess(3, "Generated array with " + fruits.length + " items: [" + fruits.join(", ") + "]");
                     } else {
-                        markFailure(3, "Array doesn't match expected", `Got: [${fruits.join(", ")}]`);
+                        markFailure(3, "Array doesn't match expected", "Got: [" + fruits.join(", ") + "]");
                     }
                 } catch (e) {
                     markFailure(3, "Error generating array with @for", e.toString());
@@ -267,19 +259,19 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 // TEST 4: Conditional Logic with @if
                 try {
                     let conditionalResult = "default";
-                    
+
                     @if debug_mode {
                         conditionalResult = "debug enabled";
                     }
-                    
+
                     @if !debug_mode {
                         conditionalResult = "debug disabled";
                     }
-                    
+
                     if (conditionalResult === "debug enabled") {
-                        markSuccess(4, `Conditional executed correctly: debug_mode=true → "${conditionalResult}"`);
+                        markSuccess(4, "Conditional executed correctly: debug_mode=true " + String.fromCharCode(8594) + " \"" + conditionalResult + "\"");
                     } else {
-                        markFailure(4, "Conditional logic failed", `Expected "debug enabled", got "${conditionalResult}"`);
+                        markFailure(4, "Conditional logic failed", "Expected \"debug enabled\", got \"" + conditionalResult + "\"");
                     }
                 } catch (e) {
                     markFailure(4, "Error in conditional logic", e.toString());
@@ -288,7 +280,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 // TEST 5: Match Patterns in Scripts
                 try {
                     let statusMessage = "";
-                    
+
                     @match status {
                         "success" => {
                             statusMessage = "Operation successful";
@@ -300,11 +292,11 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                             statusMessage = "Unknown status";
                         }
                     }
-                    
+
                     if (statusMessage === "Operation successful") {
-                        markSuccess(5, `Match pattern worked: status="@{ status }" → "${statusMessage}"`);
+                        markSuccess(5, "Match pattern worked: status=\"@{ status }\" " + String.fromCharCode(8594) + " \"" + statusMessage + "\"");
                     } else {
-                        markFailure(5, "Match pattern failed", `Got "${statusMessage}"`);
+                        markFailure(5, "Match pattern failed", "Got \"" + statusMessage + "\"");
                     }
                 } catch (e) {
                     markFailure(5, "Error in match pattern", e.toString());
@@ -317,13 +309,13 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                             { name: "@{ name }", age: @{ age } },
                         }
                     ];
-                    
-                    if (userData.length === 3 && 
-                        userData[0].name === "Alice" && 
+
+                    if (userData.length === 3 &&
+                        userData[0].name === "Alice" &&
                         userData[0].age === 25 &&
-                        userData[1].name === "Bob" && 
+                        userData[1].name === "Bob" &&
                         userData[1].age === 30) {
-                        markSuccess(6, `Complex data structure created: ${userData.length} users with name/age pairs`);
+                        markSuccess(6, "Complex data structure created: " + userData.length + " users with name/age pairs");
                     } else {
                         markFailure(6, "Complex data structure validation failed", JSON.stringify(userData));
                     }
@@ -342,13 +334,13 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                             ],
                         }
                     ];
-                    
+
                     const flatSum = matrix.flat().reduce((a, b) => a + b, 0);
-                    
+
                     if (matrix.length === 3 && flatSum === 45) {
-                        markSuccess(7, `Nested loops generated 3x3 matrix with sum=${flatSum}`);
+                        markSuccess(7, "Nested loops generated 3x3 matrix with sum=" + flatSum);
                     } else {
-                        markFailure(7, "Nested loop validation failed", `length=${matrix.length}, sum=${flatSum}`);
+                        markFailure(7, "Nested loop validation failed", "length=" + matrix.length + ", sum=" + flatSum);
                     }
                 } catch (e) {
                     markFailure(7, "Error in nested loops", e.toString());
@@ -357,7 +349,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 // TEST 8: Combined Control Flow
                 try {
                     const results = [];
-                    
+
                     @for num in &numbers {
                         @if *num % 2 == 0 {
                             results.push({ value: @{ num }, parity: "even" });
@@ -365,14 +357,14 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                             results.push({ value: @{ num }, parity: "odd" });
                         }
                     }
-                    
+
                     const evenCount = results.filter(r => r.parity === "even").length;
                     const oddCount = results.filter(r => r.parity === "odd").length;
-                    
+
                     if (evenCount === 2 && oddCount === 3) {
-                        markSuccess(8, `Combined @for + @if: found ${evenCount} even and ${oddCount} odd numbers`);
+                        markSuccess(8, "Combined @for + @if: found " + evenCount + " even and " + oddCount + " odd numbers");
                     } else {
-                        markFailure(8, "Combined control flow validation failed", `even=${evenCount}, odd=${oddCount}`);
+                        markFailure(8, "Combined control flow validation failed", "even=" + evenCount + ", odd=" + oddCount);
                     }
                 } catch (e) {
                     markFailure(8, "Error in combined control flow", e.toString());
