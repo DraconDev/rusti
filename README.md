@@ -296,6 +296,124 @@ fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component
 
 ---
 
+## 📝 Variable Declarations with `@let`
+
+Declare scoped variables directly in your templates using `@let`:
+
+```rust
+fn calculator() -> impl rusti::Component {
+    rusti! {
+        <div>
+            @let x = 10;
+            @let y = 20;
+            @let sum = x + y;
+            
+            <p>{x} + {y} = {sum}</p>
+            
+            @let greeting = "Hello";
+            @let name = "Rustacean";
+            
+            <h1>{greeting}, {name}!</h1>
+        </div>
+    }
+}
+```
+
+**Key Points:**
+- Variables are scoped from the point of declaration onward
+- Full type inference - values can be primitives, strings, or complex expressions
+- Computed values work: `@let total = items.iter().sum()`
+
+---
+
+## 🎭 Inline Scripts and Styles
+
+### ✅ JavaScript in `<script>` Tags
+
+You can write standard JavaScript directly in `<script>` tags:
+
+```rust
+rusti! {
+    <script>
+        const app = {
+            count: 0,
+            increment() {
+                this.count++;
+                console.log('Count:', this.count);
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('App initialized');
+        });
+    </script>
+}
+```
+
+**Standard JavaScript works perfectly** - objects, arrays, functions, etc.
+
+### ✅ CSS in `<style>` Tags
+
+Write standard CSS directly in `<style>` tags:
+
+```rust
+rusti! {
+    <style>
+        .card {
+            padding: 2 em;        /* ⚠️ Note the space! */
+            margin: 1 rem;        /* ⚠️ Note the space! */
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+        
+        .button {
+            font-size: 16px;      /* ✅ px units work fine */
+            color: #007bff;
+            padding: 0.5rem 1rem; /* ✅ No space needed with decimal */
+        }
+        
+        @media (min-width: 768px) {
+            .card {
+                max-width: 1200px;
+            }
+        }
+    </style>
+}
+```
+
+**⚠️ Important CSS Unit Caveat:**
+
+Due to Rust's lexer, CSS units like `2em` or `3rem` must be written with a space:
+- ❌ `padding: 2em;` — Rust lexer error
+- ✅ `padding: 2 em;` — Parser fixes this automatically
+- ✅ `padding: 0.5em;` — Decimals work fine (no space needed)
+- ✅ `padding: 16px;` — Other units work fine
+
+The parser automatically removes the space during compilation, so `2 em` becomes `2em` in the final CSS.
+
+### Alternative: Raw Strings for Complex CSS/JS
+
+For complex or generated content, use raw strings to bypass the parser entirely:
+
+```rust
+rusti! {
+    <style>{r#"
+        .container { padding: 2em; }  /* No space needed in raw strings */
+        @keyframes slide {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+    "#}</style>
+    
+    <script>{r#"
+        const config = {"theme": "dark", "version": 1};
+        console.log('Config:', config);
+    "#}</script>
+}
+```
+
+---
+
 ## 🌐 Modern Web Framework Support
 
 ### HTMX Integration
