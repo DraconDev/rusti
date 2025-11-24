@@ -536,7 +536,7 @@ When writing CSS directly in `<style>` tags, most units work fine:
 
 For the easiest development experience, **avoid using em units and hex colors without quotes** in inline CSS:
 - ❌ `padding: 2em;` — Avoid
-- ❌ `color: #fff;` — May be interpreted as Rust syntax if contains e
+- ❌ `color: #fff;` — May be interpreted as Rust syntax if contains e like `#2e2` or `#2e2e2e`
 - ✅ `padding: "2em";` — Quoted em units work perfectly
 - ✅ `color: "#fff";` — Quoted hex colors work perfectly
 - ✅ `padding: 2rem;` — rem units typically work as-is

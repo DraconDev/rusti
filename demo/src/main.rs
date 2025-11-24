@@ -150,7 +150,7 @@ fn home_page() -> impl rusti::Component {
                                 <a href="/script-style" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Script Style</a>
                                 <a href="/let-demo" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Let Demo</a>
                                 <a href="/component-macro" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Component Macro</a>
-                                <a href="/working-scripts" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">🧪 Working Scripts Test</a>
+                                <a href="/working-scripts" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Working Scripts Test</a>
                                 <a href="/examples/basic-html" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Basic HTML</a>
                                 <a href="/examples/dynamic-content" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Dynamic Content</a>
                                 <a href="/examples/loops" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Loops</a>
