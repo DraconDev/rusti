@@ -151,8 +151,14 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 nodes.push(Node::Element(input.parse()?));
             }
         } else if input.peek(Token![@]) {
-            // Block
-            nodes.push(Node::Block(input.parse()?));
+            if input.peek2(Brace) {
+                // @{ ... } -> Expression
+                input.parse::<Token![@]>()?;
+                nodes.push(Node::Expression(input.parse()?));
+            } else {
+                // Block
+                nodes.push(Node::Block(input.parse()?));
+            }
         } else if input.peek(Brace) {
             // Expression { ... }
             nodes.push(Node::Expression(input.parse()?));
@@ -189,7 +195,7 @@ impl Parse for Element {
                 // Void element, no children, no closing tag
             } else {
                 if name == "script" || name == "style" {
-                    children.push(parse_raw_text_until_tag(input, &name)?);
+                    children = parse_script_content(input, &name)?;
                 } else {
                     children = parse_nodes(input)?;
                 }
