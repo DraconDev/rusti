@@ -115,7 +115,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 <h1>Comprehensive Rusti Demo</h1>
 
                 <div class="feature-box">
-                    <h2>Feature 1: @let Variables</h2>
+                    <h2>"Feature 1: @let Variables"</h2>
                     @let greeting = "Hello";
                     @let name = "Rustacean";
                     @let full_greeting = format!("{}, {}!", greeting, name);
@@ -134,9 +134,9 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     <h2>Feature 2: Inline CSS</h2>
                     <p>Standard CSS works perfectly!</p>
                     <ul>
-                        <li>Most units work fine: <code>3rem</code>, <code>16px</code></li>
-                        <li>Decimal units: <code>"0.5em"</code>, <code>1.5rem</code></li>
-                        <li>Rare lexer issues: use <code>"2em"</code> (quoted)</li>
+                        <li>Most units work fine: 3rem, 16px</li>
+                        <li>Decimal units: decimal values work fine</li>
+                        <li>Rare lexer issues: quote problematic values</li>
                     </ul>
                 </div>
 
