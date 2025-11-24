@@ -120,7 +120,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     @let name = "Rustacean";
                     @let full_greeting = format!("{}, {}!", greeting, name);
 
-                    <p><code>@let</code> allows scoped variable declarations!</p>
+                    <p><code>"@let"</code> allows scoped variable declarations!</p>
                     <p><strong>{full_greeting}</strong></p>
 
                     @let x = 10;
