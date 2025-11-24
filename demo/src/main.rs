@@ -771,6 +771,7 @@ async fn main() {
             get(extreme::component_composition_handler),
         )
         .route("/examples/dashboard", get(extreme::dashboard_handler))
+        .route("/examples/comprehensive_demo", get(comprehensive_demo_handler))
         .route("/examples/form", get(extreme::form_handler));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")

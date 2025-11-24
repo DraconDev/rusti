@@ -115,7 +115,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 <h1>Comprehensive Rusti Demo</h1>
 
                 <div class="feature-box">
-                    <h2>"Feature 1: @let Variables"</h2>
+                    <h2>Feature 1: "@let" Variables</h2>
                     @let greeting = "Hello";
                     @let name = "Rustacean";
                     @let full_greeting = format!("{}, {}!", greeting, name);
@@ -154,7 +154,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 </div>
 
                 <div class="feature-box">
-                    <h2>"Feature 4: @let + @for Combo"</h2>
+                    <h2>Feature 4: "@let" + "@for" Combo</h2>
                     @let items = vec!["React".to_string(), "Vue".to_string(), "Angular".to_string(), "Svelte".to_string()];
                     @let item_count = items.len();
 
@@ -167,7 +167,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 </div>
 
                 <div class="feature-box">
-                    <h2>"Feature 5: @let + @if Logic"</h2>
+                    <h2>Feature 5: "@let" + "@if" Logic</h2>
                     @let score = 95;
                     @let grade = if score >= 90 { "A" } else if score >= 80 { "B" } else { "C" };
                     @let is_passing = score >= 60;
