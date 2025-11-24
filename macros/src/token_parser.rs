@@ -424,33 +424,56 @@ fn is_void_element(name: &str) -> bool {
     )
 }
 
-fn parse_raw_text_until_tag(input: ParseStream, tag_name: &str) -> Result<Node> {
-    // Consume tokens until we see </tag_name>
-    let span = input.span();
-    let mut content = String::new();
-
-    loop {
-        if input.is_empty() {
-            break;
-        }
-
+fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>> {
+    let mut nodes = Vec::new();
+    while !input.is_empty() {
         if input.peek(Token![<]) && input.peek2(Token![/]) {
             let fork = input.fork();
             fork.parse::<Token![<]>()?;
             fork.parse::<Token![/]>()?;
             if let Ok(name) = parse_html_name(&fork) {
                 if name == tag_name {
-                    // Found closing tag
                     break;
                 }
             }
         }
 
-        let tt: TokenTree = input.parse()?;
-        content.push_str(&tt.to_string());
-    }
+        if input.peek(Token![@]) {
+            if input.peek2(Brace) {
+                // @{ ... } -> Expression
+                input.parse::<Token![@]>()?;
+                nodes.push(Node::Expression(input.parse()?));
+            } else {
+                nodes.push(Node::Block(input.parse()?));
+            }
+        } else {
+            // Parse as text until @ or </tag_name>
+            let span = input.span();
+            let mut content = String::new();
+            while !input.is_empty() {
+                if input.peek(Token![@]) {
+                    break;
+                }
+                if input.peek(Token![<]) && input.peek2(Token![/]) {
+                    let fork = input.fork();
+                    fork.parse::<Token![<]>()?;
+                    fork.parse::<Token![/]>()?;
+                    if let Ok(name) = parse_html_name(&fork) {
+                        if name == tag_name {
+                            break;
+                        }
+                    }
+                }
 
-    Ok(Node::Text(Text { content, span }))
+                let tt: TokenTree = input.parse()?;
+                content.push_str(&tt.to_string());
+            }
+            if !content.is_empty() {
+                nodes.push(Node::Text(Text { content, span }));
+            }
+        }
+    }
+    Ok(nodes)
 }
 
 // Implementations for If, For, Match... (omitted for brevity, need to fill in)
