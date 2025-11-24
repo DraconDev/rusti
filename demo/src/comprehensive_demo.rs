@@ -9,7 +9,6 @@ pub fn comprehensive_demo() -> impl rusti::Component {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Comprehensive Rusti Demo</title>
             <style>
-                /* Standard CSS - works perfectly! */
                 * {
                     margin: 0;
                     padding: 0;
@@ -33,15 +32,15 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 }
                 
                 h1 {
-                    color: "#667eea";
+                    color: #667eea;
                     font-size: 2.5rem;
                     margin-bottom: 1rem;
                     text-align: center;
                 }
                 
                 .feature-box {
-                    background: "#f8f9fa";
-                    border-left: 4px solid "#667eea";
+                    background: #f8f9fa;
+                    border-left: 4px solid #667eea;
                     padding: 1.5rem;
                     margin: 1.5rem 0;
                     border-radius: 8px;
@@ -113,11 +112,11 @@ pub fn comprehensive_demo() -> impl rusti::Component {
         </head>
         <body>
             <div class="container">
-                <h1>🦀 Comprehensive Rusti Demo</h1>
+                <h1>Comprehensive Rusti Demo</h1>
                 
                 {/* Feature 1: @let syntax for scoped variables */}
                 <div class="feature-box">
-                    <h2>✨ Feature 1: @let Variables</h2>
+                    <h2>Feature 1: @let Variables</h2>
                     @let greeting = "Hello";
                     @let name = "Rustacean";
                     @let full_greeting = format!("{}, {}!", greeting, name);
@@ -134,20 +133,20 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 
                 {/* Feature 2: Inline CSS with standard syntax */}
                 <div class="feature-box">
-                    <h2>🎨 Feature 2: Inline CSS</h2>
-                    <p>Standard CSS works perfectly in <code>&lt;style&gt;</code> tags!</p>
+                    <h2>Feature 2: Inline CSS</h2>
+                    <p>Standard CSS works perfectly!</p>
                     <ul>
-                        <li>✅ Most units work fine: <code>3rem</code>, <code>16px</code></li>
-                        <li>✅ Decimal units: <code>0.5em</code>, <code>1.5rem</code></li>
-                        <li>⚠️ Rare lexer issues: use <code>"2em"</code> (quoted)</li>
+                        <li>Most units work fine: <code>3rem</code>, <code>16px</code></li>
+                        <li>Decimal units: <code>0.5em</code>, <code>1.5rem</code></li>
+                        <li>Rare lexer issues: use <code>"2em"</code> (quoted)</li>
                     </ul>
                 </div>
                 
                 {/* Feature 3: Inline JavaScript with standard syntax */}
                 <div class="feature-box">
-                    <h2>📜 Feature 3: Inline JavaScript</h2>
-                    <p>Standard JavaScript works in <code>&lt;script&gt;</code> tags!</p>
-                    <p><strong>Rule:</strong> Always use double quotes (<code>""</code>), never single quotes!</p>
+                    <h2>Feature 3: Inline JavaScript</h2>
+                    <p>Standard JavaScript works!</p>
+                    <p><strong>Rule:</strong> Always use double quotes, never single quotes!</p>
                     
                     <div class="counter">
                         <button onclick="decrementCounter()">-</button>
@@ -159,7 +158,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 
                 {/* Feature 4: Combining @let with loops */}
                 <div class="feature-box">
-                    <h2>🔄 Feature 4: @let + @for Combo</h2>
+                    <h2>Feature 4: @let + @for Combo</h2>
                     @let items = vec!["React".to_string(), "Vue".to_string(), "Angular".to_string(), "Svelte".to_string()];
                     @let item_count = items.len();
                     
@@ -173,7 +172,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 
                 {/* Feature 5: Conditionals with @let */}
                 <div class="feature-box">
-                    <h2>🎯 Feature 5: @let + @if Logic</h2>
+                    <h2>Feature 5: @let + @if Logic</h2>
                     @let score = 95;
                     @let grade = if score >= 90 { "A" } else if score >= 80 { "B" } else { "C" };
                     @let is_passing = score >= 60;
@@ -182,15 +181,14 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     <p>Grade: <strong>{grade}</strong></p>
                     
                     @if is_passing {
-                        <p style="color: green;">✅ Status: <strong>Passing!</strong></p>
+                        <p style="color: green;">Status: <strong>Passing!</strong></p>
                     } else {
-                        <p style="color: red;">❌ Status: <strong>Needs Improvement</strong></p>
+                        <p style="color: red;">Status: <strong>Needs Improvement</strong></p>
                     }
                 </div>
             </div>
             
-            <script>
-                // Feature 3 Demo: Standard JavaScript with objects, arrays, functions
+           <script>
                 const app = {
                     count: 0,
                     maxCount: 10,
@@ -219,7 +217,6 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                         if (display) {
                             display.textContent = this.count;
                             
-                            // Change color based on value
                             if (this.count === 0) {
                                 display.style.color = "#6c757d";
                             } else if (this.count >= this.maxCount) {
@@ -231,7 +228,6 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     }
                 };
                 
-                // Global functions for button onclick
                 function incrementCounter() {
                     app.increment();
                 }
@@ -244,15 +240,8 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     app.reset();
                 }
                 
-                // Initialize on page load
                 document.addEventListener("DOMContentLoaded", function() {
-                    console.log("🚀 Rusti Comprehensive Demo Loaded!");
-                    console.log("Features demonstrated:");
-                    console.log("  ✅ @let syntax for scoped variables");
-                    console.log("  ✅ Inline CSS with standard syntax");
-                    console.log("  ✅ Inline JavaScript with objects and functions");
-                    console.log("  ✅ Combining @let with @for and @if");
-                    
+                    console.log("Rusti Comprehensive Demo Loaded!");
                     app.updateDisplay();
                 });
             </script>
