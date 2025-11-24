@@ -189,7 +189,7 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                     let children_code = if has_children {
                         let children_body = generate_body(&call_block.children);
                         quote! {
-                            , rusti::from_fn(move |f| {
+                            , rusti::from_fn(|f| {
                                 #children_body
                                 Ok(())
                             })
