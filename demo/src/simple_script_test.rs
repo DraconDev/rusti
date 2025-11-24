@@ -1,4 +1,3 @@
-use axum::response::{Html, IntoResponse};
 use rusti::rusti;
 
 pub fn simple_script_test() -> impl rusti::Component {
@@ -28,8 +27,4 @@ pub fn simple_script_test() -> impl rusti::Component {
         </body>
         </html>
     }
-}
-
-pub fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&simple_script_test()))
 }
