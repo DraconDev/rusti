@@ -430,6 +430,32 @@ fn is_void_element(name: &str) -> bool {
     )
 }
 
+fn is_css_at_rule(input: ParseStream) -> bool {
+    let fork = input.fork();
+    if fork.parse::<Token![@]>().is_ok() {
+        if let Ok(ident) = fork.parse::<Ident>() {
+            let s = ident.to_string();
+            matches!(
+                s.as_str(),
+                "keyframes"
+                    | "media"
+                    | "import"
+                    | "font-face"
+                    | "supports"
+                    | "page"
+                    | "layer"
+                    | "container"
+                    | "charset"
+                    | "namespace"
+            )
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}
+
 fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>> {
     let mut nodes = Vec::new();
     while !input.is_empty() {
@@ -444,7 +470,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
             }
         }
 
-        if input.peek(Token![@]) {
+        if input.peek(Token![@]) && !is_css_at_rule(input) {
             if input.peek2(Brace) {
                 // @{ ... } -> Expression
                 input.parse::<Token![@]>()?;
@@ -453,11 +479,11 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
                 nodes.push(Node::Block(input.parse()?));
             }
         } else {
-            // Parse as text until @ or </tag_name>
+            // Parse as text until @ (if not CSS) or </tag_name>
             let span = input.span();
             let mut content = String::new();
             while !input.is_empty() {
-                if input.peek(Token![@]) {
+                if input.peek(Token![@]) && !is_css_at_rule(input) {
                     break;
                 }
                 if input.peek(Token![<]) && input.peek2(Token![/]) {
