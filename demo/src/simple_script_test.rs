@@ -16,13 +16,13 @@ pub fn simple_script_test() -> impl rusti::Component {
 
             <script>
                 const num = @{ my_number };
-                const str = @{ my_string };
+                const name = @{ my_string };
 
                 document.getElementById("output").innerHTML =
-                    "Number: " + num + "<br>String: " + str;
+                    "Number: " + num + "<br>String: " + name;
 
                 console.log("num =", num);
-                console.log("str =", str);
+                console.log("name =", name);
             </script>
         </body>
         </html>
