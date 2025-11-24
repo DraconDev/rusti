@@ -152,13 +152,15 @@ fn generate_body_with_context(
                 let content = &doctype.content;
                 quote! { write!(f, "<!DOCTYPE {}>", #content)?; }
             }
-            token_parser::Node::Fragment(frag) => generate_body(&frag.children),
+            token_parser::Node::Fragment(frag) => {
+                generate_body_with_context(&frag.children, raw_text)
+            }
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
                     let condition = &if_block.condition;
-                    let then_code = generate_body(&if_block.then_branch);
+                    let then_code = generate_body_with_context(&if_block.then_branch, raw_text);
                     let else_code = if let Some(else_branch) = &if_block.else_branch {
-                        let else_body = generate_body(else_branch);
+                        let else_body = generate_body_with_context(else_branch, raw_text);
                         quote! { else { #else_body } }
                     } else {
                         quote! {}
@@ -172,7 +174,7 @@ fn generate_body_with_context(
                 token_parser::Block::For(for_block) => {
                     let pattern = &for_block.pattern;
                     let iterator = &for_block.iterator;
-                    let body_code = generate_body(&for_block.body);
+                    let body_code = generate_body_with_context(&for_block.body, raw_text);
                     quote! {
                         for #pattern in #iterator {
                             #body_code
@@ -183,7 +185,7 @@ fn generate_body_with_context(
                     let expr = &match_block.expr;
                     let arms = match_block.arms.iter().map(|arm| {
                         let pattern = &arm.pattern;
-                        let body = generate_body(&arm.body);
+                        let body = generate_body_with_context(&arm.body, raw_text);
                         quote! {
                             #pattern => { #body }
                         }
@@ -199,7 +201,8 @@ fn generate_body_with_context(
                     let args = &call_block.args;
                     let has_children = !call_block.children.is_empty();
                     let children_code = if has_children {
-                        let children_body = generate_body(&call_block.children);
+                        let children_body =
+                            generate_body_with_context(&call_block.children, raw_text);
                         quote! {
                             , rusti::from_fn(|f| {
                                 #children_body
