@@ -203,7 +203,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
 
                 // TEST 1: Basic Variable Injection
                 try {
-                    const injectedString = "@{ test_string }";
+                    const injectedString = @{ format!("\"{}\"", test_string) };
                     const injectedNumber = @{ test_number };
                     const injectedFloat = @{ test_float };
                     const injectedBool = @{ test_bool };
@@ -239,7 +239,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 try {
                     const fruits = [
                         @for item in &items {
-                            "@{ item }",
+                            @{ format!("\"{}\"", item) },
                         }
                     ];
 
@@ -294,7 +294,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     }
 
                     if (statusMessage === "Operation successful") {
-                        markSuccess(5, "Match pattern worked: status=\"@{ status }\" " + String.fromCharCode(8594) + " \"" + statusMessage + "\"");
+                        markSuccess(5, "Match pattern worked: status=" + @{ format!("\"{}\"", status) } + " " + String.fromCharCode(8594) + " \"" + statusMessage + "\"");
                     } else {
                         markFailure(5, "Match pattern failed", "Got \"" + statusMessage + "\"");
                     }
@@ -306,7 +306,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 try {
                     const userData = [
                         @for (name, age) in &user_data {
-                            { name: "@{ name }", age: @{ age } },
+                            { name: @{ format!("\"{}\"", name) }, age: @{ age } },
                         }
                     ];
 
