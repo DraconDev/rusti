@@ -35,6 +35,39 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 
 ---
 
+## 📝 Text and Quotes
+
+### Automatic Quote Stripping
+
+Rusti automatically strips outer quotes from string literals in text positions for cleaner rendering:
+
+```rust
+rusti! {
+    <h1>"Hello, World!"</h1>  // Renders as: Hello, World! (quotes removed)
+    <h1>Hello, World!</h1>     // Also renders as: Hello, World!
+}
+```
+
+Both syntaxes produce the same output. The quotes are removed automatically to prevent `"Hello"` from appearing with visible quote marks in your HTML.
+
+### When You Need Literal Quotes
+
+If you actually want to display quote marks, use raw strings:
+
+```rust
+rusti! {
+    <p>{r#""This will show quotes""#}</p>  // Renders as: "This will show quotes"
+    <blockquote>"Said the wise person"</blockquote>  // Use <q> or entities for semantic quotes
+}
+```
+
+For semantic quotations, prefer HTML elements or entities:
+- **`<q>`** for inline quotes: `<q>Quoted text</q>` → "Quoted text"
+- **`<blockquote>`** for block quotes
+- **HTML entities**: `&ldquo;` (") and `&rdquo;` (")
+
+---
+
 ## 🎯 Quick Start
 
 ### Basic Component
