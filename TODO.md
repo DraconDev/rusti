@@ -16,6 +16,7 @@ scoped css
 
 optional props with default values
 
+props spreading 
 
 
 ### 1. Surgical Error Reporting (High Priority)
