@@ -7,6 +7,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
         <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <script>
             <title>Comprehensive Rusti Demo</title>
             <style>
                 * {
