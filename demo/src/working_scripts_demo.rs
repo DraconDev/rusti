@@ -152,7 +152,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 </div>
 
                 <div id="test-summary" class="test-section">
-                    <h2>"📊" Test Summary</h2>
+                    <h2>📊 Test Summary</h2>
                     <div id="summary-content">
                         <p>Running tests...</p>
                     </div>
