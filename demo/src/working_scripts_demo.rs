@@ -385,6 +385,6 @@ pub fn working_scripts_demo() -> impl rusti::Component {
     }
 }
 
-pub fn working_scripts_handler() -> axum::response::Html<String> {
-    axum::response::Html(rusti::render_to_string(&working_scripts_demo()))
+pub fn working_scripts_handler() -> impl rusti::Component {
+    working_scripts_demo()
 }
