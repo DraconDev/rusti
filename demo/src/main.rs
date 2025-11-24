@@ -756,6 +756,7 @@ async fn main() {
         .route("/let-demo", get(let_demo_handler))
         .route("/comprehensive", get(comprehensive_demo_handler))
         .route("/component-macro", get(component_macro_handler))
+        .route("/working-scripts", get(working_scripts_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
@@ -798,12 +799,13 @@ async fn main() {
     println!("   http://127.0.0.1:3000/forms - Forms");
     println!("   http://127.0.0.1:3000/script-style - Script & Style Demo");
     println!("   http://127.0.0.1:3000/let-demo - @let Syntax Demo");
+    println!("   http://127.0.0.1:3000/working-scripts - 🧪 Working Scripts Test Suite");
     println!("\n🎯 Extreme Examples:");
     println!("   http://127.0.0.1:3000/examples/basic-html - Basic HTML");
     println!("   http://127.0.0.1:3000/examples/dynamic-content - Dynamic Content");
     println!("   http://127.0.0.1:3000/examples/loops - Loops");
     println!("   http://127.0.0.1:3000/examples/pattern-matching - Pattern Matching");
-    println!("   http://127.0.0.1:3000/examples/component-composition - Component Composition");
+    println!("   http://172.0.0.1:3000/examples/component-composition - Component Composition");
     println!("   http://127.0.0.1:3000/examples/dashboard - Interactive Dashboard");
     println!("   http://127.0.0.1:3000/examples/form - Form Example");
     println!("\n✨ Features demonstrated:");
