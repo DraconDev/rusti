@@ -610,11 +610,18 @@ async fn main() {
 2. **Use the `#[component]` macro** for components with multiple props
 3. **Leverage optional props** to make components flexible without boilerplate
 4. **Use typed children** for layout components and wrappers
-5. **Always wrap `<script>` content in raw strings** - even simple scripts can break
-6. **Link external scripts** (`<script src="...">`) instead of inline JavaScript
-7. **Extract components early** to keep templates readable
-8. **Leverage Rust's type system** - pass typed structs instead of primitives
-9. **Test component rendering** with unit tests using `render_to_string()`
+5. **Use `@let` for computed values** - Keep template logic readable with intermediate variables
+6. **For inline `<script>` tags**: Standard JavaScript works perfectly - objects, arrays, functions, etc.
+7. **For inline `<style>` tags**: 
+   - ✅ Use standard CSS syntax
+   - ⚠️ Integer units need a space: `2 em`, `3 rem` (parser auto-fixes)
+   - ✅ Decimal units work as-is: `0.5em`, `1.5rem`
+   - ✅ Pixel units work as-is: `16px`, `100%`
+8. **For complex CSS/JS**: Use raw strings `{r#"..."#}` to bypass the parser entirely
+9. **Link external scripts** (`<script src="...">`) for larger JavaScript files
+10. **Extract components early** to keep templates readable
+11. **Leverage Rust's type system** - pass typed structs instead of primitives
+12. **Test component rendering** with unit tests using `render_to_string()`
 
 ---
 
