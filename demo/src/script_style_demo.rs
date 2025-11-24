@@ -50,8 +50,8 @@ pub fn script_style_demo() -> String {
         <body>
             <div class="card">
                 <h1 class="dynamic-text">Script & Style Injection Demo</h1>
-                <p>This page demonstrates the new <code>@{{ ... }}</code> syntax.</p>
-                
+                <p>This page demonstrates the new <code>{r#"@{ ... }"#}</code> syntax.</p>
+
                 <div id="app"></div>
 
                 @if show_debug {
@@ -83,15 +83,14 @@ pub fn script_style_demo() -> String {
                     }
                 ];
 
-                // Using JS template literals (backticks)
-                const message = `Hello, ${userName}! You have ${items.length} items.`;
-                
-                document.getElementById("app").innerHTML = `
-                    <p>${message}</p>
-                    <ul>
-                        ${items.map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                `;
+                // Using string concatenation instead of backticks
+                const message = "Hello, " + userName + "! You have " + items.length + " items.";
+
+                document.getElementById("app").innerHTML =
+                    "<p>" + message + "</p>" +
+                    "<ul>" +
+                        items.map(function(item) { return "<li>" + item + "</li>"; }).join("") +
+                    "</ul>";
 
                 // Control flow in Script
                 @if show_debug {
