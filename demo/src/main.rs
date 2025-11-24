@@ -31,7 +31,6 @@ use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
 use rusti::rusti;
 use serde::Deserialize;
-use simple_script_test::simple_script_test;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
 use working_scripts_demo::working_scripts_demo;
@@ -764,8 +763,8 @@ async fn main() {
         .route("/let-demo", get(let_demo_handler))
         .route("/comprehensive", get(comprehensive_demo_handler))
         .route("/component-macro", get(component_macro_handler))
-        .route("/simple-script-test", get(script_style_demo_handler))
         .route("/working-scripts", get(working_scripts_handler))
+        .route("/simple-script-test", get(script_style_demo_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(

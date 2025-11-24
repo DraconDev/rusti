@@ -1,6 +1,8 @@
 use axum::response::{Html, IntoResponse};
 use rusti::rusti;
 
+use crate::simple_script_test;
+
 pub fn script_style_demo() -> impl rusti::Component {
     let primary_color = "#3b82f6"; // Blue-500
     let font_size = 16;
@@ -110,6 +112,6 @@ pub fn script_style_demo() -> impl rusti::Component {
 //     Html(rusti::render_to_string(&let_demo()))
 // }
 
-async fn script_style_demo_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&script_style_demo()))
+async fn simple_script_test_handler() -> impl IntoResponse {
+   
 }
