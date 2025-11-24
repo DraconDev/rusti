@@ -191,14 +191,14 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     maxCount: 10,
 
                     increment() {
-                        if (this.count < this.maxCount) {
+                        if (this.count &lt; this.maxCount) {
                             this.count++;
                             this.updateDisplay();
                         }
                     },
 
                     decrement() {
-                        if (this.count > 0) {
+                        if (this.count &gt; 0) {
                             this.count--;
                             this.updateDisplay();
                         }
