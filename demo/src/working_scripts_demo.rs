@@ -384,7 +384,3 @@ pub fn working_scripts_demo() -> impl rusti::Component {
         </html>
     }
 }
-
-pub fn working_scripts_handler() -> impl rusti::Component {
-    working_scripts_demo()
-}
