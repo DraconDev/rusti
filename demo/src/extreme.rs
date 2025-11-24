@@ -512,7 +512,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                         padding: 2rem;
                         min-height: 200px;
                     }
-                    /* @keyframes fadeIn {
+                    @keyframes fadeIn {
                         from {
                             opacity: 0;
                             transform: translateY(20px);
@@ -521,7 +521,7 @@ pub fn interactive_dashboard_example() -> impl rusti::Component {
                             opacity: 1;
                             transform: translateY(0);
                         }
-                    } */
+                    }
                     .fade-in {
                         animation: fadeIn 0.5s ease-out;
                     }
