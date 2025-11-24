@@ -79,6 +79,7 @@ pub enum Block {
     Match(MatchBlock),
     Call(CallBlock),
     Component(ComponentBlock),
+    Let(LetBlock),
 }
 
 #[derive(Debug, Clone)]
@@ -121,6 +122,13 @@ pub struct CallBlock {
 #[derive(Debug, Clone)]
 pub struct ComponentBlock {
     pub name: syn::Path,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone)]
+pub struct LetBlock {
+    pub pattern: TokenStream, // Variable pattern (e.g., `name`, `(x, y)`, etc.)
+    pub value: TokenStream,   // The value to assign
     pub span: Span,
 }
 
