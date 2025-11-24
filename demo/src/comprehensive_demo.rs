@@ -14,7 +14,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     margin: 0;
                     padding: 0;
                     box-sizing: border-box;
-                    blackground-color: yellow;
+                    background-color: yellow;
                 }
 
                 body {
