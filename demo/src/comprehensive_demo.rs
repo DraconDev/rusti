@@ -187,6 +187,18 @@ pub fn comprehensive_demo() -> impl rusti::Component {
             </div>
 
             <script>
+                function incrementCounter() {
+                    app.increment();
+                }
+
+                function decrementCounter() {
+                    app.decrement();
+                }
+
+                function resetCounter() {
+                    app.reset();
+                }
+
                 const app = {
                     count: 0,
                     maxCount: 10,
@@ -226,17 +238,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                     }
                 };
 
-                function incrementCounter() {
-                    app.increment();
-                }
 
-                function decrementCounter() {
-                    app.decrement();
-                }
-
-                function resetCounter() {
-                    app.reset();
-                }
 
                 document.addEventListener("DOMContentLoaded", function() {
                     console.log("Rusti Comprehensive Demo Loaded!");
