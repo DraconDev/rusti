@@ -18,6 +18,7 @@ use style_src_demo::style_src_handler;
 mod comprehensive_demo;
 mod let_demo;
 mod script_style_demo;
+mod simple_script_test;
 mod styles_demo;
 mod tailwind_demo;
 mod working_scripts_demo;
@@ -30,6 +31,7 @@ use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
 use rusti::rusti;
 use serde::Deserialize;
+use simple_script_test::simple_script_test;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
 use working_scripts_demo::working_scripts_demo;
@@ -731,6 +733,10 @@ async fn comprehensive_demo_handler() -> impl IntoResponse {
 
 async fn working_scripts_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&working_scripts_demo()))
+}
+
+async fn simple_script_test_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&simple_script_test()))
 }
 
 #[tokio::main]
