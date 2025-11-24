@@ -54,6 +54,20 @@ pub fn rusti(input: TokenStream) -> TokenStream {
     TokenStream::from(output)
 }
 
+/// Strip outer quotes from string literals for cleaner text rendering
+/// If the user wants literal quotes, they should use raw strings like r#""Hello""#
+fn strip_outer_quotes(s: &str) -> String {
+    let trimmed = s.trim();
+    if trimmed.len() >= 2 {
+        if (trimmed.starts_with('"') && trimmed.ends_with('"'))
+            || (trimmed.starts_with('\'') && trimmed.ends_with('\''))
+        {
+            return trimmed[1..trimmed.len() - 1].to_string();
+        }
+    }
+    s.to_string()
+}
+
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     let mut stream = proc_macro2::TokenStream::new();
     for node in nodes {
@@ -110,7 +124,9 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                 if content.is_empty() {
                     quote! {}
                 } else {
-                    quote! { write!(f, "{}", #content)?; }
+                    // Strip outer quotes from string literals for cleaner rendering
+                    let stripped = strip_outer_quotes(content);
+                    quote! { write!(f, "{}", #stripped)?; }
                 }
             }
             token_parser::Node::Expression(expr) => {
