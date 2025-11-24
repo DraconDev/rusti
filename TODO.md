@@ -2,11 +2,8 @@
 
 ## 🚀 Future Improvements
 
-feature idea: 
+bug: < > are not parsed correctly they are interpreted as html tags !!!
 
-@let = inside the rusti! macro 
-like 
-@let items = vec!["Apple", "Banana", "Cherry"];
 
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
