@@ -2,6 +2,8 @@
 
 ## 🚀 Future Improvements
 
+support for emojis in html
+
 add fragment support
 
 we cna just update the readme, that either user has to care about "" or styling body or just not use 2em or hexa colors, albeit they work fine if you put them in quotes

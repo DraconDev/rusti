@@ -111,12 +111,12 @@ pub fn working_scripts_demo() -> impl rusti::Component {
         </head>
         <body>
             <div class="container">
-                <h1>🧪 Working Scripts Test Suite</h1>
+                <h1>"🧪" Working Scripts Test Suite</h1>
                 <p style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 2em;">
                     Comprehensive JavaScript integration tests to validate script injection and control flow
                 </p>
 
-                <a href="/" class="nav-button">← Back to Home</a>
+                <a href="/" class="nav-button">"←" Back to Home</a>
 
                 <!-- Test Results Container -->
                 <div id="test-1" class="test-section">
@@ -160,7 +160,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 </div>
 
                 <div id="test-summary" class="test-section">
-                    <h2>📊 Test Summary</h2>
+                    <h2>"📊" Test Summary</h2>
                     <div id="summary-content">
                         <p>Running tests...</p>
                     </div>
