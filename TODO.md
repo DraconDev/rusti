@@ -2,6 +2,8 @@
 
 ## 🚀 Future Improvements
 
+write rust in script tags 
+
 support for emojis in html
 
 add fragment support
