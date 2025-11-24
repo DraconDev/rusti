@@ -428,6 +428,8 @@ rusti! {
 | Feature | JavaScript / HTML | Rusti (Rust) |
 |---------|------------------|--------------|
 | **Quotes** | `<div id='app'>` | `<div id="app">` |
+| **Text Content** | `<h1>Hello</h1>` | `<h1>Hello</h1>` or `<h1>"Hello"</h1>` (quotes auto-stripped) |
+| **Literal Quotes** | `<p>"Hello"</p>` | `<p>{r#""Hello""#}</p>` (use raw string for literal quotes) |
 | **Templates** | `` `Hello ${name}` `` | `r#"Hello {name}"#` |
 | **URL** | `href=http://...` | `href="http://..."` |
 | **Variables** | `id="${id}"` | `id={id}` |
