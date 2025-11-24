@@ -176,21 +176,21 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 };
 
                 function markSuccess(testId, message) {
-                    const element = document.getElementById('result-' + testId);
-                    element.className = 'test-result success';
-                    element.innerHTML = '<strong>✅ PASSED:</strong> ' + message;
+                    const element = document.getElementById("result-" + testId);
+                    element.className = "test-result success";
+                    element.innerHTML = "<strong>✅ PASSED:</strong> " + message;
                     testResults.passed++;
                 }
 
                 function markFailure(testId, message, error) {
-                    const element = document.getElementById('result-' + testId);
-                    element.className = 'test-result error';
-                    element.innerHTML = '<strong>❌ FAILED:</strong> ' + message + '<br><code>' + error + '</code>';
+                    const element = document.getElementById("result-" + testId);
+                    element.className = "test-result error";
+                    element.innerHTML = "<strong>❌ FAILED:</strong> " + message + "<br><code>" + error + "</code>";
                     testResults.failed++;
                 }
 
                 function updateSummary() {
-                    const summaryElement = document.getElementById('summary-content');
+                    const summaryElement = document.getElementById("summary-content");
                     const percentage = ((testResults.passed / testResults.total) * 100).toFixed(1);
                     summaryElement.innerHTML = `
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin-top: 1em;">
@@ -257,9 +257,9 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                                   fruits.every((val, idx) => val === expectedFruits[idx]);
                     
                     if (match) {
-                        markSuccess(3, `Generated array with ${fruits.length} items: [${fruits.join(', ')}]`);
+                        markSuccess(3, `Generated array with ${fruits.length} items: [${fruits.join(", ")}]`);
                     } else {
-                        markFailure(3, "Array doesn't match expected", `Got: [${fruits.join(', ')}]`);
+                        markFailure(3, "Array doesn't match expected", `Got: [${fruits.join(", ")}]`);
                     }
                 } catch (e) {
                     markFailure(3, "Error generating array with @for", e.toString());
