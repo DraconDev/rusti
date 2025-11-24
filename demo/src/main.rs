@@ -25,6 +25,7 @@ mod working_scripts_demo;
 use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
+use simple_script_test::simple_script_test_handler;
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
@@ -735,10 +736,6 @@ async fn working_scripts_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&working_scripts_demo()))
 }
 
-async fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&simple_script_test()))
-}
-
 #[tokio::main]
 async fn main() {
     let app = Router::new()
@@ -768,6 +765,7 @@ async fn main() {
         .route("/let-demo", get(let_demo_handler))
         .route("/comprehensive", get(comprehensive_demo_handler))
         .route("/component-macro", get(component_macro_handler))
+        .route("/simple-script-test", get(simple_script_test_handler))
         .route("/working-scripts", get(working_scripts_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
