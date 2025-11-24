@@ -16,7 +16,7 @@ pub fn basic_page() -> impl rusti::Component {
                 <style>
                     body {
                         font-family: sans-serif;
-                        margin: 2 em;               /* Space required for 'em' due to Rust float syntax, but parser fixes it! */
+                        margin: "2em";               /* Space required for 'em' due to Rust float syntax, but parser fixes it! */
                         background-color: #f4f4f4;  /* Hex colors work fine */
                         color: #333;
                         padding: 10px;              /* px works fine without space! */
