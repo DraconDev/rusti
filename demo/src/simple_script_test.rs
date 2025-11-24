@@ -28,3 +28,7 @@ pub fn simple_script_test() -> impl rusti::Component {
         </html>
     }
 }
+
+pub fn simple_script_test_handler() -> impl rusti::Component {
+    simple_script_test()
+    
