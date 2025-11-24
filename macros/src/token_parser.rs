@@ -491,7 +491,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
         } else {
             // Parse as text until @ (if not CSS) or </tag_name>
             let span = input.span();
-            let mut content = String::new();
+            let mut tokens = Vec::new();
             while !input.is_empty() {
                 if input.peek(Token![@]) && !is_css_at_rule(input) {
                     break;
@@ -508,14 +508,44 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
                 }
 
                 let tt: TokenTree = input.parse()?;
-                content.push_str(&tt.to_string());
+                tokens.push(tt);
             }
-            if !content.is_empty() {
+
+            if !tokens.is_empty() {
+                let content = tokens_to_string(&tokens);
                 nodes.push(Node::Text(Text { content, span }));
             }
         }
     }
     Ok(nodes)
+}
+
+fn tokens_to_string(tokens: &[TokenTree]) -> String {
+    let mut output = String::new();
+    for (i, tt) in tokens.iter().enumerate() {
+        let s = tt.to_string();
+        output.push_str(&s);
+
+        if i + 1 < tokens.len() {
+            let next = &tokens[i + 1];
+            if should_add_space(tt, next) {
+                output.push(' ');
+            }
+        }
+    }
+    output
+}
+
+fn should_add_space(curr: &TokenTree, next: &TokenTree) -> bool {
+    use proc_macro2::TokenTree::*;
+    match (curr, next) {
+        (Ident(_), Ident(_)) => true,     // const app
+        (Ident(_), Literal(_)) => true,   // return 0
+        (Literal(_), Ident(_)) => true,   // 0 auto
+        (Literal(_), Literal(_)) => true, // 1 2
+        (Punct(p), Ident(_)) if p.as_char() == ',' || p.as_char() == ';' => true, // , next or ; next
+        _ => false,
+    }
 }
 
 // Implementations for If, For, Match... (omitted for brevity, need to fill in)
