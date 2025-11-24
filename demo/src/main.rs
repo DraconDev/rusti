@@ -20,6 +20,7 @@ mod let_demo;
 mod script_style_demo;
 mod styles_demo;
 mod tailwind_demo;
+mod working_scripts_demo;
 use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
@@ -34,7 +35,7 @@ use tailwind_demo::tailwind_demo_handler;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
-    styles_demo::styles_demo2_handler,
+    styles_demo::styles_demo2_handler, working_scripts_demo::working_scripts_handler,
 };
 
 #[derive(Deserialize)]
