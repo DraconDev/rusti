@@ -529,13 +529,13 @@ When writing CSS directly in `<style>` tags, most units work fine:
 - ✅ `padding: 3rem;` - Works fine
 - ✅ `padding: 0.5em;` - Decimals work fine
 - ✅ `padding: 16px;` - px, %, and other units work fine
-- ⚠️ `padding: 2em;` - Rarely, may cause lexer issues
+- ⚠️ `padding: 2em;` - Rarely, will cause lexer issues
 - ✅ `padding: "2em";` - Use quoted string if needed
 
 **💡 Simplicity Recommendation:**
 
 For the easiest development experience, **avoid using em units and hex colors without quotes** in inline CSS:
-- ❌ `padding: 2em;` — May cause lexer issues
+- ❌ `padding: 2em;` — Avoid
 - ❌ `color: #fff;` — May be interpreted as Rust syntax if contains e
 - ✅ `padding: "2em";` — Quoted em units work perfectly
 - ✅ `color: "#fff";` — Quoted hex colors work perfectly
