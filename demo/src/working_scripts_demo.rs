@@ -385,7 +385,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
     }
 }
 
-pub fn working_scripts_handler() -> impl axum::response::IntoResponse {
+pub async fn working_scripts_handler() -> impl axum::response::IntoResponse {
     let html = rusti::render_to_string(&working_scripts_demo());
     axum::response::Html(html)
 }
