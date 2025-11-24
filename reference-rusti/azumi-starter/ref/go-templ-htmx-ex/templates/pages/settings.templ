@@ -1,0 +1,142 @@
+package pages
+
+import (
+	"github.com/DraconDev/go-templ-htmx-ex/internal/models"
+	"github.com/DraconDev/go-templ-htmx-ex/templates/layouts"
+)
+
+templ Settings(userInfo layouts.UserInfo, prefs *models.UserPreferences) {
+	@layouts.Layout("Settings | Startup Platform", "Manage your account and preferences", layouts.NavigationLoggedIn(userInfo), SettingsContent(userInfo, prefs))
+}
+
+templ SettingsContent(userInfo layouts.UserInfo, prefs *models.UserPreferences) {
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+		<h1 class="text-3xl font-bold text-white mb-8">Settings</h1>
+
+		<div class="glass-card rounded-2xl overflow-hidden" x-data="{ tab: 'account' }">
+			<!-- Tabs Header -->
+			<div class="flex border-b border-gray-700">
+				<button 
+					@click="tab = 'account'" 
+					:class="{ 'text-cyan-400 border-cyan-400': tab === 'account', 'text-gray-400 border-transparent hover:text-gray-200': tab !== 'account' }"
+					class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200"
+				>
+					Account
+				</button>
+				<button 
+					@click="tab = 'notifications'" 
+					:class="{ 'text-cyan-400 border-cyan-400': tab === 'notifications', 'text-gray-400 border-transparent hover:text-gray-200': tab !== 'notifications' }"
+					class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200"
+				>
+					Notifications
+				</button>
+				<button 
+					@click="tab = 'billing'" 
+					:class="{ 'text-cyan-400 border-cyan-400': tab === 'billing', 'text-gray-400 border-transparent hover:text-gray-200': tab !== 'billing' }"
+					class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200"
+				>
+					Billing
+				</button>
+			</div>
+
+			<!-- Account Tab -->
+			<div x-show="tab === 'account'" class="p-6 space-y-6">
+				<div class="flex items-center space-x-4 mb-8">
+					<img src={ userInfo.Picture } alt={ userInfo.Name } class="w-20 h-20 rounded-full ring-2 ring-cyan-500/50" />
+					<div>
+						<h3 class="text-xl font-semibold text-white">{ userInfo.Name }</h3>
+						<p class="text-gray-400">{ userInfo.Email }</p>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div>
+						<label class="block text-sm font-medium text-gray-400 mb-2">Display Name</label>
+						<input type="text" value={ userInfo.Name } disabled class="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-2 text-gray-500 cursor-not-allowed" />
+						<p class="mt-1 text-xs text-gray-500">Managed by your login provider</p>
+					</div>
+					<div>
+						<label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+						<input type="email" value={ userInfo.Email } disabled class="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-2 text-gray-500 cursor-not-allowed" />
+						<p class="mt-1 text-xs text-gray-500">Managed by your login provider</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Notifications Tab -->
+			<div x-show="tab === 'notifications'" class="p-6">
+				<form hx-post="/settings/update" hx-target="#settings-message">
+					<div id="settings-message" class="mb-6"></div>
+					
+					<div class="space-y-6">
+						<div>
+							<label class="block text-sm font-medium text-gray-300 mb-2">Timezone</label>
+							<select name="timezone" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+								<option value="UTC" selected?={ prefs.Timezone == "UTC" }>UTC</option>
+								<option value="America/New_York" selected?={ prefs.Timezone == "America/New_York" }>Eastern Time (US & Canada)</option>
+								<option value="America/Los_Angeles" selected?={ prefs.Timezone == "America/Los_Angeles" }>Pacific Time (US & Canada)</option>
+								<option value="Europe/London" selected?={ prefs.Timezone == "Europe/London" }>London</option>
+								<option value="Europe/Paris" selected?={ prefs.Timezone == "Europe/Paris" }>Paris</option>
+								<option value="Asia/Tokyo" selected?={ prefs.Timezone == "Asia/Tokyo" }>Tokyo</option>
+							</select>
+						</div>
+
+						<div class="space-y-4">
+							<h4 class="text-lg font-medium text-white">Email Notifications</h4>
+							
+							<div class="flex items-center justify-between">
+								<div>
+									<p class="text-gray-300">Product Updates</p>
+									<p class="text-sm text-gray-500">Receive news about new features and improvements</p>
+								</div>
+								<label class="relative inline-flex items-center cursor-pointer">
+									<input type="checkbox" name="email_notifications" class="sr-only peer" checked?={ prefs.EmailNotifications } />
+									<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
+								</label>
+							</div>
+
+							<div class="flex items-center justify-between">
+								<div>
+									<p class="text-gray-300">Billing Alerts</p>
+									<p class="text-sm text-gray-500">Receive invoices and payment notifications</p>
+								</div>
+								<label class="relative inline-flex items-center cursor-pointer">
+									<input type="checkbox" name="email_billing" class="sr-only peer" checked?={ prefs.EmailBilling } />
+									<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
+								</label>
+							</div>
+						</div>
+
+						<div class="pt-4">
+							<button type="submit" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-lg transition-colors">
+								Save Changes
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<!-- Billing Tab -->
+			<div x-show="tab === 'billing'" class="p-6 text-center">
+				<div class="max-w-md mx-auto">
+					<div class="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+						<svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+						</svg>
+					</div>
+					<h3 class="text-xl font-semibold text-white mb-2">Manage Subscription</h3>
+					<p class="text-gray-400 mb-8">View your invoices, update payment method, or change your plan via the secure Stripe Customer Portal.</p>
+					
+					<form action="/settings/billing" method="POST">
+						<button type="submit" class="w-full py-3 px-4 rounded-lg bg-white text-black font-bold hover:bg-gray-200 transition-colors flex items-center justify-center">
+							<span>Open Customer Portal</span>
+							<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+							</svg>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+}

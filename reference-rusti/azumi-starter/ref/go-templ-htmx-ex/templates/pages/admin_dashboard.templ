@@ -1,0 +1,109 @@
+package pages
+
+//go:generate templ generate
+
+// DashboardData represents the complete admin dashboard data
+type DashboardData struct {
+	TotalUsers    int
+	SignupsToday  int
+	SystemHealth  string
+	RecentUsers   []RecentUser
+	UsersThisWeek int
+}
+
+type RecentUser struct {
+	Name  string
+	Email string
+	Date  string
+}
+
+type UserInfo struct {
+	LoggedIn bool   `json:"logged_in"`
+	Name     string `json:"name,omitempty"`
+	Email    string `json:"email,omitempty"`
+	Picture  string `json:"picture,omitempty"`
+}
+
+templ AdminDashboardContent(user UserInfo, data DashboardData) {
+	<div class="max-w-6xl mx-auto">
+		<!-- Dashboard Header -->
+		<div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl p-8 mb-8">
+			<h1 class="text-3xl font-bold mb-2">🏆 Admin Dashboard</h1>
+			<p class="text-purple-100">Welcome back, { user.Name } - Full administrative access</p>
+		</div>
+		
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+			<!-- User Stats Card -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+				<div class="flex items-center justify-between mb-4">
+					<h3 class="text-lg font-semibold text-gray-900">👥 Total Users</h3>
+					<div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+						<span class="text-blue-600 text-lg">👥</span>
+					</div>
+				</div>
+				<div class="text-3xl font-bold text-gray-900 mb-2">{ data.TotalUsers }</div>
+				<div class="text-sm text-green-600 flex items-center">
+					<span class="mr-1">↗</span>
+					+{ data.UsersThisWeek } this week
+				</div>
+			</div>
+			
+			<!-- Signups Today Card -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+				<div class="flex items-center justify-between mb-4">
+					<h3 class="text-lg font-semibold text-gray-900">📅 Signups Today</h3>
+					<div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+						<span class="text-green-600 text-lg">📅</span>
+					</div>
+				</div>
+				<div class="text-3xl font-bold text-gray-900 mb-2">{ data.SignupsToday }</div>
+				<div class="text-sm text-gray-500">New signups today</div>
+			</div>
+			
+			<!-- Database Status Card -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+				<div class="flex items-center justify-between mb-4">
+					<h3 class="text-lg font-semibold text-gray-900">🟢 Database</h3>
+					<div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+						<span class="text-green-600 text-lg">🟢</span>
+					</div>
+				</div>
+				<div class="text-lg font-semibold text-gray-900 mb-2">{ data.SystemHealth }</div>
+				<div class="text-sm text-gray-500">Real database status</div>
+			</div>
+		</div>
+		
+		<div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+			<!-- Recent Users -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+				<h3 class="text-lg font-semibold text-gray-900 mb-4">👤 Recent Users</h3>
+				<div class="space-y-3">
+					<div class="text-sm text-gray-500 mb-4">
+						{ len(data.RecentUsers) } recent users found
+					</div>
+					
+					if len(data.RecentUsers) > 0 {
+						for _, recentUser := range data.RecentUsers {
+							<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+								<div class="flex items-center space-x-3">
+									<div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+										<span class="text-blue-600 text-sm font-medium">{ recentUser.Name[:2] }</span>
+									</div>
+									<div>
+										<div class="font-medium text-gray-900">{ recentUser.Name }</div>
+										<div class="text-sm text-gray-500">{ recentUser.Email }</div>
+									</div>
+								</div>
+								<div class="text-sm text-gray-500">{ recentUser.Date }</div>
+							</div>
+						}
+					} else {
+						<div class="flex items-center justify-center p-8 text-gray-500">
+							No recent users found
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
