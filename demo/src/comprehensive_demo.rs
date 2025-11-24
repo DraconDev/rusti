@@ -154,7 +154,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 </div>
 
                 <div class="feature-box">
-                    <h2>Feature 4: @let + @for Combo</h2>
+                    <h2>"Feature 4: @let + @for Combo"</h2>
                     @let items = vec!["React".to_string(), "Vue".to_string(), "Angular".to_string(), "Svelte".to_string()];
                     @let item_count = items.len();
 
