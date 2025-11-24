@@ -23,6 +23,8 @@ mod tailwind_demo;
 use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
+use styles_demo::styles_demo_handler;
+
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
