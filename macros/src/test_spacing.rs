@@ -1,46 +1,84 @@
 #[cfg(test)]
 mod tests {
-    use proc_macro2::TokenStream;
+    use proc_macro2::{TokenStream, TokenTree};
     use std::str::FromStr;
+
+    // Copy of the logic from token_parser.rs for testing
+    fn tokens_to_string(tokens: &[TokenTree]) -> String {
+        let mut output = String::new();
+        for (i, tt) in tokens.iter().enumerate() {
+            let s = tt.to_string();
+            output.push_str(&s);
+
+            if i + 1 < tokens.len() {
+                let next = &tokens[i + 1];
+                if should_add_space(tt, next) {
+                    output.push(' ');
+                }
+            }
+        }
+        output
+    }
+
+    fn should_add_space(curr: &TokenTree, next: &TokenTree) -> bool {
+        use proc_macro2::TokenTree::*;
+        match (curr, next) {
+            (Ident(_), Ident(_)) => true,     // const app
+            (Ident(_), Literal(_)) => true,   // return 0
+            (Literal(_), Ident(_)) => true,   // 0 auto
+            (Literal(_), Literal(_)) => true, // 1 2
+            (Punct(p), Ident(_)) if p.as_char() == ',' || p.as_char() == ';' => true, // , next or ; next
+            _ => false,
+        }
+    }
 
     #[test]
     fn test_token_stream_spacing() {
         // JS Example
         let js_source = "const app = { count: 0, increment() { this.count++; } };";
         let ts = TokenStream::from_str(js_source).unwrap();
+        let tokens: Vec<TokenTree> = ts.into_iter().collect();
 
-        let mut output = String::new();
-        for tt in ts.clone() {
-            output.push_str(&tt.to_string());
-        }
+        let output = tokens_to_string(&tokens);
         println!("Original JS:      {}", js_source);
-        println!("Iterated JS:      {}", output);
-        println!("TokenStream JS:   {}", ts.to_string());
+        println!("Heuristic JS:     {}", output);
+
+        // Verify key patterns
+        assert!(output.contains("const app"), "Should preserve 'const app'");
+        assert!(output.contains("count:0"), "Should compact 'count: 0'"); // Heuristic allows this compaction
+        assert!(
+            output.contains("this.count++"),
+            "Should compact 'this.count++'"
+        );
 
         // CSS Example
         let css_source = ".container { margin: 0; padding: 1px solid red; }";
         let ts_css = TokenStream::from_str(css_source).unwrap();
+        let tokens_css: Vec<TokenTree> = ts_css.into_iter().collect();
 
-        let mut css_output = String::new();
-        for tt in ts_css.clone() {
-            css_output.push_str(&tt.to_string());
-        }
+        let css_output = tokens_to_string(&tokens_css);
         println!("Original CSS:     {}", css_source);
-        println!("Iterated CSS:     {}", css_output);
-        println!("TokenStream CSS:  {}", ts_css.to_string());
+        println!("Heuristic CSS:    {}", css_output);
+
+        assert!(
+            css_output.contains(".container"),
+            "Should preserve '.container'"
+        );
+        assert!(
+            css_output.contains("1px solid"),
+            "Should preserve '1px solid'"
+        );
 
         // Complex CSS
         let complex_css = "div.foo > div # bar { color: red; }";
         let ts_complex = TokenStream::from_str(complex_css).unwrap();
-        println!("Original Complex: {}", complex_css);
-        println!("TokenStream Cplx: {}", ts_complex.to_string());
+        let tokens_complex: Vec<TokenTree> = ts_complex.into_iter().collect();
+        let complex_output = tokens_to_string(&tokens_complex);
 
-        // Check 1px structure
-        let unit_css = "padding: 1px;";
-        let ts_unit = TokenStream::from_str(unit_css).unwrap();
-        println!("Unit CSS: {}", unit_css);
-        for tt in ts_unit {
-            println!("Token: {:?} (String: '{}')", tt, tt.to_string());
-        }
+        println!("Original Complex: {}", complex_css);
+        println!("Heuristic Cplx:   {}", complex_output);
+
+        // Note: div .foo becomes div.foo with this heuristic, which is known limitation
+        // But div # bar becomes div#bar
     }
 }
