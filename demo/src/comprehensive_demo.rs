@@ -167,7 +167,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 </div>
 
                 <div class="feature-box">
-                    <h2>Feature 5: @let + @if Logic</h2>
+                    <h2>"Feature 5: @let + @if Logic"</h2>
                     @let score = 95;
                     @let grade = if score >= 90 { "A" } else if score >= 80 { "B" } else { "C" };
                     @let is_passing = score >= 60;
