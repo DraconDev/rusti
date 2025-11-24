@@ -1,6 +1,8 @@
 // Force rebuild 3
 mod component;
-mod parser; // Keep for tests for now
+mod parser; // Keep for extern crate proc_macro;
+
+mod test_spacing;
 mod token_parser;
 
 use proc_macro::TokenStream;
