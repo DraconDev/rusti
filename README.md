@@ -360,8 +360,8 @@ Write standard CSS directly in `<style>` tags:
 rusti! {
     <style>
         .card {
-            padding: 2 em;        /* ⚠️ Note the space! */
-            margin: 1 rem;        /* ⚠️ Note the space! */
+            padding: "2em";       /* ✅ Use quoted strings for integer+unit */
+            margin: 3rem;         /* ✅ Most units work fine */
             background: #f0f0f0;
             border-radius: 8px;
         }
@@ -369,7 +369,7 @@ rusti! {
         .button {
             font-size: 16px;      /* ✅ px units work fine */
             color: #007bff;
-            padding: 0.5rem 1rem; /* ✅ No space needed with decimal */
+            padding: 0.5rem 1rem; /* ✅ Decimal units work fine */
         }
         
         @media (min-width: 768px) {
@@ -381,36 +381,16 @@ rusti! {
 }
 ```
 
-**⚠️ Important CSS Unit Caveat:**
+**⚠️ Important CSS Unit Note:**
 
-Due to Rust's lexer, CSS units like `2em` or `3rem` must be written with a space:
-- ❌ `padding: 2em;` — Rust lexer error
-- ✅ `padding: 2 em;` — Parser fixes this automatically
-- ✅ `padding: 0.5em;` — Decimals work fine (no space needed)
-- ✅ `padding: 16px;` — Other units work fine
+Most CSS units work fine, but in rare cases where Rust's lexer has issues:
+- ⚠️ `padding: 2em;` — May cause lexer issues
+- ✅ `padding: "2em";` — Use quoted string if needed
+- ✅ `padding: 3rem;` — Most units work fine as-is
+- ✅ `padding: 0.5em;` — Decimal units work fine
+- ✅ `padding: 16px;` — px and other units work fine
 
-The parser automatically removes the space during compilation, so `2 em` becomes `2em` in the final CSS.
-
-### Alternative: Raw Strings for Complex CSS/JS
-
-For complex or generated content, use raw strings to bypass the parser entirely:
-
-```rust
-rusti! {
-    <style>{r#"
-        .container { padding: 2em; }  /* No space needed in raw strings */
-        @keyframes slide {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-    "#}</style>
-    
-    <script>{r#"
-        const config = {"theme": "dark", "version": 1};
-        console.log('Config:', config);
-    "#}</script>
-}
-```
+**Important**: Scripts must use **double quotes only** (`""`), never single quotes (`''`).
 
 ---
 
