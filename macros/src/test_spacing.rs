@@ -23,7 +23,7 @@ mod tests {
         println!("CSS Output:\n{}", css.to_string());
         
         let complex_css = quote! {
-            div.foo > span#bar {
+            div.foo > div#bar {
                 color: red;
             }
         };
