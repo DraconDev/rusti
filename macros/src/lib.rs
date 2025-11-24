@@ -68,11 +68,19 @@ fn strip_outer_quotes(s: &str) -> String {
 }
 
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
+    generate_body_with_context(nodes, false)
+}
+
+fn generate_body_with_context(
+    nodes: &[token_parser::Node],
+    raw_text: bool,
+) -> proc_macro2::TokenStream {
     let mut stream = proc_macro2::TokenStream::new();
     for node in nodes {
         let chunk = match node {
             token_parser::Node::Element(elem) => {
                 let name = &elem.name;
+                let is_raw_tag = name == "script" || name == "style";
 
                 // Special handling for <style src="...">
                 if name == "style" {
@@ -85,7 +93,7 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
                     }
                 }
 
-                let children_code = generate_body(&elem.children);
+                let children_code = generate_body_with_context(&elem.children, is_raw_tag);
 
                 let mut attr_code = proc_macro2::TokenStream::new();
                 for attr in &elem.attrs {
@@ -130,7 +138,11 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
             }
             token_parser::Node::Expression(expr) => {
                 let content = &expr.content;
-                quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
+                if raw_text {
+                    quote! { write!(f, "{}", #content)?; }
+                } else {
+                    quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
+                }
             }
             token_parser::Node::Comment(_) => {
                 // Ignore comments in output
