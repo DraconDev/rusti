@@ -186,7 +186,7 @@ pub fn comprehensive_demo() -> impl rusti::Component {
                 </div>
             </div>
 
-           <script>
+            <script>
                 const app = {
                     count: 0,
                     maxCount: 10,
