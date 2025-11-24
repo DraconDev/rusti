@@ -12,6 +12,7 @@ mod component_macro_demo;
 mod datastar;
 mod extreme;
 mod quote_demo;
+mod script_support_demo;
 use component_macro_demo::component_macro_handler;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
@@ -730,6 +731,7 @@ async fn comprehensive_demo_handler() -> impl IntoResponse {
 async fn main() {
     let app = Router::new()
         .route("/", get(hello_world))
+        .route("/script-support", get(script_support_demo_handler))
         .route("/basic", get(basic_page_handler))
         .route("/about", get(about_demo))
         .route("/htmx", get(htmx_demo))
@@ -771,7 +773,10 @@ async fn main() {
             get(extreme::component_composition_handler),
         )
         .route("/examples/dashboard", get(extreme::dashboard_handler))
-        .route("/examples/comprehensive_demo", get(comprehensive_demo_handler))
+        .route(
+            "/examples/comprehensive_demo",
+            get(comprehensive_demo_handler),
+        )
         .route("/examples/form", get(extreme::form_handler));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
