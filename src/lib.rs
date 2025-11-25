@@ -66,39 +66,52 @@ pub fn generate_scope_id() -> String {
 /// Transform CSS selectors to include scope attribute
 /// All CSS is automatically scoped - no escape hatches!
 pub fn scope_css(css: &str, scope_id: &str) -> String {
-    let mut result = String::new();
     let scope_attr = format!("[data-{}]", scope_id);
+    let mut result = String::new();
+    let mut in_rule = false;
+    let mut selector_buffer = String::new();
 
-    for line in css.lines() {
-        let trimmed = line.trim();
+    for ch in css.chars() {
+        match ch {
+            '{' if !in_rule => {
+                // Found opening brace - scope the selector buffer
+                let selectors: Vec<&str> = selector_buffer.split(',').collect();
+                let scoped: Vec<String> = selectors
+                    .iter()
+                    .filter(|s| !s.trim().is_empty())
+                    .map(|s| {
+                        let trimmed = s.trim();
+                        // Skip @-rules and comments
+                        if trimmed.starts_with('@') || trimmed.starts_with("/*") {
+                            trimmed.to_string()
+                        } else {
+                            format!("{}{}", trimmed, scope_attr)
+                        }
+                    })
+                    .collect();
 
-        // Skip empty lines, comments, at-rules
-        if trimmed.is_empty() || trimmed.starts_with("/*") || trimmed.starts_with("@") {
-            result.push_str(line);
-            result.push('\n');
-            continue;
+                result.push_str(&scoped.join(", "));
+                result.push('{');
+                selector_buffer.clear();
+                in_rule = true;
+            }
+            '}' if in_rule => {
+                result.push('}');
+                in_rule = false;
+            }
+            _ => {
+                if in_rule {
+                    result.push(ch);
+                } else {
+                    selector_buffer.push(ch);
+                }
+            }
         }
+    }
 
-        // Add scope attribute to selectors
-        if let Some(brace_pos) = line.find('{') {
-            let selector_part = &line[..brace_pos];
-            let rest = &line[brace_pos..];
-
-            // Split selectors by comma
-            let selectors: Vec<&str> = selector_part.split(',').collect();
-            let scoped_selectors: Vec<String> = selectors
-                .iter()
-                .map(|s| format!("{}{}", s.trim(), scope_attr))
-                .collect();
-
-            result.push_str(&scoped_selectors.join(", "));
-            result.push_str(rest);
-            result.push('\n');
-        } else {
-            // No brace, just copy line as-is (probably inside a rule)
-            result.push_str(line);
-            result.push('\n');
-        }
+    // Handle any remaining selector buffer (malformed CSS)
+    if !selector_buffer.trim().is_empty() {
+        result.push_str(&selector_buffer);
     }
 
     result
