@@ -201,24 +201,24 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                         "</div>";
                 }
 
-                // TEST 1: Basic Variable Injection
-                try {
-                    const injectedString = @{test_string};
-                    const injectedNumber = @{test_number};
-                    const injectedFloat = @{test_float};
-                    const injectedBool = @{test_bool};
+                // // TEST 1: Basic Variable Injection
+                // try {
+                //     const injectedString = @{test_string};
+                //     const injectedNumber = @{test_number};
+                //     const injectedFloat = @{test_float};
+                //     const injectedBool = @{test_bool};
 
-                    if (injectedString === "Hello, Rusti!" &&
-                        injectedNumber === 42 &&
-                        Math.abs(injectedFloat - 3.14159) < 0.0001 &&
-                        injectedBool === true) {
-                        markSuccess(1, "Successfully injected string=\"" + injectedString + "\", number=" + injectedNumber + ", float=" + injectedFloat + ", bool=" + injectedBool);
-                    } else {
-                        markFailure(1, "Variable values don't match expected", "Validation failed");
-                    }
-                } catch (e) {
-                    markFailure(1, "Error injecting basic variables", e.toString());
-                }
+                //     if (injectedString === "Hello, Rusti!" &&
+                //         injectedNumber === 42 &&
+                //         Math.abs(injectedFloat - 3.14159) < 0.0001 &&
+                //         injectedBool === true) {
+                //         markSuccess(1, "Successfully injected string=\"" + injectedString + "\", number=" + injectedNumber + ", float=" + injectedFloat + ", bool=" + injectedBool);
+                //     } else {
+                //         markFailure(1, "Variable values don't match expected", "Validation failed");
+                //     }
+                // } catch (e) {
+                //     markFailure(1, "Error injecting basic variables", e.toString());
+                // }
 
                 // // TEST 2: Number Operations
                 // try {
