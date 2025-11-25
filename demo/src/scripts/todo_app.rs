@@ -260,7 +260,7 @@ pub fn todo_app() -> impl rusti::Component {
                         btn.classList.remove("active");
                     });
 
-                    const activeBtn = document.querySelector("[data-filter=<\"" + filter + "\"]");
+                    const activeBtn = document.querySelector("[data-filter=\"" + filter + "\"]");
                     if (activeBtn) {
                         activeBtn.classList.add("active");
                     }
