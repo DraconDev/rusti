@@ -24,6 +24,9 @@ use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
 
+mod scripts;
+use scripts::working_scripts_demo;
+
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
@@ -31,7 +34,6 @@ use rusti::rusti;
 use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
-use working_scripts_demo::working_scripts_demo;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
@@ -729,12 +731,12 @@ async fn comprehensive_demo_handler() -> impl IntoResponse {
 }
 
 async fn working_scripts_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&working_scripts_demo()))
+    Html(rusti::render_to_string(&scripts::working_scripts_demo()))
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(
-        &simple_script_test::simple_script_test(),
+        &scripts::simple_script_test::simple_script_test(),
     ))
 }
 
