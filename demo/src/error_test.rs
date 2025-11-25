@@ -10,8 +10,8 @@ fn main() {
     // rusti! { <div></span> };
 
     // 3. Invalid attribute
-    rusti! { <div class=></div> };
+    // rusti! { <div class=></div> };
 
     // 4. Missing expression brace
-    // rusti! { @if true <div></div> };
+    rusti! { @if true <div></div> };
 }
