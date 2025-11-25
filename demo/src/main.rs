@@ -12,13 +12,28 @@ async fn main() {
     let app = Router::new()
         // Example Routes
         .route("/", get(examples::homepage_handler))
-        .route("/hello", get(examples::hello_handler))
-        .route("/components", get(examples::components_handler))
-        .route("/htmx-todo", get(examples::htmx_todo_handler))
-        .route("/tailwind", get(examples::tailwind_handler))
-        // HTMX API endpoints
-        .route("/api/todos", post(examples::add_todo_handler))
-        .route("/api/todos/:id", delete(examples::delete_todo_handler))
+        .route("/hello", get(examples::hello::hello_handler))
+        .route("/components", get(examples::components::components_handler))
+        .route("/htmx-todo", get(examples::htmx_todo::todo_handler))
+        .route("/htmx-todo/add", post(examples::htmx_todo::add_todo))
+        .route(
+            "/htmx-todo/toggle/:id",
+            post(examples::htmx_todo::toggle_todo),
+        )
+        .route(
+            "/htmx-todo/delete/:id",
+            delete(examples::htmx_todo::delete_todo),
+        )
+        .route("/tailwind", get(examples::tailwind::tailwind_handler))
+        .route(
+            "/control-flow",
+            get(examples::control_flow::control_flow_handler),
+        )
+        .route("/layouts", get(examples::layouts::layouts_handler))
+        .route(
+            "/forms",
+            get(examples::forms::forms_handler).post(examples::forms::forms_handler),
+        ) // Handle post for demo
         // Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
 
@@ -26,8 +41,10 @@ async fn main() {
         .await
         .expect("Failed to bind to port 8081");
 
-    println!("🚀 azumi
- 2.0 Demo Server");
+    println!(
+        "🚀 azumi
+ 2.0 Demo Server"
+    );
     println!("=====================================");
     println!("📍 http://localhost:8081");
     println!();
@@ -36,8 +53,10 @@ async fn main() {
     println!("  • /components - Component composition");
     println!("  • /htmx-todo - HTMX server-side rendering");
     println!();
-    println!("All examples follow azumi
- 2.0 rules:");
+    println!(
+        "All examples follow azumi
+ 2.0 rules:"
+    );
     println!("  ✓ Mandatory double quotes");
     println!("  ✓ External CSS/JS files");
     println!("  ✓ Type-safe components");

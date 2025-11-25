@@ -31,97 +31,169 @@ Azumi is strict. Follow these rules or it won't compile.
 2. **JSON Data Injection:** `<script type="application/json">{json_data}</script>`
    - The **only** allowed inline script. Safe way to pass server data to client-side code.
 
-## 🚀 Quick Start
+---
+
+## 🚀 Features & Examples
+
+### 1. Basic Usage
+Simple, type-safe HTML generation.
 
 ```rust
 use azumi::html;
-use axum::response::Html;
 
-fn page() -> impl azumi::Component {
+fn hello(name: &str) -> impl azumi::Component {
     html! {
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>"Azumi 2.0"</title>
-                // CSS is read at compile-time and scoped automatically!
-                <style src="styles.css" />
-                <script src="https://cdn.tailwindcss.com" />
-            </head>
-            <body>
-                <h1>"Hello, World!"</h1>
-                
-                // Dynamic attributes
-                <a href={"/login"} class="btn">"Login"</a>
-                
-                // Control flow
-                @if logged_in {
-                    <p>"Welcome back!"</p>
-                }
-                
-                // Components
-                @Footer(year=2025)
-            </body>
-        </html>
+        <div class="greeting">
+            <h1>"Hello, " {name} "!"</h1>
+            <p>"Welcome to Azumi."</p>
+        </div>
     }
 }
 ```
 
+### 2. Control Flow
+Azumi supports Rust-native control flow directly in your templates.
+
+**If / Else:**
+```rust
+@if logged_in {
+    <button>"Log Out"</button>
+} @else {
+    <button>"Log In"</button>
+}
+```
+
+**For Loops:**
+```rust
+<ul>
+    @for item in items {
+        <li>{item.name}</li>
+    }
+</ul>
+```
+
+**Match Expressions:**
+```rust
+@match status {
+    Status::Active => { <span class="green">"Active"</span> }
+    Status::Pending => { <span class="orange">"Pending"</span> }
+    _ => { <span>"Unknown"</span> }
+}
+```
+
+### 3. Components & Composition
+Components are just functions that return `impl azumi::Component`. You can nest them easily.
+
+```rust
+fn page() -> impl azumi::Component {
+    html! {
+        <div class="app">
+            @header(user)
+            <main>
+                @sidebar()
+                @content()
+            </main>
+            @footer()
+        </div>
+    }
+}
+```
+
+### 4. Layouts
+Use function composition to create reusable layouts.
+
+```rust
+fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Component {
+    html! {
+        <html>
+            <head><title>{title}</title></head>
+            <body>
+                <nav>"..."</nav>
+                <main>{content}</main>
+            </body>
+        </html>
+    }
+}
+
+// Usage
+fn home_page() -> impl azumi::Component {
+    main_layout("Home", html! {
+        <h1>"Welcome Home"</h1>
+    })
+}
+```
+
+### 5. Automatic CSS Scoping
+Azumi reads your CSS files at compile time, generates a unique hash, and scopes your styles to the component.
+
+**Input (`card.css`):**
+```css
+.card { background: #fff; padding: 20px; }
+h2 { color: #333; }
+```
+
+**Component:**
+```rust
+html! {
+    <div class="card">
+        <style src="card.css" />
+        <h2>"Scoped Title"</h2>
+    </div>
+}
+```
+
+**Output:**
+```html
+<div class="card" data-s12345>
+    <style data-scope="s12345">
+        .card[data-s12345] { background: #fff; padding: 20px; }
+        h2[data-s12345] { color: #333; }
+    </style>
+    <h2 data-s12345>Scoped Title</h2>
+</div>
+```
+
+### 6. Tailwind CSS Support
+Azumi works perfectly with Tailwind. Just include the CDN or your build output.
+
+```rust
+html! {
+    <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold">"Tailwind Ready"</h1>
+    </div>
+}
+```
+
+### 7. HTMX Integration
+Server-side rendering is back. Azumi + HTMX is a powerful combo.
+
+```rust
+<button 
+    hx-post="/clicked" 
+    hx-swap="outerHTML" 
+    class="btn">
+    "Click Me"
+</button>
+```
+
+---
+
 ## 📦 Installation
+
+Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 azumi = "0.2.0"
 ```
 
-## 🎨 CSS Scoping
+## 🛠️ Development
 
-Azumi automatically scopes your CSS.
+To run the demo project:
 
-**Input (`styles.css`):**
-```css
-.card { background: white; }
-h1 { color: blue; }
+```bash
+cd demo
+cargo run
 ```
 
-**Usage:**
-```rust
-html! {
-    <div class="card">
-        <style src="styles.css" />
-        <h1>"Scoped!"</h1>
-    </div>
-}
-```
-
-**Output (Simplified):**
-```html
-<div class="card" data-s1a2b3>
-    <style data-scope="s1a2b3">
-        .card[data-s1a2b3] { background: white; }
-        h1[data-s1a2b3] { color: blue; }
-    </style>
-    <h1 data-s1a2b3>Scoped!</h1>
-</div>
-```
-
-## ❓ FAQ
-
-**Why mandatory quotes?**
-Rust's lexer treats `class=red` as an identifier `class`, an operator `=`, and an identifier `red`. But `class=2em` fails because `2em` is invalid Rust syntax. Mandatory quotes (`class="2em"`) solve this permanently.
-
-**Why no inline scripts?**
-Inline scripts have zero tooling support. You can't lint them, type-check them, or minify them easily. Azumi forces you to put JS in `.js` files where your tools work.
-
-**How do I pass data to JS?**
-Use data attributes or JSON injection:
-```rust
-html! {
-    // Option 1: Data Attributes
-    <div id="app" data-user={user_json}></div>
-    
-    // Option 2: JSON Script
-    <script type="application/json" id="data">
-        {user_json}
-    </script>
-}
-```
+Visit `http://localhost:8081` to see all examples in action.

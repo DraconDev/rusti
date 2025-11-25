@@ -40,6 +40,30 @@ pub fn homepage() -> impl azumi::Component {
                                 "🧩"
                             )
                             @example_card(
+                                "Tailwind CSS",
+                                "Utility-first styling with Tailwind",
+                                "/tailwind",
+                                "🎨"
+                            )
+                            @example_card(
+                                "Control Flow",
+                                "If, For, and Match expressions",
+                                "/control-flow",
+                                "🔀"
+                            )
+                            @example_card(
+                                "Layouts",
+                                "Component composition patterns",
+                                "/layouts",
+                                "📐"
+                            )
+                            @example_card(
+                                "Forms",
+                                "Input handling and structure",
+                                "/forms",
+                                "📝"
+                            )
+                            @example_card(
                                 "HTMX Todo",
                                 "Server-side rendering with HTMX",
                                 "/htmx-todo",
