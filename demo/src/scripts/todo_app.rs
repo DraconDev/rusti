@@ -10,136 +10,160 @@ pub fn todo_app() -> impl rusti::Component {
             <title>Todo App - Rusti Demo</title>
             <style>
                 body {
-                    font-family: sans-serif;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                     max-width: 600px;
                     margin: 40px auto;
                     padding: 20px;
-                    background: linear-gradient(135deg, "#667eea" 0%, "#764ba2" 100%);
+                    background: linear-gradient(135deg, skyblue 0%, purple 100%);
                     min-height: 100vh;
                 }
                 .container {
                     background: white;
-                    border-radius: 12px;
-                    padding: 30px;
+                    border-radius: 16px;
+                    padding: 40px;
                     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
                 }
                 h1 {
                     text-align: center;
-                    color: "#667eea";
-                    margin-bottom: 30px;
+                    color: purple;
+                    margin: 0 0 30px 0;
+                    font-size: 32px;
                 }
                 .input-section {
                     display: flex;
                     gap: 10px;
-                    margin-bottom: 20px;
+                    margin-bottom: 25px;
                 }
                 input[type="text"] {
                     flex: 1;
-                    padding: 12px;
-                    border: 2px solid "#e0e0e0";
-                    border-radius: 6px;
+                    padding: 14px 16px;
+                    border: 2px solid lightgray;
+                    border-radius: 8px;
                     font-size: 16px;
+                    transition: border-color 0.2s;
                 }
                 input[type="text"]:focus {
                     outline: none;
-                    border-color: "#667eea";
+                    border-color: purple;
                 }
                 .btn {
-                    padding: 12px 24px;
+                    padding: 14px 28px;
                     border: none;
-                    border-radius: 6px;
+                    border-radius: 8px;
                     font-size: 16px;
                     font-weight: 600;
                     cursor: pointer;
                     transition: all 0.3s ease;
                 }
                 .btn-primary {
-                    background: "#667eea";
+                    background: purple;
                     color: white;
                 }
                 .btn-primary:hover {
-                    background: "#5568d3";
+                    background: darkviolet;
                     transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(128,0,128,0.3);
                 }
                 .btn-secondary {
-                    background: "#e0e0e0";
-                    color: "#333";
+                    background: lightgray;
+                    color: black;
+                }
+                .btn-secondary:hover {
+                    background: gray;
+                    color: white;
                 }
                 .filters {
                     display: flex;
                     gap: 10px;
-                    margin-bottom: 20px;
+                    margin-bottom: 25px;
                     justify-content: center;
                 }
                 .filter-btn {
-                    padding: 8px 16px;
-                    border: 2px solid "#e0e0e0";
+                    padding: 10px 20px;
+                    border: 2px solid lightgray;
                     background: white;
-                    border-radius: 6px;
+                    border-radius: 8px;
                     cursor: pointer;
                     transition: all 0.2s;
+                    font-weight: 500;
                 }
                 .filter-btn.active {
-                    border-color: "#667eea";
-                    background: "#667eea";
+                    border-color: purple;
+                    background: purple;
                     color: white;
+                }
+                .filter-btn:hover:not(.active) {
+                    background: lavender;
                 }
                 .todo-list {
                     list-style: none;
                     padding: 0;
+                    margin: 0;
+                    min-height: 100px;
                 }
                 .todo-item {
                     display: flex;
                     align-items: center;
-                    padding: 12px;
-                    margin: 8px 0;
-                    background: "#f7f7f7";
-                    border-radius: 6px;
+                    padding: 14px 16px;
+                    margin: 10px 0;
+                    background: whitesmoke;
+                    border-radius: 8px;
                     transition: all 0.2s;
+                    border-left: 4px solid purple;
                 }
                 .todo-item:hover {
-                    background: "#e8e8e8";
+                    background: lavender;
+                    transform: translateX(4px);
                 }
                 .todo-item.completed {
                     opacity: 0.6;
+                    border-left-color: gray;
                 }
                 .todo-item.completed .todo-text {
                     text-decoration: line-through;
+                    color: gray;
                 }
                 .todo-checkbox {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 12px;
+                    width: 22px;
+                    height: 22px;
+                    margin-right: 14px;
                     cursor: pointer;
+                    accent-color: purple;
                 }
                 .todo-text {
                     flex: 1;
                     font-size: 16px;
+                    color: black;
                 }
                 .delete-btn {
-                    background: "#ff6b6b";
+                    background: crimson;
                     color: white;
                     border: none;
-                    padding: 6px 12px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 6px;
                     cursor: pointer;
                     font-size: 14px;
+                    font-weight: 600;
+                    transition: all 0.2s;
                 }
                 .delete-btn:hover {
-                    background: "#ff5252";
+                    background: darkred;
+                    transform: scale(1.05);
                 }
                 .stats {
-                    margin-top: 20px;
-                    padding: 15px;
-                    background: "#f0f0f0";
-                    border-radius: 6px;
+                    margin-top: 25px;
+                    padding: 16px;
+                    background: lavender;
+                    border-radius: 8px;
                     text-align: center;
-                    color: "#666";
+                    color: darkslateblue;
+                    font-weight: 500;
                 }
                 .empty-state {
                     text-align: center;
-                    padding: 40px;
-                    color: "#999";
+                    padding: 60px 20px;
+                    color: gray;
+                    font-size: 18px;
                 }
             </style>
         </head>
