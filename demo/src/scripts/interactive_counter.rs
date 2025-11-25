@@ -252,7 +252,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                 <div class="controls">
                     <button class="btn-decrement" onclick="decrement()">"➖" Decrement</button>
                     <button class="btn-reset" onclick="reset()">"🔄" Reset</button>
-                    <button class="btn-increment" onclick={increment()}>"➕" Increment</button>
+                    <button class="btn-increment" onclick={"increment()"}>"➕" Increment</button>
                 </div>
 
                 <div class="history">
