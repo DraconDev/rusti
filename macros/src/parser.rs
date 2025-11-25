@@ -234,12 +234,14 @@ pub fn parse_element(input: &str) -> IResult<&str, Node> {
 fn parse_script_nodes<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Vec<Node>> {
     let mut nodes = Vec::new();
     let mut current_input = input;
+    // println!("parse_script_nodes starting. Input len: {}", input.len());
 
     loop {
         // Check for closing tag
         let closing_tag = format!("</{}>", tag_name);
         // Also check for </ tag > with spaces
         if current_input.starts_with(&closing_tag) {
+            // println!("Found closing tag: {}", closing_tag);
             break;
         }
         // Check for loose closing tag </ script >
@@ -250,22 +252,29 @@ fn parse_script_nodes<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Ve
                 let after_name = &trimmed[tag_name.len()..];
                 let trimmed_after = after_name.trim_start();
                 if trimmed_after.starts_with('>') {
+                    // println!("Found loose closing tag");
                     break;
                 }
             }
         }
 
         if current_input.is_empty() {
+            // println!("End of input in script nodes");
             break;
         }
 
         // Try to parse script nodes
         match parse_script_node(current_input, tag_name) {
             Ok((next_input, node)) => {
+                // println!("Parsed script node: {:?}", node);
                 nodes.push(node);
                 current_input = next_input;
             }
-            Err(_) => {
+            Err(e) => {
+                println!(
+                    "Error parsing script node: {:?}. Remaining: {:.50}...",
+                    e, current_input
+                );
                 // Should not happen if parse_script_text is robust
                 break;
             }
@@ -276,6 +285,7 @@ fn parse_script_nodes<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Ve
 }
 
 fn parse_script_node<'a>(input: &'a str, tag_name: &str) -> IResult<&'a str, Node> {
+    // println!("parse_script_node input: {:.50}...", input);
     alt((
         parse_comment,
         parse_if,
