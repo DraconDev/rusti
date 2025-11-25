@@ -2,7 +2,7 @@ use axum::{
     response::{Html, IntoResponse},
     Form,
 };
-use azumi::azumi;
+use azumi::html;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
