@@ -16,7 +16,7 @@ pub fn interactive_counter() -> impl rusti::Component {
             <title>Interactive Counter - Rusti Demo</title>
             <style>
                 body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-family: \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;
                     max-width: 800px;
                     margin: 50px auto;
                     padding: 20px;
