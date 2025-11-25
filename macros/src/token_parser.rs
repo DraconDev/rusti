@@ -250,10 +250,33 @@ impl Parse for Attribute {
     fn parse(input: ParseStream) -> Result<Self> {
         let name = parse_html_name(input)?;
         let span = input.span();
+
+        // Check if this is a boolean attribute (no value required)
+        const BOOLEAN_ATTRS: &[&str] = &[
+            "disabled",
+            "checked",
+            "selected",
+            "readonly",
+            "required",
+            "autofocus",
+            "autoplay",
+            "controls",
+            "loop",
+            "muted",
+            "default",
+            "formnovalidate",
+            "ismap",
+            "multiple",
+            "nomodule",
+            "novalidate",
+            "open",
+            "reversed",
+        ];
+
         let value = if input.peek(Token![=]) {
             input.parse::<Token![=]>()?;
             if input.peek(Brace) {
-                // {expr}
+                // {expr} - dynamic expression
                 let content;
                 syn::braced!(content in input);
                 AttributeValue::Dynamic(content.parse()?)
@@ -261,12 +284,27 @@ impl Parse for Attribute {
                 let lit: syn::Lit = input.parse()?;
                 match lit {
                     syn::Lit::Str(s) => AttributeValue::Static(s.value()),
-                    _ => return Err(Error::new(span, "Expected string literal or expression")),
+                    _ => {
+                        return Err(Error::new(
+                            span,
+                            format!("Attribute '{}' value must be a double-quoted string literal or dynamic expression {{...}}. Non-string literals are not allowed.", name)
+                        ))
+                    }
                 }
             } else {
-                return Err(Error::new(input.span(), "Expected attribute value"));
+                return Err(Error::new(
+                    input.span(),
+                    format!("Attribute '{}' requires a double-quoted string value or dynamic expression {{...}}.\nExample: {}=\"value\" or {}={{expr}}", name, name, name)
+                ));
             }
         } else {
+            // No = sign - must be a boolean attribute
+            if !BOOLEAN_ATTRS.contains(&name.as_str()) {
+                return Err(Error::new(
+                    span,
+                    format!("Attribute '{}' requires a value. Use {}=\"value\" or {}={{expr}}.\nOnly boolean attributes like 'disabled', 'checked', etc. can omit values.", name, name, name)
+                ));
+            }
             AttributeValue::None
         };
 
