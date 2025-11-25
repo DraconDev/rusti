@@ -299,7 +299,7 @@ pub fn todo_app() -> impl rusti::Component {
                     console.log("Filtered todos:", filtered);
 
                     if (!filtered || filtered.length === 0) {
-                        list.innerHTML = format!("<div class='empty-state'>No todos to show</div>");
+                        list.innerHTML = "<div class='empty-state'>No todos to show</div>";
                     } else {
                         list.innerHTML = filtered.map(function(todo) {
                             const completedClass = todo.completed ? " completed" : "";
