@@ -64,7 +64,7 @@ pub fn generate_scope_id() -> String {
 }
 
 /// Transform CSS selectors to include scope attribute
-/// Simple regex-based transformation for v1
+/// All CSS is automatically scoped - no escape hatches!
 pub fn scope_css(css: &str, scope_id: &str) -> String {
     let mut result = String::new();
     let scope_attr = format!("[data-{}]", scope_id);
@@ -75,15 +75,6 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
         // Skip empty lines, comments, at-rules
         if trimmed.is_empty() || trimmed.starts_with("/*") || trimmed.starts_with("@") {
             result.push_str(line);
-            result.push('\n');
-            continue;
-        }
-
-        // Handle :global() escape hatch
-        if trimmed.contains(":global(") {
-            // Remove :global() wrapper
-            let cleaned = trimmed.replace(":global(", "").replace(")", "");
-            result.push_str(&cleaned);
             result.push('\n');
             continue;
         }

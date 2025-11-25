@@ -18,14 +18,6 @@ mod tests {
     }
 
     #[test]
-    fn test_scope_css_global_escape() {
-        let css = ":global(.utility) { margin: 0; }";
-        let scoped = scope_css(css, "s456");
-        assert!(scoped.contains(".utility"));
-        assert!(!scoped.contains("[data-s456]"));
-    }
-
-    #[test]
     fn test_generate_scope_id() {
         let id1 = generate_scope_id();
         let id2 = generate_scope_id();
