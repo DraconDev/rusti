@@ -244,13 +244,13 @@ pub fn todo_app() -> impl rusti::Component {
                     renderTodos();
                 }
 
-                function getFilteredTodos(filter) {
-                    if (filter === "active") {
+                function getFilteredTodos() {
+                    if (currentFilter === "active") {
                         return todos.filter(function(t) { return !t.completed; });
-                    } else if (filter === "completed") {
+                    } else if (currentFilter === "completed") {
                         return todos.filter(function(t) { return t.completed; });
                     }
-                    return [todos];
+                    return todos;
                 }
 
                 function renderTodos() {
