@@ -843,7 +843,7 @@ fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
         <div>
             <style>
                 .card {
-                    padding: 2em;
+                    padding: "2em";
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     border-radius: 16px;
                     color: white;
