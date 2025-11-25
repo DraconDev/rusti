@@ -245,19 +245,26 @@ pub fn todo_app() -> impl rusti::Component {
                 }
 
                 function getFilteredTodos() {
+                    if (!todos || !Array.isArray(todos)) {
+                        return [];
+                    }
+
                     if (currentFilter === "active") {
                         return todos.filter(function(t) { return !t.completed; });
-                    } else if (currentFilter === "completed") {
+                    }
+
+                    if (currentFilter === "completed") {
                         return todos.filter(function(t) { return t.completed; });
                     }
-                    return [];
+
+                    return todos;
                 }
 
                 function renderTodos() {
                     const list = document.getElementById("todo-list");
                     const filtered = getFilteredTodos();
 
-                    if (filtered.length === 0) {
+                    if (!filtered || filtered.length === 0) {
                         list.innerHTML = "<div class=\"empty-state\">No todos to show</div>";
                     } else {
                         list.innerHTML = filtered.map(function(todo) {
