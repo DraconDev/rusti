@@ -2,7 +2,7 @@ use rusti::rusti;
 
 /// A more complex interactive example demonstrating:
 /// - Multiple @let declarations with different types
-/// - Event handlers with Rust code
+/// - Event handlers with JavaScript
 /// - DOM manipulation
 /// - Conditional rendering
 /// - Array operations
@@ -16,7 +16,7 @@ pub fn interactive_counter() -> impl rusti::Component {
             <title>Interactive Counter - Rusti Demo</title>
             <style>
                 body {
-                    font-family: \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;
+                    font-family: sans-serif;
                     max-width: 800px;
                     margin: 50px auto;
                     padding: 20px;
@@ -115,24 +115,12 @@ pub fn interactive_counter() -> impl rusti::Component {
                     background: white;
                     border-left: 4px solid #667eea;
                     border-radius: 4px;
-                    animation: slideIn 0.3s ease;
-                }
-                
-                @keyframes slideIn {
-                    from {
-                        opacity: 0;
-                        transform: translateX(-20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
                 }
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>🎯 Interactive Counter</h1>
+                <h1>Interactive Counter</h1>
                 
                 <div class="counter-display">
                     <div id="counter" class="counter-value">0</div>
@@ -140,9 +128,9 @@ pub fn interactive_counter() -> impl rusti::Component {
                 </div>
                 
                 <div class="controls">
-                    <button class="btn-decrement" onclick="decrement()">➖ Decrement</button>
-                    <button class="btn-reset" onclick="reset()">🔄 Reset</button>
-                    <button class="btn-increment" onclick="increment()">➕ Increment</button>
+                    <button class="btn-decrement" onclick="decrement()">Decrement</button>
+                    <button class="btn-reset" onclick="reset()">Reset</button>
+                    <button class="btn-increment" onclick="increment()">Increment</button>
                 </div>
                 
                 <div class="history">
@@ -155,110 +143,82 @@ pub fn interactive_counter() -> impl rusti::Component {
                 @let initial_value = 0;
                 @let step_size = 1;
                 @let max_history = 10;
+                @let positive_threshold = 10;
+                @let negative_threshold = -10;
                 
                 // State
                 let counter = @{ initial_value };
                 let history = [];
                 
-                // Helper function to add history entry
+                // Add history entry
                 function addHistory(action, value) {
-                    @let timestamp_format = "HH:MM:SS";
-                    const time = new Date().toLocaleTimeString('en-US', { 
-                        hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
+                    const time = new Date().toLocaleTimeString();
+                    history.unshift({ action, value, time });
                     
-                    const entry = {
-                        action: action,
-                        value: value,
-                        time: time
-                    };
-                    
-                    history.unshift(entry);
-                    
-                    // Keep only the most recent entries
-                    @let max_entries = max_history;
-                    if (history.length > @{ max_entries }) {
-                        history = history.slice(0, @{ max_entries });
+                    if (history.length > @{ max_history }) {
+                        history = history.slice(0, @{ max_history });
                     }
                     
                     updateHistoryDisplay();
                 }
                 
-                // Update the history display
+                // Update history display
                 function updateHistoryDisplay() {
-                    const historyList = document.getElementById('history-list');
+                    const list = document.getElementById("history-list");
                     
                     if (history.length === 0) {
-                        historyList.innerHTML = '<li style="color: #999; text-align: center;">No actions yet</li>';
+                        list.innerHTML = "<li style='color: #999; text-align: center;'>No actions yet</li>";
                         return;
                     }
                     
-                    historyList.innerHTML = history.map(entry => 
-                        `<li class="history-item">
-                            <strong>${entry.time}</strong> - ${entry.action}: ${entry.value}
-                        </li>`
-                    ).join('');
+                    list.innerHTML = history.map(e => 
+                        "<li class='history-item'><strong>" + e.time + "</strong> - " + e.action + ": " + e.value + "</li>"
+                    ).join("");
                 }
                 
-                // Update the counter display and status
+                // Update counter display
                 function updateDisplay() {
-                    document.getElementById('counter').textContent = counter;
+                    document.getElementById("counter").textContent = counter;
                     
-                    let status = '';
-                    @let positive_threshold = 10;
-                    @let negative_threshold = -10;
-                    
+                    let status = "";
                     if (counter > @{ positive_threshold }) {
-                        status = '🔥 On fire!';
+                        status = "On fire!";
                     } else if (counter > 0) {
-                        status = '✨ Positive vibes!';
+                        status = "Positive vibes!";
                     } else if (counter === 0) {
-                        status = '⚖️ Perfectly balanced';
+                        status = "Perfectly balanced";
                     } else if (counter < @{ negative_threshold }) {
-                        status = '❄️ Deep freeze!';
+                        status = "Deep freeze!";
                     } else {
-                        status = '📉 Below zero';
+                        status = "Below zero";
                     }
                     
-                    document.getElementById('status').textContent = status;
+                    document.getElementById("status").textContent = status;
                 }
                 
-                // Increment function
+                // Button handlers
                 function increment() {
-                    @let step = step_size;
-                    counter += @{ step };
+                    counter += @{ step_size };
                     updateDisplay();
-                    addHistory('Increment', counter);
+                    addHistory("Increment", counter);
                 }
                 
-                // Decrement function
                 function decrement() {
-                    @let step = step_size;
-                    counter -= @{ step };
+                    counter -= @{ step_size };
                     updateDisplay();
-                    addHistory('Decrement', counter);
+                    addHistory("Decrement", counter);
                 }
                 
-                // Reset function
                 function reset() {
-                    @let initial = initial_value;
-                    counter = @{ initial };
+                    counter = @{ initial_value };
                     updateDisplay();
-                    addHistory('Reset', counter);
+                    addHistory("Reset", counter);
                 }
                 
                 // Initialize
                 updateDisplay();
                 updateHistoryDisplay();
-                
-                // Log initialization
-                console.log("Interactive Counter Initialized!");
-                console.log("Initial value:", @{ initial_value });
-                console.log("Step size:", @{ step_size });
-                console.log("Max history entries:", @{ max_history });
+                console.log("Counter initialized! Initial:", @{ initial_value }, "Step:", @{ step_size });
             </script>
         </body>
         </html>
