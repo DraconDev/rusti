@@ -70,20 +70,49 @@ fn strip_outer_quotes(s: &str) -> String {
     s.to_string()
 }
 
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Clone, PartialEq, Debug)]
 enum Context {
     Normal,
     Script,
     Style,
 }
 
+#[derive(Clone, Debug)]
+struct GenerationContext {
+    mode: Context,
+    scope_id: Option<String>,
+}
+
+impl GenerationContext {
+    fn normal() -> Self {
+        Self {
+            mode: Context::Normal,
+            scope_id: None,
+        }
+    }
+
+    fn with_scope(scope_id: String) -> Self {
+        Self {
+            mode: Context::Normal,
+            scope_id: Some(scope_id),
+        }
+    }
+
+    fn with_mode(&self, mode: Context) -> Self {
+        Self {
+            mode,
+            scope_id: self.scope_id.clone(),
+        }
+    }
+}
+
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
-    generate_body_with_context(nodes, Context::Normal)
+    generate_body_with_context(nodes, &GenerationContext::normal())
 }
 
 fn generate_body_with_context(
     nodes: &[token_parser::Node],
-    context: Context,
+    ctx: &GenerationContext,
 ) -> proc_macro2::TokenStream {
     let mut stream = proc_macro2::TokenStream::new();
     for node in nodes {
