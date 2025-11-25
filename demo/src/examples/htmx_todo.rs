@@ -46,7 +46,7 @@ pub fn htmx_todo() -> impl rusti::Component {
     }
 }
 
-fn todo_item(text: &str, id: u32) -> impl rusti::Component {
+fn todo_item<'a>(text: &'a str, id: u32) -> impl rusti::Component + 'a {
     let delete_url = format!("/api/todos/{}", id);
 
     rusti! {

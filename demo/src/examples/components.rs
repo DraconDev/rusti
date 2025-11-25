@@ -43,7 +43,7 @@ pub fn components_demo() -> impl rusti::Component {
     }
 }
 
-fn header(title: &str) -> impl rusti::Component {
+fn header<'a>(title: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <header class="header">
             <h1>{title}</h1>
@@ -52,7 +52,7 @@ fn header(title: &str) -> impl rusti::Component {
     }
 }
 
-fn card(text: &str, icon: &str) -> impl rusti::Component {
+fn card<'a>(text: &'a str, icon: &'a str) -> impl rusti::Component + 'a {
     rusti! {
         <div class="card">
             <span class="icon">{icon}</span>

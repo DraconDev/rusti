@@ -13,7 +13,7 @@ async fn main() {
         // Static files
         .nest_service("/static", ServeDir::new("static"));
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:80 81")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8081")
         .await
         .unwrap();
 
