@@ -23,6 +23,7 @@ pub fn simple_script_test() -> impl rusti::Component {
                 // const str = @{ my_string }; doesn't work
                 // const str = @{ my_string.to_string() }; doesn't work
                 const arr = @{ format!("{:?}", my_array) };
+                
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
@@ -39,7 +40,7 @@ pub fn simple_script_test() -> impl rusti::Component {
                 // @for item in &my_string_array {
                 //     document.getElementById("output").innerHTML += "<br>" + @{ item };
                 // } // this doesn't work, simple-script-test:1 Uncaught ReferenceError: Apple is not defined
-                
+
                 @for item in &my_string_array {
                     document.getElementById("output").innerHTML += "<br>" + @{ format!("\"{}\"", item) };
                 } // this works too
