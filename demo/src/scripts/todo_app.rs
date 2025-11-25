@@ -303,19 +303,30 @@ pub fn todo_app() -> impl rusti::Component {
                         console.log("filtered.length", filtered.length);
                         list.innerHTML = "<div class='empty-state'>No todos to show</div>";
                     } else {
-                        list.innerHTML = filtered.map(function(todo) {
+                        const html = filtered.map(function(todo) {
                             const completedClass = todo.completed ? " completed" : "";
                             const checked = todo.completed ? " checked" : "";
 
-                            return "<li class='todo-item" + completedClass + ">" +
+                            return "<li class='todo-item" + completedClass + "'>" +
                                 "<input type='checkbox' class='todo-checkbox'" + checked + " onchange='toggleTodo(" + todo.id + ")' />" +
-                                "<span class='todo-text'>" + todo.text + "</span>" +
+                                "<span class='todo-text'>" + escapeHtml(todo.text) + "</span>" +
                                 "<button class='delete-btn' onclick='deleteTodo(" + todo.id + ")'>Delete</button>" +
                                 "</li>";
                         }).join("");
+                        
+                        console.log("Generated HTML length:", html.length);
+                        console.log("First 200 chars:", html.substring(0, 200));
+                        list.innerHTML = html;
+                        console.log("After setting innerHTML, list.children.length:", list.children.length);
                     }
 
                     updateStats();
+                }
+
+                function escapeHtml(text) {
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
                 }
 
                 function updateStats() {
