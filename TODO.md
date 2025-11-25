@@ -6,6 +6,8 @@ support for emojis in html
 
 add fragment support
 
+lets update the readme and examples with all the script related features we did and learned
+
 ###
 add 
 This is a very practical, grounded approach. You are essentially implementing Server-Side Data Injection, which is a requirement for 99% of SSR apps.
