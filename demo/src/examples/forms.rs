@@ -12,13 +12,7 @@ fn forms_demo() -> impl azumi::Component {
             <head>
                 <title>"Forms Demo"</title>
                 <style src="/static/homepage.css" />
-                <style>
-                    .form-group { margin-bottom: 15px; }
-                    label { display: block; margin-bottom: 5px; font-weight: bold; }
-                    input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-                    button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-                    button:hover { background: #0056b3; }
-                </style>
+                <style src="/static/forms.css" />
             </head>
             <body>
                 <div class="container">

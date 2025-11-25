@@ -18,11 +18,7 @@ fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Compo
             <head>
                 <title>{title}</title>
                 <style src="/static/homepage.css" />
-                <style>
-                    .sidebar { width: 200px; float: left; background: #eee; padding: 20px; height: 100vh; }
-                    .main { margin-left: 220px; padding: 20px; }
-                    .clearfix::after { content: ""; clear: both; display: table; }
-                </style>
+                <style src="/static/layouts.css" />
             </head>
             <body>
                 <div class="clearfix">

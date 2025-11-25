@@ -24,12 +24,7 @@ fn control_flow_demo(users: Vec<&str>, status: Status, count: i32) -> impl azumi
             <head>
                 <title>"Control Flow Demo"</title>
                 <style src="/static/homepage.css" />
-                <style>
-                    .demo-box { border: 1px solid #ccc; padding: 20px; margin: 20px 0; border-radius: 8px; }
-                    .status-active { color: green; font-weight: bold; }
-                    .status-pending { color: orange; }
-                    .status-suspended { color: red; }
-                </style>
+                <style src="/static/control_flow.css" />
             </head>
             <body>
                 <div class="container">
