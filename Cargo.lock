@@ -115,6 +115,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "azumi-demo"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "azumi",
+ "chrono",
+ "rand",
+ "rusqlite",
+ "serde",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
 name = "azumi-macros"
 version = "0.1.0"
 dependencies = [
@@ -628,21 +642,6 @@ dependencies = [
  "hashlink",
  "libsqlite3-sys",
  "smallvec",
-]
-
-[[package]]
-name = "azumi
--demo"
-version = "0.1.0"
-dependencies = [
- "axum",
- "azumi",
- "chrono",
- "rand",
- "rusqlite",
- "serde",
- "tokio",
- "tower-http",
 ]
 
 [[package]]
