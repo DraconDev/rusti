@@ -26,6 +26,8 @@ pub fn simple_script_test() -> impl rusti::Component {
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
+                
+
 
                 console.log("num =", num);
                 console.log("str =", str);
