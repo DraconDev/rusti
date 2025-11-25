@@ -296,12 +296,12 @@ fn generate_body_with_context(
                                 } else if child_name == "style" {
                                     ctx.with_mode(Context::Style)
                                 } else {
-                                    ctx.with_scope(scope_id_val.clone())
+                                    GenerationContext::with_scope(scope_id_val.clone())
                                 };
 
                                 let grandchildren_code = generate_body_with_context(
                                     &child_elem.children,
-                                    grandchild_context,
+                                    &grandchild_context,
                                 );
 
                                 // Add data-scope attribute using compile-time ID
@@ -451,9 +451,7 @@ fn generate_body_with_context(
                 let content = &doctype.content;
                 quote! { write!(f, "<!DOCTYPE {}>", #content)?; }
             }
-            token_parser::Node::Fragment(frag) => {
-                generate_body_with_context(&frag.children, ctx)
-            }
+            token_parser::Node::Fragment(frag) => generate_body_with_context(&frag.children, ctx),
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
                     let condition = &if_block.condition;
@@ -500,8 +498,7 @@ fn generate_body_with_context(
                     let args = &call_block.args;
                     let has_children = !call_block.children.is_empty();
                     let children_code = if has_children {
-                        let children_body =
-                            generate_body_with_context(&call_block.children, ctx);
+                        let children_body = generate_body_with_context(&call_block.children, ctx);
                         quote! {
                             azumi::from_fn(|f| {
                                 #children_body
