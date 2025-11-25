@@ -2,13 +2,7 @@
 
 ## 🚀 Future Improvements
 
-1. make a todo app example using htmx as much as possible and compare it to the todo app example in the rusti-demo repo
 
-2. support for emojis in html
-
-3. add fragment support
-
-4. lets update the readme and examples with all the script related features we did and learned
 
 5. add 
 This is a very practical, grounded approach. You are essentially implementing Server-Side Data Injection, which is a requirement for 99% of SSR apps.
@@ -19,7 +13,7 @@ Scope Access: You can access my_number from the outer Rust scope. This is seamle
 Shadowing/Local Vars: You can define @let inside the script tag (in Rust land) to prepare data for the JS land.
 Syntax: @{ ... } is a very clear delimiter. It tells the parser "Stop reading JS tokens, read a Rust expression here."
 The Problem (The "Buggy" Part)
-You are manually formatting strings:
+You are manually formatting strings:    
 code
 Rust
 // Your code
