@@ -803,7 +803,7 @@ async fn main() {
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
         .route("/interactive-counter", get(interactive_counter_handler))
-        .route("/scoped-css", get(scoped_css_demo::scoped_css_demo()))
+        .route("/scoped-css", get(scoped_css_demo::scoped_css_handler))
         .route(
             "/optional-props",
             get(optional_props_demo::optional_props_handler),
