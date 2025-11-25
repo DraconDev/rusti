@@ -114,18 +114,18 @@ pub fn interactive_counter() -> impl rusti::Component {
             </div>
 
             <script>
-                @let initial_value = 0;
-                @let step_size = 1;
-                @let max_history = 10;
-                @let positive_threshold = 10;
-                @let negative_threshold = -10;
+                const INITIAL_VALUE = 0;
+                const STEP_SIZE = 1;
+                const MAX_HISTORY = 10;
+                const POSITIVE_THRESHOLD = 10;
+                const NEGATIVE_THRESHOLD = -10;
 
-                let counter = @{ initial_value };
+                let counter = INITIAL_VALUE;
                 let history = [];
 
                 console.log("History:", history);
                 console.log("History length:", history.length);
-                console.log("Max history:", @{ max_history });
+                console.log("Max history:", MAX_HISTORY);
 
                 function addHistory(action, value) {
                     const time = new Date().toLocaleTimeString();
@@ -134,14 +134,14 @@ pub fn interactive_counter() -> impl rusti::Component {
 
 
 
-                    if (history.length > @{ max_history }) {
-                        history = history.slice(0, @{ max_history });
+                    if (history.length > MAX_HISTORY) {
+                        history = history.slice(0, MAX_HISTORY);
                     }
 
-                    updateHistoryDisplay();
+                    updateDisplayHistory();
                 }
 
-                function updateHistoryDisplay() {
+                function updateDisplayHistory() {
                     const list = document.getElementById("history-list");
 
                     if (history.length === 0) {
@@ -158,13 +158,13 @@ pub fn interactive_counter() -> impl rusti::Component {
                     document.getElementById("counter").textContent = counter;
 
                     let status = "";
-                    if (counter > @{ positive_threshold }) {
+                    if (counter > POSITIVE_THRESHOLD) {
                         status = "On fire!";
                     } else if (counter > 0) {
                         status = "Positive vibes!";
                     } else if (counter === 0) {
                         status = "Perfectly balanced";
-                    } else if (counter < @{ negative_threshold }) {
+                    } else if (counter < NEGATIVE_THRESHOLD) {
                         status = "Deep freeze!";
                     } else {
                         status = "Below zero";
@@ -174,26 +174,26 @@ pub fn interactive_counter() -> impl rusti::Component {
                 }
 
                 function increment() {
-                    counter += @{ step_size };
+                    counter += STEP_SIZE;
                     updateDisplay();
                     addHistory("Increment", counter);
                 }
 
                 function decrement() {
-                    counter -= @{ step_size };
+                    counter -= STEP_SIZE;
                     updateDisplay();
                     addHistory("Decrement", counter);
                 }
 
                 function reset() {
-                    counter = @{ initial_value };
+                    counter = INITIAL_VALUE;
                     updateDisplay();
                     addHistory("Reset", counter);
                 }
 
                 updateDisplay();
-                updateHistoryDisplay();
-                console.log("Counter initialized! Initial:", @{ initial_value }, "Step:", @{ step_size });
+                updateDisplayHistory();
+                console.log("Counter initialized! Initial:", INITIAL_VALUE, "Step:", STEP_SIZE);
             </script>
         </body>
         </html>
