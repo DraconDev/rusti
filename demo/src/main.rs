@@ -15,6 +15,7 @@ async fn main() {
         .route("/hello", get(examples::hello_handler))
         .route("/components", get(examples::components_handler))
         .route("/htmx-todo", get(examples::htmx_todo_handler))
+        .route("/tailwind", get(examples::tailwind_handler))
         // HTMX API endpoints
         .route("/api/todos", post(examples::add_todo_handler))
         .route("/api/todos/:id", delete(examples::delete_todo_handler))

@@ -53,6 +53,12 @@ pub fn homepage() -> impl azumi::Component {
                                 "/htmx-todo",
                                 "✅"
                             )
+                            @example_card(
+                                "Tailwind CSS",
+                                "Utility-first styling with Tailwind",
+                                "/tailwind",
+                                "🎨"
+                            )
                         </div>
                     </section>
 
