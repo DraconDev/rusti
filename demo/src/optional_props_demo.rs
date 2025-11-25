@@ -4,9 +4,9 @@ use rusti::rusti;
 // Define a component with optional props using the #[component] macro
 #[rusti::component]
 pub fn Message(
-    #[prop(default = "info")] variant: String,
+    #[prop(default = "\"info\".to_string()")] variant: String,
     #[prop(default = "false")] dismissible: bool,
-    children: rusti::Component,
+    children: impl rusti::Component,
 ) -> impl rusti::Component {
     let bg_color = match variant.as_str() {
         "success" => "bg-green-100 text-green-800",
@@ -43,25 +43,25 @@ pub fn optional_props_demo() -> impl rusti::Component {
 
             <h2 class="text-xl font-semibold mb-4">1. Default Props (Info, Non-dismissible)</h2>
             <!-- No props provided, should use defaults -->
-            @Message {
+            @Message() {
                 This is a default message (Info variant).
             }
 
             <h2 class="text-xl font-semibold mb-4 mt-8">2. Explicit Props (Success, Dismissible)</h2>
             <!-- All props provided -->
-            @Message(variant = "success", dismissible = true) {
+            @Message(variant = "success".to_string(), dismissible = true) {
                 Operation completed successfully!
             }
 
             <h2 class="text-xl font-semibold mb-4 mt-8">3. Partial Props (Error, Default Dismissible)</h2>
             <!-- Only variant provided -->
-            @Message(variant = "error") {
+            @Message(variant = "error".to_string()) {
                 An error occurred while processing your request.
             }
 
             <h2 class="text-xl font-semibold mb-4 mt-8">4. Partial Props (Warning, Explicit Dismissible)</h2>
             <!-- Variant and dismissible provided -->
-            @Message(variant = "warning", dismissible = true) {
+            @Message(variant = "warning".to_string(), dismissible = true) {
                 Please review your settings.
             }
         </body>
