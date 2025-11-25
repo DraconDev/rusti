@@ -110,15 +110,8 @@ fn generate_body_with_context(
 
                 // If this element has style children, it becomes a scoped container
                 if has_style_children {
-                    // Generate ONE scope ID for this container
-                    let scope_id_gen = quote! {
-                        {
-                            use std::sync::atomic::{AtomicU64, Ordering};
-                            static COUNTER: AtomicU64 = AtomicU64::new(0);
-                            let id = COUNTER.fetch_add(1, Ordering::Relaxed);
-                            format!("s{:x}", id)
-                        }
-                    };
+                    // Generate ONE scope ID for this container using library function
+                    let scope_id_gen = quote! { rusti::generate_scope_id() };
 
                     // Generate code for styled children with scope
                     let mut children_code = proc_macro2::TokenStream::new();
