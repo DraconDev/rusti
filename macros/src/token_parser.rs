@@ -482,18 +482,26 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
             }
         }
 
-        if input.peek(Token![@]) && !is_css_at_rule(input) {
-            eprintln!("Found @ (not CSS)");
-            if input.peek2(Brace) {
-                // @{ ... } -> Expression
-                eprintln!("Found @{{ ... }} expression");
-                input.parse::<Token![@]>()?;
-                nodes.push(Node::Expression(input.parse()?));
+        if input.peek(Token![@]) {
+            let is_css = is_css_at_rule(input);
+            eprintln!("Found @ in script, is_css_at_rule: {}", is_css);
+            if !is_css {
+                eprintln!("Not CSS, checking if it's a Brace...");
+                if input.peek2(Brace) {
+                    // @{ ... } -> Expression
+                    eprintln!("Found @{{ ... }} expression!");
+                    input.parse::<Token![@]>()?;
+                    nodes.push(Node::Expression(input.parse()?));
+                } else {
+                    eprintln!("Found Block (not brace)");
+                    nodes.push(Node::Block(input.parse()?));
+                }
             } else {
-                eprintln!("Found Block");
-                nodes.push(Node::Block(input.parse()?));
+                eprintln!("IS CSS, treating as text");
             }
-        } else {
+        }
+
+        if !input.peek(Token![@]) || is_css_at_rule(input) {
             // Parse as text until @ (if not CSS) or </tag_name>
             let span = input.span();
             let mut tokens = Vec::new();
