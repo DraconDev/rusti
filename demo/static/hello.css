@@ -1,0 +1,92 @@
+/* Hello World Styles - Scoped automatically by Rusti */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.container {
+    background: white;
+    border-radius: 1rem;
+    padding: 3rem;
+    max-width: 600px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+p {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.features {
+    background: #f7fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.features h2 {
+    color: #2d3748;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.features ul {
+    list-style: none;
+}
+
+.features li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #48bb78;
+    font-weight: bold;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: transform 0.2s;
+}
+
+button:disabled {
+    background: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+}
+
+button.primary {
+    background: #667eea;
+    color: white;
+}
+
+button.primary:hover {
+    transform: translateY(-2px);
+}
