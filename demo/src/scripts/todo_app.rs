@@ -276,6 +276,10 @@ pub fn todo_app() -> impl rusti::Component {
                         return [];
                     }
 
+                    if (currentFilter === "all") {
+                        return todos;
+                    }
+
                     if (currentFilter === "active") {
                         return todos.filter(function(t) { return !t.completed; });
                     }
@@ -284,6 +288,7 @@ pub fn todo_app() -> impl rusti::Component {
                         return todos.filter(function(t) { return t.completed; });
                     }
 
+                    // Default to all todos
                     return todos;
                 }
 
