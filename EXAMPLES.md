@@ -32,6 +32,326 @@ Rusti **automatically strips outer quotes** from string literals in text content
 
 ---
 
+## Script Variable Injection
+
+Rusti supports dynamic variable injection into client-side JavaScript using `@{ }` syntax.
+
+### Basic Number Injection
+
+```rust
+use rusti::rusti;
+
+fn counter_demo() -> impl rusti::Component {
+    let count = 42;
+    let max = 100;
+    
+    rusti! {
+        <!DOCTYPE html>
+        <html>
+        <head><title>Counter Demo</title></head>
+        <body>
+            <div id="counter"></div>
+            <script>
+                const currentCount = @{ count };
+                const maxCount = @{ max };
+                
+                document.getElementById("counter").textContent = 
+                    `Count: ${currentCount} / ${maxCount}`;
+            </script>
+        </body>
+        </html>
+    }
+}
+```
+
+### String Injection with @let
+
+**Important**: Strings must be `String` type (not `&str`) for proper JavaScript output.
+
+```rust
+fn greeting_demo() -> impl rusti::Component {
+    rusti! {
+        <script>
+            // ✅ Correct: Create String with @let
+            @let user_name = "Alice".to_string();
+            @let greeting = format!("Welcome, {}!", "Alice");
+            
+            const name = @{ user_name };
+            const msg = @{ greeting };
+            
+            console.log(msg);  // "Welcome, Alice!"
+        </script>
+    }
+}
+```
+
+### Arrays and Iteration
+
+```rust
+fn list_demo() -> impl rusti::Component {
+    let fruits = vec!["🍎 Apple", "🍌 Banana", "🍊 Orange"];
+    
+    rusti! {
+        <div>
+            <ul id="fruit-list"></ul>
+            <script>
+                const list = document.getElementById("fruit-list");
+                
+                @for fruit in &fruits {
+                    const item = document.createElement("li");
+                    item.textContent = @{ fruit };
+                    list.appendChild(item);
+                }
+            </script>
+        </div>
+    }
+}
+```
+
+### Conditional Logic in Scripts
+
+```rust
+fn debug_demo() -> impl rusti::Component {
+    let debug_mode = cfg!(debug_assertions);
+    let items = vec![1, 2, 3, 4, 5];
+    
+    rusti! {
+        <script>
+            @if debug_mode {
+                console.log("Debug mode enabled");
+                
+                @let count = items.len();
+                console.log("Items:", @{ count });
+            }
+            
+            const data = [];
+            @for item in &items {
+                data.push(@{ item });
+            }
+            
+            console.log("Data:", data);
+        </script>
+    }
+}
+```
+
+### Complex Data Serialization
+
+```rust
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct Config {
+    api_url: String,
+    timeout: u32,
+}
+
+fn config_demo() -> impl rusti::Component {
+    let config = Config {
+        api_url: "https://api.example.com".to_string(),
+        timeout: 5000,
+    };
+    
+    rusti! {
+        <script>
+            @let config_json = serde_json::to_string(&config).unwrap();
+            const config = JSON.parse(@{ config_json });
+            
+            console.log("API URL:", config.api_url);
+            console.log("Timeout:", config.timeout);
+        </script>
+    }
+}
+```
+
+### Best Practice: Prefer HTMX
+
+For most dynamic UIs, use HTMX instead of client-side JavaScript:
+
+```rust
+// ❌ Avoid: Complex client-side DOM manipulation
+fn items_client_side() -> impl rusti::Component {
+    let items = vec!["Item 1", "Item 2", "Item 3"];
+    
+    rusti! {
+        <script>
+            const container = document.getElementById("items");
+            @for item in &items {
+                const div = document.createElement("div");
+                div.textContent = @{ item };
+                container.appendChild(div);
+            }
+        </script>
+    }
+}
+
+// ✅ Prefer: Server-side rendering with HTMX
+fn items_htmx() -> impl rusti::Component {
+    let items = vec!["Item 1", "Item 2", "Item 3"];
+    
+    rusti! {
+        <div hx-get="/api/items" hx-trigger="load" hx-swap="innerHTML">
+            @for item in &items {
+                <div class="item">{item}</div>
+            }
+        </div>
+    }
+}
+```
+
+---
+
+## Component Naming Patterns
+
+Rusti provides three component patterns with different calling conventions.
+
+### Pattern 1: PascalCase with Builder (Complex Components)
+
+Use for components with 3+ props or optional props:
+
+```rust
+use rusti::component;
+
+#[component]
+fn ProfileCard(
+    name: String,
+    #[prop(default = "\"\".to_string())] avatar: String,
+    #[prop(default = "\"gray\"".to_string())] badge_color: String,
+    #[prop(default = "false")] verified: bool
+) -> impl rusti::Component {
+    rusti! {
+        <div class="profile-card border rounded-lg p-6">
+            @if !avatar.is_empty() {
+                <img src={avatar} class="avatar rounded-full" />
+            }
+            <h3 class="text-xl font-bold">{name}</h3>
+            @if verified {
+                <span class="badge" style={format!("background: {}", badge_color)}>✓ Verified</span>
+            }
+        </div>
+    }
+}
+
+// Usage: Named arguments
+fn example() -> impl rusti::Component {
+    rusti! {
+        <div>
+            {/* Minimal - uses defaults */}
+            @ProfileCard(name = "Alice".to_string())
+            
+            {/* With avatar */}
+            @ProfileCard(
+                name = "Bob".to_string(),
+                avatar = "/images/bob.jpg".to_string()
+            )
+            
+            {/* Fully customized */}
+            @ProfileCard(
+                name = "Charlie".to_string(),
+                avatar = "/images/charlie.jpg".to_string(),
+                badge_color = "green".to_string(),
+                verified = true
+            )
+        </div>
+    }
+}
+```
+
+**When to use:**
+- 3+ properties
+- Optional props with defaults
+- Complex configuration
+
+### Pattern 2: snake_case with Positional Args (Simple Components)
+
+Use for simple components with 1-2 required props:
+
+```rust
+fn icon(name: &str, size: u32) -> impl rusti::Component + '_ {
+    rusti! {
+        <svg width={size.to_string()} height={size.to_string()} class="icon">
+            <use href={format!("#icon-{}", name)} />
+        </svg>
+    }
+}
+
+fn badge(text: &str, color: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <span class="badge px-2 py-1 rounded" style={format!("background: {}", color)}>
+            {text}
+        </span>
+    }
+}
+
+// Usage: Positional arguments (like normal functions)
+fn example() -> impl rusti::Component {
+    rusti! {
+        <div>
+            @icon("home", 24)
+            @icon("user", 32)
+            @badge("New", "red")
+            @badge("Sale", "green")
+        </div>
+    }
+}
+```
+
+**When to use:**
+- 1-2 required props
+- No optional props
+- Simple, focused utilities
+
+### Pattern 3: @component Variable
+
+Use when components need conditional construction:
+
+```rust
+fn header(title: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <header class="header">
+            <h1>{title}</h1>
+        </header>
+    }
+}
+
+fn admin_panel() -> impl rusti::Component {
+    rusti! {
+        <nav>Admin Controls</nav>
+    }
+}
+
+fn page(user: &User) -> impl rusti::Component + '_ {
+    // Build component conditionally
+    let nav = if user.is_admin {
+        admin_panel()
+    } else {
+        header("Welcome")
+    };
+    
+    rusti! {
+        <div>
+            @nav  {/* Render the pre-built component */}
+            <main>Page content here</main>
+        </div>
+    }
+}
+```
+
+**When to use:**
+- Conditional component selection
+- Component needs complex setup
+- Reusing same component multiple times
+
+### Comparison Table
+
+| Pattern | Example | Call Syntax | Use Case |
+|---------|---------|-------------|----------|
+| **PascalCase** | `ProfileCard` | `@ProfileCard(name = "...")` | 3+ props, optional props |
+| **snake_case** | `button` | `@button("label", "class")` | 1-2 props, simple |
+| **@variable** | `my_header` | `@my_header` | Conditional, pre-built |
+
+---
+
 ## Basic Components
 
 ### Simple Button
