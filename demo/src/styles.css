@@ -1,7 +1,11 @@
 body {
     background-color: blue;
-    color: #333;
+    color: #223232;
 }
 h1 {
     color: red;
+    cursor: pointer;
+    &:hover {
+        color: green;
+    }
 }
