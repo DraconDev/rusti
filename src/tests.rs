@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::{generate_scope_id, scope_css};
 
     #[test]
     fn test_scope_css_basic() {
