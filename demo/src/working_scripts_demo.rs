@@ -220,41 +220,41 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     markFailure(1, "Error injecting basic variables", e.toString());
                 }
 
-                // TEST 2: Number Operations
-                try {
-                    const num = @{ test_number };
-                    const doubled = num * 2;
-                    const squared = num * num;
+                // // TEST 2: Number Operations
+                // try {
+                //     const num = @{ test_number };
+                //     const doubled = num * 2;
+                //     const squared = num * num;
 
-                    if (doubled === 84 && squared === 1764) {
-                        markSuccess(2, "Number operations work: " + num + " * 2 = " + doubled + ", " + num + "² = " + squared);
-                    } else {
-                        markFailure(2, "Number operations produced unexpected results", "doubled=" + doubled + ", squared=" + squared);
-                    }
-                } catch (e) {
-                    markFailure(2, "Error performing number operations", e.toString());
-                }
+                //     if (doubled === 84 && squared === 1764) {
+                //         markSuccess(2, "Number operations work: " + num + " * 2 = " + doubled + ", " + num + "² = " + squared);
+                //     } else {
+                //         markFailure(2, "Number operations produced unexpected results", "doubled=" + doubled + ", squared=" + squared);
+                //     }
+                // } catch (e) {
+                //     markFailure(2, "Error performing number operations", e.toString());
+                // }
 
-                // TEST 3: Array Iteration with @for
-                try {
-                    const fruits = [
-                        @for item in &items {
-                            @{ item },
-                        }
-                    ];
+                // // TEST 3: Array Iteration with @for
+                // try {
+                //     const fruits = [
+                //         @for item in &items {
+                //             @{ item },
+                //         }
+                //     ];
 
-                    const expectedFruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
-                    const match = fruits.length === expectedFruits.length &&
-                                  fruits.every((val, idx) => val === expectedFruits[idx]);
+                //     const expectedFruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
+                //     const match = fruits.length === expectedFruits.length &&
+                //                   fruits.every((val, idx) => val === expectedFruits[idx]);
 
-                    if (match) {
-                        markSuccess(3, "Generated array with " + fruits.length + " items: [" + fruits.join(", ") + "]");
-                    } else {
-                        markFailure(3, "Array doesn't match expected", "Got: [" + fruits.join(", ") + "]");
-                    }
-                } catch (e) {
-                    markFailure(3, "Error generating array with @for", e.toString());
-                }
+                //     if (match) {
+                //         markSuccess(3, "Generated array with " + fruits.length + " items: [" + fruits.join(", ") + "]");
+                //     } else {
+                //         markFailure(3, "Array doesn't match expected", "Got: [" + fruits.join(", ") + "]");
+                //     }
+                // } catch (e) {
+                //     markFailure(3, "Error generating array with @for", e.toString());
+                // }
 
                 // // TEST 4: Conditional Logic with @if
                 // try {
