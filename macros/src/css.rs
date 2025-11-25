@@ -13,15 +13,7 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
                 let scoped: Vec<String> = selectors
                     .iter()
                     .filter(|s| !s.trim().is_empty())
-                    .map(|s| {
-                        let trimmed = s.trim();
-                        // Skip @-rules and comments
-                        if trimmed.starts_with('@') || trimmed.starts_with("/*") {
-                            trimmed.to_string()
-                        } else {
-                            format!("{}{}", trimmed, scope_attr)
-                        }
-                    })
+                    .map(|s| scope_selector(s.trim(), &scope_attr))
                     .collect();
 
                 result.push_str(&scoped.join(", "));
@@ -49,4 +41,28 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
     }
 
     result
+}
+
+fn scope_selector(selector: &str, scope_attr: &str) -> String {
+    // Skip @-rules and comments
+    if selector.starts_with('@') || selector.starts_with("/*") {
+        return selector.to_string();
+    }
+
+    // Handle pseudo-elements (::before, ::after, etc.)
+    if let Some(pseudo_pos) = selector.find("::") {
+        let base = &selector[..pseudo_pos];
+        let pseudo = &selector[pseudo_pos..];
+        return format!("{}{}{}", base, scope_attr, pseudo);
+    }
+
+    // Handle pseudo-classes (:hover, :focus, etc.)
+    if let Some(pseudo_pos) = selector.find(':') {
+        let base = &selector[..pseudo_pos];
+        let pseudo = &selector[pseudo_pos..];
+        return format!("{}{}{}", base, scope_attr, pseudo);
+    }
+
+    // Default: append scope attribute
+    format!("{}{}", selector, scope_attr)
 }
