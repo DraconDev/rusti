@@ -819,6 +819,7 @@ async fn main() {
             "/api/clear-completed",
             post(handlers::todo::clear_completed_handler),
         )
+        .route("/todo-app", get(todo_app_handler))
         .route("/api/delete/:id", post(handlers::todo::delete_handler))
         .route("/api/stats", get(handlers::todo::stats_handler))
         .route("/api/toggle/:id", post(handlers::todo::toggle_handler))
