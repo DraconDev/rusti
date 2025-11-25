@@ -15,15 +15,15 @@ pub fn scoped_css_demo() -> impl rusti::Component {
                 <div class="component">
                     <style>
                         .button {
-                            background-color: #ff0000; /* Red */
-                            color: white;
-                            padding: 10px 20px;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
+                            "background-color": "#ff0000"; /* Red */
+                            "color": "white";
+                            "padding": "10px 20px";
+                            "border": "none";
+                            "border-radius": "5px";
+                            "cursor": "pointer";
                         }
                         h2 {
-                            color: #ff0000;
+                            "color": "#ff0000";
                         }
                     </style>
                     <h2>Component 1 - Red Theme</h2>
@@ -35,15 +35,15 @@ pub fn scoped_css_demo() -> impl rusti::Component {
                 <div class="component">
                     <style>
                         .button {
-                            background-color: #0000ff; /* Blue */
-                            color: white;
-                            padding: 10px 20px;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
+                            "background-color": "#0000ff"; /* Blue */
+                            "color": "white";
+                            "padding": "10px 20px";
+                            "border": "none";
+                            "border-radius": "5px";
+                            "cursor": "pointer";
                         }
                         h2 {
-                            color: #0000ff;
+                            "color": "#0000ff";
                         }
                     </style>
                     <h2>Component 2 - Blue Theme</h2>
