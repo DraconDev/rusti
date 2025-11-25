@@ -11,6 +11,9 @@ pub fn homepage() -> impl azumi::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi 2.0 - Type-Safe HTML Templates"</title>
                 <style src="demo/static/homepage.css" />
+                <script>
+                    console.log("Homepage loaded");
+                </script>
             </head>
             <body>
                 <div class="container">

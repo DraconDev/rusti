@@ -1,5 +1,4 @@
 pub mod components;
-pub mod components;
 pub mod hello;
 pub mod homepage;
 pub mod htmx_todo;
