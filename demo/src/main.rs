@@ -730,15 +730,21 @@ async fn comprehensive_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&comprehensive_demo()))
 }
 
-
-use scripts::working_scripts_demo;
 async fn working_scripts_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&working_scripts_demo::working_scripts_demo()))
+    Html(rusti::render_to_string(
+        &scripts::working_scripts_demo::working_scripts_demo(),
+    ))
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(
         &scripts::simple_script_test::simple_script_test(),
+    ))
+}
+
+async fn interactive_counter_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(
+        &scripts::interactive_counter::interactive_counter(),
     ))
 }
 
@@ -773,6 +779,7 @@ async fn main() {
         .route("/component-macro", get(component_macro_handler))
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
+        .route("/interactive-counter", get(interactive_counter_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
