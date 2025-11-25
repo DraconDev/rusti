@@ -339,6 +339,7 @@ fn generate_body_with_context(
                             // Define scope_id for potential use in expressions (though we use literal mostly)
                             let scope_id = #scope_id_gen;
                             write!(f, "<{}", #name)?;
+                            write!(f, " data-{}", #scope_id_val)?;  // Add scope to parent container
                             #attr_code
                             write!(f, ">")?;
                             #children_code
