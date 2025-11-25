@@ -248,7 +248,8 @@ fn generate_body_with_context(
                         }
                     }
 
-                    return quote! {
+                    // Don't return early! We need to process sibling elements too
+                    quote! {
                         {
                             let scope_id = #scope_id_gen;
                             write!(f, "<{}", #name)?;
@@ -257,7 +258,41 @@ fn generate_body_with_context(
                             #children_code
                             write!(f, "</{}>", #name)?;
                         }
-                    };
+                    }
+                } else {
+                    // Regular element (no style children) - original logic
+                    let children_code = generate_body_with_context(&elem.children, child_context);
+
+                    let mut attr_code = proc_macro2::TokenStream::new();
+                    for attr in &elem.attrs {
+                        let attr_name = &attr.name;
+                        match &attr.value {
+                            token_parser::AttributeValue::Static(val) => {
+                                attr_code.extend(quote! {
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
+                                });
+                            }
+                            token_parser::AttributeValue::Dynamic(expr) => {
+                                attr_code.extend(quote! {
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
+                                });
+                            }
+                            token_parser::AttributeValue::None => {
+                                // Boolean attribute
+                                attr_code.extend(quote! {
+                                    write!(f, " {}", #attr_name)?;
+                                });
+                            }
+                        }
+                    }
+
+                    quote! {
+                        write!(f, "<{}", #name)?;
+                        #attr_code
+                        write!(f, ">")?;
+                        #children_code
+                        write!(f, "</{}>", #name)?;
+                    }
                 }
 
                 // Regular element (no style children) - original logic
