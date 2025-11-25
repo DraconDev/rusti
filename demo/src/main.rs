@@ -9,7 +9,9 @@ mod advanced;
 mod base_layout_demo;
 mod basic_page;
 mod component_macro_demo;
+mod config;
 mod datastar;
+mod db;
 mod extreme;
 mod quote_demo;
 use component_macro_demo::component_macro_handler;
@@ -26,7 +28,6 @@ use let_demo::let_demo;
 use script_style_demo::script_style_demo;
 
 mod scripts;
-use scripts::working_scripts_demo;
 
 use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
