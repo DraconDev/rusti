@@ -18,9 +18,10 @@ use style_src_demo::style_src_handler;
 mod comprehensive_demo;
 mod let_demo;
 mod script_style_demo;
-mod scripts;
+mod simple_script_test;
 mod styles_demo;
 mod tailwind_demo;
+mod working_scripts_demo;
 use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
@@ -29,13 +30,10 @@ use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
 use rusti::rusti;
-use scripts::{
-    interactive_counter::interactive_counter, simple_script_test::simple_script_test,
-    working_scripts_demo::working_scripts_demo,
-};
 use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
+use working_scripts_demo::working_scripts_demo;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
@@ -737,11 +735,9 @@ async fn working_scripts_handler() -> impl IntoResponse {
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&simple_script_test()))
-}
-
-async fn interactive_counter_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&interactive_counter()))
+    Html(rusti::render_to_string(
+        &simple_script_test::simple_script_test(),
+    ))
 }
 
 #[tokio::main]
@@ -775,7 +771,6 @@ async fn main() {
         .route("/component-macro", get(component_macro_handler))
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
-        .route("/interactive-counter", get(interactive_counter_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
