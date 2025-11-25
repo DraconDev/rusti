@@ -1,6 +1,4 @@
-pub use azumi
-_macros::{component, azumi
-};
+pub use azumi_macros::{azumi, component};
 
 pub trait Component {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
