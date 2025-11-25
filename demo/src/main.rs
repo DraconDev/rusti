@@ -8,10 +8,11 @@ use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
-    // Rusti 2.0 Demo Server
+    // Azumi 2.0 Demo Server
     let app = Router::new()
         // Example Routes
-        .route("/", get(examples::hello_handler))
+        .route("/", get(examples::homepage_handler))
+        .route("/hello", get(examples::hello_handler))
         .route("/components", get(examples::components_handler))
         .route("/htmx-todo", get(examples::htmx_todo_handler))
         // HTMX API endpoints
