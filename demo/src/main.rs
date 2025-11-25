@@ -748,8 +748,7 @@ async fn interactive_counter_handler() -> impl IntoResponse {
     ))
 }
 
-// TODO: Add todo app handler api routes
-async fn add_todo_handler() -> impl IntoResponse {}
+
 
 #[tokio::main]
 async fn main() {
