@@ -50,7 +50,3 @@ impl<T: std::fmt::Display> std::fmt::Display for Escaped<T> {
         Ok(())
     }
 }
-
-pub fn js<T: std::fmt::Debug>(v: T) -> String {
-    format!("{:?}", v)
-}
