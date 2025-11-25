@@ -315,42 +315,32 @@ impl Parse for Attribute {
 impl Parse for Text {
     fn parse(input: ParseStream) -> Result<Self> {
         let span = input.span();
-        let mut content = String::new();
-        // Consume tokens until <, @, {, or }
-        // Note: } is a delimiter for blocks, so we stop there too?
-        // But text can contain } if it's not part of our structure?
-        // No, } usually closes a block.
 
-        while !input.is_empty()
-            && !input.peek(Token![<])
-            && !input.peek(Token![@])
-            && !input.peek(Brace)
-        {
-            // If we hit a closing brace, it might be the end of a parent block.
-            // But parse_nodes loop checks input.is_empty().
-            // If parse_nodes is called inside a Brace, input will be empty at end of brace.
-            // But if we are in a loop, we might see }.
-            // Wait, parse_nodes doesn't check for }.
-            // The caller of parse_nodes (e.g. Element parser) checks for </tag>.
-            // What about Block parser?
-
-            // We need to handle tokens.
-            let tt: TokenTree = input.parse()?;
-            content.push_str(&tt.to_string());
-            // Add space? TokenStream loses spaces.
-            // We can't easily restore them.
-            // We'll assume single space separation for safety, or just concat.
-            // concat is safer for "foo-bar", but "foo bar" becomes "foobar".
-            // Ideally we check spans.
-            // For now, let's append a space if it's not Punct?
-            // Or just rely on to_string() which usually adds spaces.
+        // Rusti 2.0: All text content must be double-quoted string literals
+        // This prevents lexer issues with patterns like "2e5", "88Ester", etc.
+        if input.peek(syn::Lit) {
+            let lit: syn::Lit = input.parse()?;
+            match lit {
+                syn::Lit::Str(s) => {
+                    return Ok(Text {
+                        content: s.value(),
+                        span,
+                    });
+                }
+                _ => {
+                    return Err(Error::new(
+                        span,
+                        "Text content must be a double-quoted string literal.\nExample: <h1>\"Hello World\"</h1>"
+                    ));
+                }
+            }
         }
 
-        if content.is_empty() {
-            return Err(Error::new(span, "Unexpected empty text"));
-        }
-
-        Ok(Text { content, span })
+        // If no string literal found, error
+        return Err(Error::new(
+            span,
+            "Text content must be a double-quoted string literal to prevent lexer issues.\nExample: <p>\"Your text here\"</p>\nFor dynamic content, use {expression} instead."
+        ));
     }
 }
 
