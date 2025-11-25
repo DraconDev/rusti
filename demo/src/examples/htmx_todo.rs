@@ -20,11 +20,18 @@ pub fn htmx_todo() -> impl rusti::Component {
                 <title>"HTMX Todo - Rusti 2.0"</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10" />
                 <style src="demo/static/todo.css" />
-            </head>
-            <body>
+                <style>
+                    .todo-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                </style>
                 <script>
                     console.log("HTMX Todo loaded");
                 </script>
+            </head>
+            <body>
                 <div class="container">
                     <h1>"📝 HTMX Todo List"</h1>
                     <p class="subtitle">"Server-side rendered with Rusti 2.0"</p>
