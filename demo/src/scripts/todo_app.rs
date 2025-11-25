@@ -271,7 +271,7 @@ pub fn todo_app() -> impl rusti::Component {
                 function getFilteredTodos() {
                     console.log("Current filter:", currentFilter);
                     console.log("Todos:", todos);
-                    
+
                     if (!todos || !Array.isArray(todos)) {
                         return [];
                     }
