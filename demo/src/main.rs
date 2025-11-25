@@ -748,31 +748,10 @@ async fn interactive_counter_handler() -> impl IntoResponse {
     ))
 }
 
-// TODO: Add todo app handlers
+// TODO: Add todo app handler api routes
 async fn add_todo_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::add_todo()))
+        
 }
-
-async fn clear_completed_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::clear_completed()))
-}
-
-async fn delete_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::delete()))
-}
-
-async fn stats_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::stats()))
-}
-
-async fn toggle_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::toggle()))
-}
-
-async fn todo_list_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::todo_app_htmx::todo_list()))
-}
-
 
 #[tokio::main]
 async fn main() {

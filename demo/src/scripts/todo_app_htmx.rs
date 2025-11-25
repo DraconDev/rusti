@@ -78,5 +78,3 @@ pub fn todo_app_htmx() -> impl rusti::Component {
     }
 }
 
-fn add_todo() -> impl rusti::Component {
-    
