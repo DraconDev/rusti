@@ -177,9 +177,9 @@ pub fn todo_app() -> impl rusti::Component {
                 </div>
 
                 <div class="filters">
-                    <button class="filter-btn active" onclick="filterTodos(\"all\")" data-filter="all">All</button>
-                    <button class="filter-btn" onclick="filterTodos(\"active\")" data-filter="active">Active</button>
-                    <button class="filter-btn" onclick="filterTodos(\"completed\")" data-filter="completed">Completed</button>
+                    <button class="filter-btn active" onclick="filterTodos('all')" data-filter="all">All</button>
+                    <button class="filter-btn" onclick="filterTodos('active')" data-filter="active">Active</button>
+                    <button class="filter-btn" onclick="filterTodos('completed')" data-filter="completed">Completed</button>
                 </div>
 
                 <ul id="todo-list" class="todo-list"></ul>
@@ -260,7 +260,7 @@ pub fn todo_app() -> impl rusti::Component {
                         btn.classList.remove("active");
                     });
 
-                    const activeBtn = document.querySelector("[data-filter=\"" + filter + "\"]");
+                    const activeBtn = document.querySelector("[data-filter='" + filter + "']");
                     if (activeBtn) {
                         activeBtn.classList.add("active");
                     }
@@ -305,10 +305,10 @@ pub fn todo_app() -> impl rusti::Component {
                             const completedClass = todo.completed ? " completed" : "";
                             const checked = todo.completed ? " checked" : "";
 
-                            return "<li class=\"todo-item" + completedClass + "\">" +
-                                "<input type=\"checkbox\" class=\"todo-checkbox\"" + checked + " onchange=\"toggleTodo(" + todo.id + ")\" />" +
-                                "<span class=\"todo-text\">" + todo.text + "</span>" +
-                                "<button class=\"delete-btn\" onclick=\"deleteTodo(" + todo.id + ")\">Delete</button>" +
+                            return "<li class='todo-item" + completedClass + "'>" +
+                                "<input type='checkbox' class='todo-checkbox'" + checked + " onchange='toggleTodo(" + todo.id + ")' />" +
+                                "<span class='todo-text'>" + todo.text + "</span>" +
+                                "<button class='delete-btn' onclick='deleteTodo(" + todo.id + ")'>Delete</button>" +
                                 "</li>";
                         }).join("");
                     }
