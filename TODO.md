@@ -4,8 +4,6 @@
 
 
 
-7. <!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
-
 8. scoped css, and get rid of style sheets if we do this?
 
 9. optional props with default values
