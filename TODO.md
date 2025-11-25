@@ -7,9 +7,7 @@
 
 2. props spreading 
 
-3. explain in readme the @input vs input Input component decision
-
-
+3. explain in readme the @input vs input vs @input component decision
 
 4. update the error reporting to point to the exact location of the error in the source code
 
