@@ -1,24 +1,52 @@
 use axum::{body::Body, response::IntoResponse};
 
-use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
-use std::time::Duration;
+use axum::{
+    extract::{State, Json},
+    http::StatusCode,
+    response::IntoResponse,
+};
+use std::{
+    sync::{Arc, Mutex},
+    collections::HashMap,
+};
+use serde::{Deserialize, Serialize};
 
-pub async fn setup_test_db() -> SqlitePool {
-    let pool = SqlitePoolOptions::new()
-        .max_connections(1)
-        .connect_timeout(Duration::from_secs(3))
-        .connect("sqlite::memory:")
-        .await
-        .expect("Failed to connect to in-memory SQLite database");
-
-    // Optionally, run migrations here if you have them
-    // sqlx::migrate!("./migrations").run(&pool).await.expect("Failed to run migrations");
-
-    pool
+// Define your Todo struct
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Todo {
+    pub id: u32,
+    pub title: String,
+    pub completed: bool,
 }
 
+// Struct for creating a new todo (without an ID)
+#[derive(Debug, Deserialize)]
+pub struct CreateTodo {
+    pub title: String,
+}
 
-pub async fn add_todo() -> impl IntoResponse {}
+// Type alias for our shared state
+type SharedState = Arc<Mutex<HashMap<u32, Todo>>>;
+
+pub async fn add_todo(
+    State(todos): State<SharedState>,
+    Json(create_todo): Json<CreateTodo>,
+) -> impl IntoResponse {
+    let mut todos = todos.lock().unwrap();
+
+    // Generate a simple ID. In a real app, you might use a UUID or a more robust counter.
+    let id = todos.keys().max().map_or(1, |max_id| max_id + 1);
+
+    let new_todo = Todo {
+        id,
+        title: create_todo.title,
+        completed: false,
+    };
+
+    todos.insert(id, new_todo.clone());
+
+    (StatusCode::CREATED, Json(new_todo))
+}
 
 pub async fn clear_completed() -> impl IntoResponse {}
 
