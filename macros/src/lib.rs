@@ -294,6 +294,7 @@ fn generate_body_with_context(
                         write!(f, "</{}>", #name)?;
                     }
                 }
+            }
             token_parser::Node::Text(text) => {
                 let content = &text.content;
                 if content.is_empty() {
