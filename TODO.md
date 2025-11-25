@@ -2,6 +2,8 @@
 
 ## 🚀 Future Improvements
 
+make a todo app example using htmx as much as possible and compare it to the todo app example in the rusti-demo repo
+
 support for emojis in html
 
 add fragment support
