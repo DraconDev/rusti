@@ -53,7 +53,7 @@ pub fn scoped_css_demo() -> impl rusti::Component {
 
             <hr />
 
-            <!-- Component 3: Global styles with :global() -->
+            <!-- Component 3: Green Theme -->
             <div class="component">
                 <style>
                     .button {
@@ -64,22 +64,19 @@ pub fn scoped_css_demo() -> impl rusti::Component {
                         border-radius: 5px;
                         cursor: pointer;
                     }
-
-                    :global(.global-text) {
-                        color: purple;
-                        font-weight: bold;
+                    h2 {
+                        color: #00ff00;
                     }
                 </style>
-                <h2>Component 3 - Green Theme + Global</h2>
+                <h2>Component 3 - Green Theme</h2>
                 <button class="button">Green Button</button>
-                <p class="global-text">This uses :global() so it applies everywhere</p>
             </div>
 
             <hr />
 
-            <!-- Test that global styles reach here -->
-            <p class="global-text">This should be purple and bold (from :global() above)</p>
-            <button class="button">This button should have NO scoped styles</button>
+            <!-- Test isolation: button with no styles -->
+            <p>This button below has class="button" but NO scoped styles apply to it:</p>
+            <button class="button">Unstyled Button (proves isolation!)</button>
         </body>
         </html>
     }
