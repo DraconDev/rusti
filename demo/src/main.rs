@@ -750,6 +750,12 @@ async fn interactive_counter_handler() -> impl IntoResponse {
     ))
 }
 
+async fn todo_app_htmx_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(
+        &scripts::todo_app_htmx::todo_app_htmx(),
+    ))
+}
+
 #[tokio::main]
 async fn main() {
     // Initialize SQLite database
