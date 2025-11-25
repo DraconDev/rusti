@@ -35,7 +35,7 @@ fn control_flow_demo() -> impl azumi::Component {
                     <div class="demo-box">
                         <h2>"2. For Loops"</h2>
                         <ul>
-                            @for user in users {
+                            @for user in &users {
                                 <li>"User: " {user}</li>
                             }
                         </ul>
