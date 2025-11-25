@@ -11,7 +11,7 @@ async fn main() {
     // Azumi 2.0 Demo Server
     let app = Router::new()
         // Example Routes
-        .route("/", get(examples::homepage_handler))
+        .route("/", get(examples::homepage::homepage_handler))
         .route("/hello", get(examples::hello::hello_handler))
         .route("/components", get(examples::components::components_handler))
         .route("/htmx-todo", get(examples::htmx_todo::htmx_todo_handler))

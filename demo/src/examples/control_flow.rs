@@ -32,15 +32,12 @@ fn control_flow_demo(users: Vec<&str>, status: Status, count: i32) -> impl azumi
                     <a href="/">"← Back to Home"</a>
 
                     <div class="demo-box">
-                        <h2>"1. If / Else Statements"</h2>
+                        <h2>"1. If Statements"</h2>
                         @if count > 10 {
-                            <p>"Count is high: " {count}</p>
-                        } @else {
-                            @if count > 0 {
-                                <p>"Count is positive: " {count}</p>
-                            } @else {
-                                <p>"Count is zero or negative"</p>
-                            }
+                            <p class="status-active">"Count is high: " {count}</p>
+                        }
+                        @if count <= 10 {
+                            <p class="status-pending">"Count is not high (≤10): " {count}</p>
                         }
                     </div>
 
