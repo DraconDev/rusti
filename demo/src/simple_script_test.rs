@@ -35,14 +35,16 @@ pub fn simple_script_test() -> impl rusti::Component {
                 } // this works too
 
                 @let my_string_array = vec!["Apple", "Banana", "Cherry"];
-                @for item in &my_string_array {
-                    document.getElementById("output").innerHTML += "<br>" + @{ item };
-                } // this doesn't work, simple-script-test:1 Uncaught ReferenceError: Apple is not defined
+
+                // @for item in &my_string_array {
+                //     document.getElementById("output").innerHTML += "<br>" + @{ item };
+                // } // this doesn't work, simple-script-test:1 Uncaught ReferenceError: Apple is not defined
+                
                 @for item in &my_string_array {
                     document.getElementById("output").innerHTML += "<br>" + @{ format!("\"{}\"", item) };
                 } // this works too
 
-                
+
 
                 console.log("num =", num);
                 console.log("str =", str);
