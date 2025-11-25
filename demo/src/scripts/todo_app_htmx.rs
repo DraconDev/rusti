@@ -14,19 +14,45 @@ pub fn todo_app_htmx() -> impl rusti::Component {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Todo App – htmx Demo</title>
             <style>
-                body {font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;}
-                .container {background: white; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);}
-                h1 {text-align: center; color: #333; margin-bottom: 20px;}
-                .input-section {display: flex; gap: 10px; margin-bottom: 20px;}
-                input[type="text"] {flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px;}
-                .btn {padding: 10px 20px; border: none; border-radius: 6px; background: #5c6bc0; color: white; cursor: pointer;}
-                .btn:hover {background: #3949ab;}
-                .todo-item {display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee;}
-                .todo-item.completed .text {text-decoration: line-through; color: #999;}
-                .todo-checkbox {margin-right: 10px;}
-                .delete-btn {margin-left: auto; background: transparent; border: none; color: #e53935; cursor: pointer;}
-                .empty-state {text-align: center; color: #777; padding: 40px 0;}
-                .stats {margin-top: 20px; text-align: center; color: #555;}
+                body {
+                    font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;
+                }
+                .container {
+                    background: white; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                }
+                h1 {
+                    text-align: center; color: #333; margin-bottom: 20px;
+                }
+                .input-section {
+                    display: flex; gap: 10px; margin-bottom: 20px;
+                }
+                input[type="text"] {
+                    flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px;
+                }
+                .btn {
+                    padding: 10px 20px; border: none; border-radius: 6px; background: #5c6bc0; color: white; cursor: pointer;
+                }
+                .btn:hover {
+                    background: #3949ab;
+                }
+                .todo-item {
+                    display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee;
+                }
+                .todo-item.completed .text {
+                    text-decoration: line-through; color: #999;
+                }
+                .todo-checkbox {
+                    margin-right: 10px;
+                }
+                .delete-btn {
+                    margin-left: auto; background: transparent; border: none; color: #e53935; cursor: pointer;
+                }
+                .empty-state {
+                    text-align: center; color: #777; padding: 40px 0;
+                }
+                .stats {
+                    margin-top: 20px; text-align: center; color: #555;
+                }
             </style>
         </head>
         <body>
