@@ -10,7 +10,7 @@ pub fn hello_world() -> impl Component {
             <head>
                 <meta charset="UTF-8" />
                 <title>"Hello World - Rusti 2.0"</title>
-                <style src="demo/static/hello.css" />
+                <style src="/static/hello.css" />
             </head>
             <body>
                 <div class="container">

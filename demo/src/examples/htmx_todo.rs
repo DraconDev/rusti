@@ -20,7 +20,7 @@ pub fn htmx_todo() -> impl azumi::Component {
                 <title>"HTMX Todo - azumi
     2.0"</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10" />
-                <style src="demo/static/todo.css" />
+                <style src="/static/todo.css" />
                 // <style>
                 //     .todo-item {
                 //         display: flex;
