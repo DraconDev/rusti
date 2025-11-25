@@ -400,7 +400,7 @@ fn generate_body_with_context(
                             } else if exprs.is_empty() {
                                 // Empty args: check if name starts with Uppercase (Component convention)
                                 // If so, treat as named args (Builder pattern) to support defaults
-                                let name_str = name.to_string();
+                                let name_str = quote!(#name).to_string();
                                 let last_segment = name_str.split("::").last().unwrap_or("");
                                 if last_segment
                                     .chars()
