@@ -138,10 +138,10 @@ pub fn interactive_counter() -> impl rusti::Component {
                         history = history.slice(0, MAX_HISTORY);
                     }
 
-                    updateDisplayHistory();
+                    updateHistoryDisplay();
                 }
 
-                function updateDisplayHistory() {
+                function updateHistoryDisplay() {
                     const list = document.getElementById("history-list");
 
                     if (history.length === 0) {
@@ -192,7 +192,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                 }
 
                 updateDisplay();
-                updateDisplayHistory();
+                updateHistoryDisplay();
                 console.log("Counter initialized! Initial:", INITIAL_VALUE, "Step:", STEP_SIZE);
             </script>
         </body>
