@@ -749,9 +749,7 @@ async fn interactive_counter_handler() -> impl IntoResponse {
 }
 
 // TODO: Add todo app handler api routes
-async fn add_todo_handler() -> impl IntoResponse {
-        
-}
+async fn add_todo_handler() -> impl IntoResponse {}
 
 #[tokio::main]
 async fn main() {
@@ -805,7 +803,13 @@ async fn main() {
             "/examples/comprehensive_demo",
             get(comprehensive_demo_handler),
         )
-        .route("/examples/form", get(extreme::form_handler));
+        .route("/examples/form", get(extreme::form_handler))
+        .route("api/add-todo", post(add_todo_handler))
+        .route("api/clear-completed", post(clear_completed_handler))
+        .route("api/delete", post(delete_handler))
+        .route("api/stats", get(stats_handler))
+        .route("api/toggle", post(toggle_handler))
+        .route("api/todo-list", get(todo_list_handler));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
