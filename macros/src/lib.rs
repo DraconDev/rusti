@@ -155,9 +155,14 @@ fn generate_body_with_context(
             }
             token_parser::Node::Expression(expr) => {
                 let content = &expr.content;
+                println!(
+                    "Generating expression: {:?} in context: {:?}",
+                    content, context
+                );
                 match context {
                     Context::Script => {
                         // In script tags, use rusti::js() to safely inject values (Debug formatting)
+                        println!("  -> Script context, using rusti::js");
                         quote! { write!(f, "{}", rusti::js(&(#content)))?; }
                     }
                     Context::Style => {
