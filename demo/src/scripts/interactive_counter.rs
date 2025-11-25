@@ -18,7 +18,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     min-height: 100vh;
                 }
                 .container {
-                    background: green;
+                    background: white;
                     border-radius: 12px;
                     padding: 30px;
                     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
