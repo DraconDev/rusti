@@ -323,7 +323,7 @@ pub fn render_todo_list(conn: &Connection, filter: Option<String>) -> impl rusti
             </div>
         } else {
             <ul id="todo-list" class="todo-list">
-                @for todo in todos {
+                @for todo in &todos {
                     <li class={format!("todo-item {}", if todo.completed { "completed" } else { "" })}>
                         @if todo.completed {
                             <input
