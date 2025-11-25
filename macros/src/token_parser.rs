@@ -468,7 +468,7 @@ fn is_css_at_rule(input: ParseStream) -> bool {
 
 fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>> {
     let mut nodes = Vec::new();
-    // println!("parse_script_content starting for tag: {}", tag_name);
+    eprintln!("parse_script_content starting for tag: {}", tag_name);
     while !input.is_empty() {
         if input.peek(Token![<]) && input.peek2(Token![/]) {
             let fork = input.fork();
@@ -476,31 +476,31 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
             fork.parse::<Token![/]>()?;
             if let Ok(name) = parse_html_name(&fork) {
                 if name == tag_name {
-                    // println!("Found closing tag: </{}>", name);
+                    eprintln!("Found closing tag: </{}>", name);
                     break;
                 }
             }
         }
 
         if input.peek(Token![@]) && !is_css_at_rule(input) {
-            // println!("Found @ (not CSS)");
+            eprintln!("Found @ (not CSS)");
             if input.peek2(Brace) {
                 // @{ ... } -> Expression
-                // println!("Found @{{ ... }} expression");
+                eprintln!("Found @{{ ... }} expression");
                 input.parse::<Token![@]>()?;
                 nodes.push(Node::Expression(input.parse()?));
             } else {
-                // println!("Found Block");
+                eprintln!("Found Block");
                 nodes.push(Node::Block(input.parse()?));
             }
         } else {
             // Parse as text until @ (if not CSS) or </tag_name>
             let span = input.span();
             let mut tokens = Vec::new();
-            // println!("Parsing text...");
+            eprintln!("Parsing text...");
             while !input.is_empty() {
                 if input.peek(Token![@]) && !is_css_at_rule(input) {
-                    // println!("Stopped text at @");
+                    eprintln!("Stopped text at @");
                     break;
                 }
                 if input.peek(Token![<]) && input.peek2(Token![/]) {
@@ -509,20 +509,20 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
                     fork.parse::<Token![/]>()?;
                     if let Ok(name) = parse_html_name(&fork) {
                         if name == tag_name {
-                            // println!("Stopped text at closing tag");
+                            eprintln!("Stopped text at closing tag");
                             break;
                         }
                     }
                 }
 
                 let tt: TokenTree = input.parse()?;
-                // println!("Consumed token: {:?}", tt);
+                eprintln!("Consumed token: {:?}", tt);
                 tokens.push(tt);
             }
 
             if !tokens.is_empty() {
                 let content = tokens_to_string(&tokens);
-                // println!("Created Text node: {:?}", content);
+                eprintln!("Created Text node: {:?}", content);
                 nodes.push(Node::Text(Text { content, span }));
             }
         }
