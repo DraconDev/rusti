@@ -333,7 +333,7 @@ fn generate_body_with_context(
                                 // Handle other node types
                                 let fallback_nodes = vec![child.clone()];
                                 let fallback_code =
-                                    generate_body_with_context(&fallback_nodes, context);
+                                    generate_body_with_context(&fallback_nodes, ctx);
                                 children_code.extend(fallback_code);
                             }
                         }
@@ -452,14 +452,14 @@ fn generate_body_with_context(
                 quote! { write!(f, "<!DOCTYPE {}>", #content)?; }
             }
             token_parser::Node::Fragment(frag) => {
-                generate_body_with_context(&frag.children, context)
+                generate_body_with_context(&frag.children, ctx)
             }
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
                     let condition = &if_block.condition;
-                    let then_code = generate_body_with_context(&if_block.then_branch, context);
+                    let then_code = generate_body_with_context(&if_block.then_branch, ctx);
                     let else_code = if let Some(else_branch) = &if_block.else_branch {
-                        let else_body = generate_body_with_context(else_branch, context);
+                        let else_body = generate_body_with_context(else_branch, ctx);
                         quote! { else { #else_body } }
                     } else {
                         quote! {}
@@ -473,7 +473,7 @@ fn generate_body_with_context(
                 token_parser::Block::For(for_block) => {
                     let pattern = &for_block.pattern;
                     let iterator = &for_block.iterator;
-                    let body_code = generate_body_with_context(&for_block.body, context);
+                    let body_code = generate_body_with_context(&for_block.body, ctx);
                     quote! {
                         for #pattern in #iterator {
                             #body_code
@@ -484,7 +484,7 @@ fn generate_body_with_context(
                     let expr = &match_block.expr;
                     let arms = match_block.arms.iter().map(|arm| {
                         let pattern = &arm.pattern;
-                        let body = generate_body_with_context(&arm.body, context);
+                        let body = generate_body_with_context(&arm.body, ctx);
                         quote! {
                             #pattern => { #body }
                         }
@@ -501,7 +501,7 @@ fn generate_body_with_context(
                     let has_children = !call_block.children.is_empty();
                     let children_code = if has_children {
                         let children_body =
-                            generate_body_with_context(&call_block.children, context);
+                            generate_body_with_context(&call_block.children, ctx);
                         quote! {
                             azumi::from_fn(|f| {
                                 #children_body
