@@ -122,11 +122,11 @@ fn generate_body_with_context(
 
                 // Determine context for children
                 let child_context = if name == "script" {
-                    Context::Script
+                    ctx.with_mode(Context::Script)
                 } else if name == "style" {
-                    Context::Style
+                    ctx.with_mode(Context::Style)
                 } else {
-                    Context::Normal
+                    ctx.clone()
                 };
 
                 // Check if this element has <style> tags as DIRECT children only
@@ -292,11 +292,11 @@ fn generate_body_with_context(
 
                                 // Determine child context
                                 let grandchild_context = if child_name == "script" {
-                                    Context::Script
+                                    ctx.with_mode(Context::Script)
                                 } else if child_name == "style" {
-                                    Context::Style
+                                    ctx.with_mode(Context::Style)
                                 } else {
-                                    Context::Normal
+                                    ctx.with_scope(scope_id_val.clone())
                                 };
 
                                 let grandchildren_code = generate_body_with_context(
@@ -425,9 +425,9 @@ fn generate_body_with_context(
                 let content = &expr.content;
                 println!(
                     "Generating expression: {:?} in context: {:?}",
-                    content, context
+                    content, ctx.mode
                 );
-                match context {
+                match ctx.mode {
                     Context::Script => {
                         // In script tags, use azumi::js() to safely inject values (Debug formatting)
                         println!("  -> Script context, using azumi::js");
