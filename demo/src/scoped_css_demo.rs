@@ -66,7 +66,7 @@ pub fn scoped_css_demo() -> impl rusti::Component {
                             color: #00ff00;
                         }
                     </style>
-                    <h2>Component 3 - Green Theme</h2>
+                    <h2>Component 3 - Green Theme 22ester</h2>
                     <button class="button">Green Button</button>
                 </div>
 
