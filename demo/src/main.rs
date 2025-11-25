@@ -775,6 +775,7 @@ async fn main() {
         .route("/component-macro", get(component_macro_handler))
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
+        .route("/interactive-counter", get(interactive_counter_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
