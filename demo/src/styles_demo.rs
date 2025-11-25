@@ -139,7 +139,7 @@ pub fn styles_demo2() -> impl rusti::Component {
                         text-decoration: underline;
                     }
                     h1 {
-                        color: #ff22ff;
+                        color: "#ff22ff";
                     }
                 </style>
             </head>
