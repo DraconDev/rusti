@@ -36,8 +36,8 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                 }
                 
                 body {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                    background: linear-gradient(135deg, #"667eea" 0%, #764ba2 100%);
                     min-height: 100vh;
                     display: flex;
                     align-items: center;
@@ -56,11 +56,11 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                 
                 h1 {
                     text-align: center;
-                    color: #667eea;
+                    color: #"667eea";
                     margin-bottom: 12px;
                     font-size: 2.5rem;
                     font-weight: 800;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #"667eea" 0%, #764ba2 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
@@ -90,7 +90,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                 
                 input[type="text"]:focus {
                     outline: none;
-                    border-color: #667eea;
+                    border-color: #"667eea";
                     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
                 }
                 
@@ -105,7 +105,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                 }
                 
                 .btn-primary {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #"667eea" 0%, #764ba2 100%);
                     color: white;
                 }
                 
@@ -168,7 +168,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                     height: 20px;
                     margin-right: 14px;
                     cursor: pointer;
-                    accent-color: #667eea;
+                    accent-color: #"667eea";
                 }
                 
                 .text {
