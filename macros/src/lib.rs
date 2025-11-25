@@ -210,10 +210,13 @@ fn generate_body_with_context(
                                 });
                             }
                             _ => {
-                                // Handle other node types by recursing
-                                // (ForBlock, IfBlock, etc would go here)
-                                let node_code = generate_node_code(child, context); // Assuming generate_node_code exists or similar logic
-                                children_code.extend(node_code);
+                                // Handle other node types (ForBlock, IfBlock, MatchBlock, etc)
+                                // These need recursive handling which we'll skip for now in scoped containers
+                                // Just generate them without scope attributes
+                                let fallback_nodes = vec![child.clone()];
+                                let fallback_code =
+                                    generate_body_with_context(&fallback_nodes, context);
+                                children_code.extend(fallback_code);
                             }
                         }
                     }
