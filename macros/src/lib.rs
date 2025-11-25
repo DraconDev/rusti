@@ -99,10 +99,15 @@ fn generate_body_with_context(
                     Context::Normal
                 };
 
-                // Special handling for <style> tags - AUTOMATIC SCOPING
-                if name == "style" {
-                    // Generate unique scope ID
-                    let scope_counter_code = quote! {
+                // Check if this element contains <style> tags in its children
+                let has_style_children = elem.children.iter().any(
+                    |child| matches!(child, token_parser::Node::Element(el) if el.name == "style"),
+                );
+
+                // If this element has style children, it becomes a scoped container
+                if has_style_children {
+                    // Generate ONE scope ID for this container
+                    let scope_id_gen = quote! {
                         {
                             use std::sync::atomic::{AtomicU64, Ordering};
                             static COUNTER: AtomicU64 = AtomicU64::new(0);
@@ -111,45 +116,111 @@ fn generate_body_with_context(
                         }
                     };
 
-                    // Check if it's an external stylesheet
-                    if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
-                        if let token_parser::AttributeValue::Static(path) = &src_attr.value {
-                            // External stylesheet - scope it
-                            return quote! {
-                                {
-                                    let scope_id = #scope_counter_code;
-                                    let css_content = include_str!(#path);
-                                    let scoped_css = rusti::scope_css(css_content, &scope_id);
-                                    write!(f, "<style data-scope=\"{}\">", scope_id)?;
-                                    write!(f, "{}", scoped_css)?;
-                                    write!(f, "</style>")?;
-                                }
-                            };
-                        }
-                    }
-
-                    // Inline <style> - extract text content and scope it
-                    let mut style_content = String::new();
+                    // Generate code for styled children with scope
+                    let mut children_code = proc_macro2::TokenStream::new();
                     for child in &elem.children {
-                        if let token_parser::Node::Text(text) = child {
-                            style_content.push_str(&text.content);
+                        match child {
+                            token_parser::Node::Element(child_elem)
+                                if child_elem.name == "style" =>
+                            {
+                                // Handle <style> tag - transform CSS
+                                let mut style_content = String::new();
+                                for style_child in &child_elem.children {
+                                    if let token_parser::Node::Text(text) = style_child {
+                                        style_content.push_str(&text.content);
+                                    }
+                                }
+
+                                if !style_content.is_empty() {
+                                    children_code.extend(quote! {
+                                        {
+                                            let css_content = #style_content;
+                                            let scoped_css = rusti::scope_css(css_content, &scope_id);
+                                            write!(f, "<style data-scope=\"{}\">", scope_id)?;
+                                            write!(f, "{}", scoped_css)?;
+                                            write!(f, "</style>")?;
+                                        }
+                                    });
+                                }
+                            }
+                            token_parser::Node::Element(child_elem) => {
+                                // Regular element - add data-scope attribute
+                                let child_name = &child_elem.name;
+
+                                // Generate child attributes
+                                let mut child_attr_code = proc_macro2::TokenStream::new();
+                                for attr in &child_elem.children {
+                                    // Process child element attributes
+                                }
+
+                                // Determine child context
+                                let grandchild_context = if child_name == "script" {
+                                    Context::Script
+                                } else if child_name == "style" {
+                                    Context::Style
+                                } else {
+                                    Context::Normal
+                                };
+
+                                let grandchildren_code = generate_body_with_context(
+                                    &child_elem.children,
+                                    grandchild_context,
+                                );
+
+                                // Add data-scope attribute
+                                children_code.extend(quote! {
+                                    write!(f, "<{}", #child_name)?;
+                                    write!(f, " data-{}", scope_id)?;
+                                    #child_attr_code
+                                    write!(f, ">")?;
+                                    #grandchildren_code
+                                    write!(f, "</{}>", #child_name)?;
+                                });
+                            }
+                            _ => {
+                                // Other nodes (text, expressions, etc.)
+                                let node_code = generate_node_code(child, context);
+                                children_code.extend(node_code);
+                            }
                         }
                     }
 
-                    if !style_content.is_empty() {
-                        return quote! {
-                            {
-                                let scope_id = #scope_counter_code;
-                                let css_content = #style_content;
-                                let scoped_css = rusti::scope_css(css_content, &scope_id);
-                                write!(f, "<style data-scope=\"{}\">", scope_id)?;
-                                write!(f, "{}", scoped_css)?;
-                                write!(f, "</style>")?;
+                    // Generate parent element with scoped children
+                    let mut attr_code = proc_macro2::TokenStream::new();
+                    for attr in &elem.attrs {
+                        let attr_name = &attr.name;
+                        match &attr.value {
+                            token_parser::AttributeValue::Static(val) => {
+                                attr_code.extend(quote! {
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
+                                });
                             }
-                        };
+                            token_parser::AttributeValue::Dynamic(expr) => {
+                                attr_code.extend(quote! {
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
+                                });
+                            }
+                            token_parser::AttributeValue::None => {
+                                attr_code.extend(quote! {
+                                    write!(f, " {}", #attr_name)?;
+                                });
+                            }
+                        }
                     }
+
+                    return quote! {
+                        {
+                            let scope_id = #scope_id_gen;
+                            write!(f, "<{}", #name)?;
+                            #attr_code
+                            write!(f, ">")?;
+                            #children_code
+                            write!(f, "</{}>", #name)?;
+                        }
+                    };
                 }
 
+                // Regular element (no style children) - original logic
                 let children_code = generate_body_with_context(&elem.children, child_context);
 
                 let mut attr_code = proc_macro2::TokenStream::new();
