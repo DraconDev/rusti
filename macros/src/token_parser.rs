@@ -190,6 +190,31 @@ impl Parse for Element {
             attrs.push(input.parse()?);
         }
 
+        // Rusti 2.0: Block inline <style> and <script> tags
+        if name == "style" || name == "script" {
+            let has_src = attrs.iter().any(|attr| attr.name == "src");
+            let is_json_script = name == "script"
+                && attrs.iter().any(|attr| {
+                    attr.name == "type"
+                        && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
+                });
+
+            if !has_src && !(name == "script" && is_json_script) {
+                return Err(Error::new(
+                    start_span,
+                    format!(
+                        "Inline <{}> tags are not supported in Rusti 2.0.\n\
+                        Use external files instead:\n\
+                        - For CSS: <style src=\"path/to/file.css\" /> (automatically scoped to component)\n\
+                        - For JavaScript: <script src=\"/static/app.js\" />\n\
+                        - For data injection: <script type=\"application/json\">{{{{ json_data }}}}</script>\n\
+                        \nRationale: External files provide full IDE validation, preventing silent errors like typos in CSS/JS.",
+                        name
+                    ),
+                ));
+            }
+        }
+
         let mut children = Vec::new();
         if input.peek(Token![/]) {
             // Self-closing
@@ -214,9 +239,10 @@ impl Parse for Element {
                     input.parse::<Token![<]>()?;
                     input.parse::<Token![/]>()?;
                     let closing_name = parse_html_name(input)?;
-                    eprintln!(
+                    eprintln(
                         "Found closing tag: </{}> (expected </{}>)",
-                        closing_name, name
+                        closing_name,
+                        name,
                     );
                     if closing_name != name {
                         return Err(Error::new(
