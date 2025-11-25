@@ -18,10 +18,9 @@ use style_src_demo::style_src_handler;
 mod comprehensive_demo;
 mod let_demo;
 mod script_style_demo;
-mod simple_script_test;
+mod scripts;
 mod styles_demo;
 mod tailwind_demo;
-mod working_scripts_demo;
 use comprehensive_demo::comprehensive_demo;
 use let_demo::let_demo;
 use script_style_demo::script_style_demo;
@@ -735,7 +734,9 @@ async fn working_scripts_handler() -> impl IntoResponse {
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&simple_script_test::simple_script_test()))
+    Html(rusti::render_to_string(
+        &simple_script_test::simple_script_test(),
+    ))
 }
 
 #[tokio::main]
