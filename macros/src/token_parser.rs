@@ -240,8 +240,8 @@ impl Parse for Element {
                     input.parse::<Token![/]>()?;
                     let closing_name = parse_html_name(input)?;
                     eprintln!(
-                        "Found closing tag: </{:}> (expected </{}>)",
-                        closing_name, name,
+                        "Found closing tag: </{}>  (expected </{}>)",
+                        closing_name, name
                     );
                     if closing_name != name {
                         return Err(Error::new(
