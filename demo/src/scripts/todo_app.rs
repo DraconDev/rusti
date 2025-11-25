@@ -288,6 +288,8 @@ pub fn todo_app() -> impl rusti::Component {
                     const list = document.getElementById("todo-list");
                     const filtered = getFilteredTodos();
 
+                    console.log("Filtered todos:", filtered);
+
                     if (!filtered || filtered.length === 0) {
                         list.innerHTML = "<div class=\"empty-state\">No todos to show</div>";
                     } else {
