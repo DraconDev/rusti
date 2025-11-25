@@ -203,10 +203,10 @@ pub fn working_scripts_demo() -> impl rusti::Component {
 
                 // TEST 1: Basic Variable Injection
                 try {
-                    const injectedString = @{ format!("\"{}\"", test_string) };
-                    const injectedNumber = @{ test_number };
-                    const injectedFloat = @{ test_float };
-                    const injectedBool = @{ test_bool };
+                    const injectedString = @{test_string};
+                    const injectedNumber = @{test_number};
+                    const injectedFloat = @{test_float};
+                    const injectedBool = @{test_bool};
 
                     if (injectedString === "Hello, Rusti!" &&
                         injectedNumber === 42 &&
