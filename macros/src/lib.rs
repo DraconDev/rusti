@@ -4,7 +4,6 @@ mod parser; // Keep for extern crate proc_macro;
 
 mod css;
 mod test_spacing;
-mod test_spacing;
 mod token_parser;
 
 use proc_macro::TokenStream;
