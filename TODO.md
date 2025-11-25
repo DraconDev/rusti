@@ -4,45 +4,6 @@
 
 
 
-5. add 
-This is a very practical, grounded approach. You are essentially implementing Server-Side Data Injection, which is a requirement for 99% of SSR apps.
-Before we talk about compiling Rust to JS, let's perfect this specific pattern because it is the foundation of the "Bridge" between your server and client.
-Here is my analysis of your snippet, why it is likely buggy, and the one change that will make it bulletproof.
-The Good
-Scope Access: You can access my_number from the outer Rust scope. This is seamless.
-Shadowing/Local Vars: You can define @let inside the script tag (in Rust land) to prepare data for the JS land.
-Syntax: @{ ... } is a very clear delimiter. It tells the parser "Stop reading JS tokens, read a Rust expression here."
-The Problem (The "Buggy" Part)
-You are manually formatting strings:    
-code
-Rust
-// Your code
-const str = @{ format!("\"{}\"", my_string) };
-Why this is dangerous/buggy:
-Quote Escaping: If my_string contains a double quote (Hello "World"), your JS breaks: const str = "Hello "World"". Syntax Error.
-XSS Injection: If my_string contains </script>, it closes the tag early and injects HTML.
-Type Fatigue: You have to manually remember to wrap strings in quotes but leave numbers alone.
-The Fix: Automatic JSON Serialization
-Instead of treating the output as a simple string substitution, you should require (or automatically use) serde_json.
-If your macro implementation changes to use serde_json::to_string(&value), your usage becomes cleaner and safer.
-The Improved Syntax:
-code
-Rust
-rusti! {
-    <script>
-        // No manual formatting!
-        // The macro calls json!(my_number) internally
-        const num = @{ my_number }; 
-        
-        // The macro automatically adds quotes and escapes special chars
-        const str = @{ my_string }; 
-        
-        // Works for complex structs too!
-        const user = @{ user_struct };
-    </script>
-}
-
-
 7. <!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
 
 8. scoped css, and get rid of style sheets if we do this?
