@@ -15,7 +15,6 @@ mod db;
 mod extreme;
 mod quote_demo;
 use component_macro_demo::component_macro_handler;
-mod error_test;
 mod optional_props_demo;
 mod scoped_css_demo;
 mod style_src_demo;
