@@ -250,7 +250,7 @@ pub fn todo_app() -> impl rusti::Component {
                     } else if (currentFilter === "completed") {
                         return todos.filter(function(t) { return t.completed; });
                     }
-                    return [];
+                    return [todos];
                 }
 
                 function renderTodos() {
