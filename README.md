@@ -383,12 +383,16 @@ rusti! {
 
 **⚠️ Important CSS Unit Note:**
 
-Most CSS units work fine, but in rare cases where Rust's lexer has issues:
-- ⚠️ `padding: 2em;` — May cause lexer issues
-- ✅ `padding: "2em";` — Use quoted string if needed
-- ✅ `padding: 3rem;` — Most units work fine as-is
-- ✅ `padding: 0.5em;` — Decimal units work fine
-- ✅ `padding: 16px;` — px and other units work fine
+Most CSS units work fine, but **avoid `em` units and hex colors containing `e`** in inline styles - Rust's lexer may interpret `e` as scientific notation:
+- ⚠️ `padding: 2em;` — May cause lexer issues (2e interpreted as number)
+- ⚠️ `color: #2e2e2e;` — May cause lexer issues (contains 'e')
+- ✅ `padding: "2em";` — Quote the entire value to avoid parsing issues
+- ✅ `color: "#2e2e2e";` — Quote hex colors with 'e'
+- ✅ `padding: 2rem;` — Use `rem` instead of `em`
+- ✅ `padding: 32px;` — Use `px` or other units
+- ✅ `color: rgb(46, 46, 46);` — Use `rgb()` instead of hex
+
+**Best Practice**: Use Tailwind CSS (recommended) or external stylesheets to completely avoid these edge cases.
 
 **Important**: Scripts must use **double quotes only** (`""`), never single quotes (`''`).
 
@@ -749,24 +753,27 @@ rusti! {
 
 ### CSS Unit Rules
 
-When writing CSS directly in `<style>` tags, most units work fine:
-- ✅ `padding: 3rem;` - Works fine
-- ✅ `padding: 0.5em;` - Decimals work fine
-- ✅ `padding: 16px;` - px, %, and other units work fine
-- ⚠️ `padding: 2em;` - Rarely, will cause lexer issues
-- ✅ `padding: "2em";` - Use quoted string if needed
+When writing CSS directly in `<style>` tags, **avoid `em` units and hex colors containing `e`** as Rust's lexer may interpret `e` as scientific notation:
+
+**Units:**
+- ✅ `padding: 2rem;` - `rem` works fine
+- ✅ `padding: 32px;` - `px`, `%`, and most other units work fine
+- ⚠️ `padding: 2em;` - May cause "invalid number" error (2e = scientific notation)
+- ✅ `padding: "2em";` - Quote if you must use `em`
+
+**Colors:**
+- ✅ `color: #fff;` - Hex colors without 'e' work fine
+- ✅ `color: #2d3748;` - Works fine ('d' is not 'e')
+- ⚠️ `color: #2e2e2e;` - May cause lexer issues (contains 'e')
+- ✅ `color: "#2e2e2e";` - Quote hex colors with 'e'
+- ✅ `color: rgb(46, 46, 46);` - Use `rgb()` instead
 
 **💡 Simplicity Recommendation:**
 
-For the easiest development experience, **avoid using em units and hex colors without quotes** in inline CSS:
-- ❌ `padding: 2em;` — Avoid
-- ❌ `color: #fff;` — May be interpreted as Rust syntax if contains e like `#2e2` or `#2e2e2e`
-- ✅ `padding: "2em";` — Quoted em units work perfectly
-- ✅ `color: "#fff";` — Quoted hex colors work perfectly
-- ✅ `padding: 2rem;` — rem units typically work as-is
-- ✅ `padding: 16px;` — px and most other units work as-is
-
-**Best Practice:** Use Tailwind CSS (recommended) or external stylesheets to completely avoid these edge cases.
+For the easiest development experience, **use Tailwind CSS or external stylesheets** to completely avoid these edge cases. If you must write inline CSS:
+1. **Use `rem` instead of `em`**
+2. **Use `rgb()` instead of hex colors with `e`**
+3. **Or quote all CSS values** if you prefer consistency
 
 ### Quick Translation Guide (JS/HTML → Rust)
 

@@ -894,6 +894,11 @@ fn pricing_page() -> impl rusti::Component {
 </div>
 ```
 
+**Note**: This example uses quoted `"2em"` for the padding value. While many CSS units work fine in inline styles, **`em` units and hex colors containing `e`** can cause Rust lexer issues (interpreted as scientific notation). Safer alternatives:
+- Use `rem` instead of `em`: `padding: 2rem;`
+- Use `rgb()` for colors: `background: rgb(102, 126, 234);`
+- Quote values if needed: `padding: "2em";` or `color: "#2e2e2e";`
+
 ### Component with Nested Styles
 
 ```rust
