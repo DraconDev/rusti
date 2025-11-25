@@ -16,11 +16,11 @@ pub fn interactive_counter() -> impl rusti::Component {
             <title>Interactive Counter - Rusti Demo</title>
             <style>
                 body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                     max-width: 800px;
                     margin: 50px auto;
                     padding: 20px;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, "#667eea" 0%, #764ba2 100%);
                     min-height: 100vh;
                 }
                 
@@ -32,7 +32,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                 }
                 
                 h1 {
-                    color: #667eea;
+                    color: "#667eea";
                     text-align: center;
                     margin-bottom: 30px;
                 }
@@ -45,7 +45,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                 .counter-value {
                     font-size: 72px;
                     font-weight: bold;
-                    color: #667eea;
+                    color: "#667eea";
                     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
                 }
                 
@@ -113,7 +113,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     padding: 8px 12px;
                     margin: 5px 0;
                     background: white;
-                    border-left: 4px solid #667eea;
+                    border-left: 4px solid "#667eea";
                     border-radius: 4px;
                     animation: slideIn 0.3s ease;
                 }
