@@ -1,8 +1,9 @@
 use axum::response::{Html, IntoResponse};
-use azumi::azumi;
+use azumi::html;
+use azumi::Component;
 
 /// Component composition example
-pub fn components_demo() -> impl azumi::Component {
+pub fn components_demo() -> impl Component {
     let title = "Components Demo";
     let items = vec!["Type-safe", "Zero-cost", "Composable"];
 
