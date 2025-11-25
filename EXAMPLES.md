@@ -831,6 +831,199 @@ fn themed_page(theme: &Theme) -> impl rusti::Component + '_ {
 
 ---
 
+## Scoped CSS
+
+Rusti provides automatic CSS scoping when `<style>` tags are direct children of an element.
+
+### Basic Scoped Component
+
+```rust
+fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <div>
+            <style>
+                .card {
+                    padding: 2em;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 16px;
+                    color: white;
+                }
+                .price {
+                    font-size: 3em;
+                    font-weight: bold;
+                    margin: 0;
+                }
+                .title {
+                    font-size: 1.2em;
+                    opacity: 0.9;
+                    margin-top: 0.5em;
+                }
+            </style>
+            
+            <div class="card">
+                <p class="price">${price}</p>
+                <p class="title">{title}</p>
+            </div>
+        </div>
+    }
+}
+
+// Each instance gets unique scoping
+fn pricing_page() -> impl rusti::Component {
+    rusti! {
+        <div class="pricing-grid">
+            @pricing_card(9, "Starter")    // scope: s0
+            @pricing_card(29, "Pro")       // scope: s1  
+            @pricing_card(99, "Enterprise") // scope: s2
+        </div>
+    }
+}
+```
+
+**Generated HTML:**
+```html
+<div>
+    <style data-scope="s0">
+        .card[data-s0] { padding: 2em; /* ... */ }
+        .price[data-s0] { font-size: 3em; /* ... */ }
+    </style>
+    <div class="card" data-s0>
+        <p class="price" data-s0>$9</p>
+        <p class="title" data-s0>Starter</p>
+    </div>
+</div>
+```
+
+### Component with Nested Styles
+
+```rust
+fn feature_card(icon: &str, title: &str, description: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <div>
+            <style>
+                .feature {
+                    padding: 2em;
+                    background: white;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                }
+                .icon {
+                    font-size: 3em;
+                    margin-bottom: 0.5em;
+                }
+                .title {
+                    font-size:1.5em;
+                    font-weight: bold;
+                    margin-bottom: 0.5em;
+                    color: #2d3748;
+                }
+                .description {
+                    color: #718096;
+                    line-height: 1.6;
+                }
+                
+                /* Pseudo-classes work too! */
+                .feature:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+                    transition: all 0.3s ease;
+                }
+            </style>
+            
+            <div class="feature">
+                <div class="icon">{icon}</div>
+                <h3 class="title">{title}</h3>
+                <p class="description">{description}</p>
+            </div>
+        </div>
+    }
+}
+
+// Usage
+fn features_section() -> impl rusti::Component {
+    rusti! {
+        <section class="features">
+            @feature_card("🚀", "Fast", "Lightning-fast performance")
+            @feature_card("🔒", "Secure", "Built-in XSS protection")
+            @feature_card("⚡", "Zero-Cost", "Compiles to native code")
+        </section>
+    }
+}
+```
+
+### When NOT to Use Scoped CSS
+
+**Don't use for:**
+- Global styles (use external stylesheets)
+- Tailwind utility classes (already scoped)
+- Shared styles across components
+
+```rust
+// ❌ Avoid: Global styles in scoped CSS
+fn page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <style>
+                /* This gets scoped! Not what you want for global styles */
+                body { margin: 0; padding: 0; }
+            </style>
+        </div>
+    }
+}
+
+// ✅ Correct: Use external stylesheet for globals
+fn page() -> impl rusti::Component {
+    rusti! {
+        <html>
+            <head>
+                <style src="styles/global.css" />
+            </head>
+            <body>
+                @content()
+            </body>
+        </html>
+    }
+}
+```
+
+### Scoped CSS with Media Queries
+
+```rust
+fn responsive_card() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <style>
+                .card {
+                    padding: 1em;
+                    background: white;
+                }
+                
+                @media (min-width: 768px) {
+                    .card {
+                        padding: 2em;
+                        max-width: 600px;
+                    }
+                }
+                
+                @media (prefers-color-scheme: dark) {
+                    .card {
+                        background: #2d3748;
+                        color: white;
+                    }
+                }
+            </style>
+            
+            <div class="card">
+                <h2>Responsive Card</h2>
+                <p>Adapts to screen size and theme!</p>
+            </div>
+        </div>
+    }
+}
+```
+
+---
+
 ## Advanced Patterns
 
 ### Higher-Order Component (Wrapper)
