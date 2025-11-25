@@ -26,7 +26,7 @@ pub fn homepage() -> impl azumi::Component {
                         <h1>"⚡ Azumi 2.0"</h1>
                         <p class="tagline">"Type-safe HTML templates for Rust + Axum"</p>
                         <div class="badges">
-                            <span class="badge">Zero-cost</span>
+                            <span class="badge">"Zero-cost"</span>
                             <span class="badge">"Compile-time checked"</span>
                             <span class="badge">"External CSS/JS"</span>
                         </div>
