@@ -16,6 +16,7 @@ use component_macro_demo::component_macro_handler;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
 mod comprehensive_demo;
+mod handlers;
 mod let_demo;
 mod script_style_demo;
 mod styles_demo;
@@ -747,9 +748,6 @@ async fn interactive_counter_handler() -> impl IntoResponse {
         &scripts::interactive_counter::interactive_counter(),
     ))
 }
-
-
-
 
 #[tokio::main]
 async fn main() {

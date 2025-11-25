@@ -77,7 +77,3 @@ pub fn todo_app_htmx() -> impl rusti::Component {
         </html>
     }
 }
-
-
-fn add_todo() -> impl rusti::Component {
-    
