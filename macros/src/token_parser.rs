@@ -578,6 +578,12 @@ impl Parse for IfBlock {
             condition.extend(Some(tt));
         }
 
+        if !input.peek(Brace) {
+            return Err(Error::new(
+                input.span(),
+                "Expected block { ... } after if condition",
+            ));
+        }
         let content;
         syn::braced!(content in input);
         let then_branch = parse_nodes(&content)?;
@@ -625,6 +631,12 @@ impl Parse for ForBlock {
             iterator.extend(Some(tt));
         }
 
+        if !input.peek(Brace) {
+            return Err(Error::new(
+                input.span(),
+                "Expected block { ... } in for loop",
+            ));
+        }
         let content;
         syn::braced!(content in input);
         let body = parse_nodes(&content)?;
@@ -682,6 +694,12 @@ impl Parse for MatchBlock {
             expr.extend(Some(tt));
         }
 
+        if !input.peek(Brace) {
+            return Err(Error::new(
+                input.span(),
+                "Expected block { ... } in match expression",
+            ));
+        }
         let content;
         syn::braced!(content in input);
 
