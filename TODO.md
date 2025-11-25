@@ -61,6 +61,10 @@ optional props with default values
 
 props spreading 
 
+explain in readme the @input vs input Input component decision
+
+update the error reporting to point to the exact location of the error in the source code
+
 
 ### 1. Surgical Error Reporting (High Priority)
 - **Goal**: Improve compiler error messages by pointing to the exact location of the error in the source code.
