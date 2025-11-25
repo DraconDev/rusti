@@ -2,16 +2,15 @@
 
 ## 🚀 Future Improvements
 
-make a todo app example using htmx as much as possible and compare it to the todo app example in the rusti-demo repo
+1. make a todo app example using htmx as much as possible and compare it to the todo app example in the rusti-demo repo
 
-support for emojis in html
+2. support for emojis in html
 
-add fragment support
+3. add fragment support
 
-lets update the readme and examples with all the script related features we did and learned
+4. lets update the readme and examples with all the script related features we did and learned
 
-###
-add 
+5. add 
 This is a very practical, grounded approach. You are essentially implementing Server-Side Data Injection, which is a requirement for 99% of SSR apps.
 Before we talk about compiling Rust to JS, let's perfect this specific pattern because it is the foundation of the "Bridge" between your server and client.
 Here is my analysis of your snippet, why it is likely buggy, and the one change that will make it bulletproof.
@@ -50,24 +49,23 @@ rusti! {
 }
 
 
-<!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
+7. <!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
 
-
-f string solution for ?
+8. f string solution for ?
 hx-post={format!("/api/tasks/{}/toggle", task.id)}
 hx-target={format!("#task-{}", task.id)}
 Current: id={format!("task-{}", task.id)}
 Dream: id=f"task-{task.id}" (If Rust eventually stabilizes f-strings, you are ready).
 
-scoped css
+9. scoped css
 
-optional props with default values
+10. optional props with default values
 
-props spreading 
+11. props spreading 
 
-explain in readme the @input vs input Input component decision
+12. explain in readme the @input vs input Input component decision
 
-update the error reporting to point to the exact location of the error in the source code
+13. update the error reporting to point to the exact location of the error in the source code
 
 
 ### 1. Surgical Error Reporting (High Priority)
