@@ -27,10 +27,15 @@ pub fn simple_script_test() -> impl rusti::Component {
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
 
-                
+
                 document.getElementById("output").innerHTML += "<br>Array: " + arr; // this works too
 
                 @for item in &my_array {
+                    document.getElementById("output").innerHTML += "<br>" + @{ item };
+                } // this works too
+
+                @let my_string_array = vec!["Apple", "Banana", "Cherry"];
+                @for item in &my_string_array {
                     document.getElementById("output").innerHTML += "<br>" + @{ item };
                 } // this works too
 
