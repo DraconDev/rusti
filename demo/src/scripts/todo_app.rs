@@ -305,7 +305,7 @@ pub fn todo_app() -> impl rusti::Component {
                             const completedClass = todo.completed ? " completed" : "";
                             const checked = todo.completed ? " checked" : "";
 
-                            return "<li class='todo-item" + completedClass + "'>" +
+                            return "<li class='todo-item" + completedClass + ">" +
                                 "<input type='checkbox' class='todo-checkbox'" + checked + " onchange='toggleTodo(" + todo.id + ")' />" +
                                 "<span class='todo-text'>" + todo.text + "</span>" +
                                 "<button class='delete-btn' onclick='deleteTodo(" + todo.id + ")'>Delete</button>" +
