@@ -99,14 +99,54 @@ fn generate_body_with_context(
                     Context::Normal
                 };
 
-                // Special handling for <style src="...">
+                // Special handling for <style> tags - AUTOMATIC SCOPING
                 if name == "style" {
+                    // Generate unique scope ID
+                    let scope_counter_code = quote! {
+                        {
+                            use std::sync::atomic::{AtomicU64, Ordering};
+                            static COUNTER: AtomicU64 = AtomicU64::new(0);
+                            let id = COUNTER.fetch_add(1, Ordering::Relaxed);
+                            format!("s{:x}", id)
+                        }
+                    };
+
+                    // Check if it's an external stylesheet
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         if let token_parser::AttributeValue::Static(path) = &src_attr.value {
+                            // External stylesheet - scope it
                             return quote! {
-                                write!(f, "<style>{}</style>", include_str!(#path))?;
+                                {
+                                    let scope_id = #scope_counter_code;
+                                    let css_content = include_str!(#path);
+                                    let scoped_css = rusti::scope_css(css_content, &scope_id);
+                                    write!(f, "<style data-scope=\"{}\">", scope_id)?;
+                                    write!(f, "{}", scoped_css)?;
+                                    write!(f, "</style>")?;
+                                }
                             };
                         }
+                    }
+
+                    // Inline <style> - extract text content and scope it
+                    let mut style_content = String::new();
+                    for child in &elem.children {
+                        if let token_parser::Node::Text(text) = child {
+                            style_content.push_str(&text.content);
+                        }
+                    }
+
+                    if !style_content.is_empty() {
+                        return quote! {
+                            {
+                                let scope_id = #scope_counter_code;
+                                let css_content = #style_content;
+                                let scoped_css = rusti::scope_css(css_content, &scope_id);
+                                write!(f, "<style data-scope=\"{}\">", scope_id)?;
+                                write!(f, "{}", scoped_css)?;
+                                write!(f, "</style>")?;
+                            }
+                        };
                     }
                 }
 
