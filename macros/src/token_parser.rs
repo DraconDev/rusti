@@ -137,6 +137,15 @@ pub struct LetBlock {
 pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
     let mut nodes = Vec::new();
     while !input.is_empty() {
+        // Skip whitespace-only tokens
+        let fork = input.fork();
+        if let Ok(tt) = fork.parse::<TokenTree>() {
+            if tt.to_string().trim().is_empty() {
+                input.parse::<TokenTree>()?; // Consume the whitespace
+                continue;
+            }
+        }
+
         if input.peek(Token![<]) {
             // Element, Comment, Doctype, Fragment
             if input.peek2(Token![!]) {
@@ -170,9 +179,20 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
         } else if input.peek(Brace) {
             // Expression { ... }
             nodes.push(Node::Expression(input.parse()?));
-        } else {
-            // Text
+        } else if input.peek(syn::Lit) {
+            // Text content (must be string literal)
             nodes.push(Node::Text(input.parse()?));
+        } else {
+            // Unexpected token
+            return Err(Error::new(
+                input.span(),
+                "Unexpected token. Expected:\n\
+                - HTML element: <tag>...</tag>\n\
+                - Expression: {expr} or @{expr}\n\
+                - Control flow: @if, @for, @match, @let\n\
+                - Text content (must be quoted): \"text\"\n\
+                - Component call: @ComponentName(...) or @function(...)",
+            ));
         }
     }
     Ok(nodes)
