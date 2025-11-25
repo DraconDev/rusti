@@ -220,64 +220,26 @@ impl Parse for Element {
                 });
 
             if !has_src && !(name == "script" && is_json_script) {
-                let tag_specific_help = if name == "script" {
-                    "
-JavaScript:
-  ❌ Inline: <script>const x = 42;</script>
-  ✅ External: <script src=\"/static/app.js\" />
-  ✅ Data Only: <script type=\"application/json\">{{{{ data }}}}</script>
+                let tag_help = if name == "script" {
+                    "JavaScript must be external or JSON data:
+  ✅ <script src=\"/static/app.js\" />
+  ✅ <script type=\"application/json\">{{ data }}</script>
+  ❌ <script>const x = 42;</script>
 
-Why external files?
-  • Full IDE support: syntax highlighting, autocomplete, type checking
-  • Catch errors before compile: ESLint, TypeScript, Prettier all work
-  • No silent failures: typos like `const x = 4 2;` caught immediately
-  • Professional workflow: use the tools JavaScript devs actually use
-
-For server→client data:
-  • Use data attributes: <div data-config={{{{ config }}}}> 
-  • Or JSON script: <script type=\"application/json\" id=\"data\">{{{{ json }}}}</script>
-  • Read in app.js: const data = JSON.parse(document.getElementById('data').text);
-"
+For data: use data-* attributes or JSON script blocks"
                 } else {
-                    "
-CSS Styles:
-  ❌ Inline: <style>.card {{ padding: 2em; }}</style>
-  ✅ External: <style src=\"components/card.css\" />
-  
-External CSS is scoped automatically!
-  <div>
-    <style src=\"card.css\" />  ← This CSS only affects this component
-    <div class=\"card\">...</div>
-  </div>
+                    "CSS must be external:
+  ✅ <style src=\"components/card.css\" />  (auto-scoped)
+  ❌ <style>.card { padding: 2em; }</style>
 
-Why external files?
-  • Full IDE support: IntelliSense, color previews, CSS validation  
-  • Catch typos early: `co lor: red;` shows error in editor, not runtime
-  • Use preprocessors: Sass, PostCSS, Tailwind all work seamlessly
-  • Automatic scoping: no pollution, no conflicts, just works
-
-For dynamic styles:
-  • Use style attribute: <div style={{{{ format!(\"color: {{}}\", color) }}}}>
-  • Or CSS variables in external file with data attributes
-"
+For dynamic styles: use style attribute with expressions"
                 };
 
                 return Err(Error::new(
                     start_span,
                     format!(
-                        "Inline <{}> tags are not supported in Azumi 2.0\n\
-                        \n\
-                        The Problem:\n\
-                        Inline {0} in Rust files gets ZERO tooling support. Your editor can't:\n\
-                        • Highlight syntax errors\n\
-                        • Warn about typos (e.g., `co lor: red;` compiles but breaks)\n\
-                        • Provide autocomplete or IntelliSense\n\
-                        • Run linters like ESLint or Stylelint\n\
-                        \n\
-                        Result: Silent failures that only appear at runtime.\n\
-                        {}\n\
-                        Azumi enforces best practices: external files = professional tooling.",
-                        name, tag_specific_help
+                        "Inline <{}> tags not allowed in Azumi 2.0\n\n{}\n\nWhy? External files get full IDE support (linting, autocomplete, error checking).",
+                        name, tag_help
                     ),
                 ));
             }
