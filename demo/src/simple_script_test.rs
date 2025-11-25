@@ -32,7 +32,7 @@ pub fn simple_script_test() -> impl rusti::Component {
 
                 @for item in &my_array {
                     document.getElementById("output").innerHTML += "<br>" + @{ item };
-                }
+                } // this works too
 
 
                 console.log("num =", num);
