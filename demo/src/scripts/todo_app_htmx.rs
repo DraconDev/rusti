@@ -1,5 +1,4 @@
 use crate::db;
-use axum::extract::{Form, Path, Query};
 use rusqlite::Connection;
 use rusti::rusti;
 use serde::Deserialize;
@@ -326,14 +325,24 @@ pub fn render_todo_list(conn: &Connection, filter: Option<String>) -> impl rusti
             <ul id="todo-list" class="todo-list">
                 @for todo in todos {
                     <li class={format!("todo-item {}", if todo.completed { "completed" } else { "" })}>
-                        <input
-                            type="checkbox"
-                            class="todo-checkbox"
-                            hx-post={format!("/api/toggle/{}", todo.id)}
-                            hx-target="#todo-list"
-                            hx-swap="outerHTML"
-                            {if todo.completed { "checked" } else { "" }}
-                        />
+                        @if todo.completed {
+                            <input
+                                type="checkbox"
+                                class="todo-checkbox"
+                                hx-post={format!("/api/toggle/{}", todo.id)}
+                                hx-target="#todo-list"
+                                hx-swap="outerHTML"
+                                checked
+                            />
+                        } else {
+                            <input
+                                type="checkbox"
+                                class="todo-checkbox"
+                                hx-post={format!("/api/toggle/{}", todo.id)}
+                                hx-target="#todo-list"
+                                hx-swap="outerHTML"
+                            />
+                        }
                         <span class="text">{ &todo.text }</span>
                         <button
                             class="delete-btn"
