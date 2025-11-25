@@ -197,9 +197,9 @@ pub fn interactive_counter() -> impl rusti::Component {
                     }
                     
                     historyList.innerHTML = history.map(entry => 
-                        `<li class="history-item">
-                            <strong>${entry.time}</strong> - ${entry.action}: ${entry.value}
-                        </li>`
+                        <li class="history-item">
+                            <strong>{entry.time}</strong> - {entry.action}: {entry.value}
+                        </li>
                     ).join("");
                 }
                 
