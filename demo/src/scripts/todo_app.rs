@@ -329,9 +329,12 @@ pub fn todo_app() -> impl rusti::Component {
                 }
 
                 function escapeHtml(text) {
+                    console.log("escapeHtml called with:", text);
                     const div = document.createElement("div");
                     div.textContent = text;
-                    return div.innerHTML;
+                    const result = div.innerHTML;
+                    console.log("escapeHtml returning:", result);
+                    return result;
                 }
 
                 function updateStats() {
