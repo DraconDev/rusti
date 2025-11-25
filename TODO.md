@@ -51,21 +51,15 @@ rusti! {
 
 7. <!-- bug: < > are not parsed correctly they are interpreted as html tags !!! -->
 
-8. f string solution for ?
-hx-post={format!("/api/tasks/{}/toggle", task.id)}
-hx-target={format!("#task-{}", task.id)}
-Current: id={format!("task-{}", task.id)}
-Dream: id=f"task-{task.id}" (If Rust eventually stabilizes f-strings, you are ready).
+8. scoped css
 
-9. scoped css
+9. optional props with default values
 
-10. optional props with default values
+10. props spreading 
 
-11. props spreading 
+11. explain in readme the @input vs input Input component decision
 
-12. explain in readme the @input vs input Input component decision
-
-13. update the error reporting to point to the exact location of the error in the source code
+12. update the error reporting to point to the exact location of the error in the source code
 
 
 ### 1. Surgical Error Reporting (High Priority)
