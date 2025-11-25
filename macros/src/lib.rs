@@ -377,7 +377,7 @@ fn generate_body_with_context(
                     }
                 } else {
                     // Regular element (no style children) - original logic
-                    let children_code = generate_body_with_context(&elem.children, child_context);
+                    let children_code = generate_body_with_context(&elem.children, &child_context);
 
                     let mut attr_code = proc_macro2::TokenStream::new();
                     for attr in &elem.attrs {
