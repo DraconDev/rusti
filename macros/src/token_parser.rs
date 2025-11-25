@@ -192,9 +192,9 @@ impl Parse for Element {
 
         // Rusti 2.0: Block inline <style> and <script> tags
         if name == "style" || name == "script" {
-            let has_src = attrs.iter().any(|attr| attr.name == "src");
+            let has_src = attrs.iter().any(|attr: &Attribute| attr.name == "src");
             let is_json_script = name == "script"
-                && attrs.iter().any(|attr| {
+                && attrs.iter().any(|attr: &Attribute| {
                     attr.name == "type"
                         && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
                 });
