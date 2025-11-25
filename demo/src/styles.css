@@ -3,7 +3,7 @@ body {
     color: #223232;
 }
 h1 {
-    color: red;
+    col or: white;
     cursor: pointer;
     &:hover {
         color: green;
