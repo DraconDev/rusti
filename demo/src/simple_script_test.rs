@@ -24,6 +24,7 @@ pub fn simple_script_test() -> impl rusti::Component {
                 // const str = @{ my_string.to_string() }; doesn't work
                 const arr = @{ format!("{:?}", my_array) };
                 // const arr = @{ my_array }; doesn't work, even errors in compiler
+                const arr:  = @{ my_array }; 
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
