@@ -9,7 +9,7 @@ pub fn interactive_counter() -> impl rusti::Component {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Interactive Counter</title>
             <style>
-                body { 
+                body {
                     font-family: sans-serif;
                         max-width: 800px;
                     margin: 50px auto;
@@ -17,78 +17,78 @@ pub fn interactive_counter() -> impl rusti::Component {
                     background: linear-gradient(135deg, skyblue, purple);
                     min-height: 100vh;
                 }
-                .container { 
-                    background: white;
+                .container {
+                    background: green;
                     border-radius: 12px;
                     padding: 30px;
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
                 }
-                h1 { 
-                    text-align: center; 
-                    margin-bottom: 30px; 
-                    color: darkblue; 
+                h1 {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    color: darkblue;
                 }
-                .counter-display { 
-                    text-align: center; 
-                    margin: 30px 0; 
+                .counter-display {
+                    text-align: center;
+                    margin: 30px 0;
                 }
-                .counter-value { 
-                    font-size: 72px; 
-                    font-weight: bold; 
-                    color: darkblue; 
+                .counter-value {
+                    font-size: 72px;
+                    font-weight: bold;
+                    color: darkblue;
                 }
-                .status { 
-                    font-size: 20px; 
-                    margin-top: 10px; 
-                    color: #666; 
+                .status {
+                    font-size: 20px;
+                    margin-top: 10px;
+                    color: #666;
                 }
-                .controls { 
-                    display: flex; 
-                    gap: 10px; 
-                    justify-content: center; 
-                    margin: 20px 0; 
+                .controls {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                    margin: 20px 0;
                 }
-                button { 
-                    padding: 12px 24px; 
-                    font-size: 16px; 
-                    border: none; 
-                    border-radius: 6px; 
-                    cursor: pointer; 
-                    font-weight: 600; 
-                    color: white; 
+                button {
+                    padding: 12px 24px;
+                    font-size: 16px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    color: white;
                 }
-                button:hover { 
-                    transform: translateY(-2px); 
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+                button:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
                 }
-                .btn-increment { 
-                    background: green; 
+                .btn-increment {
+                    background: green;
                 }
-                .btn-decrement { 
-                    background: red; 
+                .btn-decrement {
+                    background: red;
                 }
-                .btn-reset { 
-                    background: blue; 
+                .btn-reset {
+                    background: blue;
                 }
-                .history { 
-                    margin-top: 30px; 
-                    padding: 20px; 
-                    background: whitesmoke; 
-                    border-radius: 8px; 
+                .history {
+                    margin-top: 30px;
+                    padding: 20px;
+                    background: whitesmoke;
+                    border-radius: 8px;
                 }
-                .history h3 { 
-                    margin-top: 0; 
+                .history h3 {
+                    margin-top: 0;
                 }
-                .history-list { 
-                    list-style: none; 
-                    padding: 0; 
+                .history-list {
+                    list-style: none;
+                    padding: 0;
                 }
-                .history-item { 
-                    padding: 8px 12px; 
-                    margin: 5px 0; 
-                    background: white; 
-                    border-left: 4px solid darkblue; 
-                    border-radius: 4px; 
+                .history-item {
+                    padding: 8px 12px;
+                    margin: 5px 0;
+                    background: white;
+                    border-left: 4px solid darkblue;
+                    border-radius: 4px;
                 }
             </style>
         </head>
