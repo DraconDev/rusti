@@ -5,5 +5,5 @@
 
 
 
-3. explain in readme the @input vs input vs @input component decision
+3. explain in readme the Input vs input vs @input component decision
 
