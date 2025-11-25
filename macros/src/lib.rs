@@ -149,8 +149,25 @@ fn generate_body_with_context(
 
                                 // Generate child attributes
                                 let mut child_attr_code = proc_macro2::TokenStream::new();
-                                for attr in &child_elem.children {
-                                    // Process child element attributes
+                                for attr in &child_elem.attrs {
+                                    let attr_name = &attr.name;
+                                    match &attr.value {
+                                        token_parser::AttributeValue::Static(val) => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
+                                            });
+                                        }
+                                        token_parser::AttributeValue::Dynamic(expr) => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
+                                            });
+                                        }
+                                        token_parser::AttributeValue::None => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}", #attr_name)?;
+                                            });
+                                        }
+                                    }
                                 }
 
                                 // Determine child context
@@ -177,9 +194,25 @@ fn generate_body_with_context(
                                     write!(f, "</{}>", #child_name)?;
                                 });
                             }
+                            token_parser::Node::Text(text) => {
+                                let content = &text.content;
+                                if !content.is_empty() {
+                                    let stripped = strip_outer_quotes(content);
+                                    children_code.extend(quote! {
+                                        write!(f, "{}", #stripped)?;
+                                    });
+                                }
+                            }
+                            token_parser::Node::Expression(expr) => {
+                                let content = &expr.content;
+                                children_code.extend(quote! {
+                                    write!(f, "{}", rusti::Escaped(&(#content)))?;
+                                });
+                            }
                             _ => {
-                                // Other nodes (text, expressions, etc.)
-                                let node_code = generate_node_code(child, context);
+                                // Handle other node types by recursing
+                                // (ForBlock, IfBlock, etc would go here)
+                                let node_code = generate_node_code(child, context); // Assuming generate_node_code exists or similar logic
                                 children_code.extend(node_code);
                             }
                         }
