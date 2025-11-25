@@ -11,16 +11,12 @@ pub async fn layouts_handler() -> impl IntoResponse {
 // A true "Layout" pattern often involves passing a closure or a specific slot.
 // Here we demonstrate "Composition" which is the React/Azumi way.
 
-fn main_layout<F, C>(title: &str, content: F) -> impl azumi::Component
-where
-    F: Fn() -> C,
-    C: azumi::Component,
-{
+fn page_content() -> impl azumi::Component {
     html! {
         <!DOCTYPE html>
         <html>
             <head>
-                <title>{title}</title>
+                <title>"Layouts Demo"</title>
                 <style src="/static/homepage.css" />
                 <style src="/static/layouts.css" />
             </head>
@@ -35,26 +31,21 @@ where
                         </ul>
                     </nav>
                     <main class="main">
-                        @content()
+                        <h1>"Layout Composition"</h1>
+                        <p>"This page demonstrates a common layout pattern with sidebar navigation."</p>
+                        <p>"In production, you'd extract this into a reusable function that takes content as a parameter."</p>
+
+                        <div class="card">
+                            <h3>"Pattern Options"</h3>
+                            <ul>
+                                <li>"Pass content as a static string or component reference"</li>
+                                <li>"Use builder patterns for complex layouts"</li>
+                                <li>"Compose multiple smaller layout components"</li>
+                            </ul>
+                        </div>
                     </main>
                 </div>
             </body>
         </html>
     }
-}
-
-fn page_content() -> impl azumi::Component {
-    // We use the layout by calling it as a function and passing our content as a closure
-    main_layout("Layouts Demo", || {
-        html! {
-            <h1>"Layout Composition"</h1>
-            <p>"This page demonstrates how to create a reusable layout wrapper."</p>
-            <p>"The sidebar on the left is part of the layout, while this content is passed in."</p>
-
-            <div class="card">
-                <h3>"Why Composition?"</h3>
-                <p>"It avoids inheritance and makes data flow explicit."</p>
-            </div>
-        }
-    })
 }

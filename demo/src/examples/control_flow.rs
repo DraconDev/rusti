@@ -35,10 +35,12 @@ fn control_flow_demo(users: Vec<&str>, status: Status, count: i32) -> impl azumi
                         <h2>"1. If / Else Statements"</h2>
                         @if count > 10 {
                             <p>"Count is high: " {count}</p>
-                        } @else if count > 0 {
-                            <p>"Count is positive: " {count}</p>
                         } @else {
-                            <p>"Count is zero or negative"</p>
+                            @if count > 0 {
+                                <p>"Count is positive: " {count}</p>
+                            } @else {
+                                <p>"Count is zero or negative"</p>
+                            }
                         }
                     </div>
 
