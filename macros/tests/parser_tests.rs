@@ -5,7 +5,8 @@
 
 // #[test]
 // fn script_tag_is_handled() {
-//     let comp = rusti! {
+//     let comp = html!
+ {
 //         <html>
 //             <head></head>
 //             <body>
@@ -24,7 +25,8 @@
 
 // #[test]
 // fn html_comment_is_ignored() {
-//     let comp = rusti! {
+//     let comp = html!
+ {
 //         <html>
 //             <!-- This is a comment -->
 //             <body>"Hello"</body>

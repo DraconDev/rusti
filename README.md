@@ -1,7 +1,8 @@
 # Rusti 🦀
 **The Most Robust HTML Parser for Rust** - Type-Safe, Feature-Rich, Production-Ready
 
-Rusti is a powerful, zero-cost, type-safe HTML templating engine for Rust. It allows you to write HTML-like syntax directly in your Rust code using the `rusti!` macro.
+Rusti is a powerful, zero-cost, type-safe HTML templating engine for Rust. It allows you to write HTML-like syntax directly in your Rust code using the `html!
+` macro.
 
 Inspired by Go's `templ` library, Rusti brings the component model to server-side Rust. Because it compiles to native Rust code at build time, it delivers blazing fast performance with full type safety.
 
@@ -42,7 +43,8 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 Rusti automatically strips outer quotes from string literals in text positions for cleaner rendering:
 
 ```rust
-rusti! {
+html!
+ {
     <h1>"Hello, World!"</h1>  // Renders as: Hello, World! (quotes removed)
     <h1>Hello, World!</h1>     // Also renders as: Hello, World!
 }
@@ -55,7 +57,8 @@ Both syntaxes produce the same output. The quotes are removed automatically to p
 If you actually want to display quote marks, use raw strings:
 
 ```rust
-rusti! {
+html!
+ {
     <p>{r#""This will show quotes""#}</p>  // Renders as: "This will show quotes"
     <blockquote>"Said the wise person"</blockquote>  // Use <q> or entities for semantic quotes
 }
@@ -76,7 +79,8 @@ For semantic quotations, prefer HTML elements or entities:
 use rusti::rusti;
 
 fn hello_world() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="container mx-auto p-4">
             <h1 class="text-2xl font-bold">Hello, World!</h1>
         </div>
@@ -91,7 +95,8 @@ use rusti::component;
 
 #[component]
 fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class={ if is_highlighted { "card highlighted" } else { "card" } }>
             <h2>{title}</h2>
         </div>
@@ -100,7 +105,8 @@ fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl 
 
 // Usage - optional props can be omitted!
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             @card(title = "My Card".to_string())
             @card(title = "Important!".to_string(), is_highlighted = true)
@@ -114,7 +120,8 @@ fn page() -> impl rusti::Component {
 ```rust
 #[component]
 fn layout(title: String, children: impl rusti::Component) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="layout">
             <header><h1>{title}</h1></header>
             <main>
@@ -126,7 +133,8 @@ fn layout(title: String, children: impl rusti::Component) -> impl rusti::Compone
 
 // Usage - pass JSX-like children!
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @layout(title = "My Page".to_string()) {
             <p>This is the page content</p>
             <button>Click me</button>
@@ -139,7 +147,8 @@ fn page() -> impl rusti::Component {
 
 ```rust
 fn search_box() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <input 
             type="search"
             name="q"
@@ -161,13 +170,15 @@ fn search_box() -> impl rusti::Component {
 
 ```rust
 fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <button class={class}>{ label }</button>
     }
 }
 
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             @button("Submit", "btn-primary")
             @button("Cancel", "btn-secondary")
@@ -194,7 +205,8 @@ fn alert_box(
 ) -> impl rusti::Component {
     let bg_color = if is_error { "bg-red-500" } else { "bg-blue-500" };
     
-    rusti! {
+    html!
+ {
         <div class={bg_color}>
             <h3>{title}</h3>
             <p>{message}</p>
@@ -203,7 +215,8 @@ fn alert_box(
 }
 
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             {/* All props specified */}
             @alert_box(
@@ -226,7 +239,8 @@ Components can accept children, enabling powerful composition patterns:
 ```rust
 #[component]
 fn card(title: String, children: impl rusti::Component) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="card border rounded shadow p-4">
             <h2 class="text-xl font-bold">{title}</h2>
             <div class="card-body">
@@ -238,7 +252,8 @@ fn card(title: String, children: impl rusti::Component) -> impl rusti::Component
 
 #[component]
 fn button_group(children: impl rusti::Component) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="flex gap-2">
             @children
         </div>
@@ -246,7 +261,8 @@ fn button_group(children: impl rusti::Component) -> impl rusti::Component {
 }
 
 fn dashboard() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @card(title = "User Actions".to_string()) {
             @button_group {
                 <button class="btn-primary">Save</button>
@@ -266,7 +282,8 @@ Rusti provides first-class support for control flow using `@`:
 
 ```rust
 fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div>
             {/* Pattern Matching */}
             @match role {
@@ -302,7 +319,8 @@ Declare scoped variables directly in your templates using `@let`:
 
 ```rust
 fn calculator() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             @let x = 10;
             @let y = 20;
@@ -333,7 +351,8 @@ fn calculator() -> impl rusti::Component {
 You can write standard JavaScript directly in `<script>` tags:
 
 ```rust
-rusti! {
+html!
+ {
     <script>
         const app = {
             count: 0,
@@ -357,7 +376,8 @@ rusti! {
 Write standard CSS directly in `<style>` tags:
 
 ```rust
-rusti! {
+html!
+ {
     <style>
         .card {
             padding: "2em";       /* ✅ Use quoted strings for integer+unit */
@@ -409,7 +429,8 @@ fn counter_app() -> impl rusti::Component {
     let count = 42;
     let max_count = 100;
     
-    rusti! {
+    html!
+ {
         <script>
             const currentCount = @{ count };
             const maxCount = @{ max_count };
@@ -433,7 +454,8 @@ String variables require special handling - they must be converted to `String` t
 
 ```rust
 fn app() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <script>
             // ✅ Correct - use @let to create String in template scope
             @let message = "Hello, World!".to_string();
@@ -464,7 +486,8 @@ fn dynamic_script() -> impl rusti::Component {
     let items = vec!["apple", "banana", "cherry"];
     let debug_mode = true;
     
-    rusti! {
+    html!
+ {
         <script>
             const items = [];
             
@@ -530,7 +553,8 @@ For most interactive UIs, **use HTMX** instead of client-side JavaScript:
 // </script>
 
 // ✅ Prefer: Server-side rendering with HTMX
-rusti! {
+html!
+ {
     <div hx-get="/api/items" hx-trigger="load">
         @for item in &items {
             <div>{item}</div>
@@ -555,7 +579,8 @@ Rusti automatically scopes CSS when you include `<style>` tags as **direct child
 
 ```rust
 fn scoped_card() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <style>
                 .card {
@@ -605,7 +630,8 @@ Each component gets its own unique scope:
 
 ```rust
 fn app() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             @scoped_card()  // Gets scope "s0"
             @scoped_card()  // Gets scope "s1" - completely isolated!
@@ -630,7 +656,8 @@ Rusti has full support for HTMX attributes, including event handlers and namespa
 
 ```rust
 fn live_search() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <input 
                 type="search"
@@ -651,7 +678,8 @@ fn live_search() -> impl rusti::Component {
 fn delete_button(id: i32) -> impl rusti::Component {
     let confirm_msg = format!("Are you sure you want to delete item {}?", id);
     
-    rusti! {
+    html!
+ {
         <button
             hx-delete={format!("/api/items/{}", id)}
             hx-confirm={confirm_msg}
@@ -668,7 +696,8 @@ fn delete_button(id: i32) -> impl rusti::Component {
 
 ```rust
 fn vue_component(is_active: bool) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div 
             v-bind:class={ if is_active { "active" } else { "" } }
             v-on:click="handleClick"
@@ -686,7 +715,8 @@ fn vue_component(is_active: bool) -> impl rusti::Component {
 ### Option A: Tailwind CSS (Recommended) 🌊
 
 ```rust
-rusti! {
+html!
+ {
     <div class="p-8 m-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-2xl">
         <h1 class="text-4xl font-bold">Tailwind works perfectly.</h1>
         <p class="mt-2 text-gray-100">No compiler errors, ever.</p>
@@ -697,7 +727,8 @@ rusti! {
 ### Option B: Inline Styles ✅
 
 ```rust
-rusti! {
+html!
+ {
     <div style="margin: 2em; color: #ff0000; font-size: 16px;">
         Inline styles are bulletproof.
     </div>
@@ -709,7 +740,8 @@ rusti! {
 Include external CSS files at compile time:
 
 ```rust
-rusti! {
+html!
+ {
     <style src="styles/main.css" />
     <div class="custom-component">
         Content styled by external CSS
@@ -720,7 +752,8 @@ rusti! {
 ### Option D: Raw String CSS
 
 ```rust
-rusti! {
+html!
+ {
     <style>{r#"
         .container {
             background-color: #f4f4f4;
@@ -745,7 +778,8 @@ rusti! {
 
 1. **Use double quotes** for attributes: `class="foo"` (not `class='foo'`)
 2. **Scripts use double quotes only**: Always `""`, never `''` in `<script>` tags
-3. **Emojis in variables**: `let text = "Hello ✅"; rusti! { <p>{text}</p> }`
+3. **Emojis in variables**: `let text = "Hello ✅"; html!
+ { <p>{text}</p> }`
 4. **Use Tailwind or inline styles** to avoid CSS headaches
 5. **External styles**: Use `<style src="path/to/style.css" />` for external CSS
 6. **Inline CSS**: Standard CSS works fine; use `"2em"` (quoted) if lexer complains
@@ -804,7 +838,8 @@ use axum::{response::{Html, IntoResponse}, routing::get, Router};
 use rusti::rusti;
 
 async fn handler() -> impl IntoResponse {
-    let html = rusti! {
+    let html = html!
+ {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
@@ -814,7 +849,8 @@ async fn handler() -> impl IntoResponse {
             </head>
             <body class="bg-gray-100 p-8">
                 <h1 class="text-4xl font-bold text-indigo-600">
-                    Hello from Axum + Rusti!
+                    Hello from Axum + html!
+
                 </h1>
                 <button 
                     hx-get="/api/data"
@@ -862,7 +898,8 @@ fn Card(
     #[prop(default = "false")] highlighted: bool,
     #[prop(default = "\"\".to_string())] subtitle: String
 ) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class={ if highlighted { "card highlighted" } else { "card" } }>
             <h2>{title}</h2>
             @if !subtitle.is_empty() {
@@ -873,7 +910,8 @@ fn Card(
 }
 
 // Usage: Named arguments with builder pattern
-rusti! {
+html!
+ {
     @Card(title = "Hello".to_string())
     @Card(title = "Featured".to_string(), highlighted = true)
     @Card(
@@ -896,13 +934,15 @@ Use `snake_case` regular functions for simple components with 1-2 required props
 
 ```rust
 fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <button class={class}>{label}</button>
     }
 }
 
 // Usage: Positional arguments (like normal function calls)
-rusti! {
+html!
+ {
     @button("Click me", "btn-primary")
     @button("Cancel", "btn-secondary")
 }
@@ -923,7 +963,8 @@ fn app() -> impl rusti::Component {
     let my_header = header("My App");
     let my_footer = footer(2025);
     
-    rusti! {
+    html!
+ {
         <div>
             @my_header
             <main>Content here</main>
@@ -957,7 +998,8 @@ Rusti is designed for **server-side rendering with HTMX**, not heavy client-side
 
 ```rust
 // ❌ Client-Side Approach (More complex, less reliable)
-rusti! {
+html!
+ {
     <div id="items"></div>
     <script>
         @let items = vec!["a", "b", "c"];
@@ -972,7 +1014,8 @@ rusti! {
 }
 
 // ✅ Server-Side Approach (Simpler, faster, type-safe)
-rusti! {
+html!
+ {
     <div hx-get="/api/items" hx-trigger="load" hx-swap="innerHTML">
         @for item in &items {
             <div>{item}</div>
@@ -998,7 +1041,8 @@ Client-side JavaScript is appropriate for:
 For these cases, use `@{ }` injection to pass server data to client:
 
 ```rust
-rusti! {
+html!
+ {
     <script>
         @let api_key = env::var("API_KEY").unwrap();
         @let user_id = user.id;
@@ -1032,7 +1076,8 @@ Automatic scoping when `<style>` is a direct child:
 
 ```rust
 fn component_a() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <style>.button { background: blue; }</style>
             <button class="button">Blue</button>
@@ -1041,7 +1086,8 @@ fn component_a() -> impl rusti::Component {
 }
 
 fn component_b() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <style>.button { background: red; }</style>
             <button class="button">Red</button>  
@@ -1154,7 +1200,8 @@ let header = if user.is_admin() {
 // ✅ Good: Small, focused components
 #[component]
 fn Page(title: String, children: impl rusti::Component) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="page">
             @header(title)
             @children
@@ -1165,7 +1212,8 @@ fn Page(title: String, children: impl rusti::Component) -> impl rusti::Component
 
 // ❌ Avoid: Monolithic components with everything inline
 fn giant_page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             // 500 lines of HTML...
         </div>
@@ -1251,12 +1299,14 @@ mod tests {
 fn user_profile(user_id: i32) -> impl rusti::Component {
     let user = match fetch_user(user_id) {
         Ok(u) => u,
-        Err(_) => return rusti! {
+        Err(_) => return html!
+ {
             <div class="error">User not found</div>
         },
     };
     
-    rusti! {
+    html!
+ {
         <div class="profile">
             <h2>{user.name}</h2>
         </div>
@@ -1270,7 +1320,8 @@ fn user_profile(user_id: i32) -> impl rusti::Component {
 
 ```rust
 fn dialog(title: &str) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div role="dialog" aria-labelledby="dialog-title">
             <h2 id="dialog-title">{title}</h2>
             <button aria-label="Close dialog">×</button>
@@ -1389,14 +1440,16 @@ let msg = "Hello".to_string();  // String
 ```rust
 // ❌ Wrong
 fn card() -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div>{format!("Hello")}</div>  // format!() creates temporary String
     }
 }
 
 // ✅ Fix 1: Use @let
 fn card() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @let greeting = format!("Hello");
         <div>{greeting}</div>
     }
@@ -1404,7 +1457,8 @@ fn card() -> impl rusti::Component {
 
 // ✅ Fix 2: Remove lifetime bound if not borrowing
 fn card() -> impl rusti::Component {  // No '_ needed
-    rusti! {
+    html!
+ {
         <div>{"Hello"}</div>
     }
 }
@@ -1481,7 +1535,8 @@ Rusti components follow standard Rust lifetime rules:
 
 ```rust
 fn user_card(name: &str) -> impl rusti::Component + '_ {
-    rusti! { <div>{name}</div> }
+    html!
+ { <div>{name}</div> }
 }
 ```
 
@@ -1489,7 +1544,8 @@ fn user_card(name: &str) -> impl rusti::Component + '_ {
 
 ```rust
 fn counter(count: i32) -> impl rusti::Component {
-    rusti! { <div>Count: {count}</div> }
+    html!
+ { <div>Count: {count}</div> }
 }
 ```
 

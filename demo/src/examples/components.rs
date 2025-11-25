@@ -6,7 +6,8 @@ pub fn components_demo() -> impl rusti::Component {
     let title = "Components Demo";
     let items = vec!["Type-safe", "Zero-cost", "Composable"];
 
-    rusti! {
+    html!
+ {
         <!DOCTYPE html>
         <html>
             <head>
@@ -44,7 +45,8 @@ pub fn components_demo() -> impl rusti::Component {
 }
 
 fn header<'a>(title: &'a str) -> impl rusti::Component + 'a {
-    rusti! {
+    html!
+ {
         <header class="header">
             <h1>{title}</h1>
             <p>"Demonstrating component composition"</p>
@@ -53,7 +55,8 @@ fn header<'a>(title: &'a str) -> impl rusti::Component + 'a {
 }
 
 fn card<'a>(text: &'a str, icon: &'a str) -> impl rusti::Component + 'a {
-    rusti! {
+    html!
+ {
         <div class="card">
             <span class="icon">{icon}</span>
             <span class="text">{text}</span>
@@ -62,7 +65,8 @@ fn card<'a>(text: &'a str, icon: &'a str) -> impl rusti::Component + 'a {
 }
 
 fn footer() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <footer class="footer">
             <p>"Built with Rusti 2.0"</p>
         </footer>

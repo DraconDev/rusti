@@ -12,7 +12,8 @@ pub struct TodoForm {
 
 /// HTMX-powered todo list - server-side rendering
 pub fn htmx_todo() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <!DOCTYPE html>
         <html>
             <head>
@@ -59,7 +60,8 @@ pub fn htmx_todo() -> impl rusti::Component {
 fn todo_item<'a>(text: &'a str, id: u32) -> impl rusti::Component + 'a {
     let delete_url = format!("/api/todos/{}", id);
 
-    rusti! {
+    html!
+ {
         <div class="todo-item" id={format!("todo-{}", id)}>
             <input type="checkbox" class="todo-checkbox" />
             <span class="todo-text">{text}</span>

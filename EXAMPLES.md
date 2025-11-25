@@ -45,7 +45,8 @@ fn counter_demo() -> impl rusti::Component {
     let count = 42;
     let max = 100;
     
-    rusti! {
+    html!
+ {
         <!DOCTYPE html>
         <html>
         <head><title>Counter Demo</title></head>
@@ -70,7 +71,8 @@ fn counter_demo() -> impl rusti::Component {
 
 ```rust
 fn greeting_demo() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <script>
             // ✅ Correct: Create String with @let
             @let user_name = "Alice".to_string();
@@ -91,7 +93,8 @@ fn greeting_demo() -> impl rusti::Component {
 fn list_demo() -> impl rusti::Component {
     let fruits = vec!["🍎 Apple", "🍌 Banana", "🍊 Orange"];
     
-    rusti! {
+    html!
+ {
         <div>
             <ul id="fruit-list"></ul>
             <script>
@@ -115,7 +118,8 @@ fn debug_demo() -> impl rusti::Component {
     let debug_mode = cfg!(debug_assertions);
     let items = vec![1, 2, 3, 4, 5];
     
-    rusti! {
+    html!
+ {
         <script>
             @if debug_mode {
                 console.log("Debug mode enabled");
@@ -152,7 +156,8 @@ fn config_demo() -> impl rusti::Component {
         timeout: 5000,
     };
     
-    rusti! {
+    html!
+ {
         <script>
             @let config_json = serde_json::to_string(&config).unwrap();
             const config = JSON.parse(@{ config_json });
@@ -173,7 +178,8 @@ For most dynamic UIs, use HTMX instead of client-side JavaScript:
 fn items_client_side() -> impl rusti::Component {
     let items = vec!["Item 1", "Item 2", "Item 3"];
     
-    rusti! {
+    html!
+ {
         <script>
             const container = document.getElementById("items");
             @for item in &items {
@@ -189,7 +195,8 @@ fn items_client_side() -> impl rusti::Component {
 fn items_htmx() -> impl rusti::Component {
     let items = vec!["Item 1", "Item 2", "Item 3"];
     
-    rusti! {
+    html!
+ {
         <div hx-get="/api/items" hx-trigger="load" hx-swap="innerHTML">
             @for item in &items {
                 <div class="item">{item}</div>
@@ -219,7 +226,8 @@ fn ProfileCard(
     #[prop(default = "\"gray\"".to_string())] badge_color: String,
     #[prop(default = "false")] verified: bool
 ) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="profile-card border rounded-lg p-6">
             @if !avatar.is_empty() {
                 <img src={avatar} class="avatar rounded-full" />
@@ -234,7 +242,8 @@ fn ProfileCard(
 
 // Usage: Named arguments
 fn example() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             {/* Minimal - uses defaults */}
             @ProfileCard(name = "Alice".to_string())
@@ -268,7 +277,8 @@ Use for simple components with 1-2 required props:
 
 ```rust
 fn icon(name: &str, size: u32) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <svg width={size.to_string()} height={size.to_string()} class="icon">
             <use href={format!("#icon-{}", name)} />
         </svg>
@@ -276,7 +286,8 @@ fn icon(name: &str, size: u32) -> impl rusti::Component + '_ {
 }
 
 fn badge(text: &str, color: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <span class="badge px-2 py-1 rounded" style={format!("background: {}", color)}>
             {text}
         </span>
@@ -285,7 +296,8 @@ fn badge(text: &str, color: &str) -> impl rusti::Component + '_ {
 
 // Usage: Positional arguments (like normal functions)
 fn example() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             @icon("home", 24)
             @icon("user", 32)
@@ -307,7 +319,8 @@ Use when components need conditional construction:
 
 ```rust
 fn header(title: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <header class="header">
             <h1>{title}</h1>
         </header>
@@ -315,7 +328,8 @@ fn header(title: &str) -> impl rusti::Component + '_ {
 }
 
 fn admin_panel() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <nav>Admin Controls</nav>
     }
 }
@@ -328,7 +342,8 @@ fn page(user: &User) -> impl rusti::Component + '_ {
         header("Welcome")
     };
     
-    rusti! {
+    html!
+ {
         <div>
             @nav  {/* Render the pre-built component */}
             <main>Page content here</main>
@@ -360,7 +375,8 @@ fn page(user: &User) -> impl rusti::Component + '_ {
 use rusti::rusti;
 
 fn button(label: &str, onclick: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <button 
             type="button"
             onclick={onclick}
@@ -376,7 +392,8 @@ fn button(label: &str, onclick: &str) -> impl rusti::Component + '_ {
 
 ```rust
 fn card(title: &str, description: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div class="border rounded-lg shadow-md p-6 bg-white">
             <h3 class="text-xl font-bold mb-2">{title}</h3>
             <p class="text-gray-600">{description}</p>
@@ -407,7 +424,8 @@ fn alert(
         _ => ("bg-blue-100", "text-blue-800", "ℹ️"),
     };
     
-    rusti! {
+    html!
+ {
         <div class={format!("p-4 rounded-lg {} {}", bg_color, text_color)}>
             <span class="mr-2">{icon}</span>
             {message}
@@ -420,7 +438,8 @@ fn alert(
 
 // Usage examples
 fn demo() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="space-y-4">
             {/* Minimal usage - all defaults */}
             @alert(message = "This is an info message".to_string())
@@ -461,7 +480,8 @@ where
         if bordered { "border border-gray-300" } else { "" }
     );
     
-    rusti! {
+    html!
+ {
         @if data.is_empty() {
             <p class="text-gray-500 italic">{empty_message}</p>
         } else {
@@ -488,7 +508,8 @@ where
 ```rust
 #[component]
 fn page_layout(title: String, children: impl rusti::Component) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
@@ -513,7 +534,8 @@ fn page_layout(title: String, children: impl rusti::Component) -> impl rusti::Co
 
 // Usage
 fn home_page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @page_layout(title = "Home".to_string()) {
             <h2 class="text-3xl font-bold mb-4">"Welcome!"</h2>
             <p>"This is the home page content."</p>
@@ -531,7 +553,8 @@ fn action_card(
     #[prop(default = "\"\"".to_string())] subtitle: String,
     children: impl rusti::Component
 ) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
                 <h2 class="text-2xl font-bold">{title}</h2>
@@ -548,7 +571,8 @@ fn action_card(
 
 // Usage
 fn dashboard() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @action_card(
             title = "User Settings".to_string(),
             subtitle = "Manage your account".to_string()
@@ -578,7 +602,8 @@ fn collapsible(
 ) -> impl rusti::Component {
     let display = if initially_open { "block" } else { "none" };
     
-    rusti! {
+    html!
+ {
         <div class="border rounded-lg mb-2">
             <button 
                 class="w-full text-left px-4 py-3 bg-gray-100 hover:bg-gray-200 font-semibold"
@@ -603,7 +628,8 @@ fn collapsible(
 
 ```rust
 fn live_search() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="max-w-2xl mx-auto">
             <div class="relative">
                 <input 
@@ -633,7 +659,8 @@ fn live_search() -> impl rusti::Component {
 
 ```rust
 fn product_list(products: Vec<Product>, page: usize) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="grid grid-cols-3 gap-4">
             @for product in products.iter() {
                 <div class="border rounded p-4">
@@ -660,7 +687,8 @@ fn product_list(products: Vec<Product>, page: usize) -> impl rusti::Component {
 
 ```rust
 fn todo_item(id: i32, text: &str, completed: bool) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <li 
             id={format!("todo-{}", id)} 
             class="flex items-center gap-2 p-2 border-b"
@@ -693,7 +721,8 @@ fn todo_item(id: i32, text: &str, completed: bool) -> impl rusti::Component {
 
 ```rust
 fn notification(message: &str, duration_ms: u32) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div 
             class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg"
             hx-on:htmx:after-settle={format!("setTimeout(() => this.remove(), {})", duration_ms)}
@@ -712,7 +741,8 @@ fn notification(message: &str, duration_ms: u32) -> impl rusti::Component {
 
 ```rust
 fn login_form(error: Option<&str>) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <form 
             hx-post="/auth/login"
             hx-target="#login-error"
@@ -774,7 +804,8 @@ fn login_form(error: Option<&str>) -> impl rusti::Component {
 ```rust
 // main.rs
 fn app() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <html>
             <head>
                 <style src="styles/main.css" />
@@ -800,7 +831,8 @@ struct Theme {
 }
 
 fn themed_page(theme: &Theme) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <html>
             <head>
                 <style>
@@ -839,7 +871,8 @@ Rusti provides automatic CSS scoping when `<style>` tags are direct children of 
 
 ```rust
 fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div>
             <style>
                 .card {
@@ -870,7 +903,8 @@ fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
 
 // Each instance gets unique scoping
 fn pricing_page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="pricing-grid">
             @pricing_card(9, "Starter")    // scope: s0
             @pricing_card(29, "Pro")       // scope: s1  
@@ -903,7 +937,8 @@ fn pricing_page() -> impl rusti::Component {
 
 ```rust
 fn feature_card(icon: &str, title: &str, description: &str) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div>
             <style>
                 .feature {
@@ -946,7 +981,8 @@ fn feature_card(icon: &str, title: &str, description: &str) -> impl rusti::Compo
 
 // Usage
 fn features_section() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <section class="features">
             @feature_card("🚀", "Fast", "Lightning-fast performance")
             @feature_card("🔒", "Secure", "Built-in XSS protection")
@@ -966,7 +1002,8 @@ fn features_section() -> impl rusti::Component {
 ```rust
 // ❌ Avoid: Global styles in scoped CSS
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <style>
                 /* This gets scoped! Not what you want for global styles */
@@ -978,7 +1015,8 @@ fn page() -> impl rusti::Component {
 
 // ✅ Correct: Use external stylesheet for globals
 fn page() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <html>
             <head>
                 <style src="styles/global.css" />
@@ -995,7 +1033,8 @@ fn page() -> impl rusti::Component {
 
 ```rust
 fn responsive_card() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div>
             <style>
                 .card {
@@ -1042,7 +1081,8 @@ fn with_auth<F>(
 where
     F: Fn() -> Box<dyn rusti::Component>
 {
-    rusti! {
+    html!
+ {
         @if is_authenticated {
             @(render_content())
         } else {
@@ -1068,7 +1108,8 @@ enum LoadingState<T> {
 }
 
 fn render_data<T: std::fmt::Display>(state: &LoadingState<T>) -> impl rusti::Component + '_ {
-    rusti! {
+    html!
+ {
         <div class="p-4">
             @match state {
                 LoadingState::Loading => {
@@ -1112,7 +1153,8 @@ fn task_list(
     tasks: Vec<Task>,
     children: impl rusti::Component
 ) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div class="max-w-2xl mx-auto p-6">
             <h1 class="text-3xl font-bold mb-6">"Task Manager"</h1>
             
@@ -1135,7 +1177,8 @@ fn task_list(
 
 #[component]
 fn task_item(task: Task) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <div 
             id={format!("task-{}", task.id)}
             class="flex items-center gap-3 p-3 bg-white border rounded shadow-sm"
@@ -1166,7 +1209,8 @@ fn task_item(task: Task) -> impl rusti::Component {
 
 #[component]
 fn add_task_form() -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         <form 
             hx-post="/api/tasks"
             hx-target="#task-list"
@@ -1192,7 +1236,8 @@ fn add_task_form() -> impl rusti::Component {
 }
 
 fn task_page(tasks: Vec<Task>) -> impl rusti::Component {
-    rusti! {
+    html!
+ {
         @task_list(tasks = tasks) {
             @add_task_form()
         }
@@ -1230,7 +1275,8 @@ fn dynamic_button(is_primary: bool, is_loading: bool) -> impl rusti::Component {
         if is_loading { " opacity-50 cursor-not-allowed" } else { "" }
     );
     
-    rusti! {
+    html!
+ {
         <button class={classes} disabled={is_loading}>
             @if is_loading {
                 <span>"Loading..."</span>
@@ -1247,17 +1293,20 @@ fn dynamic_button(is_primary: bool, is_loading: bool) -> impl rusti::Component {
 ```rust
 fn icon(name: &str, size: u32) -> impl rusti::Component {
     match name {
-        "check" => rusti! {
+        "check" => html!
+ {
             <svg width={size.to_string()} height={size.to_string()} viewBox="0 0 24 24" fill="currentColor">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
             </svg>
         },
-        "close" => rusti! {
+        "close" => html!
+ {
             <svg width={size.to_string()} height={size.to_string()} viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
             </svg>
         },
-        _ => rusti! { <span>"?"</span> }
+        _ => html!
+ { <span>"?"</span> }
     }
 }
 ```

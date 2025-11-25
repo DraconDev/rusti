@@ -3,7 +3,7 @@ use rusti::rusti;
 
 /// Simple hello world page demonstrating Rusti 2.0 basics
 pub fn hello_world() -> impl rusti::Component {
-    rusti! {
+    html! {
         <!DOCTYPE html>
         <html>
             <head>
