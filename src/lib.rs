@@ -54,3 +54,61 @@ impl<T: std::fmt::Display> std::fmt::Display for Escaped<T> {
 pub fn js<T: std::fmt::Debug>(v: T) -> String {
     format!("{:?}", v)
 }
+
+/// Generate a unique scope ID for CSS scoping
+pub fn generate_scope_id() -> String {
+    use std::sync::atomic::{AtomicU64, Ordering};
+    static COUNTER: AtomicU64 = AtomicU64::new(0);
+    let id = COUNTER.fetch_add(1, Ordering::Relaxed);
+    format!("s{:x}", id)
+}
+
+/// Transform CSS selectors to include scope attribute
+/// Simple regex-based transformation for v1
+pub fn scope_css(css: &str, scope_id: &str) -> String {
+    let mut result = String::new();
+    let scope_attr = format!("[data-{}]", scope_id);
+
+    for line in css.lines() {
+        let trimmed = line.trim();
+
+        // Skip empty lines, comments, at-rules
+        if trimmed.is_empty() || trimmed.starts_with("/*") || trimmed.starts_with("@") {
+            result.push_str(line);
+            result.push('\n');
+            continue;
+        }
+
+        // Handle :global() escape hatch
+        if trimmed.contains(":global(") {
+            // Remove :global() wrapper
+            let cleaned = trimmed.replace(":global(", "").replace(")", "");
+            result.push_str(&cleaned);
+            result.push('\n');
+            continue;
+        }
+
+        // Add scope attribute to selectors
+        if let Some(brace_pos) = line.find('{') {
+            let selector_part = &line[..brace_pos];
+            let rest = &line[brace_pos..];
+
+            // Split selectors by comma
+            let selectors: Vec<&str> = selector_part.split(',').collect();
+            let scoped_selectors: Vec<String> = selectors
+                .iter()
+                .map(|s| format!("{}{}", s.trim(), scope_attr))
+                .collect();
+
+            result.push_str(&scoped_selectors.join(", "));
+            result.push_str(rest);
+            result.push('\n');
+        } else {
+            // No brace, just copy line as-is (probably inside a rule)
+            result.push_str(line);
+            result.push('\n');
+        }
+    }
+
+    result
+}
