@@ -402,12 +402,24 @@ fn generate_body_with_context(
                         }
                     }
 
-                    quote! {
-                        write!(f, "<{}", #name)?;
-                        #attr_code
-                        write!(f, ">")?;
-                        #children_code
-                        write!(f, "</{}>", #name)?;
+                    // Generate element with potential scope attribute
+                    if let Some(ref scope_id) = ctx.scope_id {
+                        quote! {
+                            write!(f, "<{}", #name)?;
+                            write!(f, " data-{}", #scope_id)?;  // Apply scope from context
+                            #attr_code
+                            write!(f, ">")?;
+                            #children_code
+                            write!(f, "</{}>", #name)?;
+                        }
+                    } else {
+                        quote! {
+                            write!(f, "<{}", #name)?;
+                            #attr_code
+                            write!(f, ">")?;
+                            #children_code
+                            write!(f, "</{}>", #name)?;
+                        }
                     }
                 }
             }
