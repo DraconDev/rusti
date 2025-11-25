@@ -1,12 +1,15 @@
-# Rusti 2.0 Demo Examples
+# azumi
+ 2.0 Demo Examples
 
-This directory contains **3 clean examples** demonstrating Rusti 2.0's mandatory quoting rules and external file requirements.
+This directory contains **3 clean examples** demonstrating azumi
+ 2.0's mandatory quoting rules and external file requirements.
 
 ## Examples
 
 ### 1. Hello World (`hello.rs`)
 **Route:** `/`
-**Purpose:** Basic Rusti 2.0 syntax demonstration
+**Purpose:** Basic azumi
+ 2.0 syntax demonstration
 
 **Shows:**
 - Mandatory quoted text: `<h1>"Hello"</h1>`
@@ -69,7 +72,8 @@ cargo run
 
 Visit http://localhost:8081 to see all examples.
 
-## Rusti 2.0 Rules (Enforced)
+## azumi
+ 2.0 Rules (Enforced)
 
 All examples follow these mandatory rules:
 
@@ -110,7 +114,8 @@ examples/
 
 ## Design Philosophy
 
-These examples demonstrate **Rusti 2.0's opinionated approach:**
+These examples demonstrate **azumi
+ 2.0's opinionated approach:**
 
 - **Rigor over convenience** - Mandatory quoting prevents edge cases
 - **Tooling over inline code** - External files get IDE support

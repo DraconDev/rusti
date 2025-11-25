@@ -1,7 +1,12 @@
-// // Tests for Rusti parser improvements
+// // Tests for azumi
+ parser improvements
 
-// use rusti::{render_to_string, rusti, Component};
-// use rusti_macros::rusti;
+// use azumi
+::{render_to_string, azumi
+, Component};
+// use azumi
+_macros::azumi
+;
 
 // #[test]
 // fn script_tag_is_handled() {

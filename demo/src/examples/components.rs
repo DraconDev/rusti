@@ -1,13 +1,12 @@
 use axum::response::{Html, IntoResponse};
-use rusti::rusti;
+use azumi::azumi;
 
 /// Component composition example
-pub fn components_demo() -> impl rusti::Component {
+pub fn components_demo() -> impl azumi::Component {
     let title = "Components Demo";
     let items = vec!["Type-safe", "Zero-cost", "Composable"];
 
-    html!
- {
+    html! {
         <!DOCTYPE html>
         <html>
             <head>
@@ -44,9 +43,8 @@ pub fn components_demo() -> impl rusti::Component {
     }
 }
 
-fn header<'a>(title: &'a str) -> impl rusti::Component + 'a {
-    html!
- {
+fn header<'a>(title: &'a str) -> impl azumi::Component + 'a {
+    html! {
         <header class="header">
             <h1>{title}</h1>
             <p>"Demonstrating component composition"</p>
@@ -54,9 +52,8 @@ fn header<'a>(title: &'a str) -> impl rusti::Component + 'a {
     }
 }
 
-fn card<'a>(text: &'a str, icon: &'a str) -> impl rusti::Component + 'a {
-    html!
- {
+fn card<'a>(text: &'a str, icon: &'a str) -> impl azumi::Component + 'a {
+    html! {
         <div class="card">
             <span class="icon">{icon}</span>
             <span class="text">{text}</span>
@@ -64,15 +61,15 @@ fn card<'a>(text: &'a str, icon: &'a str) -> impl rusti::Component + 'a {
     }
 }
 
-fn footer() -> impl rusti::Component {
-    html!
- {
+fn footer() -> impl azumi::Component {
+    html! {
         <footer class="footer">
-            <p>"Built with Rusti 2.0"</p>
+            <p>"Built with azumi
+    2.0"</p>
         </footer>
     }
 }
 
 pub async fn components_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&components_demo()))
+    Html(azumi::render_to_string(&components_demo()))
 }

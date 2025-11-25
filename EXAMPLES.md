@@ -1,6 +1,8 @@
-# Rusti Examples 📚
+# azumi
+ Examples 📚
 
-This document provides comprehensive, copy-paste examples demonstrating Rusti's features in real-world scenarios.
+This document provides comprehensive, copy-paste examples demonstrating azumi
+'s features in real-world scenarios.
 
 ---
 
@@ -18,7 +20,8 @@ This document provides comprehensive, copy-paste examples demonstrating Rusti's 
 
 ## 💡 Quick Tip: Text and Quotes
 
-Rusti **automatically strips outer quotes** from string literals in text content. This means both of these produce the same output:
+azumi
+ **automatically strips outer quotes** from string literals in text content. This means both of these produce the same output:
 
 ```rust
 <h1>"Welcome"</h1>  // Renders: Welcome
@@ -34,14 +37,18 @@ Rusti **automatically strips outer quotes** from string literals in text content
 
 ## Script Variable Injection
 
-Rusti supports dynamic variable injection into client-side JavaScript using `@{ }` syntax.
+azumi
+ supports dynamic variable injection into client-side JavaScript using `@{ }` syntax.
 
 ### Basic Number Injection
 
 ```rust
-use rusti::rusti;
+use azumi
+::azumi
+;
 
-fn counter_demo() -> impl rusti::Component {
+fn counter_demo() -> impl azumi
+::Component {
     let count = 42;
     let max = 100;
     
@@ -70,7 +77,8 @@ fn counter_demo() -> impl rusti::Component {
 **Important**: Strings must be `String` type (not `&str`) for proper JavaScript output.
 
 ```rust
-fn greeting_demo() -> impl rusti::Component {
+fn greeting_demo() -> impl azumi
+::Component {
     html!
  {
         <script>
@@ -90,7 +98,8 @@ fn greeting_demo() -> impl rusti::Component {
 ### Arrays and Iteration
 
 ```rust
-fn list_demo() -> impl rusti::Component {
+fn list_demo() -> impl azumi
+::Component {
     let fruits = vec!["🍎 Apple", "🍌 Banana", "🍊 Orange"];
     
     html!
@@ -114,7 +123,8 @@ fn list_demo() -> impl rusti::Component {
 ### Conditional Logic in Scripts
 
 ```rust
-fn debug_demo() -> impl rusti::Component {
+fn debug_demo() -> impl azumi
+::Component {
     let debug_mode = cfg!(debug_assertions);
     let items = vec![1, 2, 3, 4, 5];
     
@@ -150,7 +160,8 @@ struct Config {
     timeout: u32,
 }
 
-fn config_demo() -> impl rusti::Component {
+fn config_demo() -> impl azumi
+::Component {
     let config = Config {
         api_url: "https://api.example.com".to_string(),
         timeout: 5000,
@@ -175,7 +186,8 @@ For most dynamic UIs, use HTMX instead of client-side JavaScript:
 
 ```rust
 // ❌ Avoid: Complex client-side DOM manipulation
-fn items_client_side() -> impl rusti::Component {
+fn items_client_side() -> impl azumi
+::Component {
     let items = vec!["Item 1", "Item 2", "Item 3"];
     
     html!
@@ -192,7 +204,8 @@ fn items_client_side() -> impl rusti::Component {
 }
 
 // ✅ Prefer: Server-side rendering with HTMX
-fn items_htmx() -> impl rusti::Component {
+fn items_htmx() -> impl azumi
+::Component {
     let items = vec!["Item 1", "Item 2", "Item 3"];
     
     html!
@@ -210,14 +223,16 @@ fn items_htmx() -> impl rusti::Component {
 
 ## Component Naming Patterns
 
-Rusti provides three component patterns with different calling conventions.
+azumi
+ provides three component patterns with different calling conventions.
 
 ### Pattern 1: PascalCase with Builder (Complex Components)
 
 Use for components with 3+ props or optional props:
 
 ```rust
-use rusti::component;
+use azumi
+::component;
 
 #[component]
 fn ProfileCard(
@@ -225,7 +240,8 @@ fn ProfileCard(
     #[prop(default = "\"\".to_string())] avatar: String,
     #[prop(default = "\"gray\"".to_string())] badge_color: String,
     #[prop(default = "false")] verified: bool
-) -> impl rusti::Component {
+) -> impl azumi
+::Component {
     html!
  {
         <div class="profile-card border rounded-lg p-6">
@@ -241,7 +257,8 @@ fn ProfileCard(
 }
 
 // Usage: Named arguments
-fn example() -> impl rusti::Component {
+fn example() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -276,7 +293,8 @@ fn example() -> impl rusti::Component {
 Use for simple components with 1-2 required props:
 
 ```rust
-fn icon(name: &str, size: u32) -> impl rusti::Component + '_ {
+fn icon(name: &str, size: u32) -> impl azumi
+::Component + '_ {
     html!
  {
         <svg width={size.to_string()} height={size.to_string()} class="icon">
@@ -285,7 +303,8 @@ fn icon(name: &str, size: u32) -> impl rusti::Component + '_ {
     }
 }
 
-fn badge(text: &str, color: &str) -> impl rusti::Component + '_ {
+fn badge(text: &str, color: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <span class="badge px-2 py-1 rounded" style={format!("background: {}", color)}>
@@ -295,7 +314,8 @@ fn badge(text: &str, color: &str) -> impl rusti::Component + '_ {
 }
 
 // Usage: Positional arguments (like normal functions)
-fn example() -> impl rusti::Component {
+fn example() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -318,7 +338,8 @@ fn example() -> impl rusti::Component {
 Use when components need conditional construction:
 
 ```rust
-fn header(title: &str) -> impl rusti::Component + '_ {
+fn header(title: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <header class="header">
@@ -327,14 +348,16 @@ fn header(title: &str) -> impl rusti::Component + '_ {
     }
 }
 
-fn admin_panel() -> impl rusti::Component {
+fn admin_panel() -> impl azumi
+::Component {
     html!
  {
         <nav>Admin Controls</nav>
     }
 }
 
-fn page(user: &User) -> impl rusti::Component + '_ {
+fn page(user: &User) -> impl azumi
+::Component + '_ {
     // Build component conditionally
     let nav = if user.is_admin {
         admin_panel()
@@ -372,9 +395,12 @@ fn page(user: &User) -> impl rusti::Component + '_ {
 ### Simple Button
 
 ```rust
-use rusti::rusti;
+use azumi
+::azumi
+;
 
-fn button(label: &str, onclick: &str) -> impl rusti::Component + '_ {
+fn button(label: &str, onclick: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <button 
@@ -391,7 +417,8 @@ fn button(label: &str, onclick: &str) -> impl rusti::Component + '_ {
 ### Card Component
 
 ```rust
-fn card(title: &str, description: &str) -> impl rusti::Component + '_ {
+fn card(title: &str, description: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <div class="border rounded-lg shadow-md p-6 bg-white">
@@ -409,14 +436,16 @@ fn card(title: &str, description: &str) -> impl rusti::Component + '_ {
 ### Alert Component with Variants
 
 ```rust
-use rusti::component;
+use azumi
+::component;
 
 #[component]
 fn alert(
     message: String,
     #[prop(default = "\"info\"".to_string())] variant: String,
     #[prop(default = "true")] dismissible: bool
-) -> impl rusti::Component {
+) -> impl azumi
+::Component {
     let (bg_color, text_color, icon) = match variant.as_str() {
         "error" => ("bg-red-100", "text-red-800", "❌"),
         "warning" => ("bg-yellow-100", "text-yellow-800", "⚠️"),
@@ -437,7 +466,8 @@ fn alert(
 }
 
 // Usage examples
-fn demo() -> impl rusti::Component {
+fn demo() -> impl azumi
+::Component {
     html!
  {
         <div class="space-y-4">
@@ -470,7 +500,8 @@ fn data_table<T>(
     #[prop(default = "true")] striped: bool,
     #[prop(default = "true")] bordered: bool,
     #[prop(default = "\"\"".to_string())] empty_message: String
-) -> impl rusti::Component 
+) -> impl azumi
+::Component 
 where
     T: std::fmt::Display + 'static
 {
@@ -507,7 +538,9 @@ where
 
 ```rust
 #[component]
-fn page_layout(title: String, children: impl rusti::Component) -> impl rusti::Component {
+fn page_layout(title: String, children: impl azumi
+::Component) -> impl azumi
+::Component {
     html!
  {
         <html lang="en">
@@ -533,7 +566,8 @@ fn page_layout(title: String, children: impl rusti::Component) -> impl rusti::Co
 }
 
 // Usage
-fn home_page() -> impl rusti::Component {
+fn home_page() -> impl azumi
+::Component {
     html!
  {
         @page_layout(title = "Home".to_string()) {
@@ -551,8 +585,10 @@ fn home_page() -> impl rusti::Component {
 fn action_card(
     title: String,
     #[prop(default = "\"\"".to_string())] subtitle: String,
-    children: impl rusti::Component
-) -> impl rusti::Component {
+    children: impl azumi
+::Component
+) -> impl azumi
+::Component {
     html!
  {
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -570,7 +606,8 @@ fn action_card(
 }
 
 // Usage
-fn dashboard() -> impl rusti::Component {
+fn dashboard() -> impl azumi
+::Component {
     html!
  {
         @action_card(
@@ -598,8 +635,10 @@ fn dashboard() -> impl rusti::Component {
 fn collapsible(
     title: String,
     #[prop(default = "false")] initially_open: bool,
-    children: impl rusti::Component
-) -> impl rusti::Component {
+    children: impl azumi
+::Component
+) -> impl azumi
+::Component {
     let display = if initially_open { "block" } else { "none" };
     
     html!
@@ -627,7 +666,8 @@ fn collapsible(
 ### Live Search
 
 ```rust
-fn live_search() -> impl rusti::Component {
+fn live_search() -> impl azumi
+::Component {
     html!
  {
         <div class="max-w-2xl mx-auto">
@@ -658,7 +698,8 @@ fn live_search() -> impl rusti::Component {
 ### Infinite Scroll
 
 ```rust
-fn product_list(products: Vec<Product>, page: usize) -> impl rusti::Component {
+fn product_list(products: Vec<Product>, page: usize) -> impl azumi
+::Component {
     html!
  {
         <div class="grid grid-cols-3 gap-4">
@@ -686,7 +727,8 @@ fn product_list(products: Vec<Product>, page: usize) -> impl rusti::Component {
 ### Form with Optimistic UI
 
 ```rust
-fn todo_item(id: i32, text: &str, completed: bool) -> impl rusti::Component {
+fn todo_item(id: i32, text: &str, completed: bool) -> impl azumi
+::Component {
     html!
  {
         <li 
@@ -720,7 +762,8 @@ fn todo_item(id: i32, text: &str, completed: bool) -> impl rusti::Component {
 ### Notification with Auto-dismiss
 
 ```rust
-fn notification(message: &str, duration_ms: u32) -> impl rusti::Component {
+fn notification(message: &str, duration_ms: u32) -> impl azumi
+::Component {
     html!
  {
         <div 
@@ -740,7 +783,8 @@ fn notification(message: &str, duration_ms: u32) -> impl rusti::Component {
 ### Login Form
 
 ```rust
-fn login_form(error: Option<&str>) -> impl rusti::Component {
+fn login_form(error: Option<&str>) -> impl azumi
+::Component {
     html!
  {
         <form 
@@ -803,7 +847,8 @@ fn login_form(error: Option<&str>) -> impl rusti::Component {
 
 ```rust
 // main.rs
-fn app() -> impl rusti::Component {
+fn app() -> impl azumi
+::Component {
     html!
  {
         <html>
@@ -830,7 +875,8 @@ struct Theme {
     background_color: String,
 }
 
-fn themed_page(theme: &Theme) -> impl rusti::Component + '_ {
+fn themed_page(theme: &Theme) -> impl azumi
+::Component + '_ {
     html!
  {
         <html>
@@ -865,12 +911,14 @@ fn themed_page(theme: &Theme) -> impl rusti::Component + '_ {
 
 ## Scoped CSS
 
-Rusti provides automatic CSS scoping when `<style>` tags are direct children of an element.
+azumi
+ provides automatic CSS scoping when `<style>` tags are direct children of an element.
 
 ### Basic Scoped Component
 
 ```rust
-fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
+fn pricing_card(price: u32, title: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <div>
@@ -902,7 +950,8 @@ fn pricing_card(price: u32, title: &str) -> impl rusti::Component + '_ {
 }
 
 // Each instance gets unique scoping
-fn pricing_page() -> impl rusti::Component {
+fn pricing_page() -> impl azumi
+::Component {
     html!
  {
         <div class="pricing-grid">
@@ -936,7 +985,8 @@ fn pricing_page() -> impl rusti::Component {
 ### Component with Nested Styles
 
 ```rust
-fn feature_card(icon: &str, title: &str, description: &str) -> impl rusti::Component + '_ {
+fn feature_card(icon: &str, title: &str, description: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <div>
@@ -980,7 +1030,8 @@ fn feature_card(icon: &str, title: &str, description: &str) -> impl rusti::Compo
 }
 
 // Usage
-fn features_section() -> impl rusti::Component {
+fn features_section() -> impl azumi
+::Component {
     html!
  {
         <section class="features">
@@ -1001,7 +1052,8 @@ fn features_section() -> impl rusti::Component {
 
 ```rust
 // ❌ Avoid: Global styles in scoped CSS
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -1014,7 +1066,8 @@ fn page() -> impl rusti::Component {
 }
 
 // ✅ Correct: Use external stylesheet for globals
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         <html>
@@ -1032,7 +1085,8 @@ fn page() -> impl rusti::Component {
 ### Scoped CSS with Media Queries
 
 ```rust
-fn responsive_card() -> impl rusti::Component {
+fn responsive_card() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -1077,9 +1131,11 @@ fn responsive_card() -> impl rusti::Component {
 fn with_auth<F>(
     is_authenticated: bool,
     render_content: F
-) -> impl rusti::Component 
+) -> impl azumi
+::Component 
 where
-    F: Fn() -> Box<dyn rusti::Component>
+    F: Fn() -> Box<dyn azumi
+::Component>
 {
     html!
  {
@@ -1107,7 +1163,8 @@ enum LoadingState<T> {
     Error(String),
 }
 
-fn render_data<T: std::fmt::Display>(state: &LoadingState<T>) -> impl rusti::Component + '_ {
+fn render_data<T: std::fmt::Display>(state: &LoadingState<T>) -> impl azumi
+::Component + '_ {
     html!
  {
         <div class="p-4">
@@ -1139,7 +1196,9 @@ fn render_data<T: std::fmt::Display>(state: &LoadingState<T>) -> impl rusti::Com
 ## Complete Example: Task Manager
 
 ```rust
-use rusti::{rusti, component};
+use azumi
+::{azumi
+, component};
 
 #[derive(Debug, Clone)]
 struct Task {
@@ -1151,8 +1210,10 @@ struct Task {
 #[component]
 fn task_list(
     tasks: Vec<Task>,
-    children: impl rusti::Component
-) -> impl rusti::Component {
+    children: impl azumi
+::Component
+) -> impl azumi
+::Component {
     html!
  {
         <div class="max-w-2xl mx-auto p-6">
@@ -1176,7 +1237,8 @@ fn task_list(
 }
 
 #[component]
-fn task_item(task: Task) -> impl rusti::Component {
+fn task_item(task: Task) -> impl azumi
+::Component {
     html!
  {
         <div 
@@ -1208,7 +1270,8 @@ fn task_item(task: Task) -> impl rusti::Component {
 }
 
 #[component]
-fn add_task_form() -> impl rusti::Component {
+fn add_task_form() -> impl azumi
+::Component {
     html!
  {
         <form 
@@ -1235,7 +1298,8 @@ fn add_task_form() -> impl rusti::Component {
     }
 }
 
-fn task_page(tasks: Vec<Task>) -> impl rusti::Component {
+fn task_page(tasks: Vec<Task>) -> impl azumi
+::Component {
     html!
  {
         @task_list(tasks = tasks) {
@@ -1258,7 +1322,8 @@ mod tests {
     
     #[test]
     fn test_button_renders() {
-        let html = rusti::render_to_string(&button("Click me", "handleClick()"));
+        let html = azumi
+::render_to_string(&button("Click me", "handleClick()"));
         assert!(html.contains("Click me"));
         assert!(html.contains("handleClick()"));
     }
@@ -1268,7 +1333,8 @@ mod tests {
 ### 2. Conditional Classes
 
 ```rust
-fn dynamic_button(is_primary: bool, is_loading: bool) -> impl rusti::Component {
+fn dynamic_button(is_primary: bool, is_loading: bool) -> impl azumi
+::Component {
     let classes = format!(
         "px-4 py-2 rounded {}{}",
         if is_primary { "bg-blue-500 text-white" } else { "bg-gray-200" },
@@ -1291,7 +1357,8 @@ fn dynamic_button(is_primary: bool, is_loading: bool) -> impl rusti::Component {
 ### 3. Reusable Icons
 
 ```rust
-fn icon(name: &str, size: u32) -> impl rusti::Component {
+fn icon(name: &str, size: u32) -> impl azumi
+::Component {
     match name {
         "check" => html!
  {

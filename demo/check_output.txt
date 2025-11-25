@@ -314,8 +314,12 @@ warning: field `span` is never read
     |
     = note: `ComponentBlock` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
 
-warning: `rusti-macros` (lib) generated 40 warnings (run `cargo fix --lib -p rusti-macros` to apply 1 suggestion)
-    Checking rusti-demo v0.1.0 (/home/dracon/_Dev/_Fun/rusti/demo)
+warning: `azumi
+-macros` (lib) generated 40 warnings (run `cargo fix --lib -p azumi
+-macros` to apply 1 suggestion)
+    Checking azumi
+-demo v0.1.0 (/home/dracon/_Dev/_Fun/azumi
+/demo)
 Found closing tag: </h2> (expected </h2>)
 Found closing tag: </p> (expected </p>)
 Found closing tag: </p> (expected </p>)
@@ -897,4 +901,6 @@ Found closing tag: </p> (expected </p>)
 Found closing tag: </script> (expected </script>)
 Found closing tag: </body> (expected </body>)
 Found closing tag: </html> (expected </html>)
-error: could not compile `rusti-demo` (bin "rusti-demo") due to 2 previous errors
+error: could not compile `azumi
+-demo` (bin "azumi
+-demo") due to 2 previous errors

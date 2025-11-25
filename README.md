@@ -1,10 +1,13 @@
-# Rusti 🦀
+# azumi
+ 🦀
 **The Most Robust HTML Parser for Rust** - Type-Safe, Feature-Rich, Production-Ready
 
-Rusti is a powerful, zero-cost, type-safe HTML templating engine for Rust. It allows you to write HTML-like syntax directly in your Rust code using the `html!
+azumi
+ is a powerful, zero-cost, type-safe HTML templating engine for Rust. It allows you to write HTML-like syntax directly in your Rust code using the `html!
 ` macro.
 
-Inspired by Go's `templ` library, Rusti brings the component model to server-side Rust. Because it compiles to native Rust code at build time, it delivers blazing fast performance with full type safety.
+Inspired by Go's `templ` library, azumi
+ brings the component model to server-side Rust. Because it compiles to native Rust code at build time, it delivers blazing fast performance with full type safety.
 
 ## 🚀 Key Features
 
@@ -24,14 +27,18 @@ Inspired by Go's `templ` library, Rusti brings the component model to server-sid
 
 ## 📦 Installation
 
-Add `rusti` to your `Cargo.toml`:
+Add `azumi
+` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rusti = { git = "https://github.com/DraconDev/rusti" }
+azumi
+ = { git = "https://github.com/DraconDev/azumi
+" }
 ```
 
-> **📊 How does Rusti compare to Maud, Askama, or Leptos?**  
+> **📊 How does azumi
+ compare to Maud, Askama, or Leptos?**  
 > See our [detailed competitive analysis](#-competitive-analysis) for a technical breakdown of trade-offs, performance, and design philosophy.
 
 ---
@@ -40,7 +47,8 @@ rusti = { git = "https://github.com/DraconDev/rusti" }
 
 ### Automatic Quote Stripping
 
-Rusti automatically strips outer quotes from string literals in text positions for cleaner rendering:
+azumi
+ automatically strips outer quotes from string literals in text positions for cleaner rendering:
 
 ```rust
 html!
@@ -76,9 +84,12 @@ For semantic quotations, prefer HTML elements or entities:
 ### Basic Component
 
 ```rust
-use rusti::rusti;
+use azumi
+::azumi
+;
 
-fn hello_world() -> impl rusti::Component {
+fn hello_world() -> impl azumi
+::Component {
     html!
  {
         <div class="container mx-auto p-4">
@@ -91,10 +102,12 @@ fn hello_world() -> impl rusti::Component {
 ### Component with Props (Named Arguments)
 
 ```rust
-use rusti::component;
+use azumi
+::component;
 
 #[component]
-fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl rusti::Component {
+fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl azumi
+::Component {
     html!
  {
         <div class={ if is_highlighted { "card highlighted" } else { "card" } }>
@@ -104,7 +117,8 @@ fn card(title: String, #[prop(default = "false")] is_highlighted: bool) -> impl 
 }
 
 // Usage - optional props can be omitted!
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -119,7 +133,9 @@ fn page() -> impl rusti::Component {
 
 ```rust
 #[component]
-fn layout(title: String, children: impl rusti::Component) -> impl rusti::Component {
+fn layout(title: String, children: impl azumi
+::Component) -> impl azumi
+::Component {
     html!
  {
         <div class="layout">
@@ -132,7 +148,8 @@ fn layout(title: String, children: impl rusti::Component) -> impl rusti::Compone
 }
 
 // Usage - pass JSX-like children!
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         @layout(title = "My Page".to_string()) {
@@ -146,7 +163,8 @@ fn page() -> impl rusti::Component {
 ### HTMX Integration (Namespaced Attributes)
 
 ```rust
-fn search_box() -> impl rusti::Component {
+fn search_box() -> impl azumi
+::Component {
     html!
  {
         <input 
@@ -169,14 +187,16 @@ fn search_box() -> impl rusti::Component {
 ### 1. Simple Functions (Positional Arguments)
 
 ```rust
-fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
+fn button(label: &str, class: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <button class={class}>{ label }</button>
     }
 }
 
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -195,14 +215,16 @@ For complex components with multiple props, use the `#[component]` attribute. Th
 - **Type safety** at compile time
 
 ```rust
-use rusti::component;
+use azumi
+::component;
 
 #[component]
 fn alert_box(
     message: String, 
     #[prop(default = "false")] is_error: bool,
     #[prop(default = "\"Alert\"".to_string())] title: String
-) -> impl rusti::Component {
+) -> impl azumi
+::Component {
     let bg_color = if is_error { "bg-red-500" } else { "bg-blue-500" };
     
     html!
@@ -214,7 +236,8 @@ fn alert_box(
     }
 }
 
-fn page() -> impl rusti::Component {
+fn page() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -238,7 +261,9 @@ Components can accept children, enabling powerful composition patterns:
 
 ```rust
 #[component]
-fn card(title: String, children: impl rusti::Component) -> impl rusti::Component {
+fn card(title: String, children: impl azumi
+::Component) -> impl azumi
+::Component {
     html!
  {
         <div class="card border rounded shadow p-4">
@@ -251,7 +276,9 @@ fn card(title: String, children: impl rusti::Component) -> impl rusti::Component
 }
 
 #[component]
-fn button_group(children: impl rusti::Component) -> impl rusti::Component {
+fn button_group(children: impl azumi
+::Component) -> impl azumi
+::Component {
     html!
  {
         <div class="flex gap-2">
@@ -260,7 +287,8 @@ fn button_group(children: impl rusti::Component) -> impl rusti::Component {
     }
 }
 
-fn dashboard() -> impl rusti::Component {
+fn dashboard() -> impl azumi
+::Component {
     html!
  {
         @card(title = "User Actions".to_string()) {
@@ -278,10 +306,12 @@ fn dashboard() -> impl rusti::Component {
 
 ## 🎨 Control Flow
 
-Rusti provides first-class support for control flow using `@`:
+azumi
+ provides first-class support for control flow using `@`:
 
 ```rust
-fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component + '_ {
+fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl azumi
+::Component + '_ {
     html!
  {
         <div>
@@ -318,7 +348,8 @@ fn user_dashboard(users: Vec<&str>, role: Option<&str>) -> impl rusti::Component
 Declare scoped variables directly in your templates using `@let`:
 
 ```rust
-fn calculator() -> impl rusti::Component {
+fn calculator() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -420,12 +451,14 @@ Most CSS units work fine, but **avoid `em` units and hex colors containing `e`**
 
 ## 🎬 Script Variable Injection
 
-Rusti supports **dynamic variable injection** into `<script>` tags using the `@{ }` syntax. This allows you to safely pass Rust values into your JavaScript code at compile time.
+azumi
+ supports **dynamic variable injection** into `<script>` tags using the `@{ }` syntax. This allows you to safely pass Rust values into your JavaScript code at compile time.
 
 ### ✅ Basic Variable Injection
 
 ```rust
-fn counter_app() -> impl rusti::Component {
+fn counter_app() -> impl azumi
+::Component {
     let count = 42;
     let max_count = 100;
     
@@ -453,7 +486,8 @@ const maxCount = 100;
 String variables require special handling - they must be converted to `String` type:
 
 ```rust
-fn app() -> impl rusti::Component {
+fn app() -> impl azumi
+::Component {
     html!
  {
         <script>
@@ -479,10 +513,12 @@ const username = "User_123";
 
 ### 🔄 Control Flow in Scripts
 
-You can use Rusti's control flow (`@if`, `@for`, `@match`, `@let`) **inside** `<script>` tags:
+You can use azumi
+'s control flow (`@if`, `@for`, `@match`, `@let`) **inside** `<script>` tags:
 
 ```rust
-fn dynamic_script() -> impl rusti::Component {
+fn dynamic_script() -> impl azumi
+::Component {
     let items = vec!["apple", "banana", "cherry"];
     let debug_mode = true;
     
@@ -573,12 +609,14 @@ html!
 
 ## 🎨 Scoped CSS
 
-Rusti automatically scopes CSS when you include `<style>` tags as **direct children** of an element. This prevents style pollution and naming conflicts.
+azumi
+ automatically scopes CSS when you include `<style>` tags as **direct children** of an element. This prevents style pollution and naming conflicts.
 
 ### How It Works
 
 ```rust
-fn scoped_card() -> impl rusti::Component {
+fn scoped_card() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -619,7 +657,8 @@ fn scoped_card() -> impl rusti::Component {
 
 ### Key Features
 
-- **Automatic Scoping**: Rusti adds unique `data-scope` attributes to both styles and elements
+- **Automatic Scoping**: azumi
+ adds unique `data-scope` attributes to both styles and elements
 - **Selector Transformation**: All CSS selectors get the scope attribute appended
 - **No Global Pollution**: Styles cannot leak to other components
 - **Zero Configuration**: Just nest `<style>` as a direct child
@@ -629,7 +668,8 @@ fn scoped_card() -> impl rusti::Component {
 Each component gets its own unique scope:
 
 ```rust
-fn app() -> impl rusti::Component {
+fn app() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -652,10 +692,12 @@ fn app() -> impl rusti::Component {
 
 ### HTMX Integration
 
-Rusti has full support for HTMX attributes, including event handlers and namespaced attributes:
+azumi
+ has full support for HTMX attributes, including event handlers and namespaced attributes:
 
 ```rust
-fn live_search() -> impl rusti::Component {
+fn live_search() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -675,7 +717,8 @@ fn live_search() -> impl rusti::Component {
     }
 }
 
-fn delete_button(id: i32) -> impl rusti::Component {
+fn delete_button(id: i32) -> impl azumi
+::Component {
     let confirm_msg = format!("Are you sure you want to delete item {}?", id);
     
     html!
@@ -695,7 +738,8 @@ fn delete_button(id: i32) -> impl rusti::Component {
 ### Vue-style Attributes
 
 ```rust
-fn vue_component(is_active: bool) -> impl rusti::Component {
+fn vue_component(is_active: bool) -> impl azumi
+::Component {
     html!
  {
         <div 
@@ -811,7 +855,8 @@ For the easiest development experience, **use Tailwind CSS or external styleshee
 
 ### Quick Translation Guide (JS/HTML → Rust)
 
-| Feature | JavaScript / HTML | Rusti (Rust) |
+| Feature | JavaScript / HTML | azumi
+ (Rust) |
 |---------|------------------|--------------|
 | **Quotes** | `<div id='app'>` | `<div id="app">` |
 | **Text Content** | `<h1>Hello</h1>` | `<h1>Hello</h1>` or `<h1>"Hello"</h1>` (quotes auto-stripped) |
@@ -835,7 +880,9 @@ For the easiest development experience, **use Tailwind CSS or external styleshee
 
 ```rust
 use axum::{response::{Html, IntoResponse}, routing::get, Router};
-use rusti::rusti;
+use azumi
+::azumi
+;
 
 async fn handler() -> impl IntoResponse {
     let html = html!
@@ -843,7 +890,8 @@ async fn handler() -> impl IntoResponse {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
-                <title>Rusti + Axum</title>
+                <title>azumi
+ + Axum</title>
                 <script src="https://cdn.tailwindcss.com"></script>
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             </head>
@@ -863,7 +911,8 @@ async fn handler() -> impl IntoResponse {
             </body>
         </html>
     };
-    Html(rusti::render_to_string(&html))
+    Html(azumi
+::render_to_string(&html))
 }
 
 #[tokio::main]
@@ -879,25 +928,29 @@ async fn main() {
 
 ## 🧠 Design Decisions
 
-Understanding Rusti's design philosophy helps you write idiomatic, maintainable code.
+Understanding azumi
+'s design philosophy helps you write idiomatic, maintainable code.
 
 ### Component Naming: PascalCase vs snake_case vs @component
 
-Rusti supports **three component patterns**, each with different calling conventions:
+azumi
+ supports **three component patterns**, each with different calling conventions:
 
 #### 1. **PascalCase** → Builder Pattern (Complex Components)
 
 Use `PascalCase` with the `#[component]` macro for components with multiple or optional props:
 
 ```rust
-use rusti::component;
+use azumi
+::component;
 
 #[component]
 fn Card(
     title: String,
     #[prop(default = "false")] highlighted: bool,
     #[prop(default = "\"\".to_string())] subtitle: String
-) -> impl rusti::Component {
+) -> impl azumi
+::Component {
     html!
  {
         <div class={ if highlighted { "card highlighted" } else { "card" } }>
@@ -933,7 +986,8 @@ html!
 Use `snake_case` regular functions for simple components with 1-2 required props:
 
 ```rust
-fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
+fn button(label: &str, class: &str) -> impl azumi
+::Component + '_ {
     html!
  {
         <button class={class}>{label}</button>
@@ -959,7 +1013,8 @@ html!
 Use `@component_var` to render a component variable:
 
 ```rust
-fn app() -> impl rusti::Component {
+fn app() -> impl azumi
+::Component {
     let my_header = header("My App");
     let my_footer = footer(2025);
     
@@ -992,7 +1047,8 @@ This leverages Rust's existing conventions and provides **compile-time type safe
 
 ### HTMX-First Philosophy
 
-Rusti is designed for **server-side rendering with HTMX**, not heavy client-side JavaScript.
+azumi
+ is designed for **server-side rendering with HTMX**, not heavy client-side JavaScript.
 
 #### Why HTMX > Client JS?
 
@@ -1070,12 +1126,14 @@ Traditional CSS has global scope:
 .button { background: red; } /* ← Conflicts with component_a! */
 ```
 
-#### Rusti's Solution
+#### azumi
+'s Solution
 
 Automatic scoping when `<style>` is a direct child:
 
 ```rust
-fn component_a() -> impl rusti::Component {
+fn component_a() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -1085,7 +1143,8 @@ fn component_a() -> impl rusti::Component {
     }
 }
 
-fn component_b() -> impl rusti::Component {
+fn component_b() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -1127,10 +1186,12 @@ fn UserCard(
     name: String,
     #[prop(default = "\"\".to_string())] avatar_url: String,
     #[prop(default = "false")] is_verified: bool
-) -> impl rusti::Component { /* ... */ }
+) -> impl azumi
+::Component { /* ... */ }
 
 // ✅ snake_case for simple, focused components
-fn icon(name: &str, size: u32) -> impl rusti::Component { /* ... */ }
+fn icon(name: &str, size: u32) -> impl azumi
+::Component { /* ... */ }
 
 // ✅ @variable for conditional/reusable components
 let header = if user.is_admin() {
@@ -1199,7 +1260,9 @@ let header = if user.is_admin() {
 ```rust
 // ✅ Good: Small, focused components
 #[component]
-fn Page(title: String, children: impl rusti::Component) -> impl rusti::Component {
+fn Page(title: String, children: impl azumi
+::Component) -> impl azumi
+::Component {
     html!
  {
         <div class="page">
@@ -1211,7 +1274,8 @@ fn Page(title: String, children: impl rusti::Component) -> impl rusti::Component
 }
 
 // ❌ Avoid: Monolithic components with everything inline
-fn giant_page() -> impl rusti::Component {
+fn giant_page() -> impl azumi
+::Component {
     html!
  {
         <div>
@@ -1232,10 +1296,12 @@ struct User {
     role: Role,
 }
 
-fn user_profile(user: &User) -> impl rusti::Component { /* ... */ }
+fn user_profile(user: &User) -> impl azumi
+::Component { /* ... */ }
 
 // ❌ Avoid: Primitive obsession
-fn user_profile(name: &str, role: &str, id: i32) -> impl rusti::Component { /* ... */ }
+fn user_profile(name: &str, role: &str, id: i32) -> impl azumi
+::Component { /* ... */ }
 ```
 
 ### 6. Testing
@@ -1249,14 +1315,16 @@ mod tests {
     
     #[test]
     fn test_button_renders() {
-        let html = rusti::render_to_string(&button("Click me", "btn-primary"));
+        let html = azumi
+::render_to_string(&button("Click me", "btn-primary"));
         assert!(html.contains("Click me"));
         assert!(html.contains("btn-primary"));
     }
     
     #[test]
     fn test_conditional_rendering() {
-        let html = rusti::render_to_string(&status_badge(true));
+        let html = azumi
+::render_to_string(&status_badge(true));
         assert!(html.contains("Active"));
     }
 }
@@ -1264,30 +1332,37 @@ mod tests {
 
 ### 7. Performance
 
-**Rusti is zero-cost, but follow these guidelines:**
+**azumi
+ is zero-cost, but follow these guidelines:**
 
 - **Avoid unnecessary allocations**: Use `&str` when possible
   ```rust
-  fn label(text: &str) -> impl rusti::Component + '_ { /* ... */ }
+  fn label(text: &str) -> impl azumi
+::Component + '_ { /* ... */ }
   ```
 
-- **Use `impl rusti::Component`**: Enables return type optimization
+- **Use `impl azumi
+::Component`**: Enables return type optimization
   ```rust
   // ✅ Good
-  fn card() -> impl rusti::Component { /* ... */ }
+  fn card() -> impl azumi
+::Component { /* ... */ }
   
   // ❌ Avoid
-  fn card() -> Box<dyn rusti::Component> { /* ... */ }
+  fn card() -> Box<dyn azumi
+::Component> { /* ... */ }
   ```
 
 - **Render to string once**: Don't repeatedly render the same component
   ```rust
   // ✅ Good
-  let html = rusti::render_to_string(&page());
+  let html = azumi
+::render_to_string(&page());
   
   // ❌ Avoid in loops
   for _ in 0..100 {
-      let html = rusti::render_to_string(&page()); // Wasteful!
+      let html = azumi
+::render_to_string(&page()); // Wasteful!
   }
   ```
 
@@ -1296,7 +1371,8 @@ mod tests {
 **Handle errors gracefully in components:**
 
 ```rust
-fn user_profile(user_id: i32) -> impl rusti::Component {
+fn user_profile(user_id: i32) -> impl azumi
+::Component {
     let user = match fetch_user(user_id) {
         Ok(u) => u,
         Err(_) => return html!
@@ -1319,7 +1395,8 @@ fn user_profile(user_id: i32) -> impl rusti::Component {
 **Always include semantic HTML and ARIA attributes:**
 
 ```rust
-fn dialog(title: &str) -> impl rusti::Component {
+fn dialog(title: &str) -> impl azumi
+::Component {
     html!
  {
         <div role="dialog" aria-labelledby="dialog-title">
@@ -1351,7 +1428,8 @@ fn paginated_list<T: Display>(
     items: &[T],
     page: usize,
     page_size: usize
-) -> impl rusti::Component { /* ... */ }
+) -> impl azumi
+::Component { /* ... */ }
 ```
 
 ---
@@ -1439,7 +1517,8 @@ let msg = "Hello".to_string();  // String
 
 ```rust
 // ❌ Wrong
-fn card() -> impl rusti::Component + '_ {
+fn card() -> impl azumi
+::Component + '_ {
     html!
  {
         <div>{format!("Hello")}</div>  // format!() creates temporary String
@@ -1447,7 +1526,8 @@ fn card() -> impl rusti::Component + '_ {
 }
 
 // ✅ Fix 1: Use @let
-fn card() -> impl rusti::Component {
+fn card() -> impl azumi
+::Component {
     html!
  {
         @let greeting = format!("Hello");
@@ -1456,7 +1536,8 @@ fn card() -> impl rusti::Component {
 }
 
 // ✅ Fix 2: Remove lifetime bound if not borrowing
-fn card() -> impl rusti::Component {  // No '_ needed
+fn card() -> impl azumi
+::Component {  // No '_ needed
     html!
  {
         <div>{"Hello"}</div>
@@ -1470,7 +1551,8 @@ fn card() -> impl rusti::Component {  // No '_ needed
 
 #### Problem: Quotes appearing in output when they shouldn't
 
-**Cause**: Rusti auto-strips outer quotes in text positions.
+**Cause**: azumi
+ auto-strips outer quotes in text positions.
 
 ```rust
 // Both produce: <h1>Hello</h1>
@@ -1491,17 +1573,20 @@ fn card() -> impl rusti::Component {  // No '_ needed
 
 ```rust
 // ❌ Wrong: Regular function with PascalCase name
-fn MyComponent(title: String) -> impl rusti::Component { /* ... */ }
+fn MyComponent(title: String) -> impl azumi
+::Component { /* ... */ }
 
 // Usage fails:
 // @MyComponent(title = "Hello".to_string())  // ← Error!
 
 // ✅ Fix: Add #[component] macro
 #[component]
-fn MyComponent(title: String) -> impl rusti::Component { /* ... */ }
+fn MyComponent(title: String) -> impl azumi
+::Component { /* ... */ }
 
 // ✅ Or use snake_case for regular functions
-fn my_component(title: String) -> impl rusti::Component { /* ... */ }
+fn my_component(title: String) -> impl azumi
+::Component { /* ... */ }
 
 // Usage with positional args:
 // @my_component("Hello".to_string())
@@ -1529,12 +1614,14 @@ fn my_component(title: String) -> impl rusti::Component { /* ... */ }
 
 ## 🧠 Lifetime Management
 
-Rusti components follow standard Rust lifetime rules:
+azumi
+ components follow standard Rust lifetime rules:
 
 ### Borrowed Data (The `'_` Pattern) - Recommended
 
 ```rust
-fn user_card(name: &str) -> impl rusti::Component + '_ {
+fn user_card(name: &str) -> impl azumi
+::Component + '_ {
     html!
  { <div>{name}</div> }
 }
@@ -1543,7 +1630,8 @@ fn user_card(name: &str) -> impl rusti::Component + '_ {
 ### Owned Data (No Lifetimes)
 
 ```rust
-fn counter(count: i32) -> impl rusti::Component {
+fn counter(count: i32) -> impl azumi
+::Component {
     html!
  { <div>Count: {count}</div> }
 }
@@ -1553,7 +1641,8 @@ fn counter(count: i32) -> impl rusti::Component {
 
 ## 📊 Competitive Analysis
 
-| Feature | Rusti | Maud | Askama | Leptos |
+| Feature | azumi
+ | Maud | Askama | Leptos |
 |---------|-------|------|--------|--------|
 | **Syntax** | HTML-like | Rust DSL | Jinja2-like | JSX-like |
 | **Type Safety** | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
@@ -1563,11 +1652,15 @@ fn counter(count: i32) -> impl rusti::Component {
 | **HTMX Support** | ✅ Namespaced Attrs | ⚠️ Manual | ⚠️ Manual | ❌ |
 | **Learning Curve** | Low (HTML) | Medium | Low | Medium |
 
-### Why Rusti?
+### Why azumi
+?
 
-- **vs Maud**: Rusti uses actual HTML syntax, making it easier to copy-paste from UI kits and work with designers
-- **vs Askama**: Rusti components are Rust functions with full composition support, no external files needed
-- **vs Leptos**: Rusti is lighter weight (no WASM/Signals overhead), perfect for server-side rendering with HTMX
+- **vs Maud**: azumi
+ uses actual HTML syntax, making it easier to copy-paste from UI kits and work with designers
+- **vs Askama**: azumi
+ components are Rust functions with full composition support, no external files needed
+- **vs Leptos**: azumi
+ is lighter weight (no WASM/Signals overhead), perfect for server-side rendering with HTMX
 
 ---
 
@@ -1605,5 +1698,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 🔗 Resources
 
 - [Demo Application](demo/) - Full-featured examples
-- [GitHub Repository](https://github.com/DraconDev/rusti)
-- [Issue Tracker](https://github.com/DraconDev/rusti/issues)
+- [GitHub Repository](https://github.com/DraconDev/azumi
+)
+- [Issue Tracker](https://github.com/DraconDev/azumi
+/issues)

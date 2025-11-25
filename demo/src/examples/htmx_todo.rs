@@ -2,7 +2,7 @@ use axum::{
     response::{Html, IntoResponse},
     Form,
 };
-use rusti::rusti;
+use azumi::azumi;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -11,14 +11,14 @@ pub struct TodoForm {
 }
 
 /// HTMX-powered todo list - server-side rendering
-pub fn htmx_todo() -> impl rusti::Component {
-    html!
- {
+pub fn htmx_todo() -> impl azumi::Component {
+    html! {
         <!DOCTYPE html>
         <html>
             <head>
                 <meta charset="UTF-8" />
-                <title>"HTMX Todo - Rusti 2.0"</title>
+                <title>"HTMX Todo - azumi
+    2.0"</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10" />
                 <style src="demo/static/todo.css" />
                 // <style>
@@ -35,7 +35,8 @@ pub fn htmx_todo() -> impl rusti::Component {
             <body>
                 <div class="container">
                     <h1>"📝 HTMX Todo List"</h1>
-                    <p class="subtitle">"Server-side rendered with Rusti 2.0"</p>
+                    <p class="subtitle">"Server-side rendered with azumi
+    2.0"</p>
 
                     <form hx:post="/api/todos" hx:target="#todo-list" hx:swap="beforeend" class="add-form">
                         <input
@@ -48,7 +49,8 @@ pub fn htmx_todo() -> impl rusti::Component {
                     </form>
 
                     <div id="todo-list" class="todo-list">
-                        @todo_item("Learn Rusti 2.0", 1)
+                        @todo_item("Learn azumi
+    2.0", 1)
                         @todo_item("Build something awesome", 2)
                     </div>
                 </div>
@@ -57,11 +59,10 @@ pub fn htmx_todo() -> impl rusti::Component {
     }
 }
 
-fn todo_item<'a>(text: &'a str, id: u32) -> impl rusti::Component + 'a {
+fn todo_item<'a>(text: &'a str, id: u32) -> impl azumi::Component + 'a {
     let delete_url = format!("/api/todos/{}", id);
 
-    html!
- {
+    html! {
         <div class="todo-item" id={format!("todo-{}", id)}>
             <input type="checkbox" class="todo-checkbox" />
             <span class="todo-text">{text}</span>
@@ -78,13 +79,13 @@ fn todo_item<'a>(text: &'a str, id: u32) -> impl rusti::Component + 'a {
 }
 
 pub async fn htmx_todo_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&htmx_todo()))
+    Html(azumi::render_to_string(&htmx_todo()))
 }
 
 pub async fn add_todo_handler(Form(form): Form<TodoForm>) -> impl IntoResponse {
     // In real app, save to database and get real ID
     let id = rand::random::<u32>();
-    Html(rusti::render_to_string(&todo_item(&form.task, id)))
+    Html(azumi::render_to_string(&todo_item(&form.task, id)))
 }
 
 pub async fn delete_todo_handler() -> impl IntoResponse {

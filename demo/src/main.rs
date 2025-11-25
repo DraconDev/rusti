@@ -25,7 +25,8 @@ async fn main() {
         .await
         .expect("Failed to bind to port 8081");
 
-    println!("🚀 Rusti 2.0 Demo Server");
+    println!("🚀 azumi
+ 2.0 Demo Server");
     println!("=====================================");
     println!("📍 http://localhost:8081");
     println!();
@@ -34,7 +35,8 @@ async fn main() {
     println!("  • /components - Component composition");
     println!("  • /htmx-todo - HTMX server-side rendering");
     println!();
-    println!("All examples follow Rusti 2.0 rules:");
+    println!("All examples follow azumi
+ 2.0 rules:");
     println!("  ✓ Mandatory double quotes");
     println!("  ✓ External CSS/JS files");
     println!("  ✓ Type-safe components");

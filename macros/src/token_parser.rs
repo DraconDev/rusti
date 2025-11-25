@@ -210,7 +210,8 @@ impl Parse for Element {
             attrs.push(input.parse()?);
         }
 
-        // Rusti 2.0: Block inline <style> and <script> tags
+        // azumi
+ 2.0: Block inline <style> and <script> tags
         if name == "style" || name == "script" {
             let has_src = attrs.iter().any(|attr: &Attribute| attr.name == "src");
             let is_json_script = name == "script"
@@ -223,7 +224,8 @@ impl Parse for Element {
                 return Err(Error::new(
                     start_span,
                     format!(
-                        "Inline <{}> tags are not supported in Rusti 2.0.\n\
+                        "Inline <{}> tags are not supported in azumi
+ 2.0.\n\
                         Use external files instead:\n\
                         - For CSS: <style src=\"path/to/file.css\" /> (automatically scoped to component)\n\
                         - For JavaScript: <script src=\"/static/app.js\" />\n\
@@ -361,7 +363,8 @@ impl Parse for Text {
     fn parse(input: ParseStream) -> Result<Self> {
         let span = input.span();
 
-        // Rusti 2.0: All text content must be double-quoted string literals
+        // azumi
+ 2.0: All text content must be double-quoted string literals
         // This prevents lexer issues with patterns like "2e5", "88Ester", etc.
         if input.peek(syn::Lit) {
             let lit: syn::Lit = input.parse()?;
