@@ -4,6 +4,8 @@ pub fn simple_script_test() -> impl rusti::Component {
     let my_number = 42;
     // let my_string = "Hello";
 
+    let my_array = vec![1, 2, 3, 4, 5];
+
     rusti! {
         <!DOCTYPE html>
         <html>
@@ -20,12 +22,14 @@ pub fn simple_script_test() -> impl rusti::Component {
                 const str = @{ format!("\"{}\"", my_string) };
                 // const str = @{ my_string }; doesn't work
                 // const str = @{ my_string.to_string() }; doesn't work
+                const arr = @{ format!("{:?}", my_array) };
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
 
                 console.log("num =", num);
                 console.log("str =", str);
+                console.log("arr =", arr);
             </script>
         </body>
         </html>
