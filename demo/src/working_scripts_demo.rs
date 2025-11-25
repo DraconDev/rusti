@@ -239,7 +239,7 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                 try {
                     const fruits = [
                         @for item in &items {
-                            @{ format!("\"{}\"", item) },
+                            @{ item },
                         }
                     ];
 
