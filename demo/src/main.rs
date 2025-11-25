@@ -29,10 +29,13 @@ use about::about_page_wrapper;
 use base_layout_demo::base_layout_demo_handler;
 use datastar::datastar_demo_handler;
 use rusti::rusti;
+use scripts::{
+    interactive_counter::interactive_counter, simple_script_test::simple_script_test,
+    working_scripts_demo::working_scripts_demo,
+};
 use serde::Deserialize;
 use styles_demo::styles_demo_handler;
 use tailwind_demo::tailwind_demo_handler;
-use working_scripts_demo::working_scripts_demo;
 
 use crate::{
     basic_page::basic_page_handler, quote_demo::quote_demo_handler,
@@ -734,9 +737,11 @@ async fn working_scripts_handler() -> impl IntoResponse {
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(
-        &simple_script_test::simple_script_test(),
-    ))
+    Html(rusti::render_to_string(&simple_script_test()))
+}
+
+async fn interactive_counter_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&interactive_counter()))
 }
 
 #[tokio::main]
