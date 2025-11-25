@@ -23,8 +23,7 @@ impl Parse for NodesWrapper {
 }
 
 #[proc_macro]
-pub fn azumi
-(input: TokenStream) -> TokenStream {
+pub fn rusti(input: TokenStream) -> TokenStream {
     // Handle string literal input for emoji support
     let input_tokens = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
         match lit.value().parse::<proc_macro2::TokenStream>() {
@@ -47,8 +46,7 @@ pub fn azumi
     let body = generate_body(&nodes);
 
     let output = quote! {
-        azumi
-::from_fn(move |f| {
+        rusti::from_fn(move |f| {
             #body
             Ok(())
         })
@@ -113,8 +111,7 @@ fn generate_body_with_context(
                 // If this element has style children, it becomes a scoped container
                 if has_style_children {
                     // Generate ONE scope ID for this container using library function
-                    let scope_id_gen = quote! { azumi
-::generate_scope_id() };
+                    let scope_id_gen = quote! { rusti::generate_scope_id() };
 
                     // Generate code for styled children with scope
                     let mut children_code = proc_macro2::TokenStream::new();
@@ -135,8 +132,7 @@ fn generate_body_with_context(
                                     children_code.extend(quote! {
                                         {
                                             let css_content = #style_content;
-                                            let scoped_css = azumi
-::scope_css(css_content, &scope_id);
+                                            let scoped_css = rusti::scope_css(css_content, &scope_id);
                                             write!(f, "<style data-scope=\"{}\">", scope_id)?;
                                             write!(f, "{}", scoped_css)?;
                                             write!(f, "</style>")?;
@@ -155,14 +151,12 @@ fn generate_body_with_context(
                                     match &attr.value {
                                         token_parser::AttributeValue::Static(val) => {
                                             child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(#val))?;
+                                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
                                             });
                                         }
                                         token_parser::AttributeValue::Dynamic(expr) => {
                                             child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(&(#expr)))?;
+                                                write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
                                             });
                                         }
                                         token_parser::AttributeValue::None => {
@@ -209,8 +203,7 @@ fn generate_body_with_context(
                             token_parser::Node::Expression(expr) => {
                                 let content = &expr.content;
                                 children_code.extend(quote! {
-                                    write!(f, "{}", azumi
-::Escaped(&(#content)))?;
+                                    write!(f, "{}", rusti::Escaped(&(#content)))?;
                                 });
                             }
                             _ => {
@@ -232,14 +225,12 @@ fn generate_body_with_context(
                         match &attr.value {
                             token_parser::AttributeValue::Static(val) => {
                                 attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(#val))?;
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
                                 });
                             }
                             token_parser::AttributeValue::Dynamic(expr) => {
                                 attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(&(#expr)))?;
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
                                 });
                             }
                             token_parser::AttributeValue::None => {
@@ -271,14 +262,12 @@ fn generate_body_with_context(
                         match &attr.value {
                             token_parser::AttributeValue::Static(val) => {
                                 attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(#val))?;
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(#val))?;
                                 });
                             }
                             token_parser::AttributeValue::Dynamic(expr) => {
                                 attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi
-::Escaped(&(#expr)))?;
+                                    write!(f, " {}=\"{}\"", #attr_name, rusti::Escaped(&(#expr)))?;
                                 });
                             }
                             token_parser::AttributeValue::None => {
@@ -317,12 +306,9 @@ fn generate_body_with_context(
                 );
                 match context {
                     Context::Script => {
-                        // In script tags, use azumi
-::js() to safely inject values (Debug formatting)
-                        println!("  -> Script context, using azumi
-::js");
-                        quote! { write!(f, "{}", azumi
-::js(&(#content)))?; }
+                        // In script tags, use rusti::js() to safely inject values (Debug formatting)
+                        println!("  -> Script context, using rusti::js");
+                        quote! { write!(f, "{}", rusti::js(&(#content)))?; }
                     }
                     Context::Style => {
                         // In style tags, use Display (raw text)
@@ -330,8 +316,7 @@ fn generate_body_with_context(
                     }
                     Context::Normal => {
                         // In normal HTML, use Escaped (HTML escaping)
-                        quote! { write!(f, "{}", azumi
-::Escaped(&(#content)))?; }
+                        quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
                     }
                 }
             }
@@ -395,8 +380,7 @@ fn generate_body_with_context(
                         let children_body =
                             generate_body_with_context(&call_block.children, context);
                         quote! {
-                            azumi
-::from_fn(|f| {
+                            rusti::from_fn(|f| {
                                 #children_body
                                 Ok(())
                             })
@@ -452,8 +436,7 @@ fn generate_body_with_context(
                         };
 
                         quote! {
-                            azumi
-::Component::render(&#name::render(#name::Props::builder()
+                            rusti::Component::render(&#name::render(#name::Props::builder()
                                 #(#setters)*
                                 .build().expect("Failed to build props")
                                 #children_arg), f)?;
@@ -466,16 +449,14 @@ fn generate_body_with_context(
                         };
 
                         quote! {
-                            azumi
-::Component::render(&#name(#args #args_separator #children_code), f)?;
+                            rusti::Component::render(&#name(#args #args_separator #children_code), f)?;
                         }
                     }
                 }
                 token_parser::Block::Component(comp_block) => {
                     let name = &comp_block.name;
                     quote! {
-                        azumi
-::Component::render(&#name, f)?;
+                        rusti::Component::render(&#name, f)?;
                     }
                 }
                 token_parser::Block::Let(let_block) => {
