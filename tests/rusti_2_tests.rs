@@ -1,9 +1,6 @@
-// azumi
- 2.0 Parser Tests
+// Rusti 2.0 Parser Tests
 
-use azumi
-::azumi
-;
+use rusti::rusti;
 
 #[test]
 fn test_quoted_text_required() {
