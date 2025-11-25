@@ -1,3 +1,3 @@
-fun ction test() {
-    con sole.l og("test");
+function test() {
+    console.log("test");
 }
