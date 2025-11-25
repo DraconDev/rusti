@@ -144,7 +144,7 @@ pub fn styles_demo2() -> impl rusti::Component {
                 </style>
             </head>
             <body class="flex items-center justify-center">
-                <h1 class="text-4xl font-bold">Styles Demo2e222ee22e2 1e</h1>
+                <h1 class="text-4xl font-bold">Styles Demo2e222ee22e2</h1>
             </body>
         </html>
     }
