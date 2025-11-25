@@ -11,7 +11,11 @@ pub async fn layouts_handler() -> impl IntoResponse {
 // A true "Layout" pattern often involves passing a closure or a specific slot.
 // Here we demonstrate "Composition" which is the React/Azumi way.
 
-fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Component {
+fn main_layout<F, C>(title: &str, content: F) -> impl azumi::Component
+where
+    F: Fn() -> C,
+    C: azumi::Component,
+{
     html! {
         <!DOCTYPE html>
         <html>
@@ -31,7 +35,7 @@ fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Compo
                         </ul>
                     </nav>
                     <main class="main">
-                        {content}
+                        @content()
                     </main>
                 </div>
             </body>
@@ -40,9 +44,8 @@ fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Compo
 }
 
 fn page_content() -> impl azumi::Component {
-    // We use the layout by calling it as a function and passing our content
-    main_layout(
-        "Layouts Demo",
+    // We use the layout by calling it as a function and passing our content as a closure
+    main_layout("Layouts Demo", || {
         html! {
             <h1>"Layout Composition"</h1>
             <p>"This page demonstrates how to create a reusable layout wrapper."</p>
@@ -52,6 +55,6 @@ fn page_content() -> impl azumi::Component {
                 <h3>"Why Composition?"</h3>
                 <p>"It avoids inheritance and makes data flow explicit."</p>
             </div>
-        },
-    )
+        }
+    })
 }
