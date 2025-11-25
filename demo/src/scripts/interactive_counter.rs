@@ -177,7 +177,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     counter += @{ step_size };
                     updateDisplay();
                     addHistory("Increment", counter);
-                }()
+                }
 
                 function decrement() {
                     counter -= @{ step_size };
