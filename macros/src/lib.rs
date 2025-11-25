@@ -23,7 +23,7 @@ impl Parse for NodesWrapper {
 }
 
 #[proc_macro]
-pub fn azumi(input: TokenStream) -> TokenStream {
+pub fn html(input: TokenStream) -> TokenStream {
     // Handle string literal input for emoji support
     let input_tokens = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
         match lit.value().parse::<proc_macro2::TokenStream>() {
@@ -202,9 +202,9 @@ fn generate_body_with_context(
                             }
                             token_parser::Node::Expression(expr) => {
                                 let content = &expr.content;
-                                    children_code.extend(quote! {
-                                        write!(f, "{}", azumi::Escaped(&(#content)))?;
-                                    });
+                                children_code.extend(quote! {
+                                    write!(f, "{}", azumi::Escaped(&(#content)))?;
+                                });
                             }
                             _ => {
                                 // Handle other node types (ForBlock, IfBlock, MatchBlock, etc)
@@ -306,9 +306,9 @@ fn generate_body_with_context(
                 );
                 match context {
                     Context::Script => {
-                        // In script tags, use rusti::js() to safely inject values (Debug formatting)
-                        println!("  -> Script context, using rusti::js");
-                        quote! { write!(f, "{}", rusti::js(&(#content)))?; }
+                        // In script tags, use azumi::js() to safely inject values (Debug formatting)
+                        println!("  -> Script context, using azumi::js");
+                        quote! { write!(f, "{}", azumi::js(&(#content)))?; }
                     }
                     Context::Style => {
                         // In style tags, use Display (raw text)
