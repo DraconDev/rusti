@@ -53,18 +53,18 @@ pub fn styles_demo2() -> impl rusti::Component {
                         background-color: #222222;
                     }
                     .extension-item {
-                        margin-bottom: 15px;
-                        padding: 10px;
+                        margin-bottom: "15px;"
+                        padding: "10px";
                         background-color: #ffffff;
-                        border-radius: 5px;
-                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        border-radius: "5px";
+                        box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
                     }
                     .button {
                         background-color: #007bff;
                         color: white;
                         padding: 10px 15px;
                         border: none;
-                        border-radius: 5px;
+                        border-radius: 5px; 
                         cursor: pointer;
                         font-size: 16px;
                     }
