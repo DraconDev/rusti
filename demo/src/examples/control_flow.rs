@@ -2,22 +2,13 @@ use axum::response::{Html, IntoResponse};
 use azumi::html;
 
 pub async fn control_flow_handler() -> impl IntoResponse {
+    Html(azumi::render_to_string(&control_flow_demo()))
+}
+
+fn control_flow_demo() -> impl azumi::Component {
     let users = vec!["Alice", "Bob", "Charlie"];
-    let status = Status::Active;
     let count = 5;
 
-    Html(azumi::render_to_string(&control_flow_demo(
-        users, status, count,
-    )))
-}
-
-enum Status {
-    Active,
-    Pending,
-    Suspended,
-}
-
-fn control_flow_demo(users: Vec<&str>, status: Status, count: i32) -> impl azumi::Component {
     html! {
         <!DOCTYPE html>
         <html>
@@ -54,10 +45,10 @@ fn control_flow_demo(users: Vec<&str>, status: Status, count: i32) -> impl azumi
                         <h2>"3. Match Expressions"</h2>
                         <p>
                             "Current Status: "
-                            @match status {
-                                Status::Active => { <span class="status-active">"Active"</span> }
-                                Status::Pending => { <span class="status-pending">"Pending"</span> }
-                                Status::Suspended => { <span class="status-suspended">"Suspended"</span> }
+                            @match count {
+                                0 => { <span class="status-suspended">"Zero"</span> }
+                                1..=5 => { <span class="status-pending">"Low (1-5)"</span> }
+                                _ => { <span class="status-active">"Higher than 5"</span> }
                             }
                         </p>
                     </div>
