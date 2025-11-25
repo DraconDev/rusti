@@ -313,7 +313,7 @@ pub fn todo_app() -> impl rusti::Component {
                                 "<button class='delete-btn' onclick='deleteTodo(" + todo.id + ")'>Delete</button>" +
                                 "</li>";
                         }).join("");
-                        
+
                         console.log("Generated HTML length:", html.length);
                         console.log("First 200 chars:", html.substring(0, 200));
                         list.innerHTML = html;
@@ -324,7 +324,7 @@ pub fn todo_app() -> impl rusti::Component {
                 }
 
                 function escapeHtml(text) {
-                    const div = document.createElement('div');
+                    const div = document.createElement("div");
                     div.textContent = text;
                     return div.innerHTML;
                 }
