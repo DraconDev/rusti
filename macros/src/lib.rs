@@ -69,20 +69,35 @@ fn strip_outer_quotes(s: &str) -> String {
     s.to_string()
 }
 
+#[derive(Copy, Clone, PartialEq)]
+enum Context {
+    Normal,
+    Script,
+    Style,
+}
+
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
-    generate_body_with_context(nodes, false)
+    generate_body_with_context(nodes, Context::Normal)
 }
 
 fn generate_body_with_context(
     nodes: &[token_parser::Node],
-    raw_text: bool,
+    context: Context,
 ) -> proc_macro2::TokenStream {
     let mut stream = proc_macro2::TokenStream::new();
     for node in nodes {
         let chunk = match node {
             token_parser::Node::Element(elem) => {
                 let name = &elem.name;
-                let is_raw_tag = name == "script" || name == "style";
+
+                // Determine context for children
+                let child_context = if name == "script" {
+                    Context::Script
+                } else if name == "style" {
+                    Context::Style
+                } else {
+                    Context::Normal
+                };
 
                 // Special handling for <style src="...">
                 if name == "style" {
@@ -95,7 +110,7 @@ fn generate_body_with_context(
                     }
                 }
 
-                let children_code = generate_body_with_context(&elem.children, is_raw_tag);
+                let children_code = generate_body_with_context(&elem.children, child_context);
 
                 let mut attr_code = proc_macro2::TokenStream::new();
                 for attr in &elem.attrs {
@@ -140,10 +155,19 @@ fn generate_body_with_context(
             }
             token_parser::Node::Expression(expr) => {
                 let content = &expr.content;
-                if raw_text {
-                    quote! { write!(f, "{}", #content)?; }
-                } else {
-                    quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
+                match context {
+                    Context::Script => {
+                        // In script tags, use rusti::js() to safely inject values (Debug formatting)
+                        quote! { write!(f, "{}", rusti::js(&(#content)))?; }
+                    }
+                    Context::Style => {
+                        // In style tags, use Display (raw text)
+                        quote! { write!(f, "{}", #content)?; }
+                    }
+                    Context::Normal => {
+                        // In normal HTML, use Escaped (HTML escaping)
+                        quote! { write!(f, "{}", rusti::Escaped(&(#content)))?; }
+                    }
                 }
             }
             token_parser::Node::Comment(_) => {
@@ -155,14 +179,14 @@ fn generate_body_with_context(
                 quote! { write!(f, "<!DOCTYPE {}>", #content)?; }
             }
             token_parser::Node::Fragment(frag) => {
-                generate_body_with_context(&frag.children, raw_text)
+                generate_body_with_context(&frag.children, context)
             }
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
                     let condition = &if_block.condition;
-                    let then_code = generate_body_with_context(&if_block.then_branch, raw_text);
+                    let then_code = generate_body_with_context(&if_block.then_branch, context);
                     let else_code = if let Some(else_branch) = &if_block.else_branch {
-                        let else_body = generate_body_with_context(else_branch, raw_text);
+                        let else_body = generate_body_with_context(else_branch, context);
                         quote! { else { #else_body } }
                     } else {
                         quote! {}
@@ -176,7 +200,7 @@ fn generate_body_with_context(
                 token_parser::Block::For(for_block) => {
                     let pattern = &for_block.pattern;
                     let iterator = &for_block.iterator;
-                    let body_code = generate_body_with_context(&for_block.body, raw_text);
+                    let body_code = generate_body_with_context(&for_block.body, context);
                     quote! {
                         for #pattern in #iterator {
                             #body_code
@@ -187,7 +211,7 @@ fn generate_body_with_context(
                     let expr = &match_block.expr;
                     let arms = match_block.arms.iter().map(|arm| {
                         let pattern = &arm.pattern;
-                        let body = generate_body_with_context(&arm.body, raw_text);
+                        let body = generate_body_with_context(&arm.body, context);
                         quote! {
                             #pattern => { #body }
                         }
@@ -204,7 +228,7 @@ fn generate_body_with_context(
                     let has_children = !call_block.children.is_empty();
                     let children_code = if has_children {
                         let children_body =
-                            generate_body_with_context(&call_block.children, raw_text);
+                            generate_body_with_context(&call_block.children, context);
                         quote! {
                             , rusti::from_fn(|f| {
                                 #children_body
