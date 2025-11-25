@@ -28,7 +28,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
             <title>"Todo App – HTMX + SQLite"</title>
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             <style>
-                {r#"
+                
                 * {
                     margin: 0;
                     padding: 0;
@@ -229,7 +229,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
                 .htmx-request .htmx-indicator {
                     opacity: 1;
                 }
-                "#}
+                
             </style>
         </head>
         <body>
