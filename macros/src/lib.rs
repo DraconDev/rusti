@@ -380,7 +380,7 @@ fn generate_body_with_context(
                         let children_body =
                             generate_body_with_context(&call_block.children, context);
                         quote! {
-                            , rusti::from_fn(|f| {
+                            rusti::from_fn(|f| {
                                 #children_body
                                 Ok(())
                             })
@@ -397,6 +397,20 @@ fn generate_body_with_context(
                                 && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
                             {
                                 Some(exprs)
+                            } else if exprs.is_empty() {
+                                // Empty args: check if name starts with Uppercase (Component convention)
+                                // If so, treat as named args (Builder pattern) to support defaults
+                                let name_str = name.to_string();
+                                let last_segment = name_str.split("::").last().unwrap_or("");
+                                if last_segment
+                                    .chars()
+                                    .next()
+                                    .map_or(false, |c| c.is_uppercase())
+                                {
+                                    Some(exprs)
+                                } else {
+                                    None
+                                }
                             } else {
                                 None
                             }
@@ -414,15 +428,28 @@ fn generate_body_with_context(
                                 unreachable!()
                             }
                         });
+
+                        let children_arg = if has_children {
+                            quote! { , #children_code }
+                        } else {
+                            quote! {}
+                        };
+
                         quote! {
                             rusti::Component::render(&#name::render(#name::Props::builder()
                                 #(#setters)*
                                 .build().expect("Failed to build props")
-                                #children_code), f)?;
+                                #children_arg), f)?;
                         }
                     } else {
+                        let args_separator = if !args.is_empty() && has_children {
+                            quote! { , }
+                        } else {
+                            quote! {}
+                        };
+
                         quote! {
-                            rusti::Component::render(&#name(#args #children_code), f)?;
+                            rusti::Component::render(&#name(#args #args_separator #children_code), f)?;
                         }
                     }
                 }
