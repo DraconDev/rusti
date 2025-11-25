@@ -30,6 +30,9 @@ pub fn simple_script_test() -> impl rusti::Component {
                 
                 document.getElementById("output").innerHTML += "<br>Array: " + arr; // this works too
 
+                @for item in &my_array {
+                    document.getElementById("output").innerHTML += "<br>" + item;
+                }
 
 
                 console.log("num =", num);
