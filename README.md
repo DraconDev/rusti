@@ -1063,22 +1063,406 @@ Both render correctly with **no conflicts**. Each gets a unique `data-scope` att
 
 ## 🎯 Best Practices
 
-1. **Use Tailwind CSS** for styling whenever possible
-2. **Use the `#[component]` macro** for components with multiple props
-3. **Leverage optional props** to make components flexible without boilerplate
-4. **Use typed children** for layout components and wrappers
-5. **Use `@let` for computed values** - Keep template logic readable with intermediate variables
-6. **For inline `<script>` tags**: 
-   - ✅ Standard JavaScript works perfectly - objects, arrays, functions, etc.
-   - ⚠️ Always use double quotes (`""`), never single quotes (`''`)
-7. **For inline `<style>` tags**: 
-   - ✅ Standard CSS works fine
-   - ⚠️ If you encounter lexer issues with units like `2em`, use `"2em"` (quoted)
-   - ✅ Most units work as-is: `3rem`, `0.5em`, `16px`
-8. **Link external scripts** (`<script src="...">`) for larger JavaScript files
-9. **Extract components early** to keep templates readable
-10. **Leverage Rust's type system** - pass typed structs instead of primitives
-11. **Test component rendering** with unit tests using `render_to_string()`
+### 1. Component Design Patterns
+
+**Choose the right component pattern for your use case:**
+
+```rust
+// ✅ PascalCase for complex components with optional props
+#[component]
+fn UserCard(
+    name: String,
+    #[prop(default = "\"\".to_string())] avatar_url: String,
+    #[prop(default = "false")] is_verified: bool
+) -> impl rusti::Component { /* ... */ }
+
+// ✅ snake_case for simple, focused components
+fn icon(name: &str, size: u32) -> impl rusti::Component { /* ... */ }
+
+// ✅ @variable for conditional/reusable components
+let header = if user.is_admin() {
+    admin_header()
+} else {
+    user_header()
+};
+```
+
+### 2. CSS Strategy Hierarchy
+
+**Follow this priority order for styling:**
+
+1. **Tailwind CSS** (Recommended) - Utility-first, no conflicts
+   ```rust
+   <div class="p-8 bg-gradient-to-r from-blue-500 to-purple-600">
+   ```
+
+2. **External Stylesheets** - Global/shared styles
+   ```rust
+   <style src="styles/global.css" />
+   ```
+
+3. **Scoped CSS** - Component-specific styles
+   ```rust
+   <div>
+       <style>.card { padding: 2em; }</style>
+       <div class="card">...</div>
+   </div>
+   ```
+
+4. **Inline Styles** - One-off styling
+   ```rust
+   <div style="margin: 2em; color: #ff0000;">
+   ```
+
+### 3. Script Injection Guidelines
+
+**Prefer HTMX over client-side JavaScript:**
+
+```rust
+// ❌ Avoid: Heavy client-side logic
+<script>
+    @for item in &items {
+        // Complex DOM manipulation
+    }
+</script>
+
+// ✅ Prefer: Server-side rendering with HTMX
+<div hx-get="/api/items" hx-trigger="load">
+    @for item in &items {
+        <div>{item}</div>
+    }
+</div>
+```
+
+**When you must use `<script>`, remember:**
+- Use `@let` to create `String` variables
+- ` @{ }` uses Debug formatting
+- Keep scripts minimal and focused
+
+### 4. Component Composition
+
+**Build complex UIs from small, reusable components:**
+
+```rust
+// ✅ Good: Small, focused components
+#[component]
+fn Page(title: String, children: impl rusti::Component) -> impl rusti::Component {
+    rusti! {
+        <div class="page">
+            @header(title)
+            @children
+            @footer()
+        </div>
+    }
+}
+
+// ❌ Avoid: Monolithic components with everything inline
+fn giant_page() -> impl rusti::Component {
+    rusti! {
+        <div>
+            // 500 lines of HTML...
+        </div>
+    }
+}
+```
+
+### 5. Type Safety
+
+**Leverage Rust's type system:**
+
+```rust
+// ✅ Pass typed structs instead of primitives
+struct User {
+    name: String,
+    role: Role,
+}
+
+fn user_profile(user: &User) -> impl rusti::Component { /* ... */ }
+
+// ❌ Avoid: Primitive obsession
+fn user_profile(name: &str, role: &str, id: i32) -> impl rusti::Component { /* ... */ }
+```
+
+### 6. Testing
+
+**Test component rendering with unit tests:**
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_button_renders() {
+        let html = rusti::render_to_string(&button("Click me", "btn-primary"));
+        assert!(html.contains("Click me"));
+        assert!(html.contains("btn-primary"));
+    }
+    
+    #[test]
+    fn test_conditional_rendering() {
+        let html = rusti::render_to_string(&status_badge(true));
+        assert!(html.contains("Active"));
+    }
+}
+```
+
+### 7. Performance
+
+**Rusti is zero-cost, but follow these guidelines:**
+
+- **Avoid unnecessary allocations**: Use `&str` when possible
+  ```rust
+  fn label(text: &str) -> impl rusti::Component + '_ { /* ... */ }
+  ```
+
+- **Use `impl rusti::Component`**: Enables return type optimization
+  ```rust
+  // ✅ Good
+  fn card() -> impl rusti::Component { /* ... */ }
+  
+  // ❌ Avoid
+  fn card() -> Box<dyn rusti::Component> { /* ... */ }
+  ```
+
+- **Render to string once**: Don't repeatedly render the same component
+  ```rust
+  // ✅ Good
+  let html = rusti::render_to_string(&page());
+  
+  // ❌ Avoid in loops
+  for _ in 0..100 {
+      let html = rusti::render_to_string(&page()); // Wasteful!
+  }
+  ```
+
+### 8. Error Handling
+
+**Handle errors gracefully in components:**
+
+```rust
+fn user_profile(user_id: i32) -> impl rusti::Component {
+    let user = match fetch_user(user_id) {
+        Ok(u) => u,
+        Err(_) => return rusti! {
+            <div class="error">User not found</div>
+        },
+    };
+    
+    rusti! {
+        <div class="profile">
+            <h2>{user.name}</h2>
+        </div>
+    }
+}
+```
+
+### 9. Accessibility
+
+**Always include semantic HTML and ARIA attributes:**
+
+```rust
+fn dialog(title: &str) -> impl rusti::Component {
+    rusti! {
+        <div role="dialog" aria-labelledby="dialog-title">
+            <h2 id="dialog-title">{title}</h2>
+            <button aria-label="Close dialog">×</button>
+        </div>
+    }
+}
+```
+
+### 10. Documentation
+
+**Document complex components:**
+
+```rust
+/// Renders a paginated list with navigation controls.
+///
+/// # Arguments
+/// * `items` - The items to display
+/// * `page` - Current page number (1-indexed)
+/// * `page_size` - Items per page
+///
+/// # Example
+/// ```rust
+/// let items = vec!["a", "b", "c"];
+/// paginated_list(&items, 1, 10)
+/// ```
+fn paginated_list<T: Display>(
+    items: &[T],
+    page: usize,
+    page_size: usize
+) -> impl rusti::Component { /* ... */ }
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Script Injection Issues
+
+#### Problem: "Uncaught SyntaxError: Invalid or unexpected token"
+
+**Cause**: String variable not converted to `String` type.
+
+```rust
+// ❌ Wrong
+let msg = "Hello";  // &str
+<script>const x = @{ msg };</script>
+// Output: const x = Hello; // ← Missing quotes!
+
+// ✅ Fix
+let msg = "Hello".to_string();  // String
+<script>const x = @{ msg };</script>
+// Output: const x = "Hello"; // ✓ Valid JS
+```
+
+**Solution**: Always use `.to_string()` or `format!()` for strings in scripts.
+
+---
+
+#### Problem: "Variable interpolation not working"
+
+**Cause**: Using wrong syntax or context.
+
+```rust
+// ❌ Wrong: Using { } instead of @{ }
+<script>const x = { my_var };</script>  // Treated as JS object!
+
+// ✅ Fix: Use @{ }
+<script>const x = @{ my_var };</script>
+
+// ❌ Wrong: Using @{ } outside script tags
+<div>@{ my_var }</div>  // Use { } in HTML!
+
+// ✅ Fix: Use { } in HTML context
+<div>{my_var}</div>
+```
+
+---
+
+### CSS Unit Parsing
+
+#### Problem: "2em" causes lexer error
+
+**Cause**: Rust's lexer interprets `2em` as invalid syntax.
+
+```rust
+// ❌ Problematic
+<style>
+    .card { padding: 2em; }  // May cause lexer issues
+</style>
+
+// ✅ Solution 1: Add space (parser fixes it automatically)
+<style>
+    .card { padding: 2 em; }  // → Becomes "2em" in output
+</style>
+
+// ✅ Solution 2: Use quoted string
+<style>
+    .card { padding: "2em"; }  // → Becomes "2em" in output
+</style>
+
+// ✅ Solution 3: Use different units
+<style>
+    .card { padding: 2rem; }  // rem works fine
+    .card { padding: 32px; }  // px works fine
+</style>
+```
+
+---
+
+### Lifetime Issues
+
+#### Problem: "Borrowed value does not live long enough"
+
+**Cause**: Borrowing temporary values.
+
+```rust
+// ❌ Wrong
+fn card() -> impl rusti::Component + '_ {
+    rusti! {
+        <div>{format!("Hello")}</div>  // format!() creates temporary String
+    }
+}
+
+// ✅ Fix 1: Use @let
+fn card() -> impl rusti::Component {
+    rusti! {
+        @let greeting = format!("Hello");
+        <div>{greeting}</div>
+    }
+}
+
+// ✅ Fix 2: Remove lifetime bound if not borrowing
+fn card() -> impl rusti::Component {  // No '_ needed
+    rusti! {
+        <div>{"Hello"}</div>
+    }
+}
+```
+
+---
+
+### Quote Handling
+
+#### Problem: Quotes appearing in output when they shouldn't
+
+**Cause**: Rusti auto-strips outer quotes in text positions.
+
+```rust
+// Both produce: <h1>Hello</h1>
+<h1>"Hello"</h1>
+<h1>Hello</h1>
+
+// To show literal quotes, use raw strings with { }
+<p>{r#""This shows quotes""#}</p>  // → "This shows quotes"
+```
+
+---
+
+### Component Not Found
+
+#### Problem: `@MyComponent(...)` not working
+
+**Cause**: Missing `#[component]` macro or typo in name.
+
+```rust
+// ❌ Wrong: Regular function with PascalCase name
+fn MyComponent(title: String) -> impl rusti::Component { /* ... */ }
+
+// Usage fails:
+// @MyComponent(title = "Hello".to_string())  // ← Error!
+
+// ✅ Fix: Add #[component] macro
+#[component]
+fn MyComponent(title: String) -> impl rusti::Component { /* ... */ }
+
+// ✅ Or use snake_case for regular functions
+fn my_component(title: String) -> impl rusti::Component { /* ... */ }
+
+// Usage with positional args:
+// @my_component("Hello".to_string())
+```
+
+---
+
+### HTMX Attributes Not Working
+
+#### Problem: HTMX namespaced attributes cause errors
+
+**Cause**: Using double colon `::` instead of single colon `:`.
+
+```rust
+// ❌ Wrong
+<button hx-on::click="handleClick()">  // Double colon!
+
+// ✅ Fix: Single colon
+<button hx-on:click="handleClick()">
+```
+
+
 
 ---
 
