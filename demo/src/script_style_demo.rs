@@ -24,7 +24,7 @@ pub fn script_style_demo() -> impl rusti::Component {
 
                 .card {
                     background: whi te;
-                    co lor: bl ack;
+                    co lor: "bl ack";
                     border-radius: 8px;
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                     padding: "2em";
