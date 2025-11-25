@@ -394,6 +394,230 @@ Most CSS units work fine, but in rare cases where Rust's lexer has issues:
 
 ---
 
+## 🎬 Script Variable Injection
+
+Rusti supports **dynamic variable injection** into `<script>` tags using the `@{ }` syntax. This allows you to safely pass Rust values into your JavaScript code at compile time.
+
+### ✅ Basic Variable Injection
+
+```rust
+fn counter_app() -> impl rusti::Component {
+    let count = 42;
+    let max_count = 100;
+    
+    rusti! {
+        <script>
+            const currentCount = @{ count };
+            const maxCount = @{ max_count };
+            
+            console.log("Count:", currentCount);
+            console.log("Max:", maxCount);
+        </script>
+    }
+}
+```
+
+**Output JavaScript:**
+```javascript
+const currentCount = 42;
+const maxCount = 100;
+```
+
+### 📝 String Injection
+
+String variables require special handling - they must be converted to `String` type:
+
+```rust
+fn app() -> impl rusti::Component {
+    rusti! {
+        <script>
+            // ✅ Correct - use @let to create String in template scope
+            @let message = "Hello, World!".to_string();
+            const msg = @{ message };
+            
+            // ✅ Also correct - format! creates String
+            @let user = format!("User_{}", 123);
+            const username = @{ user };
+            
+            console.log(msg, username);
+        </script>
+    }
+}
+```
+
+**Output JavaScript:**
+```javascript
+const msg = "Hello, World!";
+const username = "User_123";
+```
+
+### 🔄 Control Flow in Scripts
+
+You can use Rusti's control flow (`@if`, `@for`, `@match`, `@let`) **inside** `<script>` tags:
+
+```rust
+fn dynamic_script() -> impl rusti::Component {
+    let items = vec!["apple", "banana", "cherry"];
+    let debug_mode = true;
+    
+    rusti! {
+        <script>
+            const items = [];
+            
+            @for item in &items {
+                items.push(@{ item });
+            }
+            
+            @if debug_mode {
+                console.log("Debug: Items loaded:", items);
+            }
+            
+            @let total = items.len();
+            console.log("Total items:", @{ total });
+        </script>
+    }
+}
+```
+
+### ⚠️ How It Works: Debug Formatting
+
+Variables injected with `@{ }` are formatted using Rust's `Debug` trait (`{:?}`):
+- **Numbers**: `42` → `42`
+- **Strings**: `"hello".to_string()` → `"hello"` (with quotes)
+- **Booleans**: `true` → `true`
+- **Arrays/Vecs**: `vec![1,2,3]` → `[1, 2, 3]`
+
+This is why **strings must be `String` type** - they need Debug formatting to include quotes in the JavaScript output.
+
+### 🚫 Common Pitfalls
+
+```rust
+// ❌ WRONG - &str doesn't have the right Debug format
+let msg = "Hello";
+// <script>const x = @{ msg };</script>
+// Result: const x = Hello; // ← Syntax error! Missing quotes
+
+// ✅ CORRECT - String adds quotes via Debug
+let msg = "Hello".to_string();
+// <script>const x = @{ msg };</script>
+// Result: const x = "Hello"; // ✓ Valid JavaScript
+
+// ❌ WRONG - Cannot inject complex Rust structs directly
+struct User { name: String }
+let user = User { name: "Alice".to_string() };
+// <script>const u = @{ user };</script>
+// Result: const u = User { name: "Alice" }; // ← Invalid JS!
+
+// ✅ CORRECT - Serialize to JSON or extract fields
+let user_json = serde_json::to_string(&user).unwrap();
+// <script>const u = @{ user_json };</script>
+```
+
+### 💡 Best Practice: Use HTMX Instead
+
+For most interactive UIs, **use HTMX** instead of client-side JavaScript:
+
+```rust
+// ❌ Avoid: Complex client-side JS
+// <script>
+//     @for item in &items {
+//         document.createElement("div").innerHTML = @{ item };
+//     }
+// </script>
+
+// ✅ Prefer: Server-side rendering with HTMX
+rusti! {
+    <div hx-get="/api/items" hx-trigger="load">
+        @for item in &items {
+            <div>{item}</div>
+        }
+    </div>
+}
+```
+
+**Why?**
+- Server-side rendering is faster and more reliable
+- Better SEO and accessibility
+- Type-safe Rust code instead of stringly-typed JavaScript
+- Automatic XSS protection
+
+---
+
+## 🎨 Scoped CSS
+
+Rusti automatically scopes CSS when you include `<style>` tags as **direct children** of an element. This prevents style pollution and naming conflicts.
+
+### How It Works
+
+```rust
+fn scoped_card() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <style>
+                .card {
+                    padding: 2em;
+                    background: #f0f0f0;
+                    border-radius: 8px;
+                }
+                .title {
+                    font-size: 1.5em;
+                    font-weight: bold;
+                }
+            </style>
+            
+            <div class="card">
+                <h2 class="title">Scoped Card</h2>
+                <p>These styles only affect this component!</p>
+            </div>
+        </div>
+    }
+}
+```
+
+**Generated HTML:**
+```html
+<div>
+    <style data-scope="s0">
+        .card[data-s0] { padding: 2em; background: #f0f0f0; border-radius: 8px; }
+        .title[data-s0] { font-size: 1.5em; font-weight: bold; }
+    </style>
+    <div class="card" data-s0>
+        <h2 class="title" data-s0>Scoped Card</h2>
+        <p data-s0>These styles only affect this component!</p>
+    </div>
+</div>
+```
+
+### Key Features
+
+- **Automatic Scoping**: Rusti adds unique `data-scope` attributes to both styles and elements
+- **Selector Transformation**: All CSS selectors get the scope attribute appended
+- **No Global Pollution**: Styles cannot leak to other components
+- **Zero Configuration**: Just nest `<style>` as a direct child
+
+### Multiple Components
+
+Each component gets its own unique scope:
+
+```rust
+fn app() -> impl rusti::Component {
+    rusti! {
+        <div>
+            @scoped_card()  // Gets scope "s0"
+            @scoped_card()  // Gets scope "s1" - completely isolated!
+        </div>
+    }
+}
+```
+
+### When NOT to Use Scoped CSS
+
+- **Global styles** (use external stylesheet)
+- **Tailwind CSS** (already scoped by design)
+- **Simple components** (inline styles may be clearer)
+
+---
+
 ## 🌐 Modern Web Framework Support
 
 ### HTMX Integration
