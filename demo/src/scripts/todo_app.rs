@@ -304,14 +304,19 @@ pub fn todo_app() -> impl rusti::Component {
                         list.innerHTML = "<div class='empty-state'>No todos to show</div>";
                     } else {
                         const html = filtered.map(function(todo) {
+                            console.log("Mapping todo:", todo);
                             const completedClass = todo.completed ? " completed" : "";
                             const checked = todo.completed ? " checked" : "";
+                            console.log("completedClass:", completedClass, "checked:", checked);
 
-                            return "<li class='todo-item" + completedClass + "'>" +
+                            const result = "<li class='todo-item" + completedClass + "'>" +
                                 "<input type='checkbox' class='todo-checkbox'" + checked + " onchange='toggleTodo(" + todo.id + ")' />" +
                                 "<span class='todo-text'>" + escapeHtml(todo.text) + "</span>" +
                                 "<button class='delete-btn' onclick='deleteTodo(" + todo.id + ")'>Delete</button>" +
                                 "</li>";
+
+                            console.log("Generated li HTML:", result);
+                            return result;
                         }).join("");
 
                         console.log("Generated HTML length:", html.length);
