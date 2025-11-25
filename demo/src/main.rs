@@ -730,8 +730,10 @@ async fn comprehensive_demo_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&comprehensive_demo()))
 }
 
+
+use scripts::working_scripts_demo;
 async fn working_scripts_handler() -> impl IntoResponse {
-    Html(rusti::render_to_string(&scripts::working_scripts_demo()))
+    Html(rusti::render_to_string(&working_scripts_demo()))
 }
 
 async fn simple_script_test_handler() -> impl IntoResponse {
