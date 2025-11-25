@@ -17,10 +17,6 @@ mod style_src_demo;
 use style_src_demo::style_src_handler;
 mod comprehensive_demo;
 mod handlers;
-use handlers::{
-    add_todo_handler, clear_completed_handler, delete_handler, stats_handler, todo_list_handler,
-    toggle_handler,
-};
 mod let_demo;
 mod script_style_demo;
 mod styles_demo;
