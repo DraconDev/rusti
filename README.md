@@ -834,6 +834,233 @@ async fn main() {
 
 ---
 
+## 🧠 Design Decisions
+
+Understanding Rusti's design philosophy helps you write idiomatic, maintainable code.
+
+### Component Naming: PascalCase vs snake_case vs @component
+
+Rusti supports **three component patterns**, each with different calling conventions:
+
+#### 1. **PascalCase** → Builder Pattern (Complex Components)
+
+Use `PascalCase` with the `#[component]` macro for components with multiple or optional props:
+
+```rust
+use rusti::component;
+
+#[component]
+fn Card(
+    title: String,
+    #[prop(default = "false")] highlighted: bool,
+    #[prop(default = "\"\".to_string())] subtitle: String
+) -> impl rusti::Component {
+    rusti! {
+        <div class={ if highlighted { "card highlighted" } else { "card" } }>
+            <h2>{title}</h2>
+            @if !subtitle.is_empty() {
+                <p>{subtitle}</p>
+            }
+        </div>
+    }
+}
+
+// Usage: Named arguments with builder pattern
+rusti! {
+    @Card(title = "Hello".to_string())
+    @Card(title = "Featured".to_string(), highlighted = true)
+    @Card(
+        title = "Full".to_string(), 
+        highlighted = true,
+        subtitle = "With subtitle".to_string()
+    )
+}
+```
+
+**When to use:**
+- Multiple props (3+)
+- Optional props with defaults
+- Complex configuration
+- Follows Rust convention: PascalCase for types
+
+#### 2. **snake_case** → Positional Arguments (Simple Components)
+
+Use `snake_case` regular functions for simple components with 1-2 required props:
+
+```rust
+fn button(label: &str, class: &str) -> impl rusti::Component + '_ {
+    rusti! {
+        <button class={class}>{label}</button>
+    }
+}
+
+// Usage: Positional arguments (like normal function calls)
+rusti! {
+    @button("Click me", "btn-primary")
+    @button("Cancel", "btn-secondary")
+}
+```
+
+**When to use:**
+- 1-2 required props
+- No optional props
+- Simple, focused components
+- Follows Rust convention: snake_case for functions
+
+#### 3. **@component** → Pre-built Component Variable
+
+Use `@component_var` to render a component variable:
+
+```rust
+fn app() -> impl rusti::Component {
+    let my_header = header("My App");
+    let my_footer = footer(2025);
+    
+    rusti! {
+        <div>
+            @my_header
+            <main>Content here</main>
+            @my_footer
+        </div>
+    }
+}
+```
+
+**When to use:**
+- Component is built conditionally
+- Component is reused multiple times
+- Component needs complex setup logic
+
+### Why This Design?
+
+**Rationale**: The naming convention automatically determines the calling syntax:
+- **PascalCase** triggers builder pattern detection (line 404-410 in `macros/src/lib.rs`)
+- **snake_case** uses direct function call
+- **@variable** renders pre-built component
+
+This leverages Rust's existing conventions and provides **compile-time type safety** for all three patterns.
+
+---
+
+### HTMX-First Philosophy
+
+Rusti is designed for **server-side rendering with HTMX**, not heavy client-side JavaScript.
+
+#### Why HTMX > Client JS?
+
+```rust
+// ❌ Client-Side Approach (More complex, less reliable)
+rusti! {
+    <div id="items"></div>
+    <script>
+        @let items = vec!["a", "b", "c"];
+        const container = document.getElementById("items");
+        
+        @for item in &items {
+            const div = document.createElement("div");
+            div.textContent = @{ item };
+            container.appendChild(div);
+        }
+    </script>
+}
+
+// ✅ Server-Side Approach (Simpler, faster, type-safe)
+rusti! {
+    <div hx-get="/api/items" hx-trigger="load" hx-swap="innerHTML">
+        @for item in &items {
+            <div>{item}</div>
+        }
+    </div>
+}
+```
+
+**Benefits:**
+1. **Type Safety**: Rust's type system vs stringly-typed JavaScript
+2. **Performance**: Server renders once vs client manipulation
+3. **SEO**: Content is in initial HTML
+4. **Reliability**: No JS errors, no async race conditions
+5. **Simplicity**: One language (Rust) instead of two (Rust + JS)
+
+#### When to Use Client JS
+
+Client-side JavaScript is appropriate for:
+- **UI Interactions**: Dropdown menus, modals, tooltips
+- **Real-time Features**: WebSocket updates, live notifications
+- **Performance**: Very frequent updates (e.g., animations)
+
+For these cases, use `@{ }` injection to pass server data to client:
+
+```rust
+rusti! {
+    <script>
+        @let api_key = env::var("API_KEY").unwrap();
+        @let user_id = user.id;
+        
+        const ws = new WebSocket(`wss://api.example.com?key=${@{ api_key }}&user=${@{ user_id }}`);
+    </script>
+}
+```
+
+---
+
+### Scoped CSS Philosophy
+
+**Goal**: Component-level style isolation without configuration.
+
+#### The Problem
+
+Traditional CSS has global scope:
+
+```css
+/* component_a.css */
+.button { background: blue; }
+
+/* component_b.css */  
+.button { background: red; } /* ← Conflicts with component_a! */
+```
+
+#### Rusti's Solution
+
+Automatic scoping when `<style>` is a direct child:
+
+```rust
+fn component_a() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <style>.button { background: blue; }</style>
+            <button class="button">Blue</button>
+        </div>
+    }
+}
+
+fn component_b() -> impl rusti::Component {
+    rusti! {
+        <div>
+            <style>.button { background: red; }</style>
+            <button class="button">Red</button>  
+        </div>
+    }
+}
+```
+
+Both render correctly with **no conflicts**. Each gets a unique `data-scope` attribute.
+
+#### Trade-offs
+
+**Pros:**
+- Zero configuration
+- Complete isolation
+- Works with any CSS
+
+**Cons:**
+- Slightly larger HTML (data attributes)
+- Cannot share styles across components (use external CSS for that)
+- Only works for direct children
+
+**Recommendation**: Use scoped CSS for component-specific styles, external stylesheets for global/shared styles, and Tailwind for utility-first styling.
+
+---
+
 ## 🎯 Best Practices
 
 1. **Use Tailwind CSS** for styling whenever possible
