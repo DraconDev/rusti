@@ -18,6 +18,8 @@ pub fn simple_script_test() -> impl rusti::Component {
                 @let my_string = "Hello".to_string();
                 const num = @{ my_number };
                 const str = @{ format!("\"{}\"", my_string) };
+                // const str = @{ my_string }; doesn't work
+                // const str = @{ my_string.to_string() }; doesn't work
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
