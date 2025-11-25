@@ -15,6 +15,7 @@ mod db;
 mod extreme;
 mod quote_demo;
 use component_macro_demo::component_macro_handler;
+mod optional_props_demo;
 mod scoped_css_demo;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
@@ -802,7 +803,11 @@ async fn main() {
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
         .route("/interactive-counter", get(interactive_counter_handler))
-        .route("/scoped-css", get(scoped_css_demo_handler))
+        .route("/scoped-css", get(scoped_css_demo::scoped_css_demo()))
+        .route(
+            "/optional-props",
+            get(optional_props_demo::optional_props_handler),
+        )
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
