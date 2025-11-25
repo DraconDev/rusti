@@ -4,15 +4,13 @@
 
 
 
-8. scoped css, and get rid of style sheets if we do this?
+1. optional props with default values
 
-9. optional props with default values
+2. props spreading 
 
-10. props spreading 
+3. explain in readme the @input vs input Input component decision
 
-11. explain in readme the @input vs input Input component decision
-
-12. update the error reporting to point to the exact location of the error in the source code
+4. update the error reporting to point to the exact location of the error in the source code
 
 
 ### 1. Surgical Error Reporting (High Priority)
