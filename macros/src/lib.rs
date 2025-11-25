@@ -99,10 +99,14 @@ fn generate_body_with_context(
                     Context::Normal
                 };
 
-                // Check if this element contains <style> tags in its children
-                let has_style_children = elem.children.iter().any(
-                    |child| matches!(child, token_parser::Node::Element(el) if el.name == "style"),
-                );
+                // Check if this element has <style> tags as DIRECT children only
+                let has_style_children = elem.children.iter().any(|child| {
+                    if let token_parser::Node::Element(el) = child {
+                        el.name == "style"
+                    } else {
+                        false
+                    }
+                });
 
                 // If this element has style children, it becomes a scoped container
                 if has_style_children {
