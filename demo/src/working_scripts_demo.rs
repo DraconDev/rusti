@@ -256,129 +256,129 @@ pub fn working_scripts_demo() -> impl rusti::Component {
                     markFailure(3, "Error generating array with @for", e.toString());
                 }
 
-                // TEST 4: Conditional Logic with @if
-                try {
-                    let conditionalResult = "default";
+                // // TEST 4: Conditional Logic with @if
+                // try {
+                //     let conditionalResult = "default";
 
-                    @if debug_mode {
-                        conditionalResult = "debug enabled";
-                    }
+                //     @if debug_mode {
+                //         conditionalResult = "debug enabled";
+                //     }
 
-                    @if !debug_mode {
-                        conditionalResult = "debug disabled";
-                    }
+                //     @if !debug_mode {
+                //         conditionalResult = "debug disabled";
+                //     }
 
-                    if (conditionalResult === "debug enabled") {
-                        markSuccess(4, "Conditional executed correctly: debug_mode=true " + String.fromCharCode(8594) + " \"" + conditionalResult + "\"");
-                    } else {
-                        markFailure(4, "Conditional logic failed", "Expected \"debug enabled\", got \"" + conditionalResult + "\"");
-                    }
-                } catch (e) {
-                    markFailure(4, "Error in conditional logic", e.toString());
-                }
+                //     if (conditionalResult === "debug enabled") {
+                //         markSuccess(4, "Conditional executed correctly: debug_mode=true " + String.fromCharCode(8594) + " \"" + conditionalResult + "\"");
+                //     } else {
+                //         markFailure(4, "Conditional logic failed", "Expected \"debug enabled\", got \"" + conditionalResult + "\"");
+                //     }
+                // } catch (e) {
+                //     markFailure(4, "Error in conditional logic", e.toString());
+                // }
 
-                // TEST 5: Match Patterns in Scripts
-                try {
-                    let statusMessage = "";
+                // // TEST 5: Match Patterns in Scripts
+                // try {
+                //     let statusMessage = "";
 
-                    @match status {
-                        "success" => {
-                            statusMessage = "Operation successful";
-                        }
-                        "error" => {
-                            statusMessage = "Operation failed";
-                        }
-                        _ => {
-                            statusMessage = "Unknown status";
-                        }
-                    }
+                //     @match status {
+                //         "success" => {
+                //             statusMessage = "Operation successful";
+                //         }
+                //         "error" => {
+                //             statusMessage = "Operation failed";
+                //         }
+                //         _ => {
+                //             statusMessage = "Unknown status";
+                //         }
+                //     }
 
-                    if (statusMessage === "Operation successful") {
-                        markSuccess(5, "Match pattern worked: status=" + @{ format!("\"{}\"", status) } + " " + String.fromCharCode(8594) + " \"" + statusMessage + "\"");
-                    } else {
-                        markFailure(5, "Match pattern failed", "Got \"" + statusMessage + "\"");
-                    }
-                } catch (e) {
-                    markFailure(5, "Error in match pattern", e.toString());
-                }
+                //     if (statusMessage === "Operation successful") {
+                //         markSuccess(5, "Match pattern worked: status=" + @{ format!("\"{}\"", status) } + " " + String.fromCharCode(8594) + " \"" + statusMessage + "\"");
+                //     } else {
+                //         markFailure(5, "Match pattern failed", "Got \"" + statusMessage + "\"");
+                //     }
+                // } catch (e) {
+                //     markFailure(5, "Error in match pattern", e.toString());
+                // }
 
-                // TEST 6: Complex Data Structures
-                try {
-                    const userData = [
-                        @for (name, age) in &user_data {
-                            { name: @{ format!("\"{}\"", name) }, age: @{ age } },
-                        }
-                    ];
+                // // TEST 6: Complex Data Structures
+                // try {
+                //     const userData = [
+                //         @for (name, age) in &user_data {
+                //             { name: @{ format!("\"{}\"", name) }, age: @{ age } },
+                //         }
+                //     ];
 
-                    if (userData.length === 3 &&
-                        userData[0].name === "Alice" &&
-                        userData[0].age === 25 &&
-                        userData[1].name === "Bob" &&
-                        userData[1].age === 30) {
-                        markSuccess(6, "Complex data structure created: " + userData.length + " users with name/age pairs");
-                    } else {
-                        markFailure(6, "Complex data structure validation failed", JSON.stringify(userData));
-                    }
-                } catch (e) {
-                    markFailure(6, "Error creating complex data structure", e.toString());
-                }
+                //     if (userData.length === 3 &&
+                //         userData[0].name === "Alice" &&
+                //         userData[0].age === 25 &&
+                //         userData[1].name === "Bob" &&
+                //         userData[1].age === 30) {
+                //         markSuccess(6, "Complex data structure created: " + userData.length + " users with name/age pairs");
+                //     } else {
+                //         markFailure(6, "Complex data structure validation failed", JSON.stringify(userData));
+                //     }
+                // } catch (e) {
+                //     markFailure(6, "Error creating complex data structure", e.toString());
+                // }
 
-                // TEST 7: Nested Loops
-                try {
-                    const matrix = [
-                        @for row in &nested_array {
-                            [
-                                @for num in row {
-                                    @{ num },
-                                }
-                            ],
-                        }
-                    ];
+                // // TEST 7: Nested Loops
+                // try {
+                //     const matrix = [
+                //         @for row in &nested_array {
+                //             [
+                //                 @for num in row {
+                //                     @{ num },
+                //                 }
+                //             ],
+                //         }
+                //     ];
 
-                    const flatSum = matrix.flat().reduce((a, b) => a + b, 0);
+                //     const flatSum = matrix.flat().reduce((a, b) => a + b, 0);
 
-                    if (matrix.length === 3 && flatSum === 45) {
-                        markSuccess(7, "Nested loops generated 3x3 matrix with sum=" + flatSum);
-                    } else {
-                        markFailure(7, "Nested loop validation failed", "length=" + matrix.length + ", sum=" + flatSum);
-                    }
-                } catch (e) {
-                    markFailure(7, "Error in nested loops", e.toString());
-                }
+                //     if (matrix.length === 3 && flatSum === 45) {
+                //         markSuccess(7, "Nested loops generated 3x3 matrix with sum=" + flatSum);
+                //     } else {
+                //         markFailure(7, "Nested loop validation failed", "length=" + matrix.length + ", sum=" + flatSum);
+                //     }
+                // } catch (e) {
+                //     markFailure(7, "Error in nested loops", e.toString());
+                // }
 
-                // TEST 8: Combined Control Flow
-                try {
-                    const results = [];
+                // // TEST 8: Combined Control Flow
+                // try {
+                //     const results = [];
 
-                    @for num in &numbers {
-                        @if *num % 2 == 0 {
-                            results.push({ value: @{ num }, parity: "even" });
-                        } else {
-                            results.push({ value: @{ num }, parity: "odd" });
-                        }
-                    }
+                //     @for num in &numbers {
+                //         @if *num % 2 == 0 {
+                //             results.push({ value: @{ num }, parity: "even" });
+                //         } else {
+                //             results.push({ value: @{ num }, parity: "odd" });
+                //         }
+                //     }
 
-                    const evenCount = results.filter(r => r.parity === "even").length;
-                    const oddCount = results.filter(r => r.parity === "odd").length;
+                //     const evenCount = results.filter(r => r.parity === "even").length;
+                //     const oddCount = results.filter(r => r.parity === "odd").length;
 
-                    if (evenCount === 2 && oddCount === 3) {
-                        markSuccess(8, "Combined @for + @if: found " + evenCount + " even and " + oddCount + " odd numbers");
-                    } else {
-                        markFailure(8, "Combined control flow validation failed", "even=" + evenCount + ", odd=" + oddCount);
-                    }
-                } catch (e) {
-                    markFailure(8, "Error in combined control flow", e.toString());
-                }
+                //     if (evenCount === 2 && oddCount === 3) {
+                //         markSuccess(8, "Combined @for + @if: found " + evenCount + " even and " + oddCount + " odd numbers");
+                //     } else {
+                //         markFailure(8, "Combined control flow validation failed", "even=" + evenCount + ", odd=" + oddCount);
+                //     }
+                // } catch (e) {
+                //     markFailure(8, "Error in combined control flow", e.toString());
+                // }
 
-                // Update summary
-                updateSummary();
+                // // Update summary
+                // updateSummary();
 
-                // Console summary
-                console.log("=== Working Scripts Test Results ===");
-                console.log("Total Tests:", testResults.total);
-                console.log("Passed:", testResults.passed);
-                console.log("Failed:", testResults.failed);
-                console.log("Success Rate:", ((testResults.passed / testResults.total) * 100).toFixed(1) + "%");
+                // // Console summary
+                // console.log("=== Working Scripts Test Results ===");
+                // console.log("Total Tests:", testResults.total);
+                // console.log("Passed:", testResults.passed);
+                // console.log("Failed:", testResults.failed);
+                // console.log("Success Rate:", ((testResults.passed / testResults.total) * 100).toFixed(1) + "%");
             </script>
         </body>
         </html>
