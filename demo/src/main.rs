@@ -752,6 +752,11 @@ async fn interactive_counter_handler() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
+    // Initialize SQLite database
+    let cfg = config::Config::default();
+    let conn = db::init_db(&cfg.db_path).expect("Failed to initialize database");
+    let db_state = std::sync::Arc::new(std::sync::Mutex::new(conn));
+
     let app = Router::new()
         .route("/", get(hello_world))
         .route("/basic", get(basic_page_handler))
@@ -803,12 +808,17 @@ async fn main() {
             get(comprehensive_demo_handler),
         )
         .route("/examples/form", get(extreme::form_handler))
-        .route("api/add-todo", post(add_todo_handler))
-        .route("api/clear-completed", post(clear_completed_handler))
-        .route("api/delete", post(delete_handler))
-        .route("api/stats", get(stats_handler))
-        .route("api/toggle", post(toggle_handler))
-        .route("api/todo-list", get(todo_list_handler));
+        .route("/api/add-todo", post(handlers::todo::add_todo_handler))
+        .route(
+            "/api/clear-completed",
+            post(handlers::todo::clear_completed_handler),
+        )
+        .route("/api/delete/:id", post(handlers::todo::delete_handler))
+        .route("/api/stats", get(handlers::todo::stats_handler))
+        .route("/api/toggle/:id", post(handlers::todo::toggle_handler))
+        .route("/api/todo-list", get(handlers::todo::todo_list_handler))
+        .route("/todo-app-htmx", get(todo_app_htmx_handler))
+        .with_state(db_state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
