@@ -69,7 +69,7 @@ fn strip_outer_quotes(s: &str) -> String {
     s.to_string()
 }
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 enum Context {
     Normal,
     Script,
