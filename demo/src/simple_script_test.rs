@@ -26,7 +26,9 @@ pub fn simple_script_test() -> impl rusti::Component {
 
                 document.getElementById("output").innerHTML =
                     "Number: " + num + "<br>String: " + str;
-                document.getElementById("output").innerHTML += "<br>Array: " + arr;
+
+                
+                document.getElementById("output").innerHTML += "<br>Array: " + arr; // this works too
 
 
 
