@@ -49,88 +49,80 @@ pub fn interactive_counter() -> impl rusti::Component {
             </div>
 
             <script>
-                {r#"
-                // Configuration
-                const INITIAL_VALUE = 0;
-                const STEP_SIZE = 1;
-                const MAX_HISTORY = 10;
-                const POSITIVE_THRESHOLD = 10;
-                const NEGATIVE_THRESHOLD = -10;
-                
-                // State
-                let counter = INITIAL_VALUE;
+                @let initial_value = 0;
+                @let step_size = 1;
+                @let max_history = 10;
+                @let positive_threshold = 10;
+                @let negative_threshold = -10;
+
+                let counter = @{ initial_value };
                 let history = [];
-                
-                // Add history entry
+
                 function addHistory(action, value) {
                     const time = new Date().toLocaleTimeString();
-                    history.unshift({ action, value, time });
-                    
-                    if (history.length > MAX_HISTORY) {
-                        history = history.slice(0, MAX_HISTORY);
+                    const entry = { action: action, value: value, time: time };
+                    history.unshift(entry);
+
+                    if (history.length > @{ max_history }) {
+                        history = history.slice(0, @{ max_history });
                     }
-                    
+
                     updateHistoryDisplay();
                 }
-                
-                // Update history display
+
                 function updateHistoryDisplay() {
                     const list = document.getElementById("history-list");
-                    
+
                     if (history.length === 0) {
-                        list.innerHTML = "<li style='color: #999; text-align: center;'>No actions yet</li>";
+                        list.innerHTML = "<li>No actions yet</li>";
                         return;
                     }
-                    
-                    list.innerHTML = history.map(e => 
-                        "<li class='history-item'><strong>" + e.time + "</strong> - " + e.action + ": " + e.value + "</li>"
-                    ).join("");
+
+                    list.innerHTML = history.map(function(e) {
+                        return "<li class=\"history-item\"><strong>" + e.time + "</strong> - " + e.action + ": " + e.value + "</li>";
+                    }).join("");
                 }
-                
-                // Update counter display
+
                 function updateDisplay() {
                     document.getElementById("counter").textContent = counter;
-                    
+
                     let status = "";
-                    if (counter > POSITIVE_THRESHOLD) {
-                        status = "🔥 On fire!";
+                    if (counter > @{ positive_threshold }) {
+                        status = "On fire!";
                     } else if (counter > 0) {
-                        status = "✨ Positive vibes!";
+                        status = "Positive vibes!";
                     } else if (counter === 0) {
-                        status = "⚖️ Perfectly balanced";
-                    } else if (counter < NEGATIVE_THRESHOLD) {
-                        status = "❄️ Deep freeze!";
+                        status = "Perfectly balanced";
+                    } else if (counter < @{ negative_threshold }) {
+                        status = "Deep freeze!";
                     } else {
-                        status = "📉 Below zero";
+                        status = "Below zero";
                     }
-                    
+
                     document.getElementById("status").textContent = status;
                 }
-                
-                // Button handlers
+
                 function increment() {
-                    counter += STEP_SIZE;
+                    counter += @{ step_size };
                     updateDisplay();
                     addHistory("Increment", counter);
                 }
-                
+
                 function decrement() {
-                    counter -= STEP_SIZE;
+                    counter -= @{ step_size };
                     updateDisplay();
                     addHistory("Decrement", counter);
                 }
-                
+
                 function reset() {
-                    counter = INITIAL_VALUE;
+                    counter = @{ initial_value };
                     updateDisplay();
                     addHistory("Reset", counter);
                 }
-                
-                // Initialize
+
                 updateDisplay();
                 updateHistoryDisplay();
-                console.log("Counter initialized!");
-                "#}
+                console.log("Counter initialized! Initial:", @{ initial_value }, "Step:", @{ step_size });
             </script>
         </body>
         </html>
