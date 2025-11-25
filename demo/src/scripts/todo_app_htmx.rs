@@ -12,7 +12,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
         <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Todo App – htmx Demo</title>
+            <title>Todo App "–" htmx Demo</title>
             <style>
                 body {
                     font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;
@@ -57,7 +57,7 @@ pub fn todo_app_htmx() -> impl rusti::Component {
         </head>
         <body>
             <div class="container">
-                <h1>Todo List – htmx</h1>
+                <h1>Todo List "–" htmx</h1>
                 <div class="input-section">
                     <input type="text" id="todo-input" name="text" placeholder="What needs to be done?" />
                     <!-- hx-post will submit the form to the server and replace the todo list -->
