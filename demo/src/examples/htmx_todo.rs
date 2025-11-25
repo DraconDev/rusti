@@ -22,6 +22,9 @@ pub fn htmx_todo() -> impl rusti::Component {
                 <style src="demo/static/todo.css" />
             </head>
             <body>
+                <script>
+                    console.log("HTMX Todo loaded");
+                </script>
                 <div class="container">
                     <h1>"📝 HTMX Todo List"</h1>
                     <p class="subtitle">"Server-side rendered with Rusti 2.0"</p>
