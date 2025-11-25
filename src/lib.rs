@@ -112,3 +112,6 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
 
     result
 }
+
+#[cfg(test)]
+mod tests;
