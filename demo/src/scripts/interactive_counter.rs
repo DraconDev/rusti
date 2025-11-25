@@ -132,7 +132,7 @@ pub fn interactive_counter() -> impl rusti::Component {
         </head>
         <body>
             <div class="container">
-                <h1>🎯 Interactive Counter</h1>
+                <h1>"🎯" Interactive Counter</h1>
                 
                 <div class="counter-display">
                     <div id="counter" class="counter-value">0</div>
@@ -140,9 +140,9 @@ pub fn interactive_counter() -> impl rusti::Component {
                 </div>
                 
                 <div class="controls">
-                    <button class="btn-decrement" onclick="decrement()">➖ Decrement</button>
-                    <button class="btn-reset" onclick="reset()">🔄 Reset</button>
-                    <button class="btn-increment" onclick="increment()">➕ Increment</button>
+                    <button class="btn-decrement" onclick="decrement()">"➖" Decrement</button>
+                    <button class="btn-reset" onclick="reset()">"🔄" Reset</button>
+                    <button class="btn-increment" onclick="increment()">"➕" Increment</button>
                 </div>
                 
                 <div class="history">
@@ -163,11 +163,11 @@ pub fn interactive_counter() -> impl rusti::Component {
                 // Helper function to add history entry
                 function addHistory(action, value) {
                     @let timestamp_format = "HH:MM:SS";
-                    const time = new Date().toLocaleTimeString('en-US', { 
+                    const time = new Date().toLocaleTimeString("en-US", { 
                         hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit"
                     });
                     
                     const entry = {
@@ -189,10 +189,10 @@ pub fn interactive_counter() -> impl rusti::Component {
                 
                 // Update the history display
                 function updateHistoryDisplay() {
-                    const historyList = document.getElementById('history-list');
+                    const historyList = document.getElementById("history-list");
                     
                     if (history.length === 0) {
-                        historyList.innerHTML = '<li style="color: #999; text-align: center;">No actions yet</li>';
+                        historyList.innerHTML = "<li style="color: #999; text-align: center;">No actions yet</li>";
                         return;
                     }
                     
@@ -200,30 +200,30 @@ pub fn interactive_counter() -> impl rusti::Component {
                         `<li class="history-item">
                             <strong>${entry.time}</strong> - ${entry.action}: ${entry.value}
                         </li>`
-                    ).join('');
+                    ).join("");
                 }
                 
                 // Update the counter display and status
                 function updateDisplay() {
-                    document.getElementById('counter').textContent = counter;
+                    document.getElementById("counter").textContent = counter;
                     
-                    let status = '';
+                    let status = "";
                     @let positive_threshold = 10;
                     @let negative_threshold = -10;
                     
                     if (counter > @{ positive_threshold }) {
-                        status = '🔥 On fire!';
+                        status = "🔥 On fire!";
                     } else if (counter > 0) {
-                        status = '✨ Positive vibes!';
+                        status = "✨ Positive vibes!";
                     } else if (counter === 0) {
-                        status = '⚖️ Perfectly balanced';
+                        status = "⚖️ Perfectly balanced";
                     } else if (counter < @{ negative_threshold }) {
-                        status = '❄️ Deep freeze!';
+                        status = "❄️ Deep freeze!";
                     } else {
-                        status = '📉 Below zero';
+                        status = "📉 Below zero";
                     }
                     
-                    document.getElementById('status').textContent = status;
+                    document.getElementById("status").textContent = status;
                 }
                 
                 // Increment function
@@ -231,7 +231,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     @let step = step_size;
                     counter += @{ step };
                     updateDisplay();
-                    addHistory('Increment', counter);
+                    addHistory("Increment", counter);
                 }
                 
                 // Decrement function
@@ -239,7 +239,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     @let step = step_size;
                     counter -= @{ step };
                     updateDisplay();
-                    addHistory('Decrement', counter);
+                    addHistory("Decrement", counter);
                 }
                 
                 // Reset function
@@ -247,7 +247,7 @@ pub fn interactive_counter() -> impl rusti::Component {
                     @let initial = initial_value;
                     counter = @{ initial };
                     updateDisplay();
-                    addHistory('Reset', counter);
+                    addHistory("Reset", counter);
                 }
                 
                 // Initialize
