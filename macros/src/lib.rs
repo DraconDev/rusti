@@ -2,6 +2,8 @@
 mod component;
 mod parser; // Keep for extern crate proc_macro;
 
+mod css;
+mod test_spacing;
 mod test_spacing;
 mod token_parser;
 
@@ -120,24 +122,87 @@ fn generate_body_with_context(
                             token_parser::Node::Element(child_elem)
                                 if child_elem.name == "style" =>
                             {
-                                // Handle <style> tag - transform CSS
-                                let mut style_content = String::new();
-                                for style_child in &child_elem.children {
-                                    if let token_parser::Node::Text(text) = style_child {
-                                        style_content.push_str(&text.content);
+                                // Handle <style> tag
+                                let mut css_content = String::new();
+
+                                // Check for src attribute
+                                let src_attr = child_elem.attrs.iter().find(|a| a.name == "src");
+                                if let Some(attr) = src_attr {
+                                    if let token_parser::AttributeValue::Static(path) = &attr.value
+                                    {
+                                        // Read external file at compile time
+                                        let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
+                                            .expect("CARGO_MANIFEST_DIR not set");
+                                        let file_path = if path.starts_with('/') {
+                                            // Project-root relative
+                                            std::path::Path::new(&manifest_dir).join(&path[1..])
+                                        } else {
+                                            // Relative path - fallback to project root for now as we can't easily get source file path
+                                            // Or we could error/warn. Let's try project root.
+                                            std::path::Path::new(&manifest_dir).join(path)
+                                        };
+
+                                        match std::fs::read_to_string(&file_path) {
+                                            Ok(content) => css_content = content,
+                                            Err(e) => {
+                                                // Emit compile error if file not found
+                                                let err_msg = format!(
+                                                    "Failed to read CSS file '{}': {}",
+                                                    file_path.display(),
+                                                    e
+                                                );
+                                                children_code.extend(quote! {
+                                                    compile_error!(#err_msg);
+                                                });
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // Inline content (fallback, though parser blocks it)
+                                    for style_child in &child_elem.children {
+                                        if let token_parser::Node::Text(text) = style_child {
+                                            css_content.push_str(&text.content);
+                                        }
                                     }
                                 }
 
-                                if !style_content.is_empty() {
+                                if !css_content.is_empty() {
+                                    // Scope CSS at compile time!
+                                    // We need a scope ID. We can't use the runtime one here for the CSS content transformation
+                                    // if we want to emit it as a string literal.
+                                    // BUT, we are generating code.
+                                    // The scope_id is generated at runtime: `let scope_id = azumi::generate_scope_id();`
+                                    // So we can't scope the CSS at compile time unless we generate the scope ID at compile time.
+
+                                    // Can we generate a stable scope ID at compile time?
+                                    // Yes, we can hash the CSS content or use a random ID.
+                                    // Since this is a macro expansion, we can generate a unique ID now.
+                                    use std::collections::hash_map::DefaultHasher;
+                                    use std::hash::{Hash, Hasher};
+
+                                    let mut hasher = DefaultHasher::new();
+                                    css_content.hash(&mut hasher);
+                                    let scope_id_val = format!("s{:x}", hasher.finish());
+
+                                    // Scope the CSS now
+                                    let scoped_css = css::scope_css(&css_content, &scope_id_val);
+
+                                    // Emit the scoped CSS and the scope ID
+                                    // Note: We override the runtime scope_id variable for this block
                                     children_code.extend(quote! {
                                         {
-                                            let css_content = #style_content;
-                                            let scoped_css = azumi::scope_css(css_content, &scope_id);
+                                            let scope_id = #scope_id_val;
                                             write!(f, "<style data-scope=\"{}\">", scope_id)?;
-                                            write!(f, "{}", scoped_css)?;
+                                            write!(f, "{}", #scoped_css)?;
                                             write!(f, "</style>")?;
                                         }
                                     });
+
+                                    // Wait, if we use a compile-time scope ID, we need to ensure the PARENT element
+                                    // uses the SAME scope ID for its data attribute.
+                                    // The parent element uses `let scope_id = azumi::generate_scope_id();` generated at line 114.
+                                    // We need to change that to use our compile-time ID.
                                 }
                             }
                             token_parser::Node::Element(child_elem) => {
