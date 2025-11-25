@@ -63,6 +63,10 @@ pub fn interactive_counter() -> impl rusti::Component {
                     const entry = { action: action, value: value, time: time };
                     history.unshift(entry);
 
+                    console.log("History:", history);
+                    console.log("History length:", history.length);
+                    console.log("Max history:", @{ max_history });
+
                     if (history.length > @{ max_history }) {
                         history = history.slice(0, @{ max_history });
                     }
