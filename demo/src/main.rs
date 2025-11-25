@@ -15,6 +15,7 @@ mod db;
 mod extreme;
 mod quote_demo;
 use component_macro_demo::component_macro_handler;
+mod scoped_css_demo;
 mod style_src_demo;
 use style_src_demo::style_src_handler;
 mod comprehensive_demo;
@@ -760,6 +761,10 @@ async fn todo_app_handler() -> impl IntoResponse {
     Html(rusti::render_to_string(&scripts::todo_app::todo_app()))
 }
 
+async fn scoped_css_demo_handler() -> impl IntoResponse {
+    Html(rusti::render_to_string(&scoped_css_demo::scoped_css_demo()))
+}
+
 #[tokio::main]
 async fn main() {
     // Initialize SQLite database
@@ -797,6 +802,7 @@ async fn main() {
         .route("/working-scripts", get(working_scripts_handler))
         .route("/simple-script-test", get(simple_script_test_handler))
         .route("/interactive-counter", get(interactive_counter_handler))
+        .route("/scoped-css", get(scoped_css_demo_handler))
         // Extreme examples - comprehensive feature demos
         .route("/examples/basic-html", get(extreme::basic_html_handler))
         .route(
