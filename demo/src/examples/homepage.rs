@@ -59,12 +59,7 @@ pub fn homepage() -> impl azumi::Component {
                                 "/tailwind",
                                 "🎨"
                             )
-                            @example_card(
-                                "Tailwind CSS",
-                                "Utility-first styling with Tailwind",
-                                "/tailwind",
-                                "🎨"
-                            )
+
                         </div>
                     </section>
 
