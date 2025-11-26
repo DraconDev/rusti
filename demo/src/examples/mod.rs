@@ -1,3 +1,4 @@
+pub mod advanced_components;
 pub mod components;
 pub mod control_flow;
 pub mod dashboard;
