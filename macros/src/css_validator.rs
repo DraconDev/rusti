@@ -358,42 +358,45 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
 }
 
 /// Enhanced CSS file path resolution
-fn resolve_css_file_path(css_path: &str) -> String {
+pub fn resolve_css_file_path(css_path: &str) -> String {
     let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
         .expect("CARGO_MANIFEST_DIR not set");
     
     let manifest_path = std::path::Path::new(&manifest_dir);
+    let clean_path = css_path.trim_start_matches('/');
     
     // Handle different project structures
     let possible_paths = vec![
-        // Direct path from manifest dir
-        manifest_path.join(css_path).to_string_lossy().to_string(),
-        // If path starts with /, remove it first
-        if css_path.starts_with('/') {
-            manifest_path.join(&css_path[1..]).to_string_lossy().to_string()
-        } else {
-            css_path.to_string()
-        },
-        // Check if we're in a demo/ subdirectory
-        manifest_path.join("demo").join(css_path).to_string_lossy().to_string(),
-        // Check demo/static/ directory
-        manifest_path.join("demo").join("static").join(css_path.trim_start_matches('/')).to_string_lossy().to_string(),
+        // 1. Direct path from manifest dir (e.g. demo/static/style.css)
+        manifest_path.join(clean_path).to_string_lossy().to_string(),
+        
+        // 2. Inside static/ directory (e.g. demo/static/style.css)
+        manifest_path.join("static").join(clean_path).to_string_lossy().to_string(),
+        
+        // 3. From workspace root -> demo/static (e.g. azumi/demo/static/style.css)
+        manifest_path.join("demo").join("static").join(clean_path).to_string_lossy().to_string(),
+        
+        // 4. From workspace root -> demo (e.g. azumi/demo/style.css)
+        manifest_path.join("demo").join(clean_path).to_string_lossy().to_string(),
     ];
     
-    // Store the first path for error reporting
-    let first_path = possible_paths[0].clone();
+    eprintln!("🔍 Resolving CSS path: '{}' from '{}'", css_path, manifest_dir);
     
     // Try each possible path and return the first one that exists
     for path in &possible_paths {
         if std::path::Path::new(path).exists() {
             eprintln!("✅ Found CSS file: {}", path);
             return path.clone();
+        } else {
+            // eprintln!("  Checked: {}", path); // Uncomment for verbose debugging
         }
     }
     
-    // If no file found, return the first path anyway and let the file read fail with proper error
-    eprintln!("⚠️  CSS file not found: {}", first_path);
-    first_path
+    // If no file found, return the first constructed path (relative to manifest)
+    // This ensures the error message shows a reasonable path
+    let default_path = manifest_path.join(clean_path).to_string_lossy().to_string();
+    eprintln!("⚠️  CSS file not found. Checked {} locations.", possible_paths.len());
+    default_path
 }
 
 #[cfg(test)]
