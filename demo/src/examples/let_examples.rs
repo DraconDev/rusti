@@ -627,14 +627,6 @@ fn let_examples_main() -> impl azumi::Component {
                             </ul>
                         </div>
                     </div>
-
-            @collection_let_examples();
-                    // {collection_let_examples()}
-                    // {complex_data_let_examples()}
-                    // {data_processing_let_examples()}
-                    // {dynamic_styling_let_examples()}
-                    // {option_result_let_examples()}
-                    // {utility_let_examples()}
                 </main>
 
                 <footer class="page-footer">
