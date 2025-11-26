@@ -176,20 +176,16 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     }
     
     // Read and parse all CSS files
-    // Read and parse all CSS files, keeping track of where they came from
     let mut all_defined_classes = HashSet::new();
-    let mut file_classes = Vec::new(); // (path, span, classes)
-
-    for (css_file, span) in &css_files {
+    for css_file in &css_files {
         match std::fs::read_to_string(css_file) {
             Ok(content) => {
-                let classes = parse_css_classes(&content, css_file);
-                all_defined_classes.extend(classes.clone());
-                file_classes.push((css_file, span, classes));
+                let file_classes = parse_css_classes(&content, css_file);
+                all_defined_classes.extend(file_classes);
             }
             Err(e) => {
                 let error_msg = format!("Failed to read CSS file '{}': {}", css_file, e);
-                return quote_spanned! { *span =>
+                return quote! {
                     compile_error!(#error_msg);
                 };
             }
@@ -199,68 +195,43 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     // Extract all classes used in HTML
     let used_classes = extract_html_classes(nodes);
     
-    let mut output_tokens = proc_macro2::TokenStream::new();
-
-    // 1. Validate undefined classes (Errors)
-    if let Err(errors) = validate_css_classes(&used_classes, &all_defined_classes) {
-        let error_tokens: Vec<_> = errors.iter().filter_map(|error| {
-            match error {
-                ValidationError::UndefinedClass { class_name, spans } => {
-                    let error_msg = format!(
-                        "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
-                        class_name
-                    );
-                    let span_errors: Vec<_> = spans.iter().map(|span| {
-                        quote_spanned! { *span =>
-                            compile_error!(#error_msg);
-                        }
-                    }).collect();
-                    Some(quote! { #(#span_errors)* })
+    // Validate (one-sided: HTML -> CSS only)
+    match validate_css_classes(&used_classes, &all_defined_classes) {
+        Ok(()) => {
+            quote! {}
+        }
+        Err(errors) => {
+            // Generate compile errors for each validation error
+            let error_tokens: Vec<_> = errors.iter().filter_map(|error| {
+                match error {
+                    ValidationError::UndefinedClass { class_name, spans } => {
+                        // Create a compile error for each span where this class is used
+                        let error_msg = format!(
+                            "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
+                            class_name
+                        );
+                        
+                        // Emit an error at each location where this undefined class is used
+                        let span_errors: Vec<_> = spans.iter().map(|span| {
+                            quote_spanned! { *span =>
+                                compile_error!(#error_msg);
+                            }
+                        }).collect();
+                        
+                        Some(quote! { #(#span_errors)* })
+                    }
                 }
-            }
-        }).collect();
-        output_tokens.extend(quote! { #(#error_tokens)* });
-    }
-
-    // 2. Validate dead CSS (Warnings on <style> tags)
-    for (_file_path, span, classes) in file_classes {
-        let mut unused = Vec::new();
-        for class in classes {
-            if !used_classes.contains_key(&class) {
-                unused.push(class);
+            }).collect();
+            
+            quote! {
+                #(#error_tokens)*
             }
         }
-
-        if !unused.is_empty() {
-            unused.sort(); // Deterministic order
-            let count = unused.len();
-            let msg = if count <= 3 {
-                format!("Unused CSS classes: {}", unused.join(", "))
-            } else {
-                format!("{} unused CSS classes: {}, ...", count, unused.iter().take(3).cloned().collect::<Vec<_>>().join(", "))
-            };
-            
-            // Use deprecated hack to show warning on the style tag
-            // We use a readable function name so the warning message looks like:
-            // "use of deprecated function ...::CSS_Validation_Warning: Unused CSS classes..."
-            let fn_name = syn::Ident::new("CSS_Validation_Warning", span.clone());
-            
-            output_tokens.extend(quote_spanned! { *span =>
-                {
-                    #[deprecated(note = #msg)]
-                    #[allow(non_snake_case)]
-                    fn #fn_name() {}
-                    #fn_name();
-                }
-            });
-        }
     }
-
-    output_tokens
 }
 
 /// Collect all CSS file paths from <style src="..."> tags
-fn collect_css_files(nodes: &[Node], css_files: &mut Vec<(String, proc_macro2::Span)>) {
+fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
     for node in nodes {
         match node {
             Node::Element(elem) => {
@@ -271,8 +242,7 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<(String, proc_macro2::S
                             if !path.ends_with("global.css") {
                                 // Enhanced path resolution for demo projects
                                 let css_file_path = resolve_css_file_path(path);
-                                let span = src_attr.value_span.unwrap_or(src_attr.span);
-                                css_files.push((css_file_path, span));
+                                css_files.push(css_file_path);
                             }
                         }
                     }
