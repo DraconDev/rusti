@@ -1,5 +1,3 @@
-pub mod advanced_components;
-pub mod advanced_patterns;
 pub mod components;
 pub mod control_flow;
 pub mod dashboard;
@@ -14,6 +12,7 @@ pub mod lesson1;
 pub mod lesson2;
 pub mod lesson3;
 pub mod lesson4;
+pub mod lessona;
 pub mod let_examples;
 pub mod real_world_apps;
 pub mod simple_navigation;
