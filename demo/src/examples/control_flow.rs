@@ -22,7 +22,7 @@ fn control_flow_demo() -> impl azumi::Component {
                     <h1>"Control Flow Examples"</h1>
                     <a href="/">"← Back to Home"</a>
 
-                    <div class="demo-box">
+                           <div class="demo-box">
                         <h2>"1. If Statements"</h2>
                         @if count > 10 {
                             <p class="status-active">"Count is high: " {count}</p>
