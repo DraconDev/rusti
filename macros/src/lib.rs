@@ -212,6 +212,15 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
 }
 
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
+    // Pass 0: CSS Validation - Revolutionary compile-time CSS type checking!
+    if let Err(css_error) = css_validator::validate_component_css(nodes) {
+        // Convert the error into a compile error
+        let error_message = css_error.to_string();
+        return quote! {
+            compile_error!(#error_message);
+        };
+    }
+
     // Pass 1: Check if component has any style tags
     if has_any_styles(nodes) {
         use std::collections::hash_map::DefaultHasher;

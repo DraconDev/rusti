@@ -403,8 +403,8 @@ mod tests {
 
     #[test]
     fn test_validate_missing_classes() {
-        let used = hashset!["btn", "undefined-class"];
-        let defined = hashset!["btn", "card"];
+        let used = HashSet::from(["btn".to_string(), "undefined-class".to_string()]);
+        let defined = HashSet::from(["btn".to_string(), "card".to_string()]);
         
         let result = validate_css_classes(&used, &defined);
         assert!(result.is_err());
@@ -422,8 +422,8 @@ mod tests {
 
     #[test]
     fn test_validate_dead_css() {
-        let used = hashset!["btn"];
-        let defined = hashset!["btn", "unused-class"];
+        let used = HashSet::from(["btn".to_string()]);
+        let defined = HashSet::from(["btn".to_string(), "unused-class".to_string()]);
         
         let result = validate_css_classes(&used, &defined);
         assert!(result.is_err());
