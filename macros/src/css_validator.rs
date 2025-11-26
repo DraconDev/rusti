@@ -52,11 +52,13 @@ fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
 }
 
 /// Parse CSS content and extract all defined class names
-pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String> {
+pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> {
     let mut defined_classes = HashSet::new();
     let mut lines = css_content.lines().enumerate();
     
-    while let Some((_line_num, line)) = lines.next() {
+    eprintln!("🔍 Parsing CSS file: {}", file_path);
+    
+    while let Some((line_num, line)) = lines.next() {
         let trimmed = line.trim();
         
         // Skip @-rules, comments, and empty lines
@@ -75,10 +77,16 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
         // Find selector (everything before {)
         if let Some(brace_pos) = trimmed.find('{') {
             let selector = &trimmed[..brace_pos].trim();
+            eprintln!("📝 Found selector at line {}: '{}'", line_num + 1, selector);
             
             // Extract classes from this selector
             let classes = extract_classes_from_selector(selector);
-            defined_classes.extend(classes);
+            eprintln!("🔎 Extracted classes: {:?}", classes);
+            
+            if !classes.is_empty() {
+                defined_classes.extend(classes.clone());
+                eprintln!("✅ Added classes to set: {:?}", classes);
+            }
             
             // Skip to closing brace
             let mut brace_count = 1;
@@ -100,6 +108,7 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
         }
     }
     
+    eprintln!("📋 Final defined classes: {:?}", defined_classes);
     defined_classes
 }
 
