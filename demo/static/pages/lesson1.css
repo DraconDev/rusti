@@ -14,4 +14,52 @@
 }
 
 .hello-title, .basic-h1 {
-  font-size: clamp(3rem
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  color: #f1f5f9;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #f1f5f9, #cbd5e1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.basic-h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: #94a3b8;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.basic-p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 400;
+  color: #64748b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 60ch;
+}
+
+/* Enhanced hover effects */
+.hello-container:hover, .basic-template:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .hello-container, .basic-template {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+    min-height: 300px;
+  }
+}
