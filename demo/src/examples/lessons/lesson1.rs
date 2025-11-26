@@ -13,7 +13,7 @@ pub fn lesson1() -> impl azumi::Component {
                     <title>"Lesson 1: Hello World - Azumi"</title>
             </head>
                 <body>
-                <div class="lesson-container">
+                <div class="les son-container">
                     <header class="lesson-header">
                         <a href="/" class="back-link">"← Back to Lessons"</a>
                         <div class="lesson-number">"Lesson 1"</div>
