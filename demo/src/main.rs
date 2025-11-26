@@ -11,7 +11,7 @@ async fn main() {
     // 🚀 Azumi Demo Server - Complete Learning Path
     let app = Router::new()
         // 🏠 Homepage - Learning Portal
-        .route("/", get(examples::lessons::homepage::homepage_handler))
+        .route("/", get(examples::lessons::pages::homepage::homepage_handler))
         
         // 📚 Interactive Lessons (1-8)
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
