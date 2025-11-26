@@ -13,6 +13,7 @@ enum Role {
 /// User role display using @match
 pub fn user_role_display(role: Role) -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson6.css" />
         <div>
             @match role {
                 Role::Admin => <span class="badge admin">"Admin"</span>,
