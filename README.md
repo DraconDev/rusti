@@ -215,6 +215,7 @@ Azumi is strict. Follow these rules or it won't compile.
 2. **Unquoted attributes:** `<div class=box>` → Compile Error
 3. **Undefined CSS classes:** `<div class="typo">` → **Compile Error with location**
 4. **Inline styles:** `<style>.box { color: red; }</style>` → Compile Error
+   - **Why?** Creates "style soup" - mixing structure, behavior, and presentation. No IDE support, no validation, poor maintainability.
 5. **Inline scripts:** `<script>console.log("hi")</script>` → Compile Error
 6. **Local file `<link>`:** `<link rel="stylesheet" href="/static/local.css">` → Compile Error
    - Use `<style src="/static/local.css" />` instead for automatic scoping and validation.
