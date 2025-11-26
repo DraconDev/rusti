@@ -15,8 +15,6 @@ Roadmap & TODO
 
 -   [ ] Clear explanation of what Azumi is and is NOT
 -   [ ] Design philosophy and why we made our choices
--   [ ] Component naming conventions (PascalCase vs snake_case)
--   [ ] Input vs input vs @Input component decision
 
 ### 2. More Complex Component Examples
 
