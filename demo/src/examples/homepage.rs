@@ -1,6 +1,29 @@
 use axum::response::{Html, IntoResponse};
 use azumi::html;
 
+/// Example: Tailwind CSS (inline utility classes)
+#[azumi::component]
+fn tailwind_card() -> impl azumi::Component {
+    html! {
+        <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
+            <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
+            <p class="text-blue-100">"This card uses Tailwind utility classes"</p>
+        </div>
+    }
+}
+
+#[azumi::component]
+fn testCard2() -> impl azumi::Component {
+    html! {
+        <style src="/static/test_card2.css" />
+        <div class="card2">
+            <h2>"Test Card 2 (Scoped File)"</h2>
+            <p>"This card uses a separate CSS file scoped to this component."</p>
+            <button>"Click Me"</button>
+        </div>
+    }
+}
+
 /// Homepage showcasing all Azumi examples
 pub fn homepage() -> impl azumi::Component {
     html! {
@@ -129,29 +152,6 @@ fn example_card(
                 <span class="card-link">"View Example →"</span>
             </a>
         </>
-    }
-}
-
-/// Example: Tailwind CSS (inline utility classes)
-#[azumi::component]
-fn tailwind_card() -> impl azumi::Component {
-    html! {
-        <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
-            <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
-            <p class="text-blue-100">"This card uses Tailwind utility classes"</p>
-        </div>
-    }
-}
-
-#[azumi::component]
-fn testCard2() -> impl azumi::Component {
-    html! {
-        <style src="/static/test_card2.css" />
-        <div class="card2">
-            <h2>"Test Card 2 (Scoped File)"</h2>
-            <p>"This card uses a separate CSS file scoped to this component."</p>
-            <button>"Click Me"</button>
-        </div>
     }
 }
 
