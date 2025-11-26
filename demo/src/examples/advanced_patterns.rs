@@ -247,7 +247,7 @@ fn ComplexPatterns() -> impl azumi::Component {
                                 <h5>"📊 Metadata:"</h5>
                                 @for (key, value) in &task.metadata {
                                     <div class="metadata-item">
-                                        <span class="key">{key}:</span>
+                                        <span class="key">{key}":"</span>
                                         <span class="value">{value}</span>
                                     </div>
                                 }
