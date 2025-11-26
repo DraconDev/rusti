@@ -1,17 +1,30 @@
 # azumi
- Roadmap & TODO
 
-## 🚀 Future Improvements
+Roadmap & TODO
 
-Make a very clear readme about what this is and what it is not, and why we made the choices we did.
+## ✅ Completed
 
-this should be scoped too i want zero footguns 
-<link rel="stylesheet" href="/static/homepage.css" />
+-   [x] `<link rel="stylesheet">` scoping enforced (parser prevents local files, CDN allowed)
+-   [x] `@let` block support implemented
+-   [x] Component-scoped CSS with `<style src>`
+-   [x] PascalCase and snake_case component support
 
-@let examples 
+## 🚀 Next Up
 
-more complex component examples 
+### 1. Comprehensive README
 
-3. explain in readme the Input vs input vs @input component decision
+-   [ ] Clear explanation of what Azumi is and is NOT
+-   [ ] Design philosophy and why we made our choices
+-   [ ] Component naming conventions (PascalCase vs snake_case)
+-   [ ] Input vs input vs @Input component decision
 
-4. add css peak extension recommendation to readme with rust added to the list of files watched
+### 2. More Complex Component Examples
+
+-   [ ] Form components with validation
+-   [ ] Modal/Dialog components
+-   [ ] Nested component composition patterns
+
+### 3. Developer Experience
+
+-   [ ] Add CSS peek extension recommendation to README
+-   [ ] Include rust-analyzer workspace settings for CSS files
