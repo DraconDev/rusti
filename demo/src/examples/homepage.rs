@@ -152,25 +152,14 @@ fn test_card2<'a>() -> impl azumi::Component + 'a {
             <head>
                 <meta charset="UTF-8" />
                 <title>"Test Card 2"</title>
-                // <style src="/static/test_card2.css" /> this doesn't work
-            </head>
-            // this works
-            // <style src="/static/test_card2.css" />
-            <div class="card2">
-                // this works
-                // <style src="/static/test_card2.css" />
-                <style src="/static/test_card2.css" />
-                <div class="">"🎨"</div>
-                <h3 class="">"Test Card 2"</h3>
-                <p class="">"This is a test card 2"</p>
-                <span class="">"View Example →"</span>
-            </div>
-            // this works
-            // <div>
-            //     <div>
-            //         <style src="/static/test_card2.css" />
-            //     </div>
-            // </div>
+#[azumi::component]
+fn test_card2() {
+    html! {
+        <style src="/static/test_card2.css" />
+        <div class="card2">
+            <h2>"Test Card 2 (Scoped File)"</h2>
+            <p>"This card uses a separate CSS file scoped to this component."</p>
+            <button>"Click Me"</button>
         </div>
     }
 }
