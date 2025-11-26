@@ -159,7 +159,7 @@ fn test_card2<'a>() -> impl azumi::Component + 'a {
                 <h3 class="">"Test Card 2"</h3>
                 <p class="">"This is a test card 2"</p>
                 <span class="">"View Example →"</span>
-        </div>
+            </div>
         </>
     }
 }
