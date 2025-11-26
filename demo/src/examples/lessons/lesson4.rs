@@ -9,15 +9,16 @@ pub fn lesson0() -> impl azumi::Component {
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>"Lesson 0: Hello World - Azumi"</title>
-                <style src="global.css" />
+                <title>"Lesson 4: Control Flow - Azumi"</title>
+                <style src="/static/global.css" />
                 <style src="lessons.css" />
+                <style src="lesson4.css" />
             </head>
             <body>
                 <div class="lesson-container">
                     <header class="lesson-header">
                         <a href="/" class="back-link">"← Back to Lessons"</a>
-                        <div class="lesson-number">"Lesson 0"</div>
+                        <div class="lesson-number">"Lesson 4"</div>
                         <h1 class="lesson-title">"Hello World & Strict Quoting"</h1>
                         <p class="lesson-subtitle">"Learn the fundamental quoting rules that make Azumi type-safe"</p>
                     </header>
@@ -75,7 +76,7 @@ pub fn lesson0() -> impl azumi::Component {
                     </section>
 
                     <nav class="nav-buttons">
-                        <a href="/" class="btn btn-secondary">"← Home"</a>
+                        <a href="/lesson-3" class="btn btn-secondary">"← Previous: Global Styles"</a>
                         <a href="/lesson-1" class="btn">"Next: CSS Validation →"</a>
                     </nav>
                 </div>
