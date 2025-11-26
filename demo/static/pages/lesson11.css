@@ -1,0 +1,34 @@
+/* Lesson 11: Reusable Button Component */
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 4px 6px rgba(240, 147, 251, 0.3);
+    margin-left: 0.5rem;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(240, 147, 251, 0.4);
+}

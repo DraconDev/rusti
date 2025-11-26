@@ -22,6 +22,7 @@ pub fn button(props: ButtonProps) -> impl azumi::Component {
         ButtonVariant::Secondary => "btn btn-secondary",
     };
     html! {
+        <style src="/static/pages/lesson11.css" />
         <button class={class}>
             {&props.text}
         </button>

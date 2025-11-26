@@ -1,0 +1,43 @@
+/* Lesson 12: Card Component with Children */
+
+.card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    max-width: 500px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.card-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-content {
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.card-content p {
+    margin: 0 0 0.5rem 0;
+}
+
+.card-content ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.card-content li {
+    margin: 0.25rem 0;
+}
