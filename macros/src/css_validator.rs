@@ -11,46 +11,6 @@ use regex::Regex;
 /// Re-export token_parser types for use in this module
 use crate::token_parser::{Node, AttributeValue, Block};
 
-/// CSS rule with its selector and properties
-#[derive(Debug, Clone)]
-struct CssRule {
-    selector: String,
-    properties: String,
-    file_path: String,
-    line_number: usize,
-}
-
-/// Extract class names from CSS selector - optimized for performance
-fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
-    let mut classes = HashSet::new();
-    
-    // Handle complex selectors separated by commas
-    for simple_selector in selector.split(',') {
-        let trimmed = simple_selector.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
-        
-        // Extract all classes (.classname) including from descendant selectors
-        // Split by dots and collect class names (skip empty parts)
-        let parts: Vec<&str> = trimmed.split('.').skip(1).collect();
-        for part in parts {
-            // Stop at whitespace, comma, brace, semicolon, or pseudo-class
-            let mut class_name = String::new();
-            for ch in part.chars() {
-                if ch.is_whitespace() || ch == ',' || ch == '{' || ch == ';' || ch == ':' || ch == '>' || ch == '+' || ch == '~' {
-                    break;
-                }
-                class_name.push(ch);
-            }
-            if !class_name.is_empty() {
-                classes.insert(class_name);
-            }
-        }
-    }
-    
-    classes
-}
 
 /// Parse CSS content and extract all defined class names - FAST VERSION using regex
 pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String> {
