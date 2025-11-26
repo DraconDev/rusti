@@ -69,6 +69,12 @@ pub fn homepage() -> impl azumi::Component {
                                 "/htmx-todo",
                                 "✅"
                             )
+                            @example_card(
+                                "Dashboard",
+                                "Complex layout and data visualization",
+                                "/dashboard",
+                                "📊"
+                            )
                         </div>
                     </section>
 

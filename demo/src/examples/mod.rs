@@ -1,5 +1,6 @@
 pub mod components;
 pub mod control_flow;
+pub mod dashboard;
 pub mod forms;
 pub mod hello;
 pub mod homepage;

@@ -29,7 +29,8 @@ async fn main() {
         .route(
             "/forms",
             get(examples::forms::forms_handler).post(examples::forms::forms_handler),
-        ) // Handle post for demo
+        )
+        .route("/dashboard", get(examples::dashboard::dashboard_handler))
         // Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
 
