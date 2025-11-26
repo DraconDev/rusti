@@ -13,7 +13,7 @@ pub fn components_demo() -> impl Component {
             <head>
                 <meta charset="UTF-8" />
                 <title>{title}</title>
-                <style src="/static/components.css" />
+                <link rel="stylesheet" href="/static/components.css" />
             </head>
             <body>
                 <div class="page">
