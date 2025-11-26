@@ -1,4 +1,4 @@
-# Azumi 2.0
+# Azumi
 
 **Type-Safe, Compile-Time Validated HTML Templates for Rust & Axum.**
 
@@ -522,6 +522,7 @@ html! {
     </button>
 }
 ```
+
 ---
 
 ## 📦 Installation
