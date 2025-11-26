@@ -10,8 +10,8 @@ pub fn lesson5() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 5: Components with Props - Azumi"</title>
-                <style src="/static/page/lessons.css" />
-                <style src="/static/page/lesson5.css" />
+                <style src="/static/pages/lessons.css" />
+                <style src="/static/pages/lesson5.css" />
             </head>
             <body>
                 <div class="lesson-container">
@@ -36,7 +36,7 @@ pub fn lesson5() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"✨ Live Components"</h2>
                         <p>"Here are some example components in action:"</p>
-                        
+
                         <div class="component-demo-grid">
                             <div class="user-card-demo">
                                 <h2>"Alice Johnson"</h2>
@@ -57,7 +57,7 @@ pub fn lesson5() -> impl azumi::Component {
                         <h2 class="section-title">"🔧 Component Usage"</h2>
                         <p>"Use components with the <code>@</code> syntax:"</p>
                         <pre class="code-block">"@UserCard(name=\"Alice\", role=\"Admin\")\n@UserCard(name=\"Bob\")  // Uses default role=\"Member\""</pre>
-                        
+
                         <div class="highlight-box">
                             <p><strong>"Component syntax:"</strong></p>
                             <ul>
@@ -73,7 +73,7 @@ pub fn lesson5() -> impl azumi::Component {
                         <h2 class="section-title">"🎨 Component Styling"</h2>
                         <p>"Each component can have its own CSS file:"</p>
                         <pre class="code-block">"/* user_card.css */\n.user-card {\n    background: var(--azumi-surface);\n    border-radius: var(--radius-md);\n    padding: var(--spacing-md);\n    text-align: center;\n}\n\n.role {\n    background: var(--azumi-primary);\n    color: white;\n    padding: 0.25rem 0.5rem;\n    border-radius: 0.25rem;\n    font-size: 0.75rem;\n}"</pre>
-                        
+
                         <div class="highlight-box">
                             <p><strong>"Component benefits:"</strong></p>
                             <ul>
