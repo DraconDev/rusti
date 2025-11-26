@@ -7,5 +7,4 @@ pub mod hello;
 pub mod homepage;
 pub mod htmx_todo;
 pub mod layouts;
-pub mod let_examples;
 pub mod tailwind;
