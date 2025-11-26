@@ -124,8 +124,8 @@ fn example_card<'a>(
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>"Azumi - Type-Safe HTML Templates"</title>
-            // big footgun 
-            <link rel="stylesheet" href="/static/test_card2.css" /> 
+            // big footgun make the styles global
+            // <link rel="stylesheet" href="/static/test_card2.css" />
         </head>
         <a href={href} class="card">
             <div class="card-icon">{icon}</div>
@@ -148,6 +148,7 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
 
 fn test_card2<'a>() -> impl azumi::Component + 'a {
     html! {
+        
         <div class="card">
             <div class="">"🎨"</div>
             <h3 class="">"Test Card 2"</h3>
