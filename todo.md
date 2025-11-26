@@ -1,3 +1,6 @@
+i did investivate the css dead code situation and there are extensions that can help cleaning up unused
+
+
 ## ⚠️ Minor Critiques (Polish)
 1. **Debug Prints**: `eprintln!` in parser - wrap `#[cfg(debug_assertions)]`.
 2. **test_spacing.rs**: Test-only in lib.rs - `#[cfg(test)] mod`.
@@ -10,3 +13,4 @@
 also type check the css files we have and if any are unused then we mark what imports then with a warning
 
 another problem is that we underline both classes if either is wrong, we should only underline the incorrect one
+
