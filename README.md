@@ -35,16 +35,16 @@ Azumi is a **compile-time HTML template macro** for Rust that:
 
 ### Why So Strict?
 
-Azumi makes **opinionated** choices to prevent common mistakes:
+Azumi makes **opinionated** choices because most "flexible" approaches **create technical debt**:
 
-| Rule                     | Reason                                                                                             |
-| ------------------------ | -------------------------------------------------------------------------------------------------- |
-| **Mandatory Quoting**    | Prevents Rust lexer confusion with special characters like `<`, `>`, `{`, `}`.                     |
-| **No Inline `<style>`**  | Forces you into **external CSS files** which get full IDE support and compile-time validation.     |
-| **Component-Scoped CSS** | Automatic scoping prevents style leakage. No more "why is this button blue?" debugging.            |
-| **CSS Must Match HTML**  | Every class you use must be defined in CSS. Compile error with **exact location** if not.          |
-| **No Dead CSS**          | Every class you define must be used in HTML. Warning at compile time if not.                       |
-| **CDN-Only `<link>`**    | Local files must use `<style src>` for scoping and validation. `<link>` is reserved for externals. |
+| Approach                   | Problem                                                                                          | Azumi's Solution                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| **Inline styles**          | Undescriptive, error-prone, typos are invisible, no IDE support, poor separation of concerns     | External CSS files with full IDE support, autocomplete, linting, and compile-time validation  |
+| **Utility CSS (Tailwind)** | Only saves a few characters but creates hard-to-read code, poor separation, framework dependency | Real CSS classes that are readable, maintainable, and framework-independent                   |
+| **Big style blocks**       | Mixing structure, behavior, and presentation creates unmaintainable "style soup"                 | Clean separation: HTML structure in Rust, CSS presentation in separate files                  |
+| **Quoted text**            | Requires extra typing, poorer syntax highlighting                                                | Prevents lexer ambiguity, enables arbitrary content, and provides type safety at compile time |
+| **No CSS validation**      | Typos, dead CSS, missing definitions all go unnoticed until runtime                              | Every class validated at compile time with exact location errors                              |
+| **Global CSS leakage**     | Styles from one component accidentally affect others                                             | Automatic component-scoped CSS prevents styling conflicts                                     |
 
 ### Design Decisions Explained
 
