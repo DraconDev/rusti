@@ -1,0 +1,41 @@
+/* Fancy styling for Lesson 9: Advanced List Processing */
+.search-container {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius: 12px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.no-results {
+  color: #94a3b8;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.1rem;
+  padding: 2rem;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 8px;
+  border: 1px dashed rgba(148, 163, 184, 0.3);
+}
+
+.filtered-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-item {
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background: linear-gradient(135deg, #334155, #475569);
+  border-radius: 8px;
+  border-left: 4px solid #4f46e5;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+  border-left-color: #6366f1;
+}
