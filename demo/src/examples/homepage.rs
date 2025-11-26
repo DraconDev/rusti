@@ -133,6 +133,7 @@ fn example_card(
 }
 
 /// Example: Tailwind CSS (inline utility classes)
+#[azumi::component]
 fn tailwind_card() -> impl azumi::Component {
     html! {
         <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
