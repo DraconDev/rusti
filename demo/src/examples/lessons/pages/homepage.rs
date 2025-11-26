@@ -20,7 +20,7 @@ pub fn homepage() -> impl azumi::Component {
                     </header>
 
                     <section>
-                        <h2 class="section-title">"📚 Complete 20-Lesson Curriculum"</h2>
+                        <h2 style="margin-bottom: 1rem;">"📚 Complete 20-Lesson Curriculum"</h2>
                         <p>"Master Azumi through 20 comprehensive lessons, featuring control flow, components, JavaScript integration, and production patterns:"</p>
 
                         <!-- Phase 1: Foundation Building -->
