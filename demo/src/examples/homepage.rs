@@ -34,28 +34,28 @@ pub fn homepage() -> impl azumi::Component {
                                 "🌍"
                             )
                             @example_card(
-                                "Components",
-                                "Composition patterns and control flow",
-                                "/components",
-                                "🧩"
-                            )
-                            @example_card(
                                 "Tailwind CSS",
                                 "Utility-first styling with Tailwind",
                                 "/tailwind",
                                 "🎨"
                             )
                             @example_card(
-                                "Control Flow",
-                                "If, For, and Match expressions",
-                                "/control-flow",
-                                "🔀"
+                                "Components",
+                                "Composition patterns and control flow",
+                                "/components",
+                                "🧩"
                             )
                             @example_card(
                                 "Layouts",
                                 "Component composition patterns",
                                 "/layouts",
                                 "📐"
+                            )
+                            @example_card(
+                                "Control Flow",
+                                "If, For, and Match expressions",
+                                "/control-flow",
+                                "🔀"
                             )
                             @example_card(
                                 "Forms",
@@ -69,8 +69,6 @@ pub fn homepage() -> impl azumi::Component {
                                 "/htmx-todo",
                                 "✅"
                             )
-
-
                         </div>
                     </section>
 
