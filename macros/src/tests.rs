@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use crate::parser::parse_nodes;
 
     #[test]
     fn test_full_html_page() {
