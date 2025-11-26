@@ -10,6 +10,8 @@ this should be scoped too i want zero footguns
 
 @let examples 
 
+more complex component examples 
+
 3. explain in readme the Input vs input vs @input component decision
 
 4. add css peak extension recommendation to readme with rust added to the list of files watched
