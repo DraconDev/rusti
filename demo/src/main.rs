@@ -15,12 +15,9 @@ async fn main() {
         .route("/hello", get(examples::hello::hello_handler))
         .route("/components", get(examples::components::components_handler))
         .route("/htmx-todo", get(examples::htmx_todo::htmx_todo_handler))
+        .route("/api/todos", post(examples::htmx_todo::add_todo_handler))
         .route(
-            "/htmx-todo/add",
-            post(examples::htmx_todo::add_todo_handler),
-        )
-        .route(
-            "/htmx-todo/delete/:id",
+            "/api/todos/:id",
             delete(examples::htmx_todo::delete_todo_handler),
         )
         .route("/tailwind", get(examples::tailwind::tailwind_handler))
