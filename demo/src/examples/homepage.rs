@@ -165,9 +165,12 @@ fn test_card2<'a>() -> impl azumi::Component + 'a {
                 <p class="">"This is a test card 2"</p>
                 <span class="">"View Example →"</span>
             </div>
-            <div>
-                <style src="/static/test_card2.css" />
-            </div>
+            // this works
+            // <div>
+            //     <div>
+            //         <style src="/static/test_card2.css" />
+            //     </div>
+            // </div>
         </div>
     }
 }
