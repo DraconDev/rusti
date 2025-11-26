@@ -215,17 +215,23 @@ fn ProgressBar(
 ) -> impl Component {
     let clamped_progress = progress.min(100);
     let progress_class = format!("progress-bar {}", variant);
+    let progress_width = format!("width: {}%", clamped_progress);
+    let progress_text = if show_percentage {
+        format!("{}%", clamped_progress)
+    } else {
+        "".to_string()
+    };
     
     html! {
         <div class="progress-container">
             <div class={progress_class}>
-                <div 
-                    class="progress-fill" 
-                    style={format!("width: {}%", clamped_progress)}
+                <div
+                    class="progress-fill"
+                    style={progress_width.as_str()}
                     ></div>
             </div>
             @if show_percentage {
-                <span class="progress-text">{format!("{}%", clamped_progress)}</span>
+                <span class="progress-text">{progress_text.as_str()}</span>
             }
         </div>
     }
