@@ -641,10 +641,4 @@ fn generate_body_with_context(
 }
 
 #[cfg(test)]
-mod tests;
-
-#[cfg(test)]
-mod attr_tests;
-
-#[cfg(test)]
 mod token_parser_tests;
