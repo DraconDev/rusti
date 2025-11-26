@@ -10,7 +10,7 @@ pub fn homepage() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi - Type-Safe HTML Templates"</title>
-                <style src="/static/homepage.css" />
+                <link rel="stylesheet" href="/static/homepage.css" />
             </head>
             <body>
                 <div class="container">
