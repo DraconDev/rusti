@@ -3,6 +3,7 @@ mod component;
 mod parser; // Keep for extern crate proc_macro;
 
 mod css;
+mod css_validator;
 mod test_spacing;
 mod token_parser;
 

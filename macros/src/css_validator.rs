@@ -1,5 +1,5 @@
 /// CSS Class Validator - Revolutionary compile-time CSS type checking
-/// 
+///
 /// This system validates that:
 /// 1. All CSS class names used in HTML exist in the CSS files
 /// 2. All CSS class names defined in CSS files are used somewhere
@@ -7,6 +7,9 @@
 
 use std::collections::{HashSet, HashMap};
 use std::path::Path;
+
+/// Re-export token_parser types for use in this module
+use crate::token_parser::{Node, Element, AttributeValue, Block, IfBlock, ForBlock, MatchBlock, CallBlock, Fragment};
 
 /// CSS rule with its selector and properties
 #[derive(Debug, Clone)]
