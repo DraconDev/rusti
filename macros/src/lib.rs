@@ -280,7 +280,7 @@ fn validate_nodes(
 
                         // Rule 1: Ban inline styles - COMPILE ERROR
                         if name == "style" {
-                            errors.push(quote_spanned! { attr.span =>
+                            errors.push(quote_spanned! { attr.name_span =>
                                 compile_error!("Inline styles banned. Use CSS classes instead.");
                             });
                         }

@@ -5,65 +5,43 @@
 
 use azumi::html;
 
-/// Basic data binding example
-pub fn user_greeting(user: &User) -> impl azumi::Component {
+/// Simple greeting with data binding
+pub fn simple_greeting(name: &str) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Hello, " user.name "!"}</h1>
+            <h1>"Hello, " {name}</h1>
         </div>
     }
 }
 
-/// Complex data binding with multiple fields
-pub fn user_profile(user: &User) -> impl azumi::Component {
+/// Multiple data fields in template
+pub fn user_info(name: &str, role: &str) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Welcome, " user.name}</h1>
-            <p>{"Email: " user.email}</p>
-            <p>{"Role: " user.role}</p>
-            <p>{"Member since: " user.created_at}</p>
+            <h1>"Welcome, " {name}</h1>
+            <p>"Role: " {role}</p>
         </div>
     }
 }
 
-/// Dynamic content based on user data
-pub fn personalized_content(user: &User) -> impl azumi::Component {
+/// Data binding with conditional content
+pub fn user_status(is_logged_in: bool, name: &str) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Hello, " user.name "!"}</h1>
-            @if user.is_premium {
-                <p>"Thank you for being a premium member!"</p>
+            @if is_logged_in {
+                <p>"Welcome back, " {name} "!"</p>
             } else {
-                <p>"Upgrade to premium for more features."</p>
+                <p>"Please log in"</p>
             }
-            <p>{"You have " user.notification_count.to_string() " new notifications"}</p>
         </div>
     }
 }
 
-/// Data binding with formatted strings
-pub fn product_display(product: &Product) -> impl azumi::Component {
+/// Simple counter component
+pub fn counter_component(count: i32) -> impl azumi::Component {
     html! {
         <div>
-            <h2>{product.name}</h2>
-            <p>{"Price: $" product.price.to_string()}</p>
-            <p>{"In stock: " product.stock.to_string() " units"}</p>
+            <h1>"Current count: " {count.to_string()}</h1>
         </div>
     }
-}
-
-// Example data structures for demonstration
-pub struct User {
-    pub name: String,
-    pub email: String,
-    pub role: String,
-    pub created_at: String,
-    pub is_premium: bool,
-    pub notification_count: u32,
-}
-
-pub struct Product {
-    pub name: String,
-    pub price: f64,
-    pub stock: u32,
 }
