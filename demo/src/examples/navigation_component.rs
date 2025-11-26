@@ -20,7 +20,7 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
             <div class="nav-container">
                 <div class="nav-brand">
                     <a href="/" class="brand-link">
-                        <span class="brand-icon">⚡</span>
+                        <span class="brand-icon">"⚡"</span>
                         <span class="brand-text">"Azumi"</span>
                     </a>
                 </div>
