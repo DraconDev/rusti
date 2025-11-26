@@ -23,7 +23,7 @@ Azumi is a **compile-time HTML template macro** for Rust that:
 
 -   ❌ **Not a JavaScript Framework** - Azumi is server-side only. Use it with HTMX or Alpine.js for interactivity.
 -   ❌ **Not "HTML in Rust"** - It's a **macro**, not a parser. Text must be quoted.
--   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. Use `<style src>` or `<link>` for CDNs.
+-   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. Use `<style src>` for local CSS files or `<link>` for CDNs. Utility classes (like Tailwind) are **encouraged** for styling.
 -   ❌ **Not Lenient** - If you break the rules, it won't compile. This is intentional.
 
 ---
@@ -37,7 +37,7 @@ Azumi makes **opinionated** choices to prevent common mistakes:
 | Rule                     | Reason                                                                                                                      |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | **Mandatory Quoting**    | Prevents Rust lexer confusion with special characters like `<`, `>`, `{`, `}`.                                              |
-| **No Inline CSS/JS**     | Forces you into **external files** which get full IDE support (linting, autocomplete, syntax highlighting).                 |
+| **No Inline `<style>`**  | Forces you into **external CSS files** or **utility classes** (like Tailwind) which get full IDE support.                 |
 | **Component-Scoped CSS** | Automatic scoping prevents style leakage. No more "why is this button blue?" debugging.                                     |
 | **CDN-Only `<link>`**    | Local files must use `<style src>` for scoping. `<link>` is reserved for external stylesheets (Font Awesome, Tailwind CDN). |
 
