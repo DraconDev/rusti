@@ -245,6 +245,35 @@ For dynamic styles: use style attribute with expressions"
             }
         }
 
+        // Azumi: Enforce component-scoped CSS - block <link rel="stylesheet"> for local files
+        if name == "link" {
+            let has_rel_stylesheet = attrs.iter().any(|attr: &Attribute| {
+                attr.name == "rel"
+                    && matches!(&attr.value, AttributeValue::Static(v) if v == "stylesheet")
+            });
+
+            if has_rel_stylesheet {
+                if let Some(href_attr) = attrs.iter().find(|attr| attr.name == "href") {
+                    if let AttributeValue::Static(href) = &href_attr.value {
+                        // Allow external URLs (http/https), block local paths
+                        if !href.starts_with("http://") && !href.starts_with("https://") {
+                            return Err(Error::new(
+                                start_span,
+                                format!(
+                                    "Local CSS must use component-scoped <style src> instead of <link>:\n\n\
+                                     ✅ <style src=\"{}\" />  (auto-scoped to component)\n\
+                                     ❌ <link rel=\"stylesheet\" href=\"{}\" />\n\n\
+                                     Why? All local CSS is component-scoped in Azumi.\n\
+                                     External CDN stylesheets (https://...) are allowed with <link>.",
+                                    href, href
+                                ),
+                            ));
+                        }
+                    }
+                }
+            }
+        }
+
         let mut children = Vec::new();
         if input.peek(Token![/]) {
             // Self-closing
