@@ -30,7 +30,7 @@ fn Card(title: &str, children: impl Component) -> impl Component {
 
 ```rust
 #[azumi::component]
-fn Card(title: &str, content: &str, footer: &str) -> impl Component {
+fn Card(title: &'static str, content: &'static str, footer: &'static str) -> impl Component {
     html! {
         <div class="card">
             <h2>{title}</h2>
@@ -54,7 +54,7 @@ fn Card(title: &str, content: &str, footer: &str) -> impl Component {
 
 ```rust
 #[azumi::component]
-fn CardHeader(title: &str) -> impl Component {
+fn CardHeader(title: &'static str) -> impl Component {
     html! {
         <div class="card-header">
             <h2>{title}</h2>
@@ -63,7 +63,7 @@ fn CardHeader(title: &str) -> impl Component {
 }
 
 #[azumi::component]
-fn CardBody(content: &str) -> impl Component {
+fn CardBody(content: &'static str) -> impl Component {
     html! {
         <div class="card-body">
             <p>{content}</p>
@@ -72,7 +72,7 @@ fn CardBody(content: &str) -> impl Component {
 }
 
 #[azumi::component]
-fn CardFooter(footer: &str) -> impl Component {
+fn CardFooter(footer: &'static str) -> impl Component {
     html! {
         <div class="card-footer">
             <span>{footer}</span>
@@ -81,7 +81,7 @@ fn CardFooter(footer: &str) -> impl Component {
 }
 
 #[azumi::component]
-fn CompleteCard(title: &str, content: &str, footer: &str) -> impl Component {
+fn CompleteCard(title: &'static str, content: &'static str, footer: &'static str) -> impl Component {
     html! {
         <div class="card">
             @CardHeader(title)
@@ -112,22 +112,22 @@ impl CardBuilder {
         }
     }
 
-    fn title(mut self, title: &str) -> Self {
+    fn title(mut self, title: &'static str) -> Self {
         self.title = Some(title.to_string());
         self
     }
 
-    fn content(mut self, content: &str) -> Self {
+    fn content(mut self, content: &'static str) -> Self {
         self.content = Some(content.to_string());
         self
     }
 
-    fn footer(mut self, footer: &str) -> Self {
+    fn footer(mut self, footer: &'static str) -> Self {
         self.footer = Some(footer.to_string());
         self
     }
 
-    fn variant(mut self, variant: &str) -> Self {
+    fn variant(mut self, variant: &'static str) -> Self {
         self.variant = variant.to_string();
         self
     }
@@ -225,10 +225,10 @@ fn ConfigurableCard(config: CardConfig) -> impl Component {
 ```rust
 #[azumi::component]
 fn FlexibleCard(
-    title: &str,
-    header_content: Option<&str>,
-    body_content: &str,
-    footer_content: Option<&str>
+    title: &'static str,
+    header_content: Option<&'static str>,
+    body_content: &'static str,
+    footer_content: Option<&'static str>
 ) -> impl Component {
     html! {
         <div class="card">
@@ -295,10 +295,10 @@ fn FlexibleCard(
 ```rust
 #[azumi::component]
 fn SmartCard(
-    title: &str,
+    title: &'static str,
     show_status: bool,
-    status_text: Option<&str>,
-    content: &str,
+    status_text: Option<&'static str>,
+    content: &'static str,
     actions: Vec<Action>
 ) -> impl Component {
     html! {
