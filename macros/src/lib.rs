@@ -116,8 +116,124 @@ fn has_nested_style(elem: &token_parser::Element) -> bool {
     })
 }
 
+/// Recursively check if any <style> tags exist anywhere in the node tree
+fn has_any_styles(nodes: &[token_parser::Node]) -> bool {
+    nodes.iter().any(|node| match node {
+        token_parser::Node::Element(elem) => elem.name == "style" || has_any_styles(&elem.children),
+        token_parser::Node::Fragment(frag) => has_any_styles(&frag.children),
+        token_parser::Node::IfBlock(if_block) => {
+            has_any_styles(&if_block.then_branch)
+                || if_block
+                    .else_branch
+                    .as_ref()
+                    .map(|els| has_any_styles(els))
+                    .unwrap_or(false)
+        }
+        token_parser::Node::ForBlock(for_block) => has_any_styles(&for_block.body),
+        token_parser::Node::MatchBlock(match_block) => {
+            match_block.arms.iter().any(|arm| has_any_styles(&arm.body))
+        }
+        token_parser::Node::CallBlock(call_block) => has_any_styles(&call_block.children),
+        _ => false,
+    })
+}
+
+/// Collect ALL CSS content from all <style> tags in the component
+fn collect_all_styles(nodes: &[token_parser::Node]) -> String {
+    let mut css_content = String::new();
+    collect_styles_recursive(nodes, &mut css_content);
+    css_content
+}
+
+fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut String) {
+    for node in nodes {
+        match node {
+            token_parser::Node::Element(elem) => {
+                if elem.name == "style" {
+                    // Extract CSS from this style tag
+                    if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
+                        if let token_parser::AttributeValue::Static(path) = &src_attr.value {
+                            let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
+                                .expect("CARGO_MANIFEST_DIR not set");
+                            let file_path = if path.starts_with('/') {
+                                std::path::Path::new(&manifest_dir).join(&path[1..])
+                            } else {
+                                std::path::Path::new(&manifest_dir).join(path)
+                            };
+                            if let Ok(content) = std::fs::read_to_string(&file_path) {
+                                css_content.push_str(&content);
+                                css_content.push('\n');
+                            }
+                        }
+                    } else {
+                        // Inline content
+                        for child in &elem.children {
+                            if let token_parser::Node::Text(text) = child {
+                                css_content.push_str(&text.content);
+                                css_content.push('\n');
+                            }
+                        }
+                    }
+                } else {
+                    // Recurse into children
+                    collect_styles_recursive(&elem.children, css_content);
+                }
+            }
+            token_parser::Node::Fragment(frag) => {
+                collect_styles_recursive(&frag.children, css_content);
+            }
+            token_parser::Node::IfBlock(if_block) => {
+                collect_styles_recursive(&if_block.then_branch, css_content);
+                if let Some(else_branch) = &if_block.else_branch {
+                    collect_styles_recursive(else_branch, css_content);
+                }
+            }
+            token_parser::Node::ForBlock(for_block) => {
+                collect_styles_recursive(&for_block.body, css_content);
+            }
+            token_parser::Node::MatchBlock(match_block) => {
+                for arm in &match_block.arms {
+                    collect_styles_recursive(&arm.body, css_content);
+                }
+            }
+            token_parser::Node::CallBlock(call_block) => {
+                collect_styles_recursive(&call_block.children, css_content);
+            }
+            _ => {}
+        }
+    }
+}
+
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
-    generate_body_with_context(nodes, &GenerationContext::normal())
+    // Pass 1: Check if component has any style tags
+    if has_any_styles(nodes) {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        // Collect all CSS content
+        let css_content = collect_all_styles(nodes);
+
+        // Generate scope ID
+        let mut hasher = DefaultHasher::new();
+        css_content.hash(&mut hasher);
+        let hash = hasher.finish();
+        let scope_id = format!("s{:x}", hash);
+
+        // Scope the CSS
+        let scoped_css = crate::css::scope_css(&css_content, &scope_id);
+
+        // Generate body with scope context
+        let ctx = GenerationContext::with_scope(scope_id.clone());
+        let body = generate_body_with_context(nodes, &ctx);
+
+        // Inject scoped CSS at the beginning
+        quote! {
+            write!(f, "<style>{}</style>", #scoped_css)?;
+            #body
+        }
+    } else {
+        generate_body_with_context(nodes, &GenerationContext::normal())
+    }
 }
 
 fn generate_body_with_context(
