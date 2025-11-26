@@ -1,3 +1,4 @@
+use axum::response::IntoResponse;
 use azumi::html;
 
 /// Lesson 0: Getting Started - Your first Azumi component
