@@ -118,13 +118,33 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<Str
                 if let Some(class_attr) = elem.attrs.iter().find(|attr| attr.name == "class") {
                     match &class_attr.value {
                         AttributeValue::Static(class_string) => {
-                            // Split by whitespace and add each class with its span
+                            // Split by whitespace and calculate precise spans for each class
+                            let class_attr_span = class_attr.span;
+                            let class_string_start = class_attr_span.byte_end() - class_string.len() - 1; // -1 for the opening quote
+                            let class_string_end = class_attr_span.byte_end() - 1; // -1 for the closing quote
+                            
+                            let mut current_pos = 0;
                             for class in class_string.split_whitespace() {
                                 if !class.is_empty() {
+                                    // Calculate byte offset of this class within the attribute string
+                                    let class_start_in_string = class_string[current_pos..].find(class).unwrap_or(0);
+                                    let class_end_in_string = class_start_in_string + class.len();
+                                    
+                                    // Calculate absolute byte position in the source
+                                    let abs_start = class_string_start + 1 + class_start_in_string; // +1 for opening quote
+                                    let abs_end = class_string_start + 1 + class_end_in_string;
+                                    
+                                    // Create a precise span for just this class name
+                                    let class_span = proc_macro2::Span::new(
+                                        proc_macro2::BytePos(abs_start),
+                                        proc_macro2::BytePos(abs_end)
+                                    );
+                                    
                                     used_classes.entry(class.to_string())
                                         .or_insert_with(Vec::new)
-                                        .push(class_attr.span);
+                                        .push(class_span);
                                 }
+                                current_pos += class.len() + 1; // +1 for space or we'll handle this better
                             }
                         }
                         AttributeValue::Dynamic(_expr) => {
