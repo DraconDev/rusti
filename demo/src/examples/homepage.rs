@@ -10,7 +10,7 @@ pub fn homepage() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi - Type-Safe HTML Templates"</title>
-                // <link rel="stylesheet" href="/static/homepage.css" />
+                <link rel="stylesheet" href="/static/homepage.css" />
                 <script src="https://cdn.tailwindcss.com" />
             </head>
             <body>
@@ -119,29 +119,21 @@ fn example_card<'a>(
     icon: &'a str,
 ) -> impl azumi::Component + 'a {
     html! {
-        <>
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>"Azumi - Type-Safe HTML Templates"</title>
-            // big footgun make the styles global
-            // <link rel="stylesheet" href="/static/test_card2.css" />
-        </head>
         <a href={href} class="card">
             <div class="card-icon">{icon}</div>
             <h3 class="card-title">{title}</h3>
             <p class="card-description">{description}</p>
             <span class="card-link">"View Example →"</span>
         </a>
-        </>
     }
 }
 
+/// Example: Tailwind CSS (inline utility classes)
 fn test_card<'a>() -> impl azumi::Component + 'a {
     html! {
-        <div class="bg-red-500 rounded-xl shadow-lg p-6 transform hover:scale-105 transition border-l-4">
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">"Test Card"</h3>
-            <p class="text-gray-600">"This is a test card"</p>
+        <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
+            <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
+            <p class="text-blue-100">"This card uses Tailwind utility classes"</p>
         </div>
     }
 }
