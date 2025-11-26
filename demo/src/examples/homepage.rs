@@ -134,7 +134,7 @@ fn example_card(
 
 /// Example: Tailwind CSS (inline utility classes)
 #[azumi::component]
-fn Tailwind_card() -> impl azumi::Component {
+fn tailwind_card() -> impl azumi::Component {
     html! {
         <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
             <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
@@ -144,7 +144,7 @@ fn Tailwind_card() -> impl azumi::Component {
 }
 
 #[azumi::component]
-fn TestCard2() -> impl azumi::Component {
+fn testCard2() -> impl azumi::Component {
     html! {
         <style src="/static/test_card2.css" />
         <div class="card2">
