@@ -103,6 +103,21 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
     defined_classes
 }
 
+/// Adjust span to point to the class value instead of attribute name
+fn adjust_span_to_class_value(attr_span: &proc_macro2::Span, attr_name: &str, class_string: &str) -> proc_macro2::Span {
+    use proc_macro2::{Span, ByteOffset};
+    
+    // The span adjustment is heuristic since we can't precisely track the string literal position
+    // We assume the format is: class="value" and try to point to the value
+    let byte_offset = attr_name.len() + 2; // "class=" = 6 chars + quotes
+    let new_span = Span::new(
+        attr_span.lo() + ByteOffset(byte_offset as u32),
+        attr_span.lo() + ByteOffset((byte_offset + class_string.len()) as u32),
+        attr_span.source_text().clone(),
+    );
+    new_span
+}
+
 /// Extract all class names used in HTML attributes with their spans
 pub fn extract_html_classes(nodes: &[Node]) -> HashMap<String, Vec<proc_macro2::Span>> {
     let mut used_classes = HashMap::new();
