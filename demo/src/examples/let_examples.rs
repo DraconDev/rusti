@@ -450,7 +450,7 @@ fn option_result_let_examples() -> impl azumi::Component {
             @let optional_name: Option<&str> = Some("Bob");
             @let optional_age: Option<i32> = None;
             @let result_number: Result<i32, &str> = Ok(42);
-            @let result_string: Result<String, &str> = Err("Invalid input");
+            @let result_string: Result<String, &str> = Err("Invalid input".to_string());
             
             @let display_name = optional_name.unwrap_or("Guest User");
             @let display_age = optional_age.unwrap_or(0);
@@ -619,8 +619,8 @@ fn let_examples_main() -> impl azumi::Component {
                             <h3>"@let Syntax Patterns:"</h3>
                             <div class="code-block">
                                 <h4>"Basic Assignment"</h4>
-                                @let name = "value";
-                                <code>""@let name = \"value\";""</code>
+                                @let name = r#"@let name = \"value\";"#;
+                                <code>{name}</code>
                             </div>
                             <div class="code-block">
                                 <h4>"Pattern Matching with @match"</h4>
