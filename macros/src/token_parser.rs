@@ -25,6 +25,7 @@ pub struct Element {
     pub name: String,
     pub attrs: Vec<Attribute>,
     pub children: Vec<Node>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -32,7 +33,9 @@ pub struct Element {
 pub struct Attribute {
     pub name: String,
     pub value: AttributeValue,
+    #[allow(dead_code)]
     pub span: Span,
+    #[allow(dead_code)]
     pub value_span: Option<Span>,
 }
 
@@ -46,30 +49,36 @@ pub enum AttributeValue {
 #[derive(Debug, Clone)]
 pub struct Text {
     pub content: String,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
 #[derive(Debug, Clone)]
 pub struct Expression {
     pub content: TokenStream,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
 #[derive(Debug, Clone)]
 pub struct Comment {
+    #[allow(dead_code)]
     pub content: String,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
 #[derive(Debug, Clone)]
 pub struct Doctype {
     pub content: String,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
 #[derive(Debug, Clone)]
 pub struct Fragment {
     pub children: Vec<Node>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -88,6 +97,7 @@ pub struct IfBlock {
     pub condition: TokenStream,
     pub then_branch: Vec<Node>,
     pub else_branch: Option<Vec<Node>>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -96,6 +106,7 @@ pub struct ForBlock {
     pub pattern: TokenStream,
     pub iterator: TokenStream,
     pub body: Vec<Node>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -103,6 +114,7 @@ pub struct ForBlock {
 pub struct MatchBlock {
     pub expr: TokenStream,
     pub arms: Vec<MatchArm>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -117,12 +129,14 @@ pub struct CallBlock {
     pub name: syn::Path,
     pub args: TokenStream, // Named args or positional
     pub children: Vec<Node>,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
 #[derive(Debug, Clone)]
 pub struct ComponentBlock {
     pub name: syn::Path,
+    #[allow(dead_code)]
     pub span: Span,
 }
 
@@ -130,6 +144,7 @@ pub struct ComponentBlock {
 pub struct LetBlock {
     pub pattern: TokenStream, // Variable pattern (e.g., `name`, `(x, y)`, etc.)
     pub value: TokenStream,   // The value to assign
+    #[allow(dead_code)]
     pub span: Span,
 }
 
