@@ -455,7 +455,7 @@ fn option_result_let_examples() -> impl azumi::Component {
             @let display_name = optional_name.unwrap_or("Guest User");
             @let display_age = optional_age.unwrap_or(0);
             @let number_value = result_number.unwrap_or(0);
-            @let string_value = result_string.unwrap_or("No value");
+            @let string_value = result_string.unwrap_or("No value".to_string());
 
             <div class="option-examples">
                 <h3>"Option Types"</h3>
@@ -467,7 +467,7 @@ fn option_result_let_examples() -> impl azumi::Component {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
             };
-            @let string_status = match &result_string {
+            @let string_status = match result_string.clone() {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
             };
