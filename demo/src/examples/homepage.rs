@@ -9,8 +9,8 @@ pub fn homepage() -> impl azumi::Component {
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>"Azumi 2.0 - Complete Example Library"</title>
-                <style src="/static/educational_homepage.css" />
+                <title>"Azumi - Complete Example Library"</title>
+                <style src="/static/premium_homepage.css" />
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
             </head>
             <body>
@@ -18,8 +18,8 @@ pub fn homepage() -> impl azumi::Component {
                     <!-- Hero Section -->
                     <header class="hero">
                         <div class="hero-content">
-                            <h1>"⚡ Azumi 2.0"</h1>
-                            <p class="tagline">"Complete Example Library - From Basics to Real-World Apps"</p>
+                            <h1>"⚡ Azumi"</h1>
+                            <p class="tagline">"Type-Safe, Zero-Cost HTML Templates for Rust"</p>
                             <p class="subtitle">"25+ interactive examples • 6 categories • Production-ready patterns"</p>
                         </div>
                     </header>
