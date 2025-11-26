@@ -27,52 +27,52 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
-                        @tailwind_card()
+                        @tailwind_card::render()
                         @TestCard2()
                         <div class="grid">
-                            @example_card(
+                            @example_card::render(
                                 title = "Hello World",
                                 description = "Basic quoting and external files",
                                 href = "/hello",
                                 icon = "🌍"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Tailwind CSS",
                                 description = "Utility-first styling with Tailwind",
                                 href = "/tailwind",
                                 icon = "🎨"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Components",
                                 description = "Composition patterns and control flow",
                                 href = "/components",
                                 icon = "🧩"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Layouts",
                                 description = "Component composition patterns",
                                 href = "/layouts",
                                 icon = "📐"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Control Flow",
                                 description = "If, For, and Match expressions",
                                 href = "/control-flow",
                                 icon = "🔀"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Forms",
                                 description = "Input handling and structure",
                                 href = "/forms",
                                 icon = "📝"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "HTMX Todo",
                                 description = "Server-side rendering with HTMX",
                                 href = "/htmx-todo",
                                 icon = "✅"
                             )
-                            @example_card(
+                            @example_card::render(
                                 title = "Dashboard",
                                 description = "Complex layout and data visualization",
                                 href = "/dashboard",
