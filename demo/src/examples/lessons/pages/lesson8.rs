@@ -22,8 +22,14 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
                         Widget::Table("user-list"),
                     ] {
                         @match widget {
-                            Widget::Chart(name) => <div class="widget chart">{format!("Chart: {}", name)}</div>,
-                            Widget::Table(name) => <div class="widget table">{format!("Table: {}", name)}</div>,
+                            Widget::Chart(name) => {
+                                @let label = format!("Chart: {}", name);
+                                <div class="widget chart">{label}</div>
+                            },
+                            Widget::Table(name) => {
+                                @let label = format!("Table: {}", name);
+                                <div class="widget table">{label}</div>
+                            },
                         }
                     }
                 </div>
