@@ -237,7 +237,7 @@ impl Parse for Element {
                         && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
                 });
 
-            if !has_src && !(name == "script" && is_json_script) {
+            if !(has_src || (name == "script" && is_json_script)) {
                 let tag_help = if name == "script" {
                     "JavaScript must be external or JSON data:
   ✅ <script src=\"/static/app.js\" />
