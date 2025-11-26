@@ -33,7 +33,7 @@ pub fn lesson9() -> impl azumi::Component {
                         </ul>
                         <div class="prerequisite-box">
                             <strong>"📋 Prerequisites:"</strong>
-                            <p>"Complete lessons on <a href="/lesson-6">@if</a>, <a href="/lesson-7">@for</a>, and <a href="/lesson-8">@match</a>. Understanding of Rust variables and expressions."</p>
+                            <p>"Complete lessons on " <a href="/lesson-6">"@if"</a> ", " <a href="/lesson-7">"@for"</a> ", and " <a href="/lesson-8">"@match"</a> ". Understanding of Rust variables and expressions."</p>
                         </div>
                     </section>
 

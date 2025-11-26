@@ -33,7 +33,7 @@ pub fn lesson10() -> impl azumi::Component {
                         </ul>
                         <div class="prerequisite-box">
                             <strong>"📋 Prerequisites:"</strong>
-                            <p>"Master all previous control flow lessons: <a href="/lesson-6">@if</a>, <a href="/lesson-7">@for</a>, <a href="/lesson-8">@match</a>, and <a href="/lesson-9">@let</a>."</p>
+                            <p>"Master all previous control flow lessons: " <a href="/lesson-6">"@if"</a> ", " <a href="/lesson-7">"@for"</a> ", " <a href="/lesson-8">"@match"</a> ", and " <a href="/lesson-9">"@let"</a> "."</p>
                         </div>
                     </section>
 
