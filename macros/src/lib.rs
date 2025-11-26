@@ -73,7 +73,6 @@ fn strip_outer_quotes(s: &str) -> String {
 enum Context {
     Normal,
     Script,
-    Style,
 }
 
 #[derive(Clone, Debug)]
@@ -376,8 +375,6 @@ fn generate_body_with_context(
                 // Determine context for children
                 let child_context = if name == "script" {
                     ctx.with_mode(Context::Script)
-                } else if name == "style" {
-                    ctx.with_mode(Context::Style)
                 } else {
                     ctx.clone()
                 };
@@ -441,13 +438,16 @@ fn generate_body_with_context(
             }
             token_parser::Node::Expression(expr) => {
                 let content = &expr.content;
-                println!(
-                    "Generating expression: {:?} in context: {:?}",
-                    content, ctx.mode
-                );
                 match ctx.mode {
                     Context::Script => {
-                        // In script tags, use azumi::js() to safely inject values (Debug formatting)
+                        // In JSON script tags, output raw (user provides JSON string via serde_json::to_string etc.)
+                        quote! { write!(f, "{}", #content)?; }
+                    }
+                    Context::Normal => {
+                        // In normal HTML, use Escaped (HTML escaping)
+                        quote! { write!(f, "{}", azumi::Escaped(&(#content)))?; }
+                    }
+                }
                         println!("  -> Script context, using azumi::js");
                         quote! { write!(f, "{}", azumi::js(&(#content)))?; }
                     }
