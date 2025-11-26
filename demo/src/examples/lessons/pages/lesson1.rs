@@ -7,7 +7,9 @@ use azumi::html;
 pub fn hello_world() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson1.css" />
-        <div class="hello-container"> </div>
+        <div class="hello-container">
+            <h1 class="hello-title">"Hello Azumi!"</h1>
+        </div>
     }
 }
 
