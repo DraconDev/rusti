@@ -187,7 +187,7 @@ fn ComplexPatterns() -> impl azumi::Component {
                 @for task in &tasks {
                     @let (status_display, status_class, extra_info) = match &task.status {
                         Status::Pending => (
-                            "⏳ Pending",
+                            "⏳ Pending".to_string(),
                             "status-pending",
                             "Waiting for assignment".to_string(),
                         ),
@@ -202,13 +202,13 @@ fn ComplexPatterns() -> impl azumi::Component {
                                 .map(|reviewer| format!(" (reviewed by {})", reviewer))
                                 .unwrap_or_else(|| " (unreviewed)".to_string());
                             (
-                                "✅ Completed",
+                                "✅ Completed".to_string(),
                                 "status-completed",
                                 format!("Completed on {}{}", completed_at, review_info),
                             )
                         }
                         Status::Cancelled { reason, cancelled_by } => (
-                            "❌ Cancelled",
+                            "❌ Cancelled".to_string(),
                             "status-cancelled",
                             format!("Cancelled by {}: {}", cancelled_by, reason),
                         ),
