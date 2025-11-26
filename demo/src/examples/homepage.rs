@@ -114,10 +114,10 @@ pub fn homepage() -> impl azumi::Component {
 
 #[azumi::component]
 fn ExampleCard(
-    #[prop(default = "\"Example\"")] title: &str,
-    #[prop(default = "\"Description\"")] description: &str,
-    #[prop(default = "\"/\"")] href: &str,
-    #[prop(default = "\"📦\"")] icon: &str,
+    #[prop(default = "\"Example\"")] title: &'static str,
+    #[prop(default = "\"Description\"")] description: &'static str,
+    #[prop(default = "\"/\"")] href: &'static str,
+    #[prop(default = "\"📦\"")] icon: &'static str,
 ) -> impl azumi::Component {
     html! {
         <>
