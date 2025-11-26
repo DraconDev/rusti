@@ -861,7 +861,7 @@ impl Parse for MatchBlock {
         // Parse arms
         let mut arms = Vec::new();
         while !content.is_empty() {
-            // pattern => { body }
+            // pattern => { body } or pattern => single_node
             let mut pattern = TokenStream::new();
             while !content.peek(Token![=>]) && !content.is_empty() {
                 let tt: TokenTree = content.parse()?;
@@ -874,11 +874,35 @@ impl Parse for MatchBlock {
                 return Err(Error::new(content.span(), "Expected =>"));
             }
 
-            let body_content;
-            syn::braced!(body_content in content);
-            let body = parse_nodes(&body_content)?;
+            // Check if body is braced or single expression
+            let body = if content.peek(Brace) {
+                // Braced body: { ... }
+                let body_content;
+                syn::braced!(body_content in content);
+                parse_nodes(&body_content)?
+            } else {
+                // Single node without braces
+                let mut single_node = Vec::new();
 
-            // Optional comma?
+                // Parse until we hit a comma or end of arms
+                // We need to be careful here - parse one node
+                if content.peek(Token![<]) {
+                    // HTML element
+                    single_node.push(Node::Element(content.parse()?));
+                } else if content.peek(Token![@]) {
+                    // Block (if, for, match, let, component, call)
+                    single_node.push(Node::Block(content.parse()?));
+                } else {
+                    return Err(Error::new(
+                        content.span(),
+                        "Expected HTML element, block (@if, @for, @match, @let, component call), or braced body { ... }",
+                    ));
+                }
+
+                single_node
+            };
+
+            // Optional comma
             if content.peek(Token![,]) {
                 content.parse::<Token![,]>()?;
             }
