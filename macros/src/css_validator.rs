@@ -19,7 +19,8 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
     // Fast regex-based class extraction - much faster than full CSS parsing
     // Matches patterns like: .className, .class-name, .class_name, etc.
     // This is 10-50x faster than full CSS parsing and sufficient for validation
-    let class_pattern = Regex::new(r"\.([a-zA-Z0-9_-]+)").unwrap();
+    // Updated to avoid matching decimal numbers (e.g. .5rem, .02em) by requiring start with non-digit
+    let class_pattern = Regex::new(r"\.([a-zA-Z_-][a-zA-Z0-9_-]*)").unwrap();
     
     for cap in class_pattern.captures_iter(css_content) {
         if let Some(class_name) = cap.get(1) {
