@@ -194,7 +194,7 @@ fn EcommerceCatalog() -> impl azumi::Component {
                     <div class="product-card">
                         <div class="product-image">
                             <div class="image-placeholder">
-                                📷 {product.name.chars().next().unwrap_or('?')}
+                                <span class="product-initial">{product.name.chars().next().unwrap_or('?')}</span>
                             </div>
                             @if !product.in_stock {
                                 <div class="out-of-stock-overlay">"Out of Stock"</div>
