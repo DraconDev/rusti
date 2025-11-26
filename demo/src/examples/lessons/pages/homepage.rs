@@ -22,55 +22,79 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section>
                         <h2 class="section-title">"📚 Complete Learning Path"</h2>
-                        <p>"Master Azumi through 8 comprehensive lessons, from basics to real-world applications:"</p>
+                        <p>"Master Azumi through 12 comprehensive lessons, building from fundamentals to advanced production patterns:"</p>
 
                         <div class="lessons-grid">
                             <a href="/lesson-1" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 1"</div>
-                                <h3 class="lesson-card-title">"Hello World"</h3>
-                                <p class="lesson-card-desc">"Learn the fundamental quoting rules that make Azumi type-safe."</p>
+                                <div class="lesson-card-number">"Foundation"</div>
+                                <h3 class="lesson-card-title">"Getting Started with Azumi"</h3>
+                                <p class="lesson-card-desc">"What is type-safe HTML? Your first template and why strict typing matters."</p>
                             </a>
 
                             <a href="/lesson-2" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 2"</div>
-                                <h3 class="lesson-card-title">"CSS Validation"</h3>
-                                <p class="lesson-card-desc">"Catch CSS typos at compile time with location-specific errors."</p>
+                                <div class="lesson-card-number">"Foundation"</div>
+                                <h3 class="lesson-card-title">"The Quoting Fundamentals"</h3>
+                                <p class="lesson-card-desc">"Master the core quoting rules that make Azumi type-safe and prevent bugs."</p>
                             </a>
 
                             <a href="/lesson-3" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 3"</div>
-                                <h3 class="lesson-card-title">"Global Styles"</h3>
-                                <p class="lesson-card-desc">"Share design tokens across components with global.css."</p>
+                                <div class="lesson-card-number">"Foundation"</div>
+                                <h3 class="lesson-card-title">"CSS Integration Basics"</h3>
+                                <p class="lesson-card-desc">"Add styles to templates and understand CSS validation concepts."</p>
                             </a>
 
                             <a href="/lesson-4" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 4"</div>
-                                <h3 class="lesson-card-title">"Control Flow"</h3>
-                                <p class="lesson-card-desc">"Use Rust's native control flow directly in templates."</p>
+                                <div class="lesson-card-number">"Foundation"</div>
+                                <h3 class="lesson-card-title">"Understanding Scoping"</h3>
+                                <p class="lesson-card-desc">"Learn automatic CSS scoping and preventing style conflicts."</p>
                             </a>
 
                             <a href="/lesson-5" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 5"</div>
-                                <h3 class="lesson-card-title">"Components with Props"</h3>
-                                <p class="lesson-card-desc">"Create reusable components with type-safe props."</p>
+                                <div class="lesson-card-number">"Core"</div>
+                                <h3 class="lesson-card-title">"Design Tokens & Global Styles"</h3>
+                                <p class="lesson-card-desc">"Create consistent design systems with CSS custom properties."</p>
                             </a>
 
                             <a href="/lesson-6" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 6"</div>
-                                <h3 class="lesson-card-title">"HTMX Integration"</h3>
-                                <p class="lesson-card-desc">"Build interactive apps with server-side rendering."</p>
+                                <div class="lesson-card-number">"Core"</div>
+                                <h3 class="lesson-card-title">"Dynamic Content with Control Flow"</h3>
+                                <p class="lesson-card-desc">"Use Rust control flow directly in your templates for dynamic content."</p>
                             </a>
 
                             <a href="/lesson-7" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 7"</div>
-                                <h3 class="lesson-card-title">"Layouts & Composition"</h3>
-                                <p class="lesson-card-desc">"Build reusable layouts with function composition."</p>
+                                <div class="lesson-card-number">"Core"</div>
+                                <h3 class="lesson-card-title">"Reusable Components"</h3>
+                                <p class="lesson-card-desc">"Build maintainable components with props and composition."</p>
                             </a>
 
                             <a href="/lesson-8" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 8"</div>
-                                <h3 class="lesson-card-title">"Real-World Examples"</h3>
-                                <p class="lesson-card-desc">"See Azumi in action with practical applications."</p>
+                                <div class="lesson-card-number">"Advanced"</div>
+                                <h3 class="lesson-card-title">"Interactive Frontends with HTMX"</h3>
+                                <p class="lesson-card-desc">"Build dynamic web apps with server-side rendering and HTMX."</p>
+                            </a>
+
+                            <a href="/lesson-9" class="lesson-card">
+                                <div class="lesson-card-number">"Advanced"</div>
+                                <h3 class="lesson-card-title">"Layout Systems & Architecture"</h3>
+                                <p class="lesson-card-desc">"Create scalable layouts and multi-page application structures."</p>
+                            </a>
+
+                            <a href="/lesson-10" class="lesson-card">
+                                <div class="lesson-card-number">"Advanced"</div>
+                                <h3 class="lesson-card-title">"Production Patterns & Real Apps"</h3>
+                                <p class="lesson-card-desc">"Deploy real applications with best practices and performance optimization."</p>
+                            </a>
+
+                            <a href="/lesson-11" class="lesson-card">
+                                <div class="lesson-card-number">"Mastery"</div>
+                                <h3 class="lesson-card-title">"Advanced Component Patterns"</h3>
+                                <p class="lesson-card-desc">"Higher-order components, state management, and testing strategies."</p>
+                            </a>
+
+                            <a href="/lesson-12" class="lesson-card">
+                                <div class="lesson-card-number">"Mastery"</div>
+                                <h3 class="lesson-card-title">"Deployment & Scaling"</h3>
+                                <p class="lesson-card-desc">"Production deployment, optimization, and community resources."</p>
                             </a>
                         </div>
                     </section>
@@ -120,27 +144,76 @@ pub fn homepage() -> impl azumi::Component {
                         <h2 class="section-title">"🎯 Learning Path"</h2>
                         <div class="learning-path">
                             <div class="path-step">
-                                <div class="step-number">"1-3"</div>
+                                <div class="step-number">"1-4"</div>
                                 <div class="step-content">
-                                    <h4>"Fundamentals"</h4>
-                                    <p>"Master the core concepts: quoting, CSS validation, and global styles."</p>
+                                    <h4>"Foundation Building"</h4>
+                                    <p>"Master core concepts: getting started, quoting, CSS basics, and scoping."</p>
                                 </div>
                             </div>
                             <div class="path-arrow">"→"</div>
                             <div class="path-step">
-                                <div class="step-number">"4-5"</div>
+                                <div class="step-number">"5-7"</div>
                                 <div class="step-content">
-                                    <h4>"Advanced Features"</h4>
-                                    <p>"Learn control flow, components, and type-safe prop patterns."</p>
+                                    <h4>"Core Mastery"</h4>
+                                    <p>"Learn design systems, control flow, and reusable components."</p>
                                 </div>
                             </div>
                             <div class="path-arrow">"→"</div>
                             <div class="path-step">
-                                <div class="step-number">"6-8"</div>
+                                <div class="step-number">"8-10"</div>
                                 <div class="step-content">
-                                    <h4>"Production Ready"</h4>
-                                    <p>"Build real applications with HTMX, layouts, and practical examples."</p>
+                                    <h4>"Advanced Application"</h4>
+                                    <p>"Build real applications with HTMX, layouts, and production patterns."</p>
                                 </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step">
+                                <div class="step-number">"11-12"</div>
+                                <div class="step-content">
+                                    <h4>"Mastery & Scaling"</h4>
+                                    <p>"Advanced patterns, testing, deployment, and community resources."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section style="margin-top: 4rem;">
+                        <h2 class="section-title">"💡 Learning Approach"</h2>
+                        <div class="features-grid">
+                            <div class="feature-box">
+                                <div class="feature-icon">"🧱"</div>
+                                <h3 class="feature-title">"Build Gradually"</h3>
+                                <p class="feature-desc">"Each lesson builds on the previous one. No overwhelming jumps."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"💻"</div>
+                                <h3 class="feature-title">"Hands-On Practice"</h3>
+                                <p class="feature-desc">"Every concept includes practical exercises and real code examples."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🎯"</div>
+                                <h3 class="feature-title">"Clear Prerequisites"</h3>
+                                <p class="feature-desc">"Know exactly what you need before starting each lesson."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🏆"</div>
+                                <h3 class="feature-title">"Progressive Challenges"</h3>
+                                <p class="feature-desc">"Optional advanced exercises for those who want to go deeper."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🔄"</div>
+                                <h3 class="feature-title">"Spaced Repetition"</h3>
+                                <p class="feature-desc">"Key concepts reinforced throughout the learning path."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🌟"</div>
+                                <h3 class="feature-title">"Real-World Focus"</h3>
+                                <p class="feature-desc">"Build actual applications, not just toy examples."</p>
                             </div>
                         </div>
                     </section>
