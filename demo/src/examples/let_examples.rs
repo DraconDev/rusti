@@ -245,9 +245,9 @@ fn math_let_examples() -> impl azumi::Component {
             
             <div class="responsive-layout">
                 <h3>"Responsive Calculations"</h3>
-                <p>"Viewport: " {viewport_width}"px"</p>
-                <p>"Container: " {container_width}"px"</p>
-                <p>"Columns: " {columns}</p>
+                <p>{format!("Viewport: {}px", viewport_width)}</p>
+                <p>{format!("Container: {}px", container_width)}</p>
+                <p>{format!("Columns: {}", columns)}</p>
             </div>
         </div>
     }
