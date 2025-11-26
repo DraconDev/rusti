@@ -8,3 +8,4 @@ pub mod lesson5;
 pub mod lesson6;
 pub mod lesson7;
 pub mod lesson8;
+pub mod pages;
