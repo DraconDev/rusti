@@ -619,6 +619,7 @@ fn let_examples_main() -> impl azumi::Component {
                             <h3>"@let Syntax Patterns:"</h3>
                             <div class="code-block">
                                 <h4>"Basic Assignment"</h4>
+                                @let name = "value";
                                 <code>""@let name = \"value\";""</code>
                             </div>
                             <div class="code-block">
