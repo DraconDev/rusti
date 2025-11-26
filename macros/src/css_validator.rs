@@ -6,6 +6,7 @@
 /// 3. No dead CSS or undefined classes
 
 use std::collections::{HashSet, HashMap};
+use regex::Regex;
 
 /// Re-export token_parser types for use in this module
 use crate::token_parser::{Node, Element, AttributeValue, Block, IfBlock, ForBlock, MatchBlock, CallBlock, Fragment};
