@@ -216,15 +216,6 @@ pub fn lesson8() -> impl azumi::Component {
     }
 }
 
-/// Test component to verify CSS error positioning
-pub fn test_error_positioning() -> impl azumi::Component {
-    html! {
-        <div class="non-existent-class">
-            <h1>"Test Error Positioning"</h1>
-        </div>
-    }
-}
-
 pub async fn lesson8_handler() -> impl IntoResponse {
     Html(azumi::render_to_string(&lesson8()))
 }
