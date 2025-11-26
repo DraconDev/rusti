@@ -251,13 +251,24 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
         };
     }
 
-    // Pass 1: Check if component has any style tags
-    if has_any_styles(nodes) {
+    // Collect all CSS content first (needed for validation and scoping)
+    let css_content = collect_all_styles(nodes);
+
+    // Pass 0.5: Strict CSS Validation (New Feature)
+    // Extract valid selectors from the CSS
+    let (valid_classes, valid_ids) = crate::css::extract_selectors(&css_content);
+
+    // Validate nodes against strict rules
+    if let Err(e) = validate_nodes(nodes, &valid_classes, &valid_ids) {
+        return quote! {
+            compile_error!(#e);
+        };
+    }
+
+    // Pass 1: Check if component has any style tags (or if we collected any content)
+    if !css_content.is_empty() {
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};
-
-        // Collect all CSS content
-        let css_content = collect_all_styles(nodes);
 
         // Generate scope ID
         let mut hasher = DefaultHasher::new();
@@ -280,6 +291,84 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     } else {
         generate_body_with_context(nodes, &GenerationContext::normal())
     }
+}
+
+fn validate_nodes(
+    nodes: &[token_parser::Node],
+    valid_classes: &std::collections::HashSet<String>,
+    valid_ids: &std::collections::HashSet<String>,
+) -> Result<(), String> {
+    for node in nodes {
+        match node {
+            token_parser::Node::Element(elem) => {
+                // Check attributes
+                for attr in &elem.attrs {
+                    let name = &attr.name;
+
+                    // Rule 1: Ban inline styles
+                    if name == "style" {
+                        return Err(
+                            "Inline styles are banned. Use CSS classes instead.".to_string()
+                        );
+                    }
+
+                    // Rule 2: Check class existence
+                    if name == "class" {
+                        if let token_parser::AttributeValue::Static(val) = &attr.value {
+                            for class_name in val.split_whitespace() {
+                                if !valid_classes.contains(class_name) {
+                                    return Err(format!(
+                                        "Class '{}' is used in HTML but not defined in CSS.",
+                                        class_name
+                                    ));
+                                }
+                            }
+                        }
+                    }
+
+                    // Rule 3: Check ID existence
+                    if name == "id" {
+                        if let token_parser::AttributeValue::Static(val) = &attr.value {
+                            if !valid_ids.contains(val) {
+                                return Err(format!(
+                                    "ID '{}' is used in HTML but not defined in CSS.",
+                                    val
+                                ));
+                            }
+                        }
+                    }
+                }
+
+                // Recurse
+                validate_nodes(&elem.children, valid_classes, valid_ids)?;
+            }
+            token_parser::Node::Fragment(frag) => {
+                validate_nodes(&frag.children, valid_classes, valid_ids)?;
+            }
+            token_parser::Node::Block(block) => match block {
+                token_parser::Block::If(if_block) => {
+                    validate_nodes(&if_block.then_branch, valid_classes, valid_ids)?;
+                    if let Some(else_branch) = &if_block.else_branch {
+                        validate_nodes(else_branch, valid_classes, valid_ids)?;
+                    }
+                }
+                token_parser::Block::For(for_block) => {
+                    validate_nodes(&for_block.body, valid_classes, valid_ids)?;
+                }
+                token_parser::Block::Match(match_block) => {
+                    for arm in &match_block.arms {
+                        validate_nodes(&arm.body, valid_classes, valid_ids)?;
+                    }
+                }
+                token_parser::Block::Call(call_block) => {
+                    validate_nodes(&call_block.children, valid_classes, valid_ids)?;
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+    Ok(())
 }
 
 fn generate_body_with_context(
