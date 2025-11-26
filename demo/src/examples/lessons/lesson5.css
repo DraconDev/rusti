@@ -1,0 +1,29 @@
+.component-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.user-card-demo {
+    background: var(--azumi-surface);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+    border: 2px solid var(--azumi-primary);
+}
+
+.user-card-demo h2 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1.25rem;
+    color: var(--azumi-text);
+}
+
+.user-card-demo .role {
+    background: var(--azumi-primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
