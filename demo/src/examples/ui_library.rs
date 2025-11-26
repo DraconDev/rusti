@@ -60,31 +60,11 @@ fn ui_library_demo() -> impl Component {
                         <section class="demo-section">
                             <h2>"Cards"</h2>
                             <div class="card-grid">
-                                @Card(title="Simple Card") {
-                                    <p>"This is a simple card component with children content."</p>
-                                    <button class="btn-small">"Action"</button>
-                                }
+                                @SimpleCard()
 
-                                @Card(
-                                    title="Featured Card",
-                                    variant="featured"
-                                ) {
-                                    <div class="card-metadata">
-                                        <span class="card-date">"2024-01-15"</span>
-                                        <span class="card-author">"John Doe"</span>
-                                    </div>
-                                    <p>"This is a featured card with custom styling and metadata."</p>
-                                }
+                                @FeaturedCard()
 
-                                @Card(title="Card with Footer") {
-                                    <div class="card-content">
-                                        <p>"This card has a custom footer section."</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span class="card-views">"1.2k views"</span>
-                                        @Button(text="Read More", variant="primary", size="small")
-                                    </div>
-                                }
+                                @CardWithAction()
                             </div>
                         </section>
 
@@ -152,8 +132,7 @@ fn Button(
     html! {
         <button
             class={button_class}
-            disabled={disabled}
-            >
+            disabled={disabled}>
             @if !icon.is_empty() {
                 <i class={format!("fas fa-{}", icon)}></i>
                 @if !text.is_empty() { " " }
@@ -164,24 +143,64 @@ fn Button(
 }
 
 // ========================================
-// CARD COMPONENT
+// SIMPLE CARD COMPONENT
 // ========================================
 
 #[azumi::component]
-fn Card(
-    title: &'static str,
-    #[prop(default = "\"default\"")] variant: &'static str,
-    #[prop(default = "\"\"")] content: &'static str,
-) -> impl Component {
-    let card_class = format!("card {}", variant);
-
+fn SimpleCard() -> impl Component {
     html! {
-        <div class={card_class}>
+        <div class="card default">
             <div class="card-header">
-                <h3>{title}</h3>
+                <h3>"Simple Card"</h3>
             </div>
             <div class="card-body">
-                <p>{content}</p>
+                <p>"This is a simple card component with basic content and styling."</p>
+                <button class="btn-small">"Action"</button>
+            </div>
+        </div>
+    }
+}
+
+// ========================================
+// FEATURED CARD COMPONENT
+// ========================================
+
+#[azumi::component]
+fn FeaturedCard() -> impl Component {
+    html! {
+        <div class="card featured">
+            <div class="card-header">
+                <h3>"Featured Card"</h3>
+                <span class="card-badge">"NEW"</span>
+            </div>
+            <div class="card-body">
+                <div class="card-metadata">
+                    <span class="card-date">"2024-01-15"</span>
+                    <span class="card-author">"John Doe"</span>
+                </div>
+                <p>"This is a featured card with custom styling and metadata. It includes additional visual elements to draw attention."</p>
+            </div>
+        </div>
+    }
+}
+
+// ========================================
+// CARD WITH ACTION COMPONENT
+// ========================================
+
+#[azumi::component]
+fn CardWithAction() -> impl Component {
+    html! {
+        <div class="card default">
+            <div class="card-header">
+                <h3>"Card with Action"</h3>
+            </div>
+            <div class="card-body">
+                <p>"This card demonstrates an action-oriented design with interactive elements."</p>
+            </div>
+            <div class="card-footer">
+                <span class="card-views">"1.2k views"</span>
+                @Button(text="Read More", variant="primary", size="small")
             </div>
         </div>
     }
@@ -244,7 +263,6 @@ fn ProgressBar(
 #[azumi::component]
 fn InteractiveToggle(initial_state: bool, label: &'static str) -> impl Component {
     let toggle_id = format!("toggle-{}", label.replace(" ", "-").to_lowercase());
-    let checked_class = if initial_state { "checked" } else { "" };
 
     html! {
         <div class="toggle-item">
@@ -256,7 +274,7 @@ fn InteractiveToggle(initial_state: bool, label: &'static str) -> impl Component
                     class="toggle-input"
                     checked={initial_state}
                     />
-                <label for={toggle_id} class="toggle-slider {checked_class}">
+                <label for={toggle_id} class="toggle-slider">
                     <span class="toggle-button"></span>
                 </label>
             </div>
