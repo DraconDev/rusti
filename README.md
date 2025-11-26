@@ -10,23 +10,24 @@ Azumi is the **strictest** HTML template system for Rust. It validates your CSS 
 
 Azumi is a **compile-time HTML template macro** for Rust that:
 
--   ✅ **Validates every CSS class** at compile time with **location-specific errors**
--   ✅ Enforces **strict quoting** to eliminate lexer ambiguity
--   ✅ Provides **automatic CSS scoping** for component isolation
--   ✅ Prevents **dead CSS** - every class must be used
--   ✅ Integrates seamlessly with **Axum** and **HTMX**
--   ✅ Offers **zero runtime overhead** (everything happens at compile time)
--   ✅ Enables **full IDE support** for CSS through external files
+- ✅ **Validates every CSS class** at compile time with **location-specific errors**
+- ✅ Enforces **strict quoting** to eliminate lexer ambiguity
+- ✅ Provides **automatic CSS scoping** for component isolation
+- ✅ Prevents **dead CSS** - every class must be used
+- ✅ Integrates seamlessly with **Axum** and **HTMX**
+- ✅ Offers **zero runtime overhead** (everything happens at compile time)
+- ✅ Enables **full IDE support** for CSS through external files
 
 ---
 
 ## ❌ What Azumi is NOT
 
--   ❌ **Not a JavaScript Framework** - Azumi is server-side only. Use it with HTMX or Alpine.js for interactivity.
--   ❌ **Not "HTML in Rust"** - It's a **macro**, not a parser. Text must be quoted.
--   ❌ **Not a CSS Framework** - Azumi **validates** your custom CSS. No Tailwind, no utility classes, no framework dependencies. Write real CSS.
--   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. All CSS must be in external files with `<style src>`.
--   ❌ **Not Lenient** - If you break the rules, it won't compile. This is intentional.
+- ❌ **Not a JavaScript Framework** - Azumi is server-side only. Use it with HTMX or Alpine.js for interactivity.
+- ❌ **Not "HTML in Rust"** - It's a **macro**, not a parser. Text must be quoted.
+- ❌ **Not a CSS Framework** - Azumi **validates** your custom CSS. No Tailwind, no utility classes, no framework dependencies. Write real CSS.
+- ❌ **Not a Style Soup** - Stop mixing your structure, behavior, and presentation in one file. This creates impossible-to-maintain codebases.
+- ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. All CSS must be in external files with `<style src>`.
+- ❌ **Not Lenient** - If you break the rules, it won't compile. This is intentional.
 
 ---
 
@@ -60,9 +61,9 @@ Azumi uses `@` to invoke Rust code (components, functions, control flow) to dist
 
 **Benefits:**
 
--   **Clear distinction**: `@` means "this is Rust code", `<>` means "this is HTML".
--   **No ambiguity**: You instantly know what's being rendered vs. what's executing logic.
--   **Familiar syntax**: Similar to Razor (`@`), Blade (`@`), and JSX (`<Component>`).
+- **Clear distinction**: `@` means "this is Rust code", `<>` means "this is HTML".
+- **No ambiguity**: You instantly know what's being rendered vs. what's executing logic.
+- **Familiar syntax**: Similar to Razor (`@`), Blade (`@`), and JSX (`<Component>`).
 
 That's it. No complex rules about capitalization—just use `@` for Rust, `<>` for HTML.
 
@@ -76,39 +77,39 @@ Azumi is strict. Follow these rules or it won't compile.
 
 1. **Quote all text:** `<h1>"Hello World"</h1>`
 
-    - _Why?_ Prevents lexer ambiguity and enables arbitrary text content.
+   - _Why?_ Prevents lexer ambiguity and enables arbitrary text content.
 
 2. **Quote all attribute values:** `<div class="container">`
 
-    - _Why?_ Consistent syntax, no guessing if quotes are needed.
+   - _Why?_ Consistent syntax, no guessing if quotes are needed.
 
 3. **External CSS:** `<style src="styles.css" />`
 
-    - _Why?_ **Automatic Scoping + Validation.** CSS is scoped to the component and validated at compile time.
-    - _Bonus:_ Full IDE support (linting, colors, autocomplete) for your CSS files.
+   - _Why?_ **Automatic Scoping + Validation.** CSS is scoped to the component and validated at compile time.
+   - _Bonus:_ Full IDE support (linting, colors, autocomplete) for your CSS files.
 
 4. **All classes must be defined in CSS:**
 
-    ```rust
-    // ❌ Compile Error: class 'btn' not defined
-    <button class="btn">"Click"</button>
-    ```
+   ```rust
+   // ❌ Compile Error: class 'btn' not defined
+   <button class="btn">"Click"</button>
+   ```
 
-    - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
+   - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
 
 5. **All CSS must be used in HTML:**
 
-    ```css
-    /* ⚠️ Warning: class 'unused' is never used */
-    .unused {
-        color: red;
-    }
-    ```
+   ```css
+   /* ⚠️ Warning: class 'unused' is never used */
+   .unused {
+     color: red;
+   }
+   ```
 
-    - _Why?_ Prevents dead CSS that bloats your bundle.
+   - _Why?_ Prevents dead CSS that bloats your bundle.
 
 6. **External JS:** `<script src="/static/app.js" />`
-    - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
+   - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
 
 ### ❌ Not Allowed
 
@@ -118,20 +119,20 @@ Azumi is strict. Follow these rules or it won't compile.
 4. **Inline styles:** `<style>.box { color: red; }</style>` → Compile Error
 5. **Inline scripts:** `<script>console.log("hi")</script>` → Compile Error
 6. **Local file `<link>`:** `<link rel="stylesheet" href="/static/local.css">` → Compile Error
-    - Use `<style src="/static/local.css" />` instead for automatic scoping and validation.
+   - Use `<style src="/static/local.css" />` instead for automatic scoping and validation.
 
 ### ⚠️ Exceptions
 
 1. **Boolean Attributes:** `<input disabled checked />`
 
-    - Standard HTML behavior. No value required.
+   - Standard HTML behavior. No value required.
 
 2. **JSON Data Injection:** `<script type="application/json">{json_data}</script>`
 
-    - The **only** allowed inline script. Safe way to pass server data to client-side code.
+   - The **only** allowed inline script. Safe way to pass server data to client-side code.
 
 3. **CDN Stylesheets:** `<link rel="stylesheet" href="https://cdn.example.com/font-awesome.css">`
-    - External CDN links are allowed (no validation). Only _local_ files must use `<style src>`.
+   - External CDN links are allowed (no validation). Only _local_ files must use `<style src>`.
 
 ---
 
@@ -252,11 +253,11 @@ Azumi reads your CSS files at compile time, generates a unique hash, and scopes 
 
 ```css
 .card {
-    background: #fff;
-    padding: 20px;
+  background: #fff;
+  padding: 20px;
 }
 h2 {
-    color: #333;
+  color: #333;
 }
 ```
 
@@ -275,16 +276,16 @@ html! {
 
 ```html
 <style>
-    .card[data-s12345] {
-        background: #fff;
-        padding: 20px;
-    }
-    h2[data-s12345] {
-        color: #333;
-    }
+  .card[data-s12345] {
+    background: #fff;
+    padding: 20px;
+  }
+  h2[data-s12345] {
+    color: #333;
+  }
 </style>
 <div class="card" data-s12345>
-    <h2 data-s12345>Scoped Title</h2>
+  <h2 data-s12345>Scoped Title</h2>
 </div>
 ```
 
@@ -295,19 +296,19 @@ CSS variables defined in a component ARE accessible to child components because 
 ```css
 /* parent.css */
 :root {
-    --primary-color: #4f46e5;
-    --spacing: 1rem;
+  --primary-color: #4f46e5;
+  --spacing: 1rem;
 }
 .container {
-    background: var(--primary-color);
+  background: var(--primary-color);
 }
 ```
 
 ```css
 /* child.css */
 .button {
-    color: var(--primary-color); /* ✅ Works! Inherits from parent */
-    margin: var(--spacing);
+  color: var(--primary-color); /* ✅ Works! Inherits from parent */
+  margin: var(--spacing);
 }
 ```
 
@@ -336,17 +337,17 @@ html! {
 
 ```css
 :root {
-    --primary: #4f46e5;
-    --spacing: 1rem;
+  --primary: #4f46e5;
+  --spacing: 1rem;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: system-ui;
+  margin: 0;
+  font-family: system-ui;
 }
 ```
 
@@ -354,29 +355,29 @@ body {
 
 ```css
 .btn {
-    background: var(--primary); /* ✅ Uses global variable! */
-    padding: var(--spacing);
+  background: var(--primary); /* ✅ Uses global variable! */
+  padding: var(--spacing);
 }
 ```
 
 **How it works:**
 
--   Files named `global.css` are **NOT scoped** - no `[data-scopeid]` added
--   Injected **before** scoped styles (lower specificity)
--   **Skips validation** - opt-out of strict class checking
--   Perfect for design tokens that all components share
+- Files named `global.css` are **NOT scoped** - no `[data-scopeid]` added
+- Injected **before** scoped styles (lower specificity)
+- **Skips validation** - opt-out of strict class checking
+- Perfect for design tokens that all components share
 
 **Use global.css for:**
 
--   ✅ CSS variables (`:root { --var: value; }`)
--   ✅ Resets (`*`, `html`, `body` styles)
--   ✅ Font faces (`@font-face`)
--   ✅ Design tokens shared across components
+- ✅ CSS variables (`:root { --var: value; }`)
+- ✅ Resets (`*`, `html`, `body` styles)
+- ✅ Font faces (`@font-face`)
+- ✅ Design tokens shared across components
 
 **Don't use global.css for:**
 
--   ❌ Component-specific classes (use scoped CSS)
--   ❌ Layouts (use scoped CSS per component)
+- ❌ Component-specific classes (use scoped CSS)
+- ❌ Layouts (use scoped CSS per component)
 
 ### 7. Compile-Time CSS Validation
 
@@ -395,16 +396,16 @@ html! {
 
 **The error appears:**
 
--   ✅ At the **exact line and column** in your editor
--   ✅ With IDE underlining (red squiggly)
--   ✅ Click to jump directly to the problem
--   ✅ Same experience as regular Rust compiler errors
+- ✅ At the **exact line and column** in your editor
+- ✅ With IDE underlining (red squiggly)
+- ✅ Click to jump directly to the problem
+- ✅ Same experience as regular Rust compiler errors
 
 **Prevents:**
 
--   Typos in class names
--   Removed CSS that's still used
--   Dead CSS that's never used
+- Typos in class names
+- Removed CSS that's still used
+- Dead CSS that's never used
 
 ### 8. HTMX Integration
 
@@ -426,13 +427,13 @@ html! {
 
 ```css
 .btn {
-    background: #4f46e5;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
+  background: #4f46e5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
 }
 .btn:hover {
-    background: #4338ca;
+  background: #4338ca;
 }
 ```
 
@@ -474,8 +475,8 @@ To get "Go to Definition" support for your `<style src>` paths:
 
 ```json
 {
-    "cssPeek.peekFromLanguages": ["html", "rust"],
-    "cssPeek.searchFileExtensions": [".css", ".scss"]
+  "cssPeek.peekFromLanguages": ["html", "rust"],
+  "cssPeek.searchFileExtensions": [".css", ".scss"]
 }
 ```
 
