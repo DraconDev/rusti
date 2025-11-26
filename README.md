@@ -138,7 +138,7 @@ Azumi supports Rust-native control flow directly in your templates.
 ```rust
 @if logged_in {
     <button>"Log Out"</button>
-} @else {
+} else {
     <button>"Log In"</button>
 }
 ```
