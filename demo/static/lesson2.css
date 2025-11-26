@@ -1,0 +1,52 @@
+.tokens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.token-box {
+    background: var(--azumi-surface);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+
+.token-label {
+    font-size: 0.75rem;
+    color: var(--azumi-text-dim);
+    margin-bottom: 0.25rem;
+}
+
+.token-value {
+    font-family: "Monaco", monospace;
+    font-size: 0.875rem;
+}
+
+.color-preview {
+    width: 100%;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    margin-top: 0.5rem;
+}
+
+.demo-button-primary {
+    background: var(--azumi-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: var(--spacing-sm);
+}
+
+.demo-button-secondary {
+    background: var(--azumi-secondary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+}
