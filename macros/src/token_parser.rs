@@ -371,14 +371,9 @@ impl Parse for Attribute {
                 let lit_after = input.span();
                 match lit {
                     syn::Lit::Str(s) => {
-                        // Create a span that excludes the quotes - just the content
-                        use proc_macro2::ByteOffset;
-                        let content_span = proc_macro2::Span::new(
-                            lit_before.lo() + ByteOffset(1), // Skip opening quote
-                            lit_after.hi() - ByteOffset(1),   // Skip closing quote
-                            None, // We'll use the same source text
-                        );
-                        (AttributeValue::Static(s.value()), Some(content_span))
+                        // For now, use the literal span as value_span
+                        // TODO: Extract proper content span later
+                        (AttributeValue::Static(s.value()), Some(lit_before))
                     },
                     _ => {
                         return Err(Error::new(
