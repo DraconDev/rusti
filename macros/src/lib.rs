@@ -106,6 +106,16 @@ impl GenerationContext {
     }
 }
 
+fn has_nested_style(elem: &token_parser::Element) -> bool {
+    elem.children.iter().any(|child| {
+        if let token_parser::Node::Element(el) = child {
+            el.name == "style"
+        } else {
+            false
+        }
+    })
+}
+
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     generate_body_with_context(nodes, &GenerationContext::normal())
 }
@@ -130,12 +140,17 @@ fn generate_body_with_context(
                 };
 
                 // Check if this element has <style> tags as DIRECT children only
+                // OR if this is <html> and it has a <head> child with <style> tags
                 let has_style_children = elem.children.iter().any(|child| {
                     if let token_parser::Node::Element(el) = child {
-                        el.name == "style"
-                    } else {
-                        false
+                        if el.name == "style" {
+                            return true;
+                        }
+                        if name == "html" && el.name == "head" {
+                            return has_nested_style(el);
+                        }
                     }
+                    false
                 });
 
                 // If this element has style children, it becomes a scoped container
@@ -164,8 +179,6 @@ fn generate_body_with_context(
                                         if let Ok(content) = std::fs::read_to_string(&file_path) {
                                             css_content = content;
                                             found_style = true;
-                                        } else {
-                                            // If file not found, we'll handle error in the main loop
                                         }
                                     }
                                 } else {
@@ -180,6 +193,54 @@ fn generate_body_with_context(
                                     }
                                 }
                                 break; // Only process first style tag for scoping
+                            } else if name == "html" && el.name == "head" {
+                                // Check head for style
+                                for head_child in &el.children {
+                                    if let token_parser::Node::Element(hc) = head_child {
+                                        if hc.name == "style" {
+                                            // Found style in head - get content
+                                            if let Some(src_attr) =
+                                                hc.attrs.iter().find(|a| a.name == "src")
+                                            {
+                                                if let token_parser::AttributeValue::Static(path) =
+                                                    &src_attr.value
+                                                {
+                                                    let manifest_dir =
+                                                        std::env::var("CARGO_MANIFEST_DIR")
+                                                            .expect("CARGO_MANIFEST_DIR not set");
+                                                    let file_path = if path.starts_with('/') {
+                                                        std::path::Path::new(&manifest_dir)
+                                                            .join(&path[1..])
+                                                    } else {
+                                                        std::path::Path::new(&manifest_dir)
+                                                            .join(path)
+                                                    };
+                                                    if let Ok(content) =
+                                                        std::fs::read_to_string(&file_path)
+                                                    {
+                                                        css_content = content;
+                                                        found_style = true;
+                                                    }
+                                                }
+                                            } else {
+                                                for style_child in &hc.children {
+                                                    if let token_parser::Node::Text(text) =
+                                                        style_child
+                                                    {
+                                                        css_content.push_str(&text.content);
+                                                    }
+                                                }
+                                                if !css_content.is_empty() {
+                                                    found_style = true;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                                if found_style {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -262,6 +323,121 @@ fn generate_body_with_context(
                                         }
                                     });
                                 }
+                            }
+                            token_parser::Node::Element(child_elem)
+                                if child_elem.name == "head"
+                                    && name == "html"
+                                    && has_nested_style(child_elem) =>
+                            {
+                                // Special handling for head with nested style when html is the container
+                                // We need to manually process head children to ensure style is transformed
+
+                                // Generate attributes
+                                let mut child_attr_code = proc_macro2::TokenStream::new();
+                                for attr in &child_elem.attrs {
+                                    let attr_name = &attr.name;
+                                    match &attr.value {
+                                        token_parser::AttributeValue::Static(val) => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
+                                            });
+                                        }
+                                        token_parser::AttributeValue::Dynamic(expr) => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
+                                            });
+                                        }
+                                        token_parser::AttributeValue::None => {
+                                            child_attr_code.extend(quote! {
+                                                write!(f, " {}", #attr_name)?;
+                                            });
+                                        }
+                                    }
+                                }
+
+                                // Generate children with style transformation
+                                let mut head_children_code = proc_macro2::TokenStream::new();
+                                for head_child in &child_elem.children {
+                                    match head_child {
+                                        token_parser::Node::Element(hc) if hc.name == "style" => {
+                                            // Transform style!
+                                            // This is duplicated from the style handler above
+                                            let mut current_css = String::new();
+                                            let mut error_code = proc_macro2::TokenStream::new();
+
+                                            if let Some(src_attr) =
+                                                hc.attrs.iter().find(|a| a.name == "src")
+                                            {
+                                                if let token_parser::AttributeValue::Static(path) =
+                                                    &src_attr.value
+                                                {
+                                                    let manifest_dir =
+                                                        std::env::var("CARGO_MANIFEST_DIR")
+                                                            .unwrap();
+                                                    let file_path = if path.starts_with('/') {
+                                                        std::path::Path::new(&manifest_dir)
+                                                            .join(&path[1..])
+                                                    } else {
+                                                        std::path::Path::new(&manifest_dir)
+                                                            .join(path)
+                                                    };
+
+                                                    match std::fs::read_to_string(&file_path) {
+                                                        Ok(content) => current_css = content,
+                                                        Err(e) => {
+                                                            let err_msg = format!(
+                                                                "Failed to read CSS file '{}': {}",
+                                                                file_path.display(),
+                                                                e
+                                                            );
+                                                            error_code = quote! { compile_error!(#err_msg); };
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                for style_child in &hc.children {
+                                                    if let token_parser::Node::Text(text) =
+                                                        style_child
+                                                    {
+                                                        current_css.push_str(&text.content);
+                                                    }
+                                                }
+                                            }
+
+                                            if !error_code.is_empty() {
+                                                head_children_code.extend(error_code);
+                                            } else if !current_css.is_empty() {
+                                                let scoped_css =
+                                                    css::scope_css(&current_css, &scope_id_val);
+                                                head_children_code.extend(quote! {
+                                                    {
+                                                        write!(f, "<style data-scope=\"{}\">", #scope_id_val)?;
+                                                        write!(f, "{}", #scoped_css)?;
+                                                        write!(f, "</style>")?;
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        _ => {
+                                            // Regular child of head
+                                            let gc_ctx =
+                                                GenerationContext::with_scope(scope_id_val.clone());
+                                            let nodes = vec![head_child.clone()];
+                                            head_children_code.extend(generate_body_with_context(
+                                                &nodes, &gc_ctx,
+                                            ));
+                                        }
+                                    }
+                                }
+
+                                children_code.extend(quote! {
+                                    write!(f, "<head")?;
+                                    write!(f, " data-{}", #scope_id_val)?;
+                                    #child_attr_code
+                                    write!(f, ">")?;
+                                    #head_children_code
+                                    write!(f, "</head>")?;
+                                });
                             }
                             token_parser::Node::Element(child_elem) => {
                                 // Regular element - add data-scope attribute
