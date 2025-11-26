@@ -35,8 +35,6 @@ async fn main() {
             get(examples::forms::forms_handler).post(examples::forms::forms_handler),
         )
         .route("/dashboard", get(examples::dashboard::dashboard_handler))
-        .route("/ui-library", get(examples::ui_library::ui_library_handler))
-        .route("/let-examples", get(examples::let_examples::let_examples_handler))
         // Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
 
