@@ -252,7 +252,7 @@ impl std::error::Error for ValidationError {}
 
 /// Parse all CSS files referenced in the component and validate classes
 pub fn validate_component_css(
-    nodes: &[token_parser::Node],
+    nodes: &[Node],
 ) -> Result<(), Box<dyn std::error::Error>> {
     // First, collect all CSS files referenced in the component
     let mut css_files = Vec::new();
@@ -313,13 +313,13 @@ pub fn validate_component_css(
 }
 
 /// Collect all CSS file paths from <style src="..."> tags
-fn collect_css_files(nodes: &[token_parser::Node], css_files: &mut Vec<String>) {
+fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
     for node in nodes {
         match node {
-            token_parser::Node::Element(elem) => {
+            Node::Element(elem) => {
                 if elem.name == "style" {
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
-                        if let token_parser::AttributeValue::Static(path) = &src_attr.value {
+                        if let AttributeValue::Static(path) = &src_attr.value {
                             // Convert relative paths to absolute
                             let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
                                 .expect("CARGO_MANIFEST_DIR not set");
@@ -335,25 +335,25 @@ fn collect_css_files(nodes: &[token_parser::Node], css_files: &mut Vec<String>) 
                 // Recurse into children
                 collect_css_files(&elem.children, css_files);
             }
-            token_parser::Node::Fragment(frag) => {
+            Node::Fragment(frag) => {
                 collect_css_files(&frag.children, css_files);
             }
-            token_parser::Node::Block(block) => match block {
-                token_parser::Block::If(if_block) => {
+            Node::Block(block) => match block {
+                Block::If(if_block) => {
                     collect_css_files(&if_block.then_branch, css_files);
                     if let Some(else_branch) = &if_block.else_branch {
                         collect_css_files(else_branch, css_files);
                     }
                 }
-                token_parser::Block::For(for_block) => {
+                Block::For(for_block) => {
                     collect_css_files(&for_block.body, css_files);
                 }
-                token_parser::Block::Match(match_block) => {
+                Block::Match(match_block) => {
                     for arm in &match_block.arms {
                         collect_css_files(&arm.body, css_files);
                     }
                 }
-                token_parser::Block::Call(call_block) => {
+                Block::Call(call_block) => {
                     collect_css_files(&call_block.children, css_files);
                 }
                 _ => {}
