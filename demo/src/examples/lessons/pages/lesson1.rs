@@ -14,24 +14,30 @@ pub fn hello_world() -> impl azumi::Component {
     }
 }
 
-/// Alternative hello world with minimal styling using external CSS
-pub fn hello_world_styled() -> impl azumi::Component {
+/// Basic template with multiple elements
+pub fn basic_template() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson1.css" />
-        <div class="hello-container">
-            <h1 class="hello-title">"Hello, World!"</h1>
-            <p class="hello-subtitle">"Welcome to Azumi templates"</p>
+        <div>
+            <h1>"Hello, World!"</h1>
+            <h2>"Welcome to Azumi"</h2>
+            <p>"This is a simple template showing basic structure"</p>
         </div>
     }
 }
 
-/// Multiple greetings demonstration
-pub fn multiple_greetings() -> impl azumi::Component {
+/// Template with nested elements
+pub fn nested_template() -> impl azumi::Component {
     html! {
-        <div class="greetings">
-            <h1>"Hello, World!"</h1>
-            <h2>"Greetings from Azumi"</h2>
-            <p>"This is a simple template showing basic structure"</p>
+        <div>
+            <header>
+                <h1>"Site Title"</h1>
+            </header>
+            <main>
+                <section>
+                    <h2>"Introduction"</h2>
+                    <p>"Welcome to our website"</p>
+                </section>
+            </main>
         </div>
     }
 }
