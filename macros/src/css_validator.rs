@@ -70,17 +70,16 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
     defined_classes
 }
 
-/// Create a better span for class validation by pointing to the class attribute
+/// Create a better span for class validation by pointing to the class attribute value
 /// This gives a more precise error location than the generic attribute span
 fn create_class_span(class_attr: &crate::token_parser::Attribute, class_name: &str) -> proc_macro2::Span {
-    // For class attributes, try to create a span that points to the actual class value
-    // We can't easily track exact character positions due to proc_macro2 limitations
-    // But we can at least provide a more meaningful error by using the attribute span
-    // The error will still point to the class attribute, which is much better than generic errors
-    
-    // TODO: In the future, we could enhance this by tracking spans during parsing
-    // For now, this is the best compromise between precision and implementation complexity
-    class_attr.span
+    // For class attributes, use the value span if available (points to string literal)
+    // Otherwise fall back to the attribute span (points to attribute name)
+    if let Some(value_span) = &class_attr.value_span {
+        *value_span
+    } else {
+        class_attr.span
+    }
 }
 
 /// Extract all class names used in HTML attributes with their spans
