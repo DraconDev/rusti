@@ -1,44 +1,29 @@
-//! Lesson 1: Hello World
+//! Lesson 1: hello_world.rs
 //!
 //! Simple template showing basic structure
-//! This demonstrates the fundamental html! macro usage and basic component structure.
-
 use azumi::html;
 
-/// Simple hello world component demonstrating basic html! macro usage
+/// Simple hello world with fancy styling
 pub fn hello_world() -> impl azumi::Component {
     html! {
-        <div>
-            <h1>"Hello, World!"</h1>
+        <style src="/static/pages/lesson1.css" />
+        <div class="hello-container">
+            <h1 class="hello-title">"Hello, World!"</h1>
         </div>
     }
 }
 
-/// Basic template with multiple elements
+/// Basic template with styling
 pub fn basic_template() -> impl azumi::Component {
     html! {
-        <div>
-            <h1>"Hello, World!"</h1>
-            <h2>"Welcome to Azumi"</h2>
-            <p>"This is a simple template showing basic structure"</p>
+        <style src="/static/pages/lesson1.css" />
+        <div class="basic-template">
+            <h1 class="basic-h1">"Hello, World!"</h1>
+            <h2 class="basic-h2">"Welcome to Azumi"</h2>
+            <p class="basic-p">"This is a simple styled template"</p>
         </div>
     }
 }
 
-/// Template with nested elements
-pub fn nested_template() -> impl azumi::Component {
-    html! {
-        <div>
-            <header>
-                <h1>"Site Title"</h1>
-            </header>
-            <main>
-                <section>
-                    <h2>"Introduction"</h2>
-                    <p>"Welcome to our website"</p>
-                </section>
-            </main>
-        </div>
-    }
-}
-
+/// Nested template with styling
+pub fn nested_template() -> impl azumi::Component
