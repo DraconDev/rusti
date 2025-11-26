@@ -65,8 +65,7 @@ fn card<'a>(text: &'a str, icon: &'a str) -> impl azumi::Component + 'a {
 fn footer() -> impl azumi::Component {
     html! {
         <footer class="footer">
-            <p>"Built with azumi
-    2.0"</p>
+            <p>"Built with Azumi"</p>
         </footer>
     }
 }
