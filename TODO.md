@@ -8,6 +8,7 @@ Make a very clear readme about what this is and what it is not, and why we made 
 this should be scoped too i want zero footguns 
 <link rel="stylesheet" href="/static/homepage.css" />
 
+@let examples 
 
 3. explain in readme the Input vs input vs @input component decision
 
