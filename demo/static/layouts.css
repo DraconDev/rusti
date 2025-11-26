@@ -1,3 +1,16 @@
-.sidebar { width: 200px; float: left; background: #eee; padding: 20px; height: 100vh; }
-.main { margin-left: 220px; padding: 20px; }
-.clearfix::after { content: ""; clear: both; display: table; }
+.sidebar {
+  width: 200px;
+  float: left;
+  background: #eee;
+  padding: 20px;
+  height: 100vh;
+}
+.main {
+  margin-left: 220px;
+  padding: 20px;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
