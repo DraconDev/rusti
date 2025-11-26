@@ -1,0 +1,68 @@
+.htmx-demo {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    text-align: center;
+    margin: var(--spacing-md) 0;
+}
+
+.demo-btn {
+    background: var(--azumi-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0.5rem;
+}
+
+.demo-btn:hover {
+    background: #4338ca;
+    transform: translateY(-2px);
+}
+
+.demo-btn.small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.demo-btn.htmx-request {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+.demo-status {
+    margin-top: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--azumi-text-dim);
+}
+
+.swap-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.swap-demo {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.swap-demo h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--azumi-text);
+}
+
+.swap-result-1, .swap-result-2 {
+    background: var(--azumi-bg);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-top: var(--spacing-sm);
+    font-family: monospace;
+    font-size: 0.875rem;
+}
