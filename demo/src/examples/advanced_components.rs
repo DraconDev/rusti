@@ -134,6 +134,11 @@ fn FormInput(
                     <i class="fas fa-exclamation-circle"></i>
                     " " {error}
                 </span>
+            } else {
+                <span class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    " " "Valid input"
+                </span>
             }
         </div>
     }
