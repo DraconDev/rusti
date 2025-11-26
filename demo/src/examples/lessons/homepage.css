@@ -38,6 +38,8 @@
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     border: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
 }
 
 .lesson-card:hover {
@@ -94,4 +96,62 @@
     color: var(--azumi-text-dim);
     font-size: 0.875rem;
     margin: 0;
+}
+
+/* Learning Path Styles */
+.learning-path {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin: var(--spacing-xl) 0;
+    flex-wrap: wrap;
+}
+
+.path-step {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--azumi-primary);
+    text-align: center;
+    min-width: 200px;
+}
+
+.step-number {
+    background: var(--azumi-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-sm);
+    display: inline-block;
+}
+
+.step-content h4 {
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--azumi-text);
+}
+
+.step-content p {
+    margin: 0;
+    color: var(--azumi-text-dim);
+    font-size: 0.875rem;
+}
+
+.path-arrow {
+    font-size: 2rem;
+    color: var(--azumi-primary);
+    font-weight: 700;
+}
+
+/* Mobile responsiveness for learning path */
+@media (max-width: 768px) {
+    .learning-path {
+        flex-direction: column;
+    }
+    
+    .path-arrow {
+        transform: rotate(90deg);
+    }
 }
