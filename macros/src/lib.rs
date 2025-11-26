@@ -1,6 +1,5 @@
 // Force rebuild 3
 mod component;
-mod css_tests;
 mod parser; // Keep for extern crate proc_macro;
 
 mod css;
