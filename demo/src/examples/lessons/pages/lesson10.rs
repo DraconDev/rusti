@@ -13,7 +13,7 @@ pub fn data_view(ok_data: bool) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson10.css" />
         <div>
-            @match data {
+            @match &data {
                 Ok(items) => {
                     <ul>
                         @for item in items {
