@@ -1,0 +1,134 @@
+.lesson-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+.lesson-header {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--azumi-surface);
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--azumi-text-dim);
+    font-size: 0.875rem;
+}
+
+.lesson-number {
+    color: var(--azumi-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.lesson-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: var(--spacing-sm) 0;
+    background: linear-gradient(
+        135deg,
+        var(--azumi-primary),
+        var(--azumi-secondary)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.lesson-subtitle {
+    color: var(--azumi-text-dim);
+    font-size: 1.125rem;
+}
+
+.section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+.example-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.example-box {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.example-label {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.example-label.correct {
+    color: var(--azumi-secondary);
+}
+
+.example-label.incorrect {
+    color: var(--azumi-danger);
+}
+
+.code-block {
+    background: #0d1117;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    font-family: "Monaco", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.highlight-box {
+    background: var(--azumi-surface);
+    border-left: 4px solid var(--azumi-primary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--azumi-surface);
+}
+
+.btn {
+    background: var(--azumi-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #4338ca;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: var(--azumi-surface);
+}
+
+.btn-secondary:hover {
+    background: #2d3748;
+}
