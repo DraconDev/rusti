@@ -25,5 +25,3 @@ pub fn basic_template() -> impl azumi::Component {
     }
 }
 
-/// Nested template with styling
-pub fn nested_template() -> impl azumi::Component
