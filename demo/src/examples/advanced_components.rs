@@ -158,7 +158,7 @@ fn Modal(id: &'static str, title: &'static str, children: impl Component) -> imp
                     </button>
                 </div>
                 <div class="modal-body">
-                    {children}
+                    @children
                 </div>
                 <div class="modal-footer">
                     <button class="btn-secondary" onclick={format!("document.getElementById('{}').style.display='none'", id)}>"Close"</button>
