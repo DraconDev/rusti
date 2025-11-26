@@ -106,40 +106,6 @@ impl GenerationContext {
     }
 }
 
-fn has_nested_style(elem: &token_parser::Element) -> bool {
-    elem.children.iter().any(|child| {
-        if let token_parser::Node::Element(el) = child {
-            el.name == "style"
-        } else {
-            false
-        }
-    })
-}
-
-/// Recursively check if any <style> tags exist anywhere in the node tree
-fn has_any_styles(nodes: &[token_parser::Node]) -> bool {
-    nodes.iter().any(|node| match node {
-        token_parser::Node::Element(elem) => elem.name == "style" || has_any_styles(&elem.children),
-        token_parser::Node::Fragment(frag) => has_any_styles(&frag.children),
-        token_parser::Node::Block(block) => match block {
-            token_parser::Block::If(if_block) => {
-                has_any_styles(&if_block.then_branch)
-                    || if_block
-                        .else_branch
-                        .as_ref()
-                        .map(|els| has_any_styles(els))
-                        .unwrap_or(false)
-            }
-            token_parser::Block::For(for_block) => has_any_styles(&for_block.body),
-            token_parser::Block::Match(match_block) => {
-                match_block.arms.iter().any(|arm| has_any_styles(&arm.body))
-            }
-            token_parser::Block::Call(call_block) => has_any_styles(&call_block.children),
-            _ => false,
-        },
-        _ => false,
-    })
-}
 
 /// Collect ALL CSS content from all <style> tags in the component
 /// Returns (global_css, scoped_css)
