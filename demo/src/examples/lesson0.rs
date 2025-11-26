@@ -16,7 +16,7 @@ pub fn lesson0() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 0: Getting Started - Azumi"</title>
-                <style src="/static/homepage.css" />
+                <style src="/static/lesson0.css" />
             </head>
             <body>
                 <div class="container">
