@@ -1,30 +1,168 @@
+use axum::response::{Html, IntoResponse};
 use azumi::html;
-use std::fmt::Display;
 
-/// Basic @let example - formatting and reusing values
-fn basic_let_example() -> impl azumi::Component {
-    let name = "Alice";
-    let greeting = format!("Hello, {}!", name);
+/// Comprehensive @match and @let examples
+fn match_let_examples() -> impl azumi::Component {
+    let status = UserStatus::Active;
+    let priority = Priority::High;
+    let notification_count = 7;
 
     html! {
         <style src="/static/let_examples.css" />
         <div class="example-card">
-            <h1>"@let Basic Example"</h1>
-            <p>{greeting}</p>
+            <h1>"@match & @let Advanced Examples"</h1>
+            <p>"Comprehensive pattern matching and variable binding"</p>
+
+            <div class="match-example">
+                <h3>"Status Match with @let"</h3>
+                @let status_display = match status {
+                    UserStatus::Active => "✅ Active User",
+                    UserStatus::Inactive => "⏸️ Inactive",
+                    UserStatus::Suspended => "🚫 Suspended",
+                    UserStatus::Pending => "⏳ Pending Approval",
+                };
+                @let status_color = match status {
+                    UserStatus::Active => "status-active",
+                    UserStatus::Inactive => "status-inactive",
+                    UserStatus::Suspended => "status-suspended",
+                    UserStatus::Pending => "status-pending",
+                };
+                <div class={format!("status-display {}", status_color)}>
+                    {status_display}
+                </div>
+            </div>
+
+            <div class="match-example">
+                <h3>"Priority Match with Dynamic Styling"</h3>
+                @let priority_badge = match priority {
+                    Priority::Critical => "🔴 Critical",
+                    Priority::High => "🟠 High",
+                    Priority::Medium => "🟡 Medium",
+                    Priority::Low => "🟢 Low",
+                };
+                @let badge_class = match priority {
+                    Priority::Critical => "badge-critical",
+                    Priority::High => "badge-high",
+                    Priority::Medium => "badge-medium",
+                    Priority::Low => "badge-low",
+                };
+                <span class={format!("priority-badge {}", badge_class)}>
+                    {priority_badge}
+                </span>
+            </div>
+
+            <div class="match-example">
+                <h3>"Complex Match with Calculations"</h3>
+                @let (alert_level, urgency_text) = match notification_count {
+                    0 => ("low", "No notifications"),
+                    1..=3 => ("medium", "Few notifications"),
+                    4..=10 => ("high", "Many notifications"),
+                    _ => ("urgent", "Excessive notifications"),
+                };
+                @let progress_percent = match alert_level {
+                    "low" => 25,
+                    "medium" => 50,
+                    "high" => 75,
+                    "urgent" => 100,
+                    _ => 0,
+                };
+                <div class="notification-summary">
+                    <p>"Alert Level: " {alert_level}</p>
+                    <p>"Status: " {urgency_text}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style={format!("width: {}%", progress_percent)}>
+                            {progress_percent}%
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     }
 }
 
-/// @let with dynamic formatting
-fn formatted_date_example() -> impl azumi::Component {
-    let post_date = "2024-12-25";
-    let formatted_date = format!("Published on {}", post_date);
+/// Advanced @match with enums and tuples
+fn advanced_match_examples() -> impl azumi::Component {
+    let action = Action::Click {
+        button_id: "submit".to_string(),
+        coordinates: (100, 200),
+    };
+    let result = Result::<i32, &str>::Ok(42);
 
     html! {
         <div class="example-card">
-            <h2>"@let with Formatting"</h2>
-            <p>{formatted_date}</p>
-            <p>"This shows how @let can format dates dynamically"</p>
+            <h2>"Advanced @match Patterns"</h2>
+
+            <div class="advanced-match">
+                <h3>"Complex Pattern Matching"</h3>
+                @let match_result = match action {
+                    Action::Click { button_id, coordinates: (x, y) } => {
+                        format!("Clicked '{}' at ({}, {})", button_id, x, y)
+                    }
+                    Action::Scroll { delta_y, smooth } => {
+                        format!("Scrolled {}px (smooth: {})", delta_y, smooth)
+                    }
+                    Action::KeyPress { key, ctrl_key, shift_key } => {
+                        let modifiers = match (ctrl_key, shift_key) {
+                            (true, false) => "Ctrl+",
+                            (false, true) => "Shift+",
+                            (true, true) => "Ctrl+Shift+",
+                            (false, false) => "",
+                        };
+                        format!("{}Pressed: {}{}", modifiers, if key == " " { "Space" } else { key }, key)
+                    }
+                    _ => "Unknown action".to_string(),
+                };
+                <div class="action-display">
+                    <p>{match_result}</p>
+                </div>
+            </div>
+
+            <div class="advanced-match">
+                <h3>"Result Type Matching"</h3>
+                @let display_text = match result {
+                    Ok(value) => format!("Success: {}", value),
+                    Err(error) => format!("Error: {}", error),
+                };
+                @let display_class = match result {
+                    Ok(_) => "result-ok",
+                    Err(_) => "result-error",
+                };
+                <div class={format!("result-display {}", display_class)}>
+                    <p>{display_text}</p>
+                </div>
+            </div>
+
+            <div class="advanced-match">
+                <h3>"Nested Match with @let Chaining"</h3>
+                @let user_score = 85;
+                @let grade_result = match user_score {
+                    90..=100 => "A+",
+                    80..=89 => "A",
+                    70..=79 => "B",
+                    60..=69 => "C",
+                    0..=59 => "F",
+                    _ => "Invalid",
+                };
+                @let grade_color = match grade_result {
+                    "A+" | "A" => "grade-excellent",
+                    "B" | "C" => "grade-good",
+                    "F" => "grade-fail",
+                    _ => "grade-invalid",
+                };
+                @let encouragement = match grade_result {
+                    "A+" => "Outstanding! Perfect score!",
+                    "A" => "Excellent work!",
+                    "B" => "Good job!",
+                    "C" => "Keep improving!",
+                    "F" => "Need more practice!",
+                    _ => "Invalid score",
+                };
+                <div class={format!("grade-display {}", grade_color)}>
+                    <h4>"Grade: " {grade_result}</h4>
+                    <p>{encouragement}</p>
+                    <p>"Score: " {user_score}</p>
+                </div>
+            </div>
         </div>
     }
 }
