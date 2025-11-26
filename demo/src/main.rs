@@ -48,7 +48,8 @@ async fn main() {
     println!();
     println!("Examples:");
     println!("  • / - Hello World (basic quoting demo)");
-    println!("  • /components - Component composition");
+    println!("  • /components - Basic component composition");
+    println!("  • /advanced-components - Forms, modals, validation");
     println!("  • /htmx-todo - HTMX server-side rendering");
     println!();
     println!("All examples follow Azumi rules:");
