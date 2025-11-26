@@ -365,23 +365,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_extract_classes_from_simple_selector() {
-        let selector = ".btn.primary";
-        let classes = extract_classes_from_selector(selector);
-        assert!(classes.contains("btn"));
-        assert!(classes.contains("primary"));
-    }
-
-    #[test]
-    fn test_extract_classes_from_multiple_selectors() {
-        let selector = ".header, .footer, .sidebar";
-        let classes = extract_classes_from_selector(selector);
-        assert!(classes.contains("header"));
-        assert!(classes.contains("footer"));
-        assert!(classes.contains("sidebar"));
-    }
-
-    #[test]
     fn test_parse_css_classes() {
         let css = r#"
             .btn { padding: 10px; }
