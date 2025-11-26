@@ -4,8 +4,8 @@ use azumi::html;
 /// Lesson 0: Getting Started - Your first Azumi component
 pub fn lesson_a() -> impl azumi::Component {
     html! {
-        <div class="bab">
-            <styles src="/static/lesson_a.css" />
+        <style src="/static/lesson_a.css" />
+        <div class="baasdadb">
             <h1>"Hello from Azumi!"</h1>
             <p>"This is your first lesson"</p>
             <p>"Azumi makes HTML type-safe"</p>
