@@ -50,52 +50,52 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
-                        @tailwind_card()
+                        @TailwindCard()
                         @TestCard2()
                         <div class="grid">
-                            @example_card(
+                            @ExampleCard(
                                 title = "Hello World",
                                 description = "Basic quoting and external files",
                                 href = "/hello",
                                 icon = "🌍"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Tailwind CSS",
                                 description = "Utility-first styling with Tailwind",
                                 href = "/tailwind",
                                 icon = "🎨"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Components",
                                 description = "Composition patterns and control flow",
                                 href = "/components",
                                 icon = "🧩"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Layouts",
                                 description = "Component composition patterns",
                                 href = "/layouts",
                                 icon = "📐"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Control Flow",
                                 description = "If, For, and Match expressions",
                                 href = "/control-flow",
                                 icon = "🔀"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Forms",
                                 description = "Input handling and structure",
                                 href = "/forms",
                                 icon = "📝"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "HTMX Todo",
                                 description = "Server-side rendering with HTMX",
                                 href = "/htmx-todo",
                                 icon = "✅"
                             )
-                            @example_card(
+                            @ExampleCard(
                                 title = "Dashboard",
                                 description = "Complex layout and data visualization",
                                 href = "/dashboard",
@@ -136,7 +136,7 @@ pub fn homepage() -> impl azumi::Component {
 }
 
 #[azumi::component]
-fn example_card(
+fn ExampleCard(
     #[prop(default = "\"Example\"")] title: &'static str,
     #[prop(default = "\"Description\"")] description: &'static str,
     #[prop(default = "\"/\"")] href: &'static str,
