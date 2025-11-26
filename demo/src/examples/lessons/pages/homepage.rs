@@ -13,7 +13,7 @@ pub fn homepage() -> impl azumi::Component {
                 <style src="/static/global.css" />
             </head>
             <body>
-                <div class="lesson-container">
+                <div style="padding: 2rem;">
                     <header class="hero">
                         <h1 class="hero-title">"Azumi"</h1>
                         <p class="hero-subtitle">"Type-Safe, Compile-Time Validated HTML Templates for Rust"</p>
