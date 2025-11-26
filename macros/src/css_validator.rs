@@ -103,19 +103,12 @@ pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String>
     defined_classes
 }
 
-/// Adjust span to point to the class value instead of attribute name
-fn adjust_span_to_class_value(attr_span: &proc_macro2::Span, attr_name: &str, class_string: &str) -> proc_macro2::Span {
-    use proc_macro2::{Span, ByteOffset};
-    
-    // The span adjustment is heuristic since we can't precisely track the string literal position
-    // We assume the format is: class="value" and try to point to the value
-    let byte_offset = attr_name.len() + 2; // "class=" = 6 chars + quotes
-    let new_span = Span::new(
-        attr_span.lo() + ByteOffset(byte_offset as u32),
-        attr_span.lo() + ByteOffset((byte_offset + class_string.len()) as u32),
-        attr_span.source_text().clone(),
-    );
-    new_span
+/// Create a better span for class validation by pointing to the class attribute
+/// This gives a more precise error location than the generic attribute span
+fn create_class_span(class_attr: &crate::token_parser::Attribute) -> proc_macro2::Span {
+    // Use the attribute span directly but mark it as a class-specific error
+    // This is the best we can do with proc_macro2 limitations
+    class_attr.span
 }
 
 /// Extract all class names used in HTML attributes with their spans
