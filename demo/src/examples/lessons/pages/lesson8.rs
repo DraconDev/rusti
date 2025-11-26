@@ -1,0 +1,44 @@
+//! Lesson 8: nested_control_flow.rs
+//!
+//! Combining @if, @for, @match
+use azumi::html;
+
+#[derive(Clone, Copy)]
+enum Widget<'a> {
+    Chart(&'a str),
+    Table(&'a str),
+}
+
+/// Dashboard with nested control flow
+pub fn dashboard(is_admin: bool) -> impl azumi::Component {
+    html! {
+        <div>
+            @if is_admin {
+                <h2>"Admin Dashboard"</h2>
+                <div class="widgets">
+                    @for widget in &[
+                        Widget::Chart("sales-data"),
+                        Widget::Table("user-list"),
+                    ] {
+                        @match widget {
+                            Widget::Chart(name) => <div class="widget chart">{"Chart: " * name}</div>,
+                            Widget::Table(name) => <div class="widget table">{"Table: " * name}</div>,
+                        }
+                    }
+                </div>
+            } else {
+                <h2>"User Dashboard"</h2>
+            }
+        </div>
+    }
+}
+
+/// Admin dashboard example
+pub fn admin_dashboard() -> impl azumi::Component {
+    dashboard(true)
+}
+
+/// User dashboard example
+pub fn user_dashboard() -> impl azumi::Component {
+    dashboard(false)
+}
