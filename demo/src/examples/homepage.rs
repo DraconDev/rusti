@@ -126,6 +126,8 @@ fn example_card<'a>(
     }
 }
 
+fn test_card
+
 pub async fn homepage_handler() -> impl IntoResponse {
     Html(azumi::render_to_string(&homepage()))
 }
