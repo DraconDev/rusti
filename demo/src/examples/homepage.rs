@@ -28,7 +28,7 @@ pub fn homepage() -> impl azumi::Component {
                     <section class="examples">
                         <h2>"Examples"</h2>
                         @test_card()
-                        @test_card2()
+                        @TestCard2()
                         <div class="grid">
                             @example_card(
                                 "Hello World",
@@ -147,7 +147,7 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
 }
 
 #[azumi::component]
-fn test_card2() -> impl azumi::Component {
+fn TestCard2() -> impl azumi::Component {
     html! {
         <style src="/static/test_card2.css" />
         <div class="card2">
