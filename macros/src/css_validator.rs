@@ -245,15 +245,16 @@ impl std::fmt::Display for ValidationError {
 impl std::error::Error for ValidationError {}
 
 /// Parse all CSS files referenced in the component and validate classes
-pub fn validate_component_css(
-    nodes: &[Node],
-) -> Result<(), Box<dyn std::error::Error>> {
+/// Returns a TokenStream of compile errors if validation fails
+pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
+    use quote::{quote, quote_spanned};
+    
     // First, collect all CSS files referenced in the component
     let mut css_files = Vec::new();
     collect_css_files(nodes, &mut css_files);
     
     if css_files.is_empty() {
-        return Ok(()); // No CSS files to validate
+        return quote! {}; // No CSS files to validate
     }
     
     // Read and parse all CSS files
@@ -265,7 +266,10 @@ pub fn validate_component_css(
                 all_defined_classes.extend(file_classes);
             }
             Err(e) => {
-                return Err(format!("Failed to read CSS file '{}': {}", css_file, e).into());
+                let error_msg = format!("Failed to read CSS file '{}': {}", css_file, e);
+                return quote! {
+                    compile_error!(#error_msg);
+                };
             }
         }
     }
@@ -277,31 +281,42 @@ pub fn validate_component_css(
     match validate_css_classes(&used_classes, &all_defined_classes) {
         Ok(()) => {
             eprintln!("✅ CSS validation passed: {} CSS files checked", css_files.len());
-            Ok(())
+            quote! {}
         }
         Err(errors) => {
-            // Convert all validation errors into a single error message
-            let mut error_message = format!(
-                "❌ CSS Validation Failed - Found {} error(s):\n\n",
-                errors.len()
-            );
+            // Generate compile errors for each validation error
+            let error_tokens: Vec<_> = errors.iter().filter_map(|error| {
+                match error {
+                    ValidationError::UndefinedClass { class_name, spans } => {
+                        // Create a compile error for each span where this class is used
+                        let error_msg = format!(
+                            "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
+                            class_name
+                        );
+                        
+                        // Emit an error at each location where this undefined class is used
+                        let span_errors: Vec<_> = spans.iter().map(|span| {
+                            quote_spanned! { *span =>
+                                compile_error!(#error_msg);
+                            }
+                        }).collect();
+                        
+                        Some(quote! { #(#span_errors)* })
+                    }
+                    ValidationError::DeadCss { class_name } => {
+                        // For dead CSS, emit a warning (not an error) to stderr
+                        eprintln!(
+                            "⚠️  CSS Warning: Class '{}' is defined in CSS but never used in HTML.",
+                            class_name
+                        );
+                        None // Don't emit compile error for warnings
+                    }
+                }
+            }).collect();
             
-            for (i, error) in errors.iter().enumerate() {
-                error_message.push_str(&format!("{}. {}\n\n", i + 1, error));
+            quote! {
+                #(#error_tokens)*
             }
-            
-            error_message.push_str(&format!(
-                "📋 Summary:\n• {} CSS files analyzed\n• {} classes defined in CSS\n• {} classes used in HTML\n\n\
-                 🔧 Fix these issues by either:\n\
-                 1. Adding missing CSS class definitions\n\
-                 2. Removing unused CSS classes\n\
-                 3. Fixing typos in class names",
-                css_files.len(),
-                all_defined_classes.len(),
-                used_classes.len()
-            ));
-            
-            Err(error_message.into())
         }
     }
 }
