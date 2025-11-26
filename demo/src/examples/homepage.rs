@@ -27,56 +27,56 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
-                        @test_card()
+                        @TailwindCard()
                         @TestCard2()
                         <div class="grid">
-                            @example_card(
-                                "Hello World",
-                                "Basic quoting and external files",
-                                "/hello",
-                                "🌍"
+                            @ExampleCard(
+                                title = "Hello World",
+                                description = "Basic quoting and external files",
+                                href = "/hello",
+                                icon = "🌍"
                             )
-                            @example_card(
-                                "Tailwind CSS",
-                                "Utility-first styling with Tailwind",
-                                "/tailwind",
-                                "🎨"
+                            @ExampleCard(
+                                title = "Tailwind CSS",
+                                description = "Utility-first styling with Tailwind",
+                                href = "/tailwind",
+                                icon = "🎨"
                             )
-                            @example_card(
-                                "Components",
-                                "Composition patterns and control flow",
-                                "/components",
-                                "🧩"
+                            @ExampleCard(
+                                title = "Components",
+                                description = "Composition patterns and control flow",
+                                href = "/components",
+                                icon = "🧩"
                             )
-                            @example_card(
-                                "Layouts",
-                                "Component composition patterns",
-                                "/layouts",
-                                "📐"
+                            @ExampleCard(
+                                title = "Layouts",
+                                description = "Component composition patterns",
+                                href = "/layouts",
+                                icon = "📐"
                             )
-                            @example_card(
-                                "Control Flow",
-                                "If, For, and Match expressions",
-                                "/control-flow",
-                                "🔀"
+                            @ExampleCard(
+                                title = "Control Flow",
+                                description = "If, For, and Match expressions",
+                                href = "/control-flow",
+                                icon = "🔀"
                             )
-                            @example_card(
-                                "Forms",
-                                "Input handling and structure",
-                                "/forms",
-                                "📝"
+                            @ExampleCard(
+                                title = "Forms",
+                                description = "Input handling and structure",
+                                href = "/forms",
+                                icon = "📝"
                             )
-                            @example_card(
-                                "HTMX Todo",
-                                "Server-side rendering with HTMX",
-                                "/htmx-todo",
-                                "✅"
+                            @ExampleCard(
+                                title = "HTMX Todo",
+                                description = "Server-side rendering with HTMX",
+                                href = "/htmx-todo",
+                                icon = "✅"
                             )
-                            @example_card(
-                                "Dashboard",
-                                "Complex layout and data visualization",
-                                "/dashboard",
-                                "📊"
+                            @ExampleCard(
+                                title = "Dashboard",
+                                description = "Complex layout and data visualization",
+                                href = "/dashboard",
+                                icon = "📊"
                             )
                         </div>
                     </section>
@@ -112,24 +112,29 @@ pub fn homepage() -> impl azumi::Component {
     }
 }
 
-fn example_card<'a>(
-    title: &'a str,
-    description: &'a str,
-    href: &'a str,
-    icon: &'a str,
-) -> impl azumi::Component + 'a {
+#[azumi::component]
+fn ExampleCard(
+    #[prop(default = "\"Example\"")] title: &str,
+    #[prop(default = "\"Description\"")] description: &str,
+    #[prop(default = "\"/\"")] href: &str,
+    #[prop(default = "\"📦\"")] icon: &str,
+) -> impl azumi::Component {
     html! {
-        <a href={href} class="card">
-            <div class="card-icon">{icon}</div>
-            <h3 class="card-title">{title}</h3>
-            <p class="card-description">{description}</p>
-            <span class="card-link">"View Example →"</span>
-        </a>
+        <>
+            <style src="/static/example_card.css" />
+            <a href={href} class="card">
+                <div class="card-icon">{icon}</div>
+                <h3 class="card-title">{title}</h3>
+                <p class="card-description">{description}</p>
+                <span class="card-link">"View Example →"</span>
+            </a>
+        </>
     }
 }
 
 /// Example: Tailwind CSS (inline utility classes)
-fn test_card<'a>() -> impl azumi::Component + 'a {
+#[azumi::component]
+fn TailwindCard() -> impl azumi::Component {
     html! {
         <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
             <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
