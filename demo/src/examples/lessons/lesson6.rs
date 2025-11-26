@@ -11,7 +11,7 @@ pub fn lesson6() -> impl azumi::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 6: HTMX Integration - Azumi"</title>
                 <style src="/static/lessons.css" />
-                <style src="lesson6.css" />
+                <style src="/static/lesson6.css" />
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             </head>
             <body>

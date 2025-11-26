@@ -11,7 +11,7 @@ pub fn lesson7() -> impl azumi::Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 7: Layouts & Composition - Azumi"</title>
                 <style src="/static/lessons.css" />
-                <style src="lesson7.css" />
+                <style src="/static/lesson7.css" />
             </head>
             <body>
                 <div class="lesson-container">
