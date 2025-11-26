@@ -69,6 +69,104 @@ That's it. No complex rules about capitalization—just use `@` for Rust, `<>` f
 
 ---
 
+## 🎭 Why External CSS? (Anti-Patterns We Prevent)
+
+### The Problem with Inline Styles
+
+```rust
+// ❌ This seems convenient but creates problems:
+<div class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded">
+    Click Me
+</div>
+```
+
+**Problems:**
+
+- **Undescriptive**: What does `mt-4` mean? `bg-blue-500`? Good luck reading this in 6 months.
+- **Error-prone**: Typos like `bg-blue-60` silently fail - no error, just broken styles.
+- **No IDE support**: Your editor can't help you with inline strings.
+- **Poor separation**: Structure, behavior, and presentation all mixed together.
+
+### The Problem with Tailwind/Utility CSS
+
+```rust
+// ❌ This is only "shorter" but destroys readability:
+<div class="flex items-center justify-between w-full max-w-sm mx-auto bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-2">Title</h2>
+    <p class="text-gray-600 text-sm leading-relaxed">Content here</p>
+</div>
+```
+
+**Problems:**
+
+- **Only saves a few characters**: `class="btn-primary"` vs `class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2"`
+- **Hard to read**: You need to mentally parse 20+ utility classes to understand the design.
+- **Framework dependency**: Locked into Tailwind's specific approach and limitations.
+- **No semantic meaning**: These classes describe **how it looks**, not **what it is**.
+
+### The Problem with Style Blocks
+
+```rust
+// ❌ This is the "modern" approach that creates maintenance nightmares:
+<div class="card">
+    <style>
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+    </style>
+    <h2>"Title"</h2>
+    <p>"Content"</p>
+</div>
+```
+
+**Problems:**
+
+- **Mixing concerns**: Structure, behavior, and presentation in one file.
+- **No compilation validation**: Typos, unused styles, missing definitions all slip through.
+- **Poor IDE support**: CSS inside Rust strings gets minimal editing assistance.
+- **No reuse**: Styles can't be shared across components without duplication.
+
+### Azumi's Approach: Clean Separation
+
+```rust
+// ✅ External CSS file (button.css):
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+// ✅ Clean Rust code:
+html! {
+    <style src="button.css" />
+    <button class="btn-primary">"Click Me"</button>
+}
+```
+
+**Benefits:**
+
+- **Descriptive**: `.btn-primary` clearly describes **what it is**, not how it looks.
+- **Validated**: Compile-time checking ensures all classes exist and are properly defined.
+- **IDE-friendly**: Full CSS support with autocomplete, linting, and error checking.
+- **Separation of concerns**: HTML structure in Rust, styling in CSS.
+- **Reusable**: Styles can be easily shared and maintained across components.
+
+---
+
 ## ⚡ The Rules
 
 Azumi is strict. Follow these rules or it won't compile.
