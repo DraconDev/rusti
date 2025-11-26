@@ -2,7 +2,7 @@
 
 **Type-Safe, Zero-Cost HTML Templates for Rust & Axum.**
 
-Azumi is an opinionated, compile-time HTML macro that enforces best practices. It blocks anti-patterns (like inline styles/scripts) to ensure your code is maintainable, secure, and IDE-friendly.
+Azumi is an opinionated, compile-time HTML macro that enforces best practices. It blocks anti-patterns (like `<style>` tags and inline scripts) while embracing utility-first CSS frameworks like Tailwind to ensure your code is maintainable, secure, and IDE-friendly.
 
 ---
 
