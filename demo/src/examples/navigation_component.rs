@@ -27,9 +27,9 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
                 
                 <div class="nav-menu">
                     @for (route, label, icon) in &routes {
-                        @let is_active = route == active_route;
-                        <a 
-                            href={route} 
+                        @let is_active = *route == active_route;
+                        <a
+                            href={route}
                             class={format!("nav-link {}", if is_active { "active" } else { "" })}
                         >
                             <i class={icon}></i>
@@ -50,9 +50,9 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
             
             <div class="mobile-menu" id="mobileMenu">
                 @for (route, label, icon) in &routes {
-                    @let is_active = route == active_route;
-                    <a 
-                        href={route} 
+                    @let is_active = *route == active_route;
+                    <a
+                        href={route}
                         class={format!("mobile-nav-link {}", if is_active { "active" } else { "" })}
                     >
                         <i class={icon}></i>

@@ -13,4 +13,5 @@
     }
     .status-suspended { 
         color: red; 
+        background-color: aqua;
     }
