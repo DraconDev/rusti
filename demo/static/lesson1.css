@@ -2,3 +2,11 @@
 
 /* This lesson primarily uses shared styles from lessons.css */
 /* Any lesson-specific styling would go here */
+
+body {
+    background-color: var(--azumi-background);
+    color: var(--azumi-text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: var(--spacing-lg);
+}
