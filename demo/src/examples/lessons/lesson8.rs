@@ -30,7 +30,7 @@ pub fn lesson8() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"📝 Todo Application"</h2>
                         <p>"A complete todo app with add, complete, and delete functionality:"</p>
-                        
+
                         <div class="todo-demo">
                             <div class="todo-header">
                                 <h3>"My Todos"</h3>
@@ -63,7 +63,7 @@ pub fn lesson8() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"💬 Comment System"</h2>
                         <p>"Interactive comment system with threading and real-time updates:"</p>
-                        
+
                         <div class="comments-demo">
                             <div class="comment">
                                 <div class="comment-header">
@@ -94,7 +94,7 @@ pub fn lesson8() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"📊 Dashboard with Charts"</h2>
                         <p>"Data dashboard with charts and real-time updates:"</p>
-                        
+
                         <div class="dashboard-demo">
                             <div class="dashboard-header">
                                 <h3>"Analytics Dashboard"</h3>
@@ -133,7 +133,7 @@ pub fn lesson8() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"🏪 E-commerce Product Grid"</h2>
                         <p>"Product catalog with filtering and search:"</p>
-                        
+
                         <div class="products-demo">
                             <div class="product-filters">
                                 <input type="text" placeholder="Search products..." class="search-input" />
@@ -213,6 +213,15 @@ pub fn lesson8() -> impl azumi::Component {
                 </div>
             </body>
         </html>
+    }
+}
+
+/// Test component to verify CSS error positioning
+pub fn test_error_positioning() -> impl azumi::Component {
+    html! {
+        <div class="non-existent-class">
+            <h1>"Test Error Positioning"</h1>
+        </div>
     }
 }
 
