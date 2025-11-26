@@ -17,8 +17,7 @@ pub fn htmx_todo() -> impl azumi::Component {
         <html>
             <head>
                 <meta charset="UTF-8" />
-                <title>"HTMX Todo - azumi
-    2.0"</title>
+                <title>"HTMX Todo - Azumi"</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10" />
                 <style src="/static/todo.css" />
                 // <style>
@@ -35,10 +34,9 @@ pub fn htmx_todo() -> impl azumi::Component {
             <body>
                 <div class="container">
                     <h1>"📝 HTMX Todo List"</h1>
-                    <p class="subtitle">"Server-side rendered with azumi
-    2.0"</p>
+                    <p class="subtitle">"Server-side rendered with Azumi"</p>
 
-                    <form hx:post="/api/todos" hx:target="#todo-list" hx:swap="beforeend" class="add-form">
+                    <form hx-post="/api/todos" hx-target="#todo-list" hx-swap="beforeend" class="add-form">
                         <input
                             type="text"
                             name="task"
@@ -49,8 +47,7 @@ pub fn htmx_todo() -> impl azumi::Component {
                     </form>
 
                     <div id="todo-list" class="todo-list">
-                        @todo_item("Learn azumi
-    2.0", 1)
+                        @todo_item("Learn Azumi", 1)
                         @todo_item("Build something awesome", 2)
                     </div>
                 </div>
@@ -68,9 +65,9 @@ fn todo_item<'a>(text: &'a str, id: u32) -> impl azumi::Component + 'a {
             <span class="todo-text">{text}</span>
             <button
                 class="btn-delete"
-                hx:delete={delete_url}
-                hx:target={format!("#todo-{}", id)}
-                hx:swap="outerHTML"
+                hx-delete={delete_url}
+                hx-target={format!("#todo-{}", id)}
+                hx-swap="outerHTML"
             >
                 "×"
             </button>
