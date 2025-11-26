@@ -11,6 +11,7 @@ pub fn data_view(ok_data: bool) -> impl azumi::Component {
         Err("Failed to load data".to_string())
     };
     html! {
+        <style src="/static/pages/lesson10.css" />
         <div>
             @match data {
                 Ok(items) => {
@@ -20,7 +21,7 @@ pub fn data_view(ok_data: bool) -> impl azumi::Component {
                         }
                     </ul>
                 },
-                Err(error) => <p class="error">{"Error: " {error}}</p>,
+                Err(error) => <p class="error">{format!("Error: {}", error)}</p>,
             }
         </div>
     }

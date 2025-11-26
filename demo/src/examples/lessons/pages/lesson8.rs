@@ -12,6 +12,7 @@ enum Widget<'a> {
 /// Dashboard with nested control flow
 pub fn dashboard(is_admin: bool) -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson8.css" />
         <div>
             @if is_admin {
                 <h2>"Admin Dashboard"</h2>
@@ -21,8 +22,8 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
                         Widget::Table("user-list"),
                     ] {
                         @match widget {
-                            Widget::Chart(name) => <div class="widget chart">{"Chart: " * name}</div>,
-                            Widget::Table(name) => <div class="widget table">{"Table: " * name}</div>,
+                            Widget::Chart(name) => <div class="widget chart">{format!("Chart: {}", name)}</div>,
+                            Widget::Table(name) => <div class="widget table">{format!("Table: {}", name)}</div>,
                         }
                     }
                 </div>
