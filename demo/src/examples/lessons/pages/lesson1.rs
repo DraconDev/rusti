@@ -6,11 +6,9 @@ use azumi::html;
 /// Simple hello world with fancy styling
 pub fn hello_world() -> impl azumi::Component {
     html! {
-    <style>
-        nvid
-    </style>
-    <div class="hello-container">
-     }
+        <style src="/static/pages/lesson1.css" />
+        <div class="hello-container"> </div>
+    }
 }
 
 /// Basic template with styling
