@@ -121,19 +121,22 @@ fn has_any_styles(nodes: &[token_parser::Node]) -> bool {
     nodes.iter().any(|node| match node {
         token_parser::Node::Element(elem) => elem.name == "style" || has_any_styles(&elem.children),
         token_parser::Node::Fragment(frag) => has_any_styles(&frag.children),
-        token_parser::Node::IfBlock(if_block) => {
-            has_any_styles(&if_block.then_branch)
-                || if_block
-                    .else_branch
-                    .as_ref()
-                    .map(|els| has_any_styles(els))
-                    .unwrap_or(false)
-        }
-        token_parser::Node::ForBlock(for_block) => has_any_styles(&for_block.body),
-        token_parser::Node::MatchBlock(match_block) => {
-            match_block.arms.iter().any(|arm| has_any_styles(&arm.body))
-        }
-        token_parser::Node::CallBlock(call_block) => has_any_styles(&call_block.children),
+        token_parser::Node::Block(block) => match block {
+            token_parser::Block::If(if_block) => {
+                has_any_styles(&if_block.then_branch)
+                    || if_block
+                        .else_branch
+                        .as_ref()
+                        .map(|els| has_any_styles(els))
+                        .unwrap_or(false)
+            }
+            token_parser::Block::For(for_block) => has_any_styles(&for_block.body),
+            token_parser::Block::Match(match_block) => {
+                match_block.arms.iter().any(|arm| has_any_styles(&arm.body))
+            }
+            token_parser::Block::Call(call_block) => has_any_styles(&call_block.children),
+            _ => false,
+        },
         _ => false,
     })
 }
