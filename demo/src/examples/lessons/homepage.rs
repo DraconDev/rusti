@@ -9,7 +9,7 @@ pub fn homepage() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi Lessons - Learn Type-Safe HTML"</title>
-                <style src="global.css" />
+                <style src="/static/global.css" />
                 <style src="homepage.css" />
             </head>
             <body>
@@ -24,26 +24,26 @@ pub fn homepage() -> impl azumi::Component {
                         <p>"Learn Azumi's core concepts through hands-on examples:"</p>
 
                         <div class="lessons-grid">
-                            <a href="/lesson-0" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 0"</div>
+                            <a href="/lesson-1" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 1"</div>
                                 <h3 class="lesson-card-title">"Hello World"</h3>
                                 <p class="lesson-card-desc">"Learn the fundamental quoting rules that make Azumi type-safe."</p>
                             </a>
 
-                            <a href="/lesson-1" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 1"</div>
+                            <a href="/lesson-2" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 2"</div>
                                 <h3 class="lesson-card-title">"CSS Validation"</h3>
                                 <p class="lesson-card-desc">"Catch CSS typos at compile time with location-specific errors."</p>
                             </a>
 
-                            <a href="/lesson-2" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 2"</div>
+                            <a href="/lesson-3" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 3"</div>
                                 <h3 class="lesson-card-title">"Global Styles"</h3>
                                 <p class="lesson-card-desc">"Share design tokens across components with global.css."</p>
                             </a>
 
-                            <a href="/lesson-3" class="lesson-card">
-                                <div class="lesson-card-number">"Lesson 3"</div>
+                            <a href="/lesson-4" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 4"</div>
                                 <h3 class="lesson-card-title">"Control Flow"</h3>
                                 <p class="lesson-card-desc">"Use Rust's native control flow directly in templates."</p>
                             </a>
