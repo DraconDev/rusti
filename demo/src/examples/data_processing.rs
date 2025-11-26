@@ -235,8 +235,8 @@ fn DataPipeline() -> impl azumi::Component {
                             .map(|(name, age, role, salary)| {
                                 let clean_name = name.to_lowercase();
                                 let clean_role = role.trim();
-                                let formatted_salary = format!("{{salary:,}}", salary = salary);
-                                (clean_name, age, clean_role, formatted_salary, salary >= 50000)
+                                let formatted_salary = format!("${}", salary);
+                                (clean_name, age, clean_role, formatted_salary, *salary >= 50000)
                             })
                             .collect();
 
@@ -259,13 +259,13 @@ fn DataPipeline() -> impl azumi::Component {
                     <div class="pipeline-step">
                         <h5>"Step 3: Generate Summary"</h5>
                         @let total_salary: i32 = data.iter().map(|(_, _, _, salary)| salary).sum();
-                        @let avg_age = data.iter().map(|(_, age, _, _)| age).sum::<i32>() / data.len();
+                        @let avg_age = data.iter().map(|(_, age, _, _)| *age).sum::<i32>() / data.len() as i32;
                         @let senior_count = data.iter().filter(|(_, _, _, salary)| *salary >= 50000).count();
-                        @let roles: Vec<_> = data.iter().map(|(_, _, role, _)| role).collect();
+                        @let roles: Vec<_> = data.iter().map(|(_, _, role, _)| *role).collect();
 
                         <div class="summary-stats">
                             <p>"👥 Total people: " {data.len()}</p>
-                            <p>"💰 Total salary: " {format!("${:,}", total_salary)}</p>
+                            <p>"💰 Total salary: " {format!("${}", total_salary)}</p>
                             <p>"🎂 Average age: " {avg_age}</p>
                             <p>"⭐ Senior roles: " {senior_count}</p>
                             <p>"🎯 Roles: " {roles.join(", ")}</p>
