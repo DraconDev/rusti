@@ -1,0 +1,71 @@
+.layout-demo {
+    background: var(--azumi-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: var(--spacing-md) 0;
+    border: 2px solid var(--azumi-primary);
+}
+
+.layout-nav {
+    background: var(--azumi-primary);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.layout-logo {
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+.layout-nav-links {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.layout-nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.layout-nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.layout-content {
+    padding: var(--spacing-md);
+}
+
+.layout-content h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--azumi-text);
+}
+
+.pattern-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.pattern-demo {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--azumi-secondary);
+}
+
+.pattern-demo h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--azumi-text);
+}
+
+.code-block.small {
+    font-size: 0.75rem;
+    padding: var(--spacing-sm);
+}
