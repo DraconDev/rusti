@@ -49,64 +49,111 @@ pub fn homepage() -> impl azumi::Component {
                     </header>
 
                     <section class="examples">
-                        <h2>"Examples"</h2>
-                        @TailwindCard()
-                        @TestCard2()
+                        <h2>"Learning Path: From Basic to Advanced"</h2>
+                        <p class="learning-intro">"Start with the basics and work your way through increasingly complex patterns."</p>
+                        
+                        <h3>"🚀 Getting Started"</h3>
                         <div class="grid">
                             @ExampleCard(
                                 title = "Hello World",
-                                description = "Basic quoting and external files",
+                                description = "Basic quoting rules, mandatory strings, and external files",
                                 href = "/hello",
                                 icon = "🌍"
                             )
                             @ExampleCard(
                                 title = "Tailwind CSS",
-                                description = "Utility-first styling with Tailwind",
+                                description = "Utility-first styling with Tailwind CSS classes",
                                 href = "/tailwind",
                                 icon = "🎨"
                             )
+                        </div>
+
+                        <h3>"🧩 Core Concepts"</h3>
+                        <div class="grid">
                             @ExampleCard(
                                 title = "Components",
-                                description = "Composition patterns and control flow",
+                                description = "Component composition with props and defaults",
                                 href = "/components",
                                 icon = "🧩"
                             )
                             @ExampleCard(
-                                title = "Advanced Components",
-                                description = "Forms, validation, modals, and nested composition",
-                                href = "/advanced-components",
-                                icon = "⚡"
-                            )
-                            @ExampleCard(
-                                title = "Layouts",
-                                description = "Component composition patterns",
-                                href = "/layouts",
-                                icon = "📐"
-                            )
-                            @ExampleCard(
                                 title = "Control Flow",
-                                description = "If, For, and Match expressions",
+                                description = "If/else, for loops, and match expressions",
                                 href = "/control-flow",
                                 icon = "🔀"
                             )
                             @ExampleCard(
+                                title = "Layouts",
+                                description = "Component composition and layout patterns",
+                                href = "/layouts",
+                                icon = "📐"
+                            )
+                        </div>
+
+                        <h3>"🛠️ Interactive Features"</h3>
+                        <div class="grid">
+                            @ExampleCard(
                                 title = "Forms",
-                                description = "Input handling and structure",
+                                description = "Input handling and form structure",
                                 href = "/forms",
                                 icon = "📝"
                             )
                             @ExampleCard(
                                 title = "HTMX Todo",
-                                description = "Server-side rendering with HTMX",
+                                description = "Server-side rendering with HTMX interactivity",
                                 href = "/htmx-todo",
                                 icon = "✅"
                             )
+                        </div>
+
+                        <h3>"📊 Complex Applications"</h3>
+                        <div class="grid">
                             @ExampleCard(
                                 title = "Dashboard",
-                                description = "Complex layout and data visualization",
+                                description = "Complex layout with real-world data visualization",
                                 href = "/dashboard",
                                 icon = "📊"
                             )
+                        </div>
+
+                        <h3>"🔧 Advanced Examples" <span class="coming-soon">"Coming Soon"</span></h3>
+                        <div class="grid disabled">
+                            <div class="example-card disabled">
+                                <div class="card-icon">"⚡"</div>
+                                <h3 class="card-title">"Advanced Components"</h3>
+                                <p class="card-description">"Forms, validation, modals, and nested composition"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
+                            <div class="example-card disabled">
+                                <div class="card-icon">"🎯"</div>
+                                <h3 class="card-title">"@let Patterns"</h3>
+                                <p class="card-description">"Variable bindings and data transformation"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
+                            <div class="example-card disabled">
+                                <div class="card-icon">"📊"</div>
+                                <h3 class="card-title">"Data Processing"</h3>
+                                <p class="card-description">"Advanced data manipulation and visualization"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
+                            <div class="example-card disabled">
+                                <div class="card-icon">"🎭"</div>
+                                <h3 class="card-title">"Advanced Patterns"</h3>
+                                <p class="card-description">"Complex Rust pattern matching in templates"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
+                            <div class="example-card disabled">
+                                <div class="card-icon">"🏪"</div>
+                                <h3 class="card-title">"Real-World Apps"</h3>
+                                <p class="card-description">"E-commerce, social media, and project management"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
+                            <div class="example-card disabled">
+                                <div class="card-icon">"🧩"</div>
+                                <h3 class="card-title">"UI Library"</h3>
+                                <p class="card-description">"Reusable UI components and patterns"</p>
+                                <span class="card-link">"In Development"</span>
+                            </div>
                         </div>
                     </section>
 
