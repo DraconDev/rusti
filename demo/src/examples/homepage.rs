@@ -148,10 +148,10 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
 fn test_card2<'a>() -> impl azumi::Component + 'a {
     html! {
         <div class="card">
-            <div class="card-icon">"🎨"</div>
-            <h3 class="card-title">"Test Card 2"</h3>
-            <p class="card-description">"This is a test card 2"</p>
-            <span class="card-link">"View Example →"</span>
+            <div class="">"🎨"</div>
+            <h3 class="">"Test Card 2"</h3>
+            <p class="">"This is a test card 2"</p>
+            <span class="">"View Example →"</span>
         </div>
     }
 }
