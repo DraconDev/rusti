@@ -20,8 +20,10 @@ fn test_style_in_head() {
     let parser = parse_nodes_wrapper;
     let result = parser.parse2(input);
     match result {
-        Ok(_) => println!("Success!"),
-        Err(e) => panic!("Failed: {}", e),
+        Ok(_) => panic!("Should have failed due to inline style ban"),
+        Err(e) => {
+            assert!(e.to_string().contains("Inline <style> tags not allowed"));
+        }
     }
 }
 
@@ -54,7 +56,7 @@ fn test_component_block_in_div() {
 #[test]
 fn test_namespaced_attributes() {
     let input = quote! {
-        <button hx-on:click="alert('clicked')" v-bind:class="active">Click me</button>
+        <button hx-on:click="alert('clicked')" v-bind:class="active">"Click me"</button>
     };
     let parser = parse_nodes_wrapper;
     let result = parser.parse2(input);
