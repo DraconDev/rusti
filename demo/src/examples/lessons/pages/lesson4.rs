@@ -6,11 +6,15 @@ use azumi::html;
 /// Todo list renderer using @for loop
 pub fn todo_list(todos: &[&str]) -> impl azumi::Component {
     html! {
-        <ul>
-            @for todo in todos {
-                <li>{todo}</li>
-            }
-        </ul>
+        <style src="/static/pages/lesson4.css" />
+        <div class="lesson4-container">
+            <h1 class="lesson4-title">"Todo List"</h1>
+            <ul class="lesson4-todo-list">
+                @for todo in todos {
+                    <li class="lesson4-todo-item">{todo}</li>
+                }
+            </ul>
+        </div>
     }
 }
 
