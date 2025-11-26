@@ -41,3 +41,4 @@ pub fn nested_template() -> impl azumi::Component {
         </div>
     }
 }
+
