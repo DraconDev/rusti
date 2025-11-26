@@ -157,13 +157,8 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
                     // Extract CSS from this style tag
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         if let token_parser::AttributeValue::Static(path) = &src_attr.value {
-                            let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
-                                .expect("CARGO_MANIFEST_DIR not set");
-                            let file_path = if path.starts_with('/') {
-                                std::path::Path::new(&manifest_dir).join(&path[1..])
-                            } else {
-                                std::path::Path::new(&manifest_dir).join(path)
-                            };
+                            // Use enhanced path resolution
+                            let file_path = resolve_css_file_path_for_collection(path);
                             if let Ok(content) = std::fs::read_to_string(&file_path) {
                                 css_content.push_str(&content);
                                 css_content.push('\n');
@@ -209,6 +204,41 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
             _ => {}
         }
     }
+}
+
+/// Enhanced CSS file path resolution for main library (duplicated logic)
+fn resolve_css_file_path_for_collection(css_path: &str) -> std::path::PathBuf {
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set");
+
+    let manifest_path = std::path::Path::new(&manifest_dir);
+
+    // Try different possible locations
+    let possible_paths = vec![
+        // Direct path from manifest dir
+        manifest_path.join(css_path),
+        // If path starts with /, remove it first
+        if css_path.starts_with('/') {
+            manifest_path.join(&css_path[1..])
+        } else {
+            std::path::PathBuf::from(css_path)
+        },
+        // Check if we're in a demo/ subdirectory
+        manifest_path.join("demo").join(css_path),
+        // Check demo/static/ directory
+        manifest_path
+            .join("demo")
+            .join("static")
+            .join(css_path.trim_start_matches('/')),
+    ];
+
+    // Return the first path that exists, or the first one if none exist
+    for path in &possible_paths {
+        if path.exists() {
+            return path.clone();
+        }
+    }
+
+    possible_paths[0].clone()
 }
 
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
