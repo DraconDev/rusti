@@ -72,6 +72,12 @@ pub fn homepage() -> impl azumi::Component {
                                 icon = "🧩"
                             )
                             @ExampleCard(
+                                title = "Advanced Components",
+                                description = "Forms, validation, modals, and nested composition",
+                                href = "/advanced-components",
+                                icon = "⚡"
+                            )
+                            @ExampleCard(
                                 title = "Layouts",
                                 description = "Component composition patterns",
                                 href = "/layouts",
