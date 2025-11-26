@@ -20,9 +20,19 @@ enum Priority {
 
 #[derive(Debug, Clone)]
 enum Action {
-    Click { button_id: String, coordinates: (u32, u32) },
-    Scroll { delta_y: i32, smooth: bool },
-    KeyPress { key: String, ctrl_key: bool, shift_key: bool },
+    Click {
+        button_id: String,
+        coordinates: (u32, u32),
+    },
+    Scroll {
+        delta_y: i32,
+        smooth: bool,
+    },
+    KeyPress {
+        key: String,
+        ctrl_key: bool,
+        shift_key: bool,
+    },
 }
 
 /// Basic @let example - formatting and reusing values
@@ -56,7 +66,7 @@ fn formatted_date_example() -> impl azumi::Component {
 /// Main function showing all @let examples
 pub async fn let_examples_handler() -> impl IntoResponse {
     use axum::response::Html;
-    
+
     let examples = vec![
         ("basic", basic_let_example()),
         ("formatted", formatted_date_example()),
