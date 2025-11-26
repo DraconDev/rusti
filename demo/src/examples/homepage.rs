@@ -27,6 +27,7 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
+                        @test_card()
                         <div class="grid">
                             @example_card(
                                 "Hello World",
