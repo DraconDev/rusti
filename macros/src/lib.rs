@@ -253,9 +253,6 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
         // Generate body
         let body = if has_scoped {
             // Generate scope ID from scoped CSS only
-            use std::collections::hash_map::DefaultHasher;
-            use std::hash::{Hash, Hasher};
-
             let mut hasher = DefaultHasher::new();
             scoped_css.hash(&mut hasher);
             let hash = hasher.finish();
