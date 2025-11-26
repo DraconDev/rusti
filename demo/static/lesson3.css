@@ -1,0 +1,41 @@
+.control-demo {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-md) 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.status-active {
+    background: var(--azumi-secondary);
+    color: white;
+}
+
+.status-pending {
+    background: #f59e0b;
+    color: white;
+}
+
+.status-inactive {
+    background: var(--azumi-text-dim);
+    color: white;
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+}
+
+.item-list li {
+    background: var(--azumi-bg);
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: var(--radius-sm);
+}
