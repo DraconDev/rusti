@@ -5,6 +5,9 @@
 
 Make a very clear readme about what this is and what it is not, and why we made the choices we did.
 
+this should be scoped too i want zero footguns 
+<link rel="stylesheet" href="/static/homepage.css" />
+
 
 3. explain in readme the Input vs input vs @input component decision
 
