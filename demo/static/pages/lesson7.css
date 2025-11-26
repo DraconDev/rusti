@@ -1,0 +1,12 @@
+/* Lesson 7: Price Display - Formatted pricing with discounts */
+
+.discounted-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10b981;
+    margin: 0;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
