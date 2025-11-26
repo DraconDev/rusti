@@ -103,7 +103,7 @@ html! {
 ```rust
 @if condition {
     <p>Yes</p>
-} @else {
+} else {
     <p>No</p>
 }
 
