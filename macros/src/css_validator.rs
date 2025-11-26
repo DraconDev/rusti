@@ -380,17 +380,20 @@ fn resolve_css_file_path(css_path: &str) -> String {
         manifest_path.join("demo").join("static").join(css_path.trim_start_matches('/')).to_string_lossy().to_string(),
     ];
     
+    // Store the first path for error reporting
+    let first_path = possible_paths[0].clone();
+    
     // Try each possible path and return the first one that exists
-    for path in possible_paths {
-        if std::path::Path::new(&path).exists() {
+    for path in &possible_paths {
+        if std::path::Path::new(path).exists() {
             eprintln!("✅ Found CSS file: {}", path);
-            return path;
+            return path.clone();
         }
     }
     
     // If no file found, return the first path anyway and let the file read fail with proper error
-    eprintln!("⚠️  CSS file not found: {}", possible_paths[0]);
-    possible_paths[0].clone()
+    eprintln!("⚠️  CSS file not found: {}", first_path);
+    first_path
 }
 
 #[cfg(test)]
