@@ -457,8 +457,23 @@ fn generate_body_with_context(
                             quote! {}
                         };
 
+                        // Check if name is snake_case (starts with lowercase)
+                        let name_str = quote!(#name).to_string();
+                        let last_segment = name_str.split("::").last().unwrap_or("");
+                        let is_snake_case = last_segment
+                            .chars()
+                            .next()
+                            .map_or(false, |c| c.is_lowercase());
+
+                        let module_name = if is_snake_case {
+                            let new_name = format!("{}_component", name_str);
+                            syn::parse_str::<syn::Path>(&new_name).unwrap_or(name.clone())
+                        } else {
+                            name.clone()
+                        };
+
                         quote! {
-                            azumi::Component::render(&#name::render(#name::Props::builder()
+                            azumi::Component::render(&#module_name::render(#module_name::Props::builder()
                                 #(#setters)*
                                 .build().expect("Failed to build props")
                                 #children_arg), f)?;
