@@ -242,8 +242,11 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
             
             // Use deprecated hack to show warning on the style tag
             // We generate a unique function name to avoid conflicts
+            use std::hash::Hasher;
+            let mut hasher = std::collections::hash_map::DefaultHasher::new();
+            hasher.write(span.source_text().unwrap_or_default().as_bytes());
             let fn_name = syn::Ident::new(&format!("__azumi_unused_css_{}", 
-                std::collections::hash_map::DefaultHasher::new().finish()), span.clone());
+                hasher.finish()), span.clone());
             
             output_tokens.extend(quote_spanned! { *span =>
                 {
