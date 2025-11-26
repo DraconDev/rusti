@@ -313,7 +313,72 @@ CSS variables defined in a component ARE accessible to child components because 
 
 This is standard CSS behavior - scoping only affects **selectors**, not CSS custom properties.
 
-### 6. Compile-Time CSS Validation
+### 6. Global Styles with `global.css`
+
+For truly global CSS (resets, design tokens, font-faces), use the **`global.css` convention**:
+
+```rust
+html! {
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <style src="global.css" />       // Unscoped, available everywhere
+            <style src="button.css" />       // Scoped to component
+        </head>
+        <body>
+            <button class="btn">"Click"</button>
+        </body>
+    </html>
+}
+```
+
+**global.css:**
+
+```css
+:root {
+    --primary: #4f46e5;
+    --spacing: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui;
+}
+```
+
+**button.css:**
+
+```css
+.btn {
+    background: var(--primary); /* ✅ Uses global variable! */
+    padding: var(--spacing);
+}
+```
+
+**How it works:**
+
+-   Files named `global.css` are **NOT scoped** - no `[data-scopeid]` added
+-   Injected **before** scoped styles (lower specificity)
+-   **Skips validation** - opt-out of strict class checking
+-   Perfect for design tokens that all components share
+
+**Use global.css for:**
+
+-   ✅ CSS variables (`:root { --var: value; }`)
+-   ✅ Resets (`*`, `html`, `body` styles)
+-   ✅ Font faces (`@font-face`)
+-   ✅ Design tokens shared across components
+
+**Don't use global.css for:**
+
+-   ❌ Component-specific classes (use scoped CSS)
+-   ❌ Layouts (use scoped CSS per component)
+
+### 7. Compile-Time CSS Validation
 
 Azumi validates your CSS at compile time and shows **exact locations** of errors.
 
@@ -341,7 +406,7 @@ html! {
 -   Removed CSS that's still used
 -   Dead CSS that's never used
 
-### 7. HTMX Integration
+### 8. HTMX Integration
 
 Server-side rendering is back. Azumi + HTMX is a powerful combo.
 
