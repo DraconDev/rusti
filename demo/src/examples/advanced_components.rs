@@ -188,28 +188,7 @@ pub fn advanced_components() -> impl azumi::Component {
                     </div>
                 </div>
 
-                <script>
-                    <script type="application/json">
-                        {r#"
-                        {
-                            "modals": {
-                                "info": {
-                                    "title": "Information",
-                                    "content": "This is an informational modal dialog."
-                                },
-                                "confirm": {
-                                    "title": "Confirm Action", 
-                                    "content": "Are you sure you want to perform this action?"
-                                },
-                                "error": {
-                                    "title": "Error",
-                                    "content": "Something went wrong. Please try again."
-                                }
-                            }
-                        }
-                        "#}
-                    </script>
-                </script>
+                <script src="/static/advanced_components.js" />
             </body>
         </html>
     }
