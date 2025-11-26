@@ -136,6 +136,15 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
     }
 }
 
+fn test_card2<'a>() -> impl azumi::Component + 'a {
+    html! {
+        <div class="bg-red-500 rounded-xl shadow-lg p-6 transform hover:scale-105 transition border-l-4">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">"Test Card 2"</h3>
+            <p class="text-gray-600">"This is a test card 2"</p>
+        </div>
+    }
+}
+
 pub async fn homepage_handler() -> impl IntoResponse {
     Html(azumi::render_to_string(&homepage()))
 }
