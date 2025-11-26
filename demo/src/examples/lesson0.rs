@@ -16,29 +16,67 @@ pub fn lesson0() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 0: Getting Started - Azumi"</title>
+                <style src="/static/homepage.css" />
             </head>
             <body>
-                <div style="margin: 2rem; background: #f0f8ff; padding: 2rem; border-radius: 8px;">
-                    <h1 style="color: #2b6cb0; margin-bottom: 1rem;">"🎯 Lesson 0: Getting Started"</h1>
-
-                    <p style="color: #4a5568; margin-bottom: 1rem;">"Welcome to Azumi! This tutorial will teach you how to build type-safe HTML components in Rust."</p>
-
-                    <h2 style="color: #3182ce; margin: 1.5rem 0 1rem 0;">"💻 Your First Component"</h2>
-                    <pre style="background: #1a202c; color: #e2e8f0; padding: 1rem; border-radius: 4px; overflow-x: auto;">{simple_message}</pre>
-
-                    <h2 style="color: #3182ce; margin: 1.5rem 0 1rem 0;">"✅ What You See"</h2>
-                    <div style="background: white; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 4px;">
-                        {html! {<div>
-                            <h1>"Hello from Azumi!"</h1>
-                            <p>"This is your first lesson"</p>
-                            <p>"Azumi makes HTML type-safe"</p>
-                        </div>}}
+                <div class="container">
+                    <div class="hero">
+                        <h1>"🎯 Lesson 0: Getting Started"</h1>
+                        <p class="tagline">"Welcome to Azumi! This tutorial will teach you how to build type-safe HTML components in Rust."</p>
+                        <div class="badges">
+                            <span class="badge">"Type-Safe HTML"</span>
+                            <span class="badge">"Compile-Time Validation"</span>
+                            <span class="badge">"Rust Powered"</span>
+                        </div>
                     </div>
 
-                    <div style="margin-top: 2rem; padding: 1rem; background: #f7fafc; border-radius: 4px;">
-                        <h3 style="color: #2b6cb0; margin-bottom: 0.5rem;">"🚀 Next Steps"</h3>
-                        <p style="color: #4a5568;">"Ready to learn about quoting rules? Every piece of text in Azumi must be in quotes!"</p>
-                        <a href="/lesson-1" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #3182ce; color: white; text-decoration: none; border-radius: 4px;">"Continue to Lesson 1 →"</a>
+                    <div class="examples">
+                        <h2>"💻 Your First Component"</h2>
+                        <div class="grid">
+                            <div class="card">
+                                <div class="card-icon">"📝"</div>
+                                <h3 class="card-title">"Code Example"</h3>
+                                <p class="card-description">"Here's a simple Azumi component:"</p>
+                                <pre class="card-description" style="background: var(--bg-dark); color: var(--text-main); padding: 1rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; overflow-x: auto;">{simple_message}</pre>
+                                <a href="#" class="card-link">"See Live Demo →"</a>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-icon">"✅"</div>
+                                <h3 class="card-title">"What You See"</h3>
+                                <p class="card-description">"The rendered output:"</p>
+                                <div class="card-description" style="background: var(--bg-card); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border);">
+                                    {html! {<div>
+                                        <h1 style="font-size: 1.5rem; margin-bottom: 1rem;">"Hello from Azumi!"</h1>
+                                        <p style="margin-bottom: 0.5rem;">"This is your first lesson"</p>
+                                        <p>"Azumi makes HTML type-safe"</p>
+                                    </div>}}
+                                </div>
+                                <a href="#" class="card-link">"Learn More →"</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="features">
+                        <h2>"🚀 Next Steps"</h2>
+                        <div class="feature-grid">
+                            <div class="feature">
+                                <h3>"📚 Lesson 1: Quoting Rules"</h3>
+                                <p>"Learn how Azumi requires ALL text content to be quoted for type safety."</p>
+                            </div>
+                            <div class="feature">
+                                <h3>"🎨 CSS Classes"</h3>
+                                <p>"Understand how to use CSS classes properly in your components."</p>
+                            </div>
+                            <div class="feature">
+                                <h3>"⚡ Advanced Features"</h3>
+                                <p>"Explore control flow, components, and real-world applications."</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <a href="/lesson-1" class="card-link" style="display: inline-block; margin: 0;">"Continue to Lesson 1 →"</a>
+                        </div>
                     </div>
                 </div>
             </body>
