@@ -468,8 +468,46 @@ impl Parse for Expression {
         let content;
         let span = input.span();
         syn::braced!(content in input);
+        
+        // Try to detect string concatenation pattern: "string" expr
+        // Collect all tokens first to analyze them
+        let mut tokens = Vec::new();
+        while !content.is_empty() {
+            tokens.push(content.parse::<TokenTree>()?);
+        }
+        
+        // Check if we have string concatenation: literal followed by more tokens
+        let is_concat = tokens.len() > 1 && matches!(tokens[0], TokenTree::Literal(_));
+        
+        if is_concat {
+            // Try to parse as literal + expression
+            if let TokenTree::Literal(lit) = &tokens[0] {
+                // Check if it's a string literal
+                let lit_str = lit.to_string();
+                if lit_str.starts_with('"') {
+                    // It's string concatenation!
+                    // Rebuild the expression part (everything after the string)
+                    let mut expr_stream = TokenStream::new();
+                    for token in &tokens[1..] {
+                        expr_stream.extend(Some(token.clone()));
+                    }
+                    
+                    return Ok(Expression {
+                        content: quote! { format!(\"{}{}\", #lit, #expr_stream) },
+                        span,
+                    });
+                }
+            }
+        }
+        
+        // Not string concatenation, reassemble and parse normally
+        let mut all_tokens = TokenStream::new();
+        for token in tokens {
+            all_tokens.extend(Some(token));
+        }
+        
         Ok(Expression {
-            content: content.parse()?,
+            content: all_tokens,
             span,
         })
     }
