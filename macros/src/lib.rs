@@ -448,18 +448,6 @@ fn generate_body_with_context(
                         quote! { write!(f, "{}", azumi::Escaped(&(#content)))?; }
                     }
                 }
-                        println!("  -> Script context, using azumi::js");
-                        quote! { write!(f, "{}", azumi::js(&(#content)))?; }
-                    }
-                    Context::Style => {
-                        // In style tags, use Display (raw text)
-                        quote! { write!(f, "{}", #content)?; }
-                    }
-                    Context::Normal => {
-                        // In normal HTML, use Escaped (HTML escaping)
-                        quote! { write!(f, "{}", azumi::Escaped(&(#content)))?; }
-                    }
-                }
             }
             token_parser::Node::Comment(_) => {
                 // Ignore comments in output
