@@ -1,6 +1,8 @@
 pub mod advanced_components;
+pub mod advanced_patterns;
 pub mod components;
 pub mod control_flow;
+pub mod data_processing;
 pub mod dashboard;
 pub mod forms;
 pub mod hello;
@@ -8,5 +10,6 @@ pub mod homepage;
 pub mod htmx_todo;
 pub mod layouts;
 pub mod let_examples;
+pub mod real_world_apps;
 pub mod tailwind;
 pub mod ui_library;
