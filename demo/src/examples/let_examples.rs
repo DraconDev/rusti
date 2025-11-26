@@ -9,47 +9,47 @@ fn match_let_examples() -> impl azumi::Component {
         <div class="example-card">
             <h1>"@match & @let Advanced Examples"</h1>
             <p>"Comprehensive pattern matching and variable binding"</p>
-            
+
             <div class="match-example">
                 <h3>"Status Match with @let"</h3>
                 @let status = UserStatus::Active;
                 @let status_display = match status {
                     UserStatus::Active => "✅ Active User",
-                    UserStatus::Inactive => "⏸️ Inactive", 
+                    UserStatus::Inactive => "⏸️ Inactive",
                     UserStatus::Suspended => "🚫 Suspended",
                     UserStatus::Pending => "⏳ Pending Approval",
                 };
                 @let status_color = match status {
                     UserStatus::Active => "status-active",
                     UserStatus::Inactive => "status-inactive",
-                    UserStatus::Suspended => "status-suspended", 
+                    UserStatus::Suspended => "status-suspended",
                     UserStatus::Pending => "status-pending",
                 };
                 <div class={format!("status-display {}", status_color)}>
                     {status_display}
                 </div>
             </div>
-            
+
             <div class="match-example">
                 <h3>"Priority Match with Dynamic Styling"</h3>
                 @let priority = Priority::High;
                 @let priority_badge = match priority {
                     Priority::Critical => "🔴 Critical",
-                    Priority::High => "🟠 High", 
+                    Priority::High => "🟠 High",
                     Priority::Medium => "🟡 Medium",
                     Priority::Low => "🟢 Low",
                 };
                 @let badge_class = match priority {
                     Priority::Critical => "badge-critical",
                     Priority::High => "badge-high",
-                    Priority::Medium => "badge-medium", 
+                    Priority::Medium => "badge-medium",
                     Priority::Low => "badge-low",
                 };
                 <span class={format!("priority-badge {}", badge_class)}>
                     {priority_badge}
                 </span>
             </div>
-            
+
             <div class="match-example">
                 <h3>"Complex Match with Calculations"</h3>
                 @let notification_count = 7;
@@ -85,7 +85,7 @@ fn advanced_match_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Advanced @match Patterns"</h2>
-            
+
             <div class="advanced-match">
                 <h3>"Complex Pattern Matching"</h3>
                 @let action = Action::Click { button_id: "submit".to_string(), coordinates: (100, 200) };
@@ -111,7 +111,7 @@ fn advanced_match_examples() -> impl azumi::Component {
                     <p>{match_result}</p>
                 </div>
             </div>
-            
+
             <div class="advanced-match">
                 <h3>"Result Type Matching"</h3>
                 @let result = Result::<i32, &str>::Ok(42);
@@ -127,7 +127,7 @@ fn advanced_match_examples() -> impl azumi::Component {
                     <p>{display_text}</p>
                 </div>
             </div>
-            
+
             <div class="advanced-match">
                 <h3>"Nested Match with @let Chaining"</h3>
                 @let user_score = 85;
@@ -141,7 +141,7 @@ fn advanced_match_examples() -> impl azumi::Component {
                 };
                 @let grade_color = match grade_result {
                     "A+" | "A" => "grade-excellent",
-                    "B" | "C" => "grade-good", 
+                    "B" | "C" => "grade-good",
                     "F" => "grade-fail",
                     _ => "grade-invalid",
                 };
@@ -169,26 +169,26 @@ fn control_flow_let_example() -> impl azumi::Component {
         <div class="example-card">
             <h2>"@let with Control Flow"</h2>
             <p>"Demonstrating @let with @if (Azumi uses separate @if blocks, not @else)"</p>
-            
+
             @let show_premium = true;
             @let premium_message = if show_premium { "🌟 Premium features enabled" } else { "💎 Upgrade to premium" };
             @let premium_class = if show_premium { "premium-enabled" } else { "premium-disabled" };
-            
+
             @if show_premium {
                 <div class={format!("premium-banner {}", premium_class)}>
                     <p>{premium_message}</p>
                     <p>"Enjoy your premium benefits!"</p>
                 </div>
             }
-            
+
             @let user_level = 15;
-            @let level_message = if user_level >= 10 { 
-                format!("Level {} - Expert User", user_level) 
-            } else { 
-                format!("Level {} - Regular User", user_level) 
+            @let level_message = if user_level >= 10 {
+                format!("Level {} - Expert User", user_level)
+            } else {
+                format!("Level {} - Regular User", user_level)
             };
             @let level_class = if user_level >= 10 { "expert-user" } else { "regular-user" };
-            
+
             @if user_level >= 10 {
                 <div class={format!("level-badge {}", level_class)}>
                     <p>{level_message}</p>
@@ -203,12 +203,12 @@ fn math_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Mathematical @let Examples"</h2>
-            
+
             @let number = 42;
             @let doubled = number * 2;
             @let squared = number * number;
             @let is_even = number % 2 == 0;
-            
+
             <div class="math-operations">
                 <h3>"Basic Operations"</h3>
                 <p>"Original: " {number}</p>
@@ -216,24 +216,24 @@ fn math_let_examples() -> impl azumi::Component {
                 <p>"Squared: " {squared}</p>
                 <p>"Is Even: " {is_even}</p>
             </div>
-            
+
             @let temperature = 25;
             @let celsius = temperature;
             @let fahrenheit = (celsius * 9/5) + 32;
             @let temp_description = match celsius {
                 temp if temp < 0 => "Freezing",
-                temp if temp < 10 => "Cold", 
+                temp if temp < 10 => "Cold",
                 temp if temp < 25 => "Cool",
                 temp if temp < 30 => "Warm",
                 _ => "Hot",
             };
-            
+
             <div class="temperature-converter">
                 <h3>"Temperature Converter"</h3>
                 <p>{format!("{}°C = {}°F", celsius, fahrenheit)}</p>
                 <p>"Weather: " {temp_description}</p>
             </div>
-            
+
             @let viewport_width = 1200;
             @let container_width = if viewport_width > 768 { 800 } else { viewport_width - 40 };
             @let columns = match container_width {
@@ -242,7 +242,7 @@ fn math_let_examples() -> impl azumi::Component {
                 width if width >= 768 => 2,
                 _ => 1,
             };
-            
+
             <div class="responsive-layout">
                 <h3>"Responsive Calculations"</h3>
                 <p>{format!("Viewport: {}px", viewport_width)}</p>
@@ -258,13 +258,13 @@ fn collection_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"@let with Collections"</h2>
-            
+
             @let fruits = vec!["apple", "banana", "orange", "grape", "strawberry"];
             @let item_count = fruits.len();
             @let first_item = fruits.first().unwrap_or(&"none");
             @let last_item = fruits.last().unwrap_or(&"none");
             @let has_many_items = item_count > 3;
-            
+
             <div class="collection-info">
                 <h3>"Collection Statistics"</h3>
                 <p>"Total items: " {item_count}</p>
@@ -272,7 +272,7 @@ fn collection_let_examples() -> impl azumi::Component {
                 <p>"Last item: " {last_item}</p>
                 <p>"Has many items: " {has_many_items}</p>
             </div>
-            
+
             <div class="filtered-items">
                 <h3>"Filtered Items (length > 5)"</h3>
                 @let filtered_items: Vec<_> = fruits.iter().filter(|item| item.len() > 5).collect();
@@ -293,19 +293,19 @@ fn complex_data_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Complex Data @let Examples"</h2>
-            
+
             @let user_data = ("Alice Johnson", 28, "developer", UserStatus::Active);
             @let (name, age, profession, status) = user_data;
             @let welcome_message = format!("Welcome {}! Age: {}, Role: {}", name, age, profession);
             @let is_adult = age >= 18;
-            
+
             <div class="user-profile">
                 <h3>"User Profile"</h3>
                 <p>{welcome_message}</p>
                 <p>"Status: " {format!("{:?}", status)}</p>
                 <p>"Adult content access: " {is_adult}</p>
             </div>
-            
+
             @let config = Config {
                 theme: "dark".to_string(),
                 language: "en".to_string(),
@@ -314,7 +314,7 @@ fn complex_data_let_examples() -> impl azumi::Component {
             };
             @let theme_class = match config.theme.as_str() {
                 "dark" => "theme-dark",
-                "light" => "theme-light", 
+                "light" => "theme-light",
                 "auto" => "theme-auto",
                 _ => "theme-default",
             };
@@ -325,7 +325,7 @@ fn complex_data_let_examples() -> impl azumi::Component {
                 "de" => "German",
                 _ => "Unknown",
             };
-            
+
             <div class={format!("config-panel {}", theme_class)}>
                 <h3>"Configuration"</h3>
                 <p>"Theme: " {config.theme}</p>
@@ -342,14 +342,14 @@ fn data_processing_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Data Processing @let Examples"</h2>
-            
+
             @let raw_scores = vec![85, 92, 78, 96, 88, 73, 91];
             @let total_score: i32 = raw_scores.iter().sum();
             @let average_score = total_score as f64 / raw_scores.len() as f64;
             @let highest_score = raw_scores.iter().max().unwrap_or(&0);
             @let lowest_score = raw_scores.iter().min().unwrap_or(&0);
             @let score_range = highest_score - lowest_score;
-            
+
             <div class="score-analysis">
                 <h3>"Score Analysis"</h3>
                 <p>"Total scores: " {total_score}</p>
@@ -358,13 +358,13 @@ fn data_processing_let_examples() -> impl azumi::Component {
                 <p>"Lowest: " {lowest_score}</p>
                 <p>"Range: " {score_range}</p>
             </div>
-            
+
             <div class="grade-analysis">
                 <h3>"Grade Distribution"</h3>
                 @let grades: Vec<_> = raw_scores.iter().map(|&score| {
                     match score {
                         90..=100 => "A",
-                        80..=89 => "B", 
+                        80..=89 => "B",
                         70..=79 => "C",
                         60..=69 => "D",
                         _ => "F",
@@ -372,7 +372,7 @@ fn data_processing_let_examples() -> impl azumi::Component {
                 }).collect();
                 <p>"Sample grades: " {grades.join(", ")}</p>
             </div>
-            
+
             <div class="performance-summary">
                 <h3>"Performance Summary"</h3>
                 @let passing_scores: Vec<_> = raw_scores.iter().filter(|&&score| score >= 70).collect();
@@ -380,7 +380,7 @@ fn data_processing_let_examples() -> impl azumi::Component {
                 @let performance_level = match passing_rate {
                     rate if rate >= 90 => "Excellent",
                     rate if rate >= 75 => "Good",
-                    rate if rate >= 60 => "Fair", 
+                    rate if rate >= 60 => "Fair",
                     _ => "Needs Improvement",
                 };
                 <p>{format!("Passing students: {} / {}", passing_scores.len(), raw_scores.len())}</p>
@@ -396,35 +396,35 @@ fn dynamic_styling_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Dynamic Styling with @let"</h2>
-            
+
             @let priority = "critical";
             @let size = "large";
             @let variant = "outline";
-            
+
             @let button_classes = format!("btn btn-{} btn-{} btn-{}", size, priority, variant);
             @let status_classes = format!("status-indicator status-{}", priority);
             @let alert_classes = match priority {
                 "critical" => "alert alert-critical",
                 "warning" => "alert alert-warning",
-                "info" => "alert alert-info", 
+                "info" => "alert alert-info",
                 "success" => "alert alert-success",
                 _ => "alert alert-default",
             };
-            
+
             <div class="styling-examples">
                 <h3>"Button Classes"</h3>
                 <button class={button_classes}>
                     "Dynamic Button"
                 </button>
             </div>
-            
+
             <div class="status-examples">
                 <h3>"Status Indicators"</h3>
                 <div class={status_classes}>
                     "System Status"
                 </div>
             </div>
-            
+
             <div class="alert-examples">
                 <h3>"Alert Messages"</h3>
                 <div class={alert_classes}>
@@ -432,7 +432,7 @@ fn dynamic_styling_let_examples() -> impl azumi::Component {
                         "critical" => "System failure detected!",
                         "warning" => "Storage running low",
                         "info" => "New update available",
-                        "success" => "Operation completed successfully", 
+                        "success" => "Operation completed successfully",
                         _ => "General notification",
                     };
                     <p>{alert_message}</p>
@@ -447,23 +447,23 @@ fn option_result_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Options & Results @let Examples"</h2>
-            
+
             @let optional_name: Option<&str> = Some("Bob");
             @let optional_age: Option<i32> = None;
             @let result_number: Result<i32, &str> = Ok(42);
             @let result_string: Result<String, &str> = Err("Invalid input");
-            
+
             @let display_name = optional_name.unwrap_or("Guest User");
             @let display_age = optional_age.unwrap_or(0);
             @let number_value = result_number.unwrap_or(0);
             @let string_value = result_string.unwrap_or_else(|_| "No value".to_string());
-            
+
             <div class="option-examples">
                 <h3>"Option Types"</h3>
                 <p>"Name: " {display_name}</p>
                 <p>"Age: " {display_age}</p>
             </div>
-            
+
             @let number_status = match result_number {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
@@ -472,23 +472,23 @@ fn option_result_let_examples() -> impl azumi::Component {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
             };
-            
+
             <div class="result-examples">
                 <h3>"Result Types"</h3>
                 <p>"Number result: " {number_status}</p>
                 <p>"String result: " {string_status}</p>
             </div>
-            
+
             @let config_valid = optional_name.is_some() && result_number.is_ok();
             @let config_message = if config_valid { "✅ Configuration valid" } else { "❌ Configuration invalid" };
-            
+
             @if config_valid {
                 <div class="config-success">
                     <p>{config_message}</p>
                     <p>"Ready to proceed with: " {display_name}</p>
                 </div>
             }
-            
+
             @if !config_valid {
                 <div class="config-error">
                     <p>{config_message}</p>
@@ -504,30 +504,30 @@ fn utility_let_examples() -> impl azumi::Component {
     html! {
         <div class="example-card">
             <h2>"Real-World @let Utilities"</h2>
-            
+
             @let file_size = 1_250_000; // bytes
             @let file_size_kb = file_size / 1024;
             @let file_size_mb = file_size_kb / 1024;
-            @let readable_size = if file_size_mi > 0 {
+            @let readable_size = if file_size_mb > 0 {
                 format!("{:.1} MB", file_size_mb as f64 / 1024.0)
             } else if file_size_kb > 0 {
                 format!("{} KB", file_size_kb)
             } else {
                 format!("{} bytes", file_size)
             };
-            
+
             <div class="file-info">
                 <h3>"File Size Converter"</h3>
                 <p>"Raw size: " {file_size} " bytes"</p>
                 <p>"Readable: " {readable_size}</p>
             </div>
-            
+
             @let email = "user@example.com";
             @let email_parts: Vec<&str> = email.split('@').collect();
             @let domain = email_parts.get(1).unwrap_or(&"");
             @let username = email_parts.get(0).unwrap_or(&"");
             @let is_valid_domain = domain.contains('.') && !domain.starts_with('.') && !domain.ends_with('.');
-            
+
             <div class="email-info">
                 <h3>"Email Parser"</h3>
                 <p>"Original: " {email}</p>
@@ -547,7 +547,7 @@ pub async fn let_examples_handler() -> impl IntoResponse {
 #[derive(Debug, Clone)]
 enum UserStatus {
     Active,
-    Inactive, 
+    Inactive,
     Suspended,
     Pending,
 }
@@ -562,17 +562,29 @@ enum Priority {
 
 #[derive(Debug, Clone)]
 enum Action {
-    Click { button_id: String, coordinates: (i32, i32) },
-    Scroll { delta_y: i32, smooth: bool },
-    KeyPress { key: String, ctrl_key: bool, shift_key: bool },
-    Hover { element_id: String },
+    Click {
+        button_id: String,
+        coordinates: (i32, i32),
+    },
+    Scroll {
+        delta_y: i32,
+        smooth: bool,
+    },
+    KeyPress {
+        key: String,
+        ctrl_key: bool,
+        shift_key: bool,
+    },
+    Hover {
+        element_id: String,
+    },
     None,
 }
 
 #[derive(Debug, Clone)]
 struct Config {
     theme: String,
-    language: String, 
+    language: String,
     notifications: bool,
     auto_save: bool,
 }
@@ -597,12 +609,12 @@ fn let_examples_main() -> impl azumi::Component {
                         <a href="/control-flow">"Control Flow"</a>
                     </nav>
                 </header>
-                
+
                 <main class="examples-container">
                     <div class="intro-section">
                         <h2>"What is @let?"</h2>
                         <p>"The @let syntax allows you to create local variable bindings within your templates. These variables are computed at render time and can be used to simplify complex expressions, format data, or prepare values for multiple uses."</p>
-                        
+
                         <div class="benefits">
                             <h3>"Key Benefits of @let:"</h3>
                             <ul>
@@ -615,12 +627,12 @@ fn let_examples_main() -> impl azumi::Component {
                                 <li>"Process collections and transformations"</li>
                             </ul>
                         </div>
-                        
+
                         <div class="syntax-guide">
                             <h3>"@let Syntax Patterns:"</h3>
                             <div class="syntax-example">
                                 <h4>"Basic Assignment"</h4>
-                                <code>"@let name = "value";</code>
+                                <code>"@let name = "value";"</code>
                             </div>
                             <div class="syntax-example">
                                 <h4>"Pattern Matching with @match"</h4>
@@ -632,7 +644,7 @@ fn let_examples_main() -> impl azumi::Component {
                             </div>
                         </div>
                     </div>
-                    
+
                     {match_let_examples()}
                     {advanced_match_examples()}
                     {control_flow_let_example()}
@@ -644,7 +656,7 @@ fn let_examples_main() -> impl azumi::Component {
                     {option_result_let_examples()}
                     {utility_let_examples()}
                 </main>
-                
+
                 <footer class="page-footer">
                     <p>"Built with Azumi - Pattern Matching and Variable Binding"</p>
                 </footer>
