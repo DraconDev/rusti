@@ -124,7 +124,8 @@ fn example_card<'a>(
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>"Azumi - Type-Safe HTML Templates"</title>
-            <link rel="stylesheet" href="/static/test_card2.css" />
+            // big footgun 
+            <link rel="stylesheet" href="/static/test_card2.css" /> 
         </head>
         <a href={href} class="card">
             <div class="card-icon">{icon}</div>
