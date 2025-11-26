@@ -268,16 +268,16 @@ fn BindingPatterns() -> impl azumi::Component {
             <p class="section-desc">"Complex variable binding and tuple/struct destructuring"</p>
 
             @let coordinate_data = vec![
-                (x: 10.0, y: 20.0, z: 30.0),
-                (x: 15.5, y: 25.1, z: 35.2),
-                (x: 0.0, y: 0.0, z: 0.0),
-                (x: -10.0, y: 20.0, z: -30.0),
+                (10.0, 20.0, 30.0),
+                (15.5, 25.1, 35.2),
+                (0.0, 0.0, 0.0),
+                (-10.0, 20.0, -30.0),
             ];
 
             <div class="coordinate-analysis">
                 <h4>"🎯 Coordinate System Analysis"</h4>
 
-                @for (x: x, y: y, z: z) in coordinate_data {
+                @for (x, y, z) in coordinate_data {
                     @let distance = (x * x + y * y + z * z).sqrt();
                     @let quadrant = match (x >= 0.0, y >= 0.0, z >= 0.0) {
                         (true, true, true) => "Positive space",
@@ -391,16 +391,16 @@ fn GuardConditions() -> impl azumi::Component {
             <p class="section-desc">"Advanced conditional matching with complex expressions"</p>
 
             @let price_data = vec![
-                (product: "Laptop", base_price: 1200.0, category: "Electronics", in_stock: true, discount: 0.1),
-                (product: "Book", base_price: 25.0, category: "Education", in_stock: false, discount: 0.0),
-                (product: "Phone", base_price: 800.0, category: "Electronics", in_stock: true, discount: 0.15),
-                (product: "Coffee", base_price: 12.0, category: "Food", in_stock: true, discount: 0.05),
+                ("Laptop", 1200.0, "Electronics", true, 0.1),
+                ("Book", 25.0, "Education", false, 0.0),
+                ("Phone", 800.0, "Electronics", true, 0.15),
+                ("Coffee", 12.0, "Food", true, 0.05),
             ];
 
             <div class="pricing-analysis">
                 <h4>"💰 Smart Pricing with Guards"</h4>
 
-                @for (product: product, base_price: base_price, category: category, in_stock: in_stock, discount: discount) in &price_data {
+                @for (product, base_price, category, in_stock, discount) in &price_data {
                     @let final_price = base_price * (1.0 - discount);
                     @let is_expensive = final_price > 500.0;
                     @let is_affordable = final_price < 50.0;
