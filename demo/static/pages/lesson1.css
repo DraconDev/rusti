@@ -1,5 +1,5 @@
-/* Fancy styling for Lesson 1: Hello World */
-.hello-container {
+/* Fancy Lesson 1 CSS - Hello World Showcase */
+.hello-container, .basic-template {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,38 +13,5 @@
   border: 1px solid rgba(79, 70, 229, 0.2);
 }
 
-.hello-title {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #4f46e5, #10b981, #f59e0b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-  margin: 0;
-  letter-spacing: -0.02em;
-  text-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    filter: drop-shadow(0 0 10px rgba(79, 70, 229, 0.5));
-  }
-  to {
-    filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.8));
-  }
-}
-
-.basic-template {
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(79, 70, 229, 0.2);
-  max-width: 600px;
-  margin: 2rem auto;
-}
-
-.basic-h1 {
-  font-size
+.hello-title, .basic-h1 {
+  font-size: clamp(3rem
