@@ -20,7 +20,7 @@ pub fn lesson1() -> impl azumi::Component {
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>"Lesson 1: Text & Quotes - Azumi 2.0"</title>
+                <title>"Lesson 1: Text & Quotes - Azumi"</title>
                 <style src="/static/lesson1.css" />
             </head>
             <body>
