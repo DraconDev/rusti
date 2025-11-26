@@ -240,7 +240,7 @@ fn let_in_control_flow_example() -> impl azumi::Component {
                     <p>"Role: " {role}</p>
                     <span class="level-badge">{level_badge}</span>
                 </div>
-            } @else {
+            } else {
                 <p>"User details are hidden"</p>
             }
         </div>
