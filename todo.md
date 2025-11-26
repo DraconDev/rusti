@@ -6,3 +6,5 @@
 5. **Docs/Deps**: Sync Cargo.toml/ README versions.
 
 ?
+
+also type check the css files we have and if any are unused then we mark what imports then with a warning
