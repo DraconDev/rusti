@@ -243,8 +243,8 @@ pub fn lesson10() -> impl azumi::Component {
         {"    }"}
         {"    product_map"}
     {"};"}
-    {""}
-    {"@for category in categories {"}
+        {""}
+        {"@for category in categories {"}
         {"    <h3>{&category.name}</h3>"}
         {"    @for (_, (product, rating)) in &processed_products {"}
         {"        @if product.category_id == category.id {"}
