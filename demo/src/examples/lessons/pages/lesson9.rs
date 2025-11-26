@@ -10,8 +10,9 @@ struct Item {
 
 /// Filtered search using @let for computed filtered list
 pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
-    let filtered: Vec<_> = items.iter()
+    let filtered: Vec<Item> = items.iter()
         .filter(|item| item.name.contains(query))
+        .cloned()
         .collect();
     html! {
         <style src="/static/pages/lesson9.css" />
