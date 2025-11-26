@@ -63,7 +63,7 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<Str
                             for class in class_string.split_whitespace() {
                                 if !class.is_empty() {
                                     used_classes.entry(class.to_string())
-                                        .or_insert_with(Vec::new)
+                                        .or_default()
                                         .push(create_class_span(class_attr, class));
                                 }
                             }

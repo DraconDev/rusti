@@ -451,10 +451,10 @@ impl Parse for Text {
         }
 
         // If no string literal found, error
-        return Err(Error::new(
+        Err(Error::new(
             span,
             "Text content must be a double-quoted string literal to prevent lexer issues.\nExample: <p>\"Your text here\"</p>\nFor dynamic content, use {expression} instead."
-        ));
+        ))
     }
 }
 

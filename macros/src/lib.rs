@@ -60,13 +60,12 @@ pub fn html(input: TokenStream) -> TokenStream {
 /// If the user wants literal quotes, they should use raw strings like r#""Hello""#
 fn strip_outer_quotes(s: &str) -> String {
     let trimmed = s.trim();
-    if trimmed.len() >= 2 {
-        if (trimmed.starts_with('"') && trimmed.ends_with('"'))
-            || (trimmed.starts_with('\'') && trimmed.ends_with('\''))
+    if trimmed.len() >= 2
+        && ((trimmed.starts_with('"') && trimmed.ends_with('"'))
+            || (trimmed.starts_with('\'') && trimmed.ends_with('\'')))
         {
             return trimmed[1..trimmed.len() - 1].to_string();
         }
-    }
     s.to_string()
 }
 
@@ -544,7 +543,7 @@ fn generate_body_with_context(
                                 if last_segment
                                     .chars()
                                     .next()
-                                    .map_or(false, |c| c.is_uppercase())
+                                    .is_some_and(|c| c.is_uppercase())
                                 {
                                     Some(exprs)
                                 } else {
@@ -580,7 +579,7 @@ fn generate_body_with_context(
                         let is_snake_case = last_segment
                             .chars()
                             .next()
-                            .map_or(false, |c| c.is_lowercase());
+                            .is_some_and(|c| c.is_lowercase());
 
                         let module_name = if is_snake_case {
                             let new_name = format!("{}_component", name_str);
