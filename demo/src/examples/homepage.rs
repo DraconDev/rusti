@@ -10,7 +10,7 @@ pub fn homepage() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi - Type-Safe HTML Templates"</title>
-                <link rel="stylesheet" href="/static/homepage.css" />
+                // <link rel="stylesheet" href="/static/homepage.css" />
                 <script src="https://cdn.tailwindcss.com" />
             </head>
             <body>
@@ -28,6 +28,7 @@ pub fn homepage() -> impl azumi::Component {
                     <section class="examples">
                         <h2>"Examples"</h2>
                         @test_card()
+                        @test_card2()
                         <div class="grid">
                             @example_card(
                                 "Hello World",
