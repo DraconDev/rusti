@@ -508,7 +508,7 @@ fn utility_let_examples() -> impl azumi::Component {
             @let file_size = 1_250_000; // bytes
             @let file_size_kb = file_size / 1024;
             @let file_size_mb = file_size_kb / 1024;
-            @let readable_size = if file_size_mb > 0 {
+            @let readable_size = if file_size_mi > 0 {
                 format!("{:.1} MB", file_size_mb as f64 / 1024.0)
             } else if file_size_kb > 0 {
                 format!("{} KB", file_size_kb)
@@ -618,15 +618,15 @@ fn let_examples_main() -> impl azumi::Component {
                         
                         <div class="syntax-guide">
                             <h3>"@let Syntax Patterns:"</h3>
-                            <div class="pattern-block">
+                            <div class="syntax-example">
                                 <h4>"Basic Assignment"</h4>
                                 <code>"@let name = "value";</code>
                             </div>
-                            <div class="pattern-block">
+                            <div class="syntax-example">
                                 <h4>"Pattern Matching with @match"</h4>
                                 <code>"@let display = match value { Pattern => "result", _ => "default" };"</code>
                             </div>
-                            <div class="pattern-block">
+                            <div class="syntax-example">
                                 <h4>"Conditional Assignment"</h4>
                                 <code>"@let status = if condition { "yes" } else { "no" };"</code>
                             </div>
@@ -645,9 +645,9 @@ fn let_examples_main() -> impl azumi::Component {
                     {utility_let_examples()}
                 </main>
                 
-                <page-footer class="page-footer">
+                <footer class="page-footer">
                     <p>"Built with Azumi - Pattern Matching and Variable Binding"</p>
-                </page-footer>
+                </footer>
             </body>
         </html>
     }
