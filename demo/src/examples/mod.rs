@@ -9,6 +9,7 @@ pub mod hello;
 pub mod homepage;
 pub mod htmx_todo;
 pub mod layouts;
+pub mod lesson0;
 pub mod lesson1;
 pub mod lesson2;
 pub mod lesson3;
