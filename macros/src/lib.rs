@@ -143,13 +143,19 @@ fn has_any_styles(nodes: &[token_parser::Node]) -> bool {
 }
 
 /// Collect ALL CSS content from all <style> tags in the component
-fn collect_all_styles(nodes: &[token_parser::Node]) -> String {
-    let mut css_content = String::new();
-    collect_styles_recursive(nodes, &mut css_content);
-    css_content
+/// Returns (global_css, scoped_css)
+fn collect_all_styles(nodes: &[token_parser::Node]) -> (String, String) {
+    let mut global_css = String::new();
+    let mut scoped_css = String::new();
+    collect_styles_recursive(nodes, &mut global_css, &mut scoped_css);
+    (global_css, scoped_css)
 }
 
-fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut String) {
+fn collect_styles_recursive(
+    nodes: &[token_parser::Node],
+    global_css: &mut String,
+    scoped_css: &mut String,
+) {
     for node in nodes {
         match node {
             token_parser::Node::Element(elem) => {
@@ -160,44 +166,50 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
                             // Use enhanced path resolution from validator
                             let file_path = crate::css_validator::resolve_css_file_path(path);
                             if let Ok(content) = std::fs::read_to_string(&file_path) {
-                                css_content.push_str(&content);
-                                css_content.push('\n');
+                                // Check if this is a global.css file
+                                if path.ends_with("global.css") {
+                                    global_css.push_str(&content);
+                                    global_css.push('\n');
+                                } else {
+                                    scoped_css.push_str(&content);
+                                    scoped_css.push('\n');
+                                }
                             }
                         }
                     } else {
-                        // Inline content
+                        // Inline content - treat as scoped
                         for child in &elem.children {
                             if let token_parser::Node::Text(text) = child {
-                                css_content.push_str(&text.content);
-                                css_content.push('\n');
+                                scoped_css.push_str(&text.content);
+                                scoped_css.push('\n');
                             }
                         }
                     }
                 } else {
                     // Recurse into children
-                    collect_styles_recursive(&elem.children, css_content);
+                    collect_styles_recursive(&elem.children, global_css, scoped_css);
                 }
             }
             token_parser::Node::Fragment(frag) => {
-                collect_styles_recursive(&frag.children, css_content);
+                collect_styles_recursive(&frag.children, global_css, scoped_css);
             }
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
-                    collect_styles_recursive(&if_block.then_branch, css_content);
+                    collect_styles_recursive(&if_block.then_branch, global_css, scoped_css);
                     if let Some(else_branch) = &if_block.else_branch {
-                        collect_styles_recursive(else_branch, css_content);
+                        collect_styles_recursive(else_branch, global_css, scoped_css);
                     }
                 }
                 token_parser::Block::For(for_block) => {
-                    collect_styles_recursive(&for_block.body, css_content);
+                    collect_styles_recursive(&for_block.body, global_css, scoped_css);
                 }
                 token_parser::Block::Match(match_block) => {
                     for arm in &match_block.arms {
-                        collect_styles_recursive(&arm.body, css_content);
+                        collect_styles_recursive(&arm.body, global_css, scoped_css);
                     }
                 }
                 token_parser::Block::Call(call_block) => {
-                    collect_styles_recursive(&call_block.children, css_content);
+                    collect_styles_recursive(&call_block.children, global_css, scoped_css);
                 }
                 _ => {}
             },
@@ -216,11 +228,11 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     }
 
     // Collect all CSS content first (needed for validation and scoping)
-    let css_content = collect_all_styles(nodes);
+    let (global_css, scoped_css) = collect_all_styles(nodes);
 
     // Pass 0.5: Strict CSS Validation (New Feature)
-    // Extract valid selectors from the CSS
-    let (valid_classes, valid_ids) = crate::css::extract_selectors(&css_content);
+    // Extract valid selectors from the SCOPED CSS only (global CSS is opt-out)
+    let (valid_classes, valid_ids) = crate::css::extract_selectors(&scoped_css);
 
     // Validate nodes against strict rules
     if let Err(e) = validate_nodes(nodes, &valid_classes, &valid_ids) {
@@ -230,29 +242,57 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
         // return quote! { compile_error!(#e); };
     }
 
-    // Pass 1: Check if component has any style tags (or if we collected any content)
-    if !css_content.is_empty() {
+    // Pass 1: Check if component has any style tags
+    let has_global = !global_css.is_empty();
+    let has_scoped = !scoped_css.is_empty();
+
+    if has_global || has_scoped {
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};
 
-        // Generate scope ID
-        let mut hasher = DefaultHasher::new();
-        css_content.hash(&mut hasher);
-        let hash = hasher.finish();
-        let scope_id = format!("s{:x}", hash);
+        // Generate body
+        let body = if has_scoped {
+            // Generate scope ID from scoped CSS only
+            use std::collections::hash_map::DefaultHasher;
+            use std::hash::{Hash, Hasher};
 
-        // Scope the CSS
-        let scoped_css = crate::css::scope_css(&css_content, &scope_id);
+            let mut hasher = DefaultHasher::new();
+            scoped_css.hash(&mut hasher);
+            let hash = hasher.finish();
+            let scope_id = format!("s{:x}", hash);
 
-        // Generate body with scope context
-        let ctx = GenerationContext::with_scope(scope_id.clone());
-        let body = generate_body_with_context(nodes, &ctx);
+            // Scope the CSS
+            let scoped_output = crate::css::scope_css(&scoped_css, &scope_id);
 
-        // Inject scoped CSS at the beginning
-        quote! {
-            write!(f, "<style>{}</style>", #scoped_css)?;
-            #body
-        }
+            // Generate body with scope context
+            let ctx = GenerationContext::with_scope(scope_id.clone());
+            let body_content = generate_body_with_context(nodes, &ctx);
+
+            // Inject global CSS first (unscoped), then scoped CSS
+            if has_global {
+                quote! {
+                    write!(f, "<style>{}</style>", #global_css)?;
+                    write!(f, "<style>{}</style>", #scoped_output)?;
+                    #body_content
+                }
+            } else {
+                quote! {
+                    write!(f, "<style>{}</style>", #scoped_output)?;
+                    #body_content
+                }
+            }
+        } else {
+            // Only global CSS, no scoping needed
+            let ctx = GenerationContext::normal();
+            let body_content = generate_body_with_context(nodes, &ctx);
+
+            quote! {
+                write!(f, "<style>{}</style>", #global_css)?;
+                #body_content
+            }
+        };
+
+        body
     } else {
         generate_body_with_context(nodes, &GenerationContext::normal())
     }
