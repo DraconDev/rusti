@@ -366,14 +366,11 @@ impl Parse for Attribute {
                 syn::braced!(content in input);
                 (AttributeValue::Dynamic(content.parse()?), None)
             } else if input.peek(syn::Lit) {
-                let lit_before = input.span();
                 let lit: syn::Lit = input.parse()?;
-                let lit_after = input.span();
                 match lit {
                     syn::Lit::Str(s) => {
-                        // Use a better span that points more precisely to the value
-                        // We'll use the span after parsing the literal to point more accurately
-                        (AttributeValue::Static(s.value()), Some(lit_after))
+                        // Use the attribute span for value_span to avoid incorrect positioning
+                        (AttributeValue::Static(s.value()), None)
                     },
                     _ => {
                         return Err(Error::new(
