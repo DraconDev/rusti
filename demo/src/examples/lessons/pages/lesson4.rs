@@ -28,7 +28,7 @@ pub fn lesson4() -> impl azumi::Component {
                     </section>
 
                     <section class="section">
-                        <h2 class="section-title">"💻 @if / @else"</h2>
+                        <h2 class="section-title">"💻 @if / else"</h2>
                         <p>"Conditional rendering with Rust expressions:"</p>
                         <pre class="code-block">"@if logged_in {\n    <button>\"Log Out\"</button>\n} else {\n    <button>\"Log In\"</button>\n}"</pre>
 

@@ -1,33 +1,39 @@
 # Complete 20-Lesson Azumi Curriculum
-*Featuring Control Flow, Components, JavaScript Integration & Advanced Patterns*
+
+_Featuring Control Flow, Components, JavaScript Integration & Advanced Patterns_
 
 ## Phase 1: Foundation Building (Lessons 1-5)
 
 ### Lesson 1: "Getting Started with Azumi"
+
 - What is type-safe HTML
 - Why strict typing matters
 - Your first template
 - Visual comparisons with traditional templates
 
 ### Lesson 2: "The Quoting Fundamentals"
+
 - Rule 1: Quote all text content
 - Rule 2: Quote all attributes
 - Nested quotes and escaping
 - Common mistakes and solutions
 
 ### Lesson 3: "CSS Integration Basics"
+
 - Adding styles to templates
 - CSS validation concepts
 - First styling exercise
 - Understanding CSS vs Azumi CSS
 
 ### Lesson 4: "Understanding Scoping"
+
 - What is CSS scoping
 - Local vs global styles
 - Preventing style conflicts
 - Simple scoping exercise
 
 ### Lesson 5: "Variables & Data Binding"
+
 - Passing data to templates
 - Type safety in practice
 - Simple variable usage
@@ -36,30 +42,35 @@
 ## Phase 2: Control Flow Mastery (Lessons 6-10)
 
 ### Lesson 6: "Conditional Content with @if"
+
 - Basic @if syntax and usage
 - Boolean expressions in templates
-- @else and @else if chains
+- else and else if chains
 - Practical conditional rendering examples
 
 ### Lesson 7: "Loops & Iteration with @for"
+
 - @for loops and syntax
 - Iterating over arrays and ranges
 - Index tracking in loops
 - Building dynamic lists and tables
 
 ### Lesson 8: "Pattern Matching with @match"
+
 - @match syntax and power
 - Enum pattern matching
 - Complex conditional logic
 - Practical pattern matching examples
 
 ### Lesson 9: "Local Variables with @let"
+
 - @let syntax and scoping
 - Computed values in templates
 - Temporary variable usage
 - Complex data transformations
 
 ### Lesson 10: "Advanced Control Flow Patterns"
+
 - Combining @if, @for, @match, @let
 - Nested control structures
 - Performance considerations
@@ -68,30 +79,35 @@
 ## Phase 3: Component Architecture (Lessons 11-15)
 
 ### Lesson 11: "Introduction to Components"
+
 - Component concept and benefits
 - When to create components
 - Basic component structure
 - Simple component examples
 
 ### Lesson 12: "Component Props & Data Flow"
+
 - Defining component interfaces
 - Type-safe prop passing
 - Default values and validation
 - Complex prop patterns
 
 ### Lesson 13: "Component Composition"
+
 - Parent-child relationships
 - Component nesting
 - Shared state management
 - Composition patterns
 
 ### Lesson 14: "Component State Management"
+
 - Internal component state
 - State updates and re-rendering
 - Controlled vs uncontrolled components
 - State lifecycle management
 
 ### Lesson 15: "Advanced Component Patterns"
+
 - Higher-order components
 - Render props pattern
 - Component composition techniques
@@ -100,18 +116,21 @@
 ## Phase 4: JavaScript & Interactivity (Lessons 16-18)
 
 ### Lesson 16: "JavaScript Integration"
+
 - Loading external JavaScript
 - Script tag usage and safety
 - Interacting with DOM elements
 - Event handling integration
 
 ### Lesson 17: "Interactive Components"
+
 - Building interactive UIs
 - State synchronization with JS
 - Form handling and validation
 - Real-time updates
 
 ### Lesson 18: "HTMX & Server Integration"
+
 - HTMX integration with Azumi
 - Progressive enhancement
 - Dynamic content loading
@@ -120,12 +139,14 @@
 ## Phase 5: Production & Advanced (Lessons 19-20)
 
 ### Lesson 19: "Layout Systems & Architecture"
+
 - Layout component patterns
 - Multi-page application structure
 - Navigation systems
 - Application architecture
 
 ### Lesson 20: "Production Patterns & Deployment"
+
 - Error handling strategies
 - Performance optimization
 - Testing components
@@ -138,12 +159,14 @@
 ### Lesson 6: "Conditional Content with @if" - Detailed
 
 **Learning Objectives:**
+
 - Master @if syntax and basic usage
 - Understand boolean expressions in templates
-- Learn @else and @else if chains
+- Learn else and else if chains
 - Build practical conditional rendering
 
 **Key Code Examples:**
+
 ```rust
 // Basic @if usage
 html! {
@@ -154,7 +177,7 @@ html! {
     </div>
 }
 
-// @else and @else if
+// else and else if
 html! {
     <div>
         @if user.role == "admin" {
@@ -182,12 +205,14 @@ html! {
 ### Lesson 8: "Pattern Matching with @match" - Detailed
 
 **Learning Objectives:**
+
 - Master @match syntax and power
 - Understand enum pattern matching
 - Learn complex conditional logic
 - Build practical pattern matching examples
 
 **Key Code Examples:**
+
 ```rust
 // Basic @match usage
 #[derive(Debug)]
@@ -240,12 +265,14 @@ html! {
 ### Lesson 9: "Local Variables with @let" - Detailed
 
 **Learning Objectives:**
+
 - Master @let syntax and scoping
 - Understand computed values
 - Learn temporary variable usage
 - Build complex data transformations
 
 **Key Code Examples:**
+
 ```rust
 // Basic @let usage
 html! {
@@ -264,7 +291,7 @@ html! {
             &user.nickname
         };
         @let is_new_user = user.created_at.days_since_now() < 7;
-        
+
         <h3>{display_name}</h3>
         @if is_new_user {
             <span class="new-user-badge">"New!"</span>
@@ -280,7 +307,7 @@ html! {
             comments.sort_by(|a, b| b.created_at.cmp(&a.created_at));
             comments
         };
-        
+
         @for comment in sorted_comments {
             <div class="comment">
                 <p>{&comment.content}</p>
@@ -294,12 +321,14 @@ html! {
 ### Lesson 16: "JavaScript Integration" - Detailed
 
 **Learning Objectives:**
+
 - Learn to load external JavaScript safely
 - Understand script tag usage
 - Interact with DOM elements
 - Handle events integration
 
 **Key Code Examples:**
+
 ```rust
 // Loading external JavaScript
 html! {
@@ -317,7 +346,7 @@ html! {
                     "Click me: 0"
                 </button>
             </div>
-            
+
             <script>
                 r#"
                 let counter = 0;
@@ -340,7 +369,7 @@ html! {
                 <p>{"Points: " user.points}</p>
             </div>
         </div>
-        
+
         <script>
             {format!(r#"
                 const userData = {{
@@ -348,12 +377,12 @@ html! {
                     name: "{}",
                     points: {}
                 }};
-                
+
                 function initDashboard() {{
                     console.log('Dashboard initialized for:', userData.name);
                     updateUserInterface(userData);
                 }}
-                
+
                 document.addEventListener('DOMContentLoaded', initDashboard);
             "#, user.id, user.name, user.points)}
         </script>
@@ -364,12 +393,14 @@ html! {
 ### Lesson 12: "Component Props & Data Flow" - Detailed
 
 **Learning Objectives:**
+
 - Define component interfaces
 - Type-safe prop passing
 - Default values and validation
 - Complex prop patterns
 
 **Key Code Examples:**
+
 ```rust
 // Basic component with props
 #[derive(Clone)]
@@ -385,18 +416,18 @@ fn user_card(props: UserCardProps) -> impl azumi::Component {
         <div class="user-card">
             @if let Some(avatar) = &props.avatar_url {
                 <img src={avatar} alt={format!("{}'s avatar", props.name)} class="avatar" />
-            } @else {
+            } else {
                 <div class="avatar-placeholder">
                     {&props.name.chars().next().unwrap_or('?').to_uppercase().to_string()}
                 </div>
             }
-            
+
             <div class="user-info">
                 <h3>{&props.name}</h3>
                 <p>{&props.email}</p>
                 @if props.is_online {
                     <span class="online-indicator">"🟢 Online"</span>
-                } @else {
+                } else {
                     <span class="offline-indicator">"🔴 Offline"</span>
                 }
             </div>
@@ -446,12 +477,12 @@ impl Default for ButtonProps {
 fn button(props: ButtonProps) -> impl azumi::Component {
     let variant_class = match props.variant {
         ButtonVariant::Primary => "btn-primary",
-        ButtonVariant::Secondary => "btn-secondary", 
+        ButtonVariant::Secondary => "btn-secondary",
         ButtonVariant::Danger => "btn-danger",
     };
-    
+
     html! {
-        <button 
+        <button
             class={format!("btn {}", variant_class)}
             disabled={props.disabled}
         >

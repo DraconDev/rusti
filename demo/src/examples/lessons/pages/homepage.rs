@@ -65,7 +65,7 @@ pub fn homepage() -> impl azumi::Component {
                             <a href="/lesson-6" class="lesson-card core">
                                 <div class="lesson-card-number">"Control Flow"</div>
                                 <h3 class="lesson-card-title">"Conditional Content with @if"</h3>
-                                <p class="lesson-card-desc">"Build dynamic UIs with @if, @else, and complex boolean expressions."</p>
+                                <p class="lesson-card-desc">"Build dynamic UIs with @if, else, and complex boolean expressions."</p>
                             </a>
                             <a href="/lesson-7" class="lesson-card core">
                                 <div class="lesson-card-number">"Control Flow"</div>
