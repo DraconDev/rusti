@@ -159,9 +159,9 @@ html! {
     <div>
         @if user.role == "admin" {
             <p>"Admin Dashboard"</p>
-        } @else if user.role == "user" {
+        } else if user.role == "user" {
             <p>"User Portal"</p>
-        } @else {
+        } else {
             <p>"Guest Access"</p>
         }
     </div>
