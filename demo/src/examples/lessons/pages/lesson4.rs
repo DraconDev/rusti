@@ -4,7 +4,7 @@
 use azumi::html;
 
 /// Todo list renderer using @for loop
-pub fn todo_list(todos: &[&str]) -> impl azumi::Component + '_ {
+pub fn todo_list<'a>(todos: &'a [&'a str]) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson4.css" />
         <div class="lesson4-container">
