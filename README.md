@@ -522,21 +522,6 @@ html! {
     </button>
 }
 ```
-
-**button.css:**
-
-```css
-.btn {
-  background: #4f46e5;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-}
-.btn:hover {
-  background: #4338ca;
-}
-```
-
 ---
 
 ## 📦 Installation
