@@ -57,9 +57,11 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
     let mut lines = css_content.lines().enumerate();
     
     eprintln!("🔍 Parsing CSS file: {}", file_path);
+    eprintln!("📄 CSS content preview (first 200 chars): {:?}", &css_content[..css_content.len().min(200)]);
     
     while let Some((line_num, line)) = lines.next() {
         let trimmed = line.trim();
+        eprintln!("🔍 Line {}: '{}' (trimmed: '{}')", line_num + 1, line, trimmed);
         
         // Skip @-rules, comments, and empty lines
         if trimmed.starts_with('@') || trimmed.starts_with("/*") || trimmed.is_empty() {
@@ -71,6 +73,7 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
                     }
                 }
             }
+            eprintln!("⏭️  Skipping line (comment/empty/@-rule)");
             continue;
         }
         
@@ -105,6 +108,8 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
                     break;
                 }
             }
+        } else {
+            eprintln!("❌ No brace found in line: '{}'", trimmed);
         }
     }
     
