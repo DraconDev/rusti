@@ -22,6 +22,7 @@ pub fn data_view(ok_data: bool) -> impl azumi::Component {
                     </ul>
                 },
                 Err(error) => <p class="error">{format!("Error: {}", error)}</p>,
+                _ => <p class="error">{"Unknown error"}</p>,
             }
         </div>
     }
