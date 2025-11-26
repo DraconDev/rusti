@@ -392,11 +392,14 @@ pub fn resolve_css_file_path(css_path: &str) -> String {
         // 4. From workspace root -> demo (e.g. azumi/demo/style.css)
         manifest_path.join("demo").join(clean_path).to_string_lossy().to_string(),
         
-        // 5. From workspace root -> demo/src/examples/lessons (e.g. azumi/demo/src/examples/lessons/style.css)
-        manifest_path.join("demo").join("src").join("examples").join("lessons").join(clean_path).to_string_lossy().to_string(),
+        // 5. From manifest dir -> src/examples/lessons (e.g. demo/src/examples/lessons/style.css)
+        manifest_path.join("src").join("examples").join("lessons").join(clean_path).to_string_lossy().to_string(),
         
-        // 6. From workspace root -> demo/src (e.g. azumi/demo/src/style.css)
-        manifest_path.join("demo").join("src").join(clean_path).to_string_lossy().to_string(),
+        // 6. From manifest dir -> src/examples (e.g. demo/src/examples/style.css)
+        manifest_path.join("src").join("examples").join(clean_path).to_string_lossy().to_string(),
+        
+        // 7. From manifest dir -> src (e.g. demo/src/style.css)
+        manifest_path.join("src").join(clean_path).to_string_lossy().to_string(),
     ];
     
     eprintln!("🔍 Resolving CSS path: '{}' from '{}'", css_path, manifest_dir);
