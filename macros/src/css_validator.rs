@@ -104,14 +104,14 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
     defined_classes
 }
 
-/// Extract all class names used in HTML attributes
-pub fn extract_html_classes(nodes: &[Node]) -> HashSet<String> {
-    let mut used_classes = HashSet::new();
+/// Extract all class names used in HTML attributes with their spans
+pub fn extract_html_classes(nodes: &[Node]) -> HashMap<String, Vec<proc_macro2::Span>> {
+    let mut used_classes = HashMap::new();
     extract_html_classes_recursive(nodes, &mut used_classes);
     used_classes
 }
 
-fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashSet<String>) {
+fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<String, Vec<proc_macro2::Span>>) {
     for node in nodes {
         match node {
             Node::Element(elem) => {
@@ -119,10 +119,12 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashSet<Str
                 if let Some(class_attr) = elem.attrs.iter().find(|attr| attr.name == "class") {
                     match &class_attr.value {
                         AttributeValue::Static(class_string) => {
-                            // Split by whitespace and add each class
+                            // Split by whitespace and add each class with its span
                             for class in class_string.split_whitespace() {
                                 if !class.is_empty() {
-                                    used_classes.insert(class.to_string());
+                                    used_classes.entry(class.to_string())
+                                        .or_insert_with(Vec::new)
+                                        .push(class_attr.span);
                                 }
                             }
                         }
@@ -168,35 +170,26 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashSet<Str
 
 /// Validate that all HTML classes exist in CSS files
 pub fn validate_css_classes(
-    used_classes: &HashSet<String>,
+    used_classes: &HashMap<String, Vec<proc_macro2::Span>>,
     defined_classes: &HashSet<String>,
 ) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     
     // Check for undefined classes (used but not defined)
-    let undefined_classes: Vec<_> = used_classes
-        .difference(defined_classes)
-        .cloned()
-        .collect();
-    
-    if !undefined_classes.is_empty() {
-        for class_name in undefined_classes {
+    for (class_name, spans) in used_classes {
+        if !defined_classes.contains(class_name) {
             errors.push(ValidationError::UndefinedClass {
-                class_name,
+                class_name: class_name.clone(),
+                spans: spans.clone(),
             });
         }
     }
     
     // Check for dead CSS (defined but not used)
-    let dead_classes: Vec<_> = defined_classes
-        .difference(used_classes)
-        .cloned()
-        .collect();
-    
-    if !dead_classes.is_empty() {
-        for class_name in dead_classes {
+    for class_name in defined_classes {
+        if !used_classes.contains_key(class_name) {
             errors.push(ValidationError::DeadCss {
-                class_name,
+                class_name: class_name.clone(),
             });
         }
     }
@@ -213,6 +206,7 @@ pub fn validate_css_classes(
 pub enum ValidationError {
     UndefinedClass {
         class_name: String,
+        spans: Vec<proc_macro2::Span>,
     },
     DeadCss {
         class_name: String,
@@ -222,7 +216,7 @@ pub enum ValidationError {
 impl std::fmt::Display for ValidationError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValidationError::UndefinedClass { class_name } => {
+            ValidationError::UndefinedClass { class_name, .. } => {
                 write!(f, 
                     "CSS Validation Error: Class '{}' is used in HTML but not defined in any CSS file.\n\
                     \nThis could be:\n\
@@ -439,7 +433,12 @@ mod tests {
 
     #[test]
     fn test_validate_missing_classes() {
-        let used = HashSet::from(["btn".to_string(), "undefined-class".to_string()]);
+        use proc_macro2::Span;
+        
+        let mut used = HashMap::new();
+        used.insert("btn".to_string(), vec![Span::call_site()]);
+        used.insert("undefined-class".to_string(), vec![Span::call_site()]);
+        
         let defined = HashSet::from(["btn".to_string(), "card".to_string()]);
         
         let result = validate_css_classes(&used, &defined);
@@ -448,8 +447,9 @@ mod tests {
         if let Err(errors) = result {
             assert_eq!(errors.len(), 1);
             match &errors[0] {
-                ValidationError::UndefinedClass { class_name } => {
+                ValidationError::UndefinedClass { class_name, spans } => {
                     assert_eq!(class_name, "undefined-class");
+                    assert_eq!(spans.len(), 1);
                 }
                 _ => panic!("Expected UndefinedClass error"),
             }
@@ -458,7 +458,11 @@ mod tests {
 
     #[test]
     fn test_validate_dead_css() {
-        let used = HashSet::from(["btn".to_string()]);
+        use proc_macro2::Span;
+        
+        let mut used = HashMap::new();
+        used.insert("btn".to_string(), vec![Span::call_site()]);
+        
         let defined = HashSet::from(["btn".to_string(), "unused-class".to_string()]);
         
         let result = validate_css_classes(&used, &defined);

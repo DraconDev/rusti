@@ -13,6 +13,8 @@ Roadmap & TODO
 
 ### 1. Comprehensive README
 
+one change is that we are hating on tailwind and using a custom css parser, we are not using any css framework, only css and all the css is scoped to the component, and all css must have a match in the css file, and all css must be used in the component
+
 -   [ ] Clear explanation of what Azumi is and is NOT
 -   [ ] Design philosophy and why we made our choices
 
