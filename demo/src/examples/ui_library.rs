@@ -34,7 +34,7 @@ fn ui_library_demo() -> impl Component {
                                     @Button(text="Large Primary", variant="primary", size="large")
                                     @Button(text="Disabled", variant="primary", disabled=true)
                                 </div>
-                                
+
                                 <div class="button-group">
                                     <p>"Secondary Buttons:"</p>
                                     @Button(text="Secondary", variant="secondary")
@@ -64,7 +64,7 @@ fn ui_library_demo() -> impl Component {
                                     <p>"This is a simple card component with children content."</p>
                                     <button class="btn-small">"Action"</button>
                                 }
-                                
+
                                 @Card(
                                     title="Featured Card",
                                     variant="featured"
@@ -106,12 +106,12 @@ fn ui_library_demo() -> impl Component {
                                     <label>"Loading Progress:"</label>
                                     @ProgressBar(progress=75, show_percentage=true)
                                 </div>
-                                
+
                                 <div class="progress-item">
                                     <label>"Upload Progress:"</label>
                                     @ProgressBar(progress=45, variant="success", show_percentage=true)
                                 </div>
-                                
+
                                 <div class="progress-item">
                                     <label>"Task Completion:"</label>
                                     @ProgressBar(progress=100, variant="success", show_percentage=true)
@@ -148,9 +148,9 @@ fn Button(
     #[prop(default = "false")] disabled: bool,
 ) -> impl Component {
     let button_class = format!("button {} {} {}", variant, size, style);
-    
+
     html! {
-        <button 
+        <button
             class={button_class}
             disabled={disabled}
             >
@@ -171,17 +171,17 @@ fn Button(
 fn Card(
     title: &'static str,
     #[prop(default = "\"default\"")] variant: &'static str,
-    children: impl Component,
+    #[prop(default = "\"\"")] content: &'static str,
 ) -> impl Component {
     let card_class = format!("card {}", variant);
-    
+
     html! {
         <div class={card_class}>
             <div class="card-header">
                 <h3>{title}</h3>
             </div>
             <div class="card-body">
-                {children}
+                <p>{content}</p>
             </div>
         </div>
     }
@@ -194,7 +194,7 @@ fn Card(
 #[azumi::component]
 fn StatusBadge(status: &'static str, text: &'static str) -> impl Component {
     let badge_class = format!("status-badge {}", status);
-    
+
     html! {
         <span class={badge_class}>
             <span class="status-dot"></span>
@@ -221,7 +221,7 @@ fn ProgressBar(
     } else {
         "".to_string()
     };
-    
+
     html! {
         <div class="progress-container">
             <div class={progress_class}>
@@ -242,19 +242,16 @@ fn ProgressBar(
 // ========================================
 
 #[azumi::component]
-fn InteractiveToggle(
-    initial_state: bool,
-    label: &'static str,
-) -> impl Component {
+fn InteractiveToggle(initial_state: bool, label: &'static str) -> impl Component {
     let toggle_id = format!("toggle-{}", label.replace(" ", "-").to_lowercase());
     let checked_class = if initial_state { "checked" } else { "" };
-    
+
     html! {
         <div class="toggle-item">
             <label for={toggle_id} class="toggle-label">{label}</label>
             <div class="toggle-wrapper">
-                <input 
-                    type="checkbox" 
+                <input
+                    type="checkbox"
                     id={toggle_id}
                     class="toggle-input"
                     checked={initial_state}
