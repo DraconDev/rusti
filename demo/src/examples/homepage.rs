@@ -147,7 +147,7 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
 }
 
 #[azumi::component]
-fn test_card2() {
+fn test_card2() -> impl azumi::Component {
     html! {
         <style src="/static/test_card2.css" />
         <div class="card2">
