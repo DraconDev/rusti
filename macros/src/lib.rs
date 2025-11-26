@@ -4,7 +4,6 @@ mod component;
 mod css;
 mod css_validator;
 mod test_spacing;
-mod test_spacing;
 mod token_parser;
 
 use proc_macro::TokenStream;
