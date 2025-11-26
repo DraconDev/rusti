@@ -11,3 +11,7 @@ pub fn lessona() -> impl azumi::Component {
         </div>
     }
 }
+
+pub async fn lesson1_handler() -> impl IntoResponse {
+    Html(azumi::render_to_string(&lessona()))
+}
