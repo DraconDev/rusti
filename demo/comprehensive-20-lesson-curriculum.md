@@ -1,19 +1,24 @@
-# Code-Focused 20-Lesson Azumi Curriculum
+# True Code-Focused 20-Lesson Azumi Curriculum
 
-_Learning through Working Examples - Code First, Documentation Separate_
+_Learning through Working Source Code Examples_
 
-## Philosophy: Code as Teacher
+## Philosophy: Source Code is the Teacher
 
-Each lesson is a complete, working code example that demonstrates a specific concept. The code itself teaches - no verbose explanations needed. Separate README provides comprehensive documentation.
+Each lesson is a standalone, working Rust source file that demonstrates a specific Azumi concept. The actual code files ARE the lessons. People can:
 
-## Lesson Structure (Code-Focused)
+- View the rendered output in the browser
+- Access and study the actual source code
+- Copy, modify, and run the examples
+- Learn by doing, not reading
+
+## Updated Lesson Structure
 
 ### Phase 1: Foundation Building (Lessons 1-5)
 
-#### Lesson 1: "Hello World Template"
+#### Lesson 1: hello_world.rs
 
 ```rust
-// First working Azumi template
+// Simple template showing basic structure
 pub fn hello_world() -> impl azumi::Component {
     html! {
         <div>
@@ -23,7 +28,7 @@ pub fn hello_world() -> impl azumi::Component {
 }
 ```
 
-#### Lesson 2: "Data Binding Basics"
+#### Lesson 2: data_binding.rs
 
 ```rust
 // Passing data to templates
@@ -36,7 +41,7 @@ pub fn user_greeting(user: &User) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 3: "Conditional Rendering"
+#### Lesson 3: conditional_rendering.rs
 
 ```rust
 // Using @if for conditional content
@@ -53,7 +58,7 @@ pub fn user_status(user: &User) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 4: "Loops and Iteration"
+#### Lesson 4: loops_and_iteration.rs
 
 ```rust
 // Using @for to render lists
@@ -68,7 +73,7 @@ pub fn todo_list(todos: &[Todo]) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 5: "CSS Integration"
+#### Lesson 5: css_integration.rs
 
 ```rust
 // Adding styles to templates
@@ -82,7 +87,7 @@ pub fn styled_button() -> impl azumi::Component {
 
 ### Phase 2: Control Flow Mastery (Lessons 6-10)
 
-#### Lesson 6: "Pattern Matching"
+#### Lesson 6: pattern_matching.rs
 
 ```rust
 // Using @match for complex conditions
@@ -99,7 +104,7 @@ pub fn user_role_display(user: &User) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 7: "Local Variables"
+#### Lesson 7: local_variables.rs
 
 ```rust
 // Using @let for computed values
@@ -113,7 +118,7 @@ pub fn formatted_price(product: &Product) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 8: "Nested Control Flow"
+#### Lesson 8: nested_control_flow.rs
 
 ```rust
 // Combining @if, @for, @match
@@ -136,7 +141,7 @@ pub fn dashboard(user: &User) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 9: "Advanced List Processing"
+#### Lesson 9: advanced_list_processing.rs
 
 ```rust
 // Complex data transformations
@@ -161,7 +166,7 @@ pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 10: "Error States and Loading"
+#### Lesson 10: error_states_and_loading.rs
 
 ```rust
 // Handling different data states
@@ -185,7 +190,7 @@ pub fn data_view(data: &Result<Vec<Item>, String>) -> impl azumi::Component {
 
 ### Phase 3: Component Architecture (Lessons 11-15)
 
-#### Lesson 11: "Simple Component"
+#### Lesson 11: simple_component.rs
 
 ```rust
 // Creating reusable components
@@ -207,7 +212,7 @@ pub fn button(props: ButtonProps) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 12: "Component with Children"
+#### Lesson 12: component_with_children.rs
 
 ```rust
 // Passing content to components
@@ -227,7 +232,7 @@ pub fn card(props: CardProps) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 13: "Component Composition"
+#### Lesson 13: component_composition.rs
 
 ```rust
 // Building complex UIs from simple components
@@ -259,7 +264,7 @@ pub fn user_profile(user: &User) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 14: "Component with State"
+#### Lesson 14: component_with_state.rs
 
 ```rust
 // Managing component state
@@ -275,7 +280,7 @@ pub fn counter(initial: u32) -> impl azumi::Component {
 }
 ```
 
-#### Lesson 15: "Reusable Form Component"
+#### Lesson 15: reusable_form_component.rs
 
 ```rust
 // Building flexible form components
@@ -302,7 +307,7 @@ pub fn form_field(props: FormFieldProps) -> impl azumi::Component {
 
 ### Phase 4: JavaScript & Interactivity (Lessons 16-18)
 
-#### Lesson 16: "JavaScript Integration"
+#### Lesson 16: javascript_integration.rs
 
 ```rust
 // Loading and using external JavaScript
@@ -341,7 +346,7 @@ pub fn interactive_chart() -> impl azumi::Component {
 }
 ```
 
-#### Lesson 17: "HTMX Integration"
+#### Lesson 17: htmx_integration.rs
 
 ```rust
 // Building interactive UIs without JavaScript frameworks
@@ -366,7 +371,7 @@ pub fn todo_with_htmx() -> impl azumi::Component {
 }
 ```
 
-#### Lesson 18: "Real-time Updates"
+#### Lesson 18: real_time_updates.rs
 
 ```rust
 // Combining HTMX with server-sent events
@@ -388,7 +393,7 @@ pub fn live_chat() -> impl azumi::Component {
 
 ### Phase 5: Production & Advanced (Lessons 19-20)
 
-#### Lesson 19: "Layout System"
+#### Lesson 19: layout_system.rs
 
 ```rust
 // Building reusable layout patterns
@@ -420,7 +425,7 @@ pub fn app_layout(title: &str, content: impl azumi::Component) -> impl azumi::Co
 }
 ```
 
-#### Lesson 20: "Full Application Example"
+#### Lesson 20: full_application_example.rs
 
 ```rust
 // Complete CRUD application
@@ -456,31 +461,29 @@ pub fn blog_post_editor(post: &Option<Post>) -> impl azumi::Component {
 
 ## Implementation Benefits
 
-This code-focused approach provides:
+This true code-focused approach provides:
 
-1. **Immediate Value**: Each lesson is a working example
-2. **Copy-Paste Ready**: Students can use examples directly
-3. **Progressive Complexity**: Each lesson builds on previous ones
+1. **Source Code Learning**: People learn from actual working Rust files
+2. **Copy-Paste Ready**: Every example can be copied and run immediately
+3. **Progressive Complexity**: Each lesson builds on previous concepts
 4. **Real-World Patterns**: Examples mirror production use cases
-5. **Minimal Cognitive Load**: No verbose explanations to parse
+5. **Zero Documentation Overhead**: Code teaches itself
 
-## Supporting Documentation
+## Web Pages
 
-**Separate README.md** provides:
+Web pages serve only to:
 
-- Comprehensive feature overview
-- Installation instructions
-- Advanced concepts
-- API reference
-- Best practices guide
-- Troubleshooting
+- Render the examples in the browser
+- Show the output of the code
+- Provide navigation between lessons
+- Display syntax-highlighted source code
 
-## Next Steps
+## Implementation Strategy
 
-1. **Create 20 focused code examples** following this structure
-2. **Build comprehensive README** for documentation
-3. **Test all examples** work correctly
-4. **Add interactive playground** for experimentation
-5. **Create quick reference guide** for common patterns
+1. **Create 20 working source code files** following this structure
+2. **Each file demonstrates ONE specific concept**
+3. **Web pages are minimal wrappers** around the rendered output
+4. **Focus on copy-paste ready examples** that teach by doing
+5. **Separate comprehensive README** for documentation
 
-This approach transforms learning from reading documentation to running and modifying real code examples.
+This transforms learning from reading documentation to studying and running real code examples.
