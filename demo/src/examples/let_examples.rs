@@ -618,15 +618,15 @@ fn let_examples_main() -> impl azumi::Component {
                         
                         <div class="syntax-guide">
                             <h3>"@let Syntax Patterns:"</h3>
-                            <div class="pattern-example">
+                            <div class="pattern-block">
                                 <h4>"Basic Assignment"</h4>
                                 <code>"@let name = "value";</code>
                             </div>
-                            <div class="pattern-example">
+                            <div class="pattern-block">
                                 <h4>"Pattern Matching with @match"</h4>
                                 <code>"@let display = match value { Pattern => "result", _ => "default" };"</code>
                             </div>
-                            <div class="pattern-example">
+                            <div class="pattern-block">
                                 <h4>"Conditional Assignment"</h4>
                                 <code>"@let status = if condition { "yes" } else { "no" };"</code>
                             </div>
@@ -645,9 +645,9 @@ fn let_examples_main() -> impl azumi::Component {
                     {utility_let_examples()}
                 </main>
                 
-                <footer class="page-footer">
-                    <p>"Built with Azumi • Pattern Matching & Variable Binding"</p>
-                </footer>
+                <page-footer class="page-footer">
+                    <p>"Built with Azumi - Pattern Matching and Variable Binding"</p>
+                </page-footer>
             </body>
         </html>
     }
