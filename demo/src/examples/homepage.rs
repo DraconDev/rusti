@@ -146,12 +146,6 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
     }
 }
 
-fn test_card2<'a>() -> impl azumi::Component + 'a {
-    html! {
-        <div>
-            <head>
-                <meta charset="UTF-8" />
-                <title>"Test Card 2"</title>
 #[azumi::component]
 fn test_card2() {
     html! {
