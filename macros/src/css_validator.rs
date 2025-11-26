@@ -223,7 +223,7 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     }
 
     // 2. Validate dead CSS (Warnings on <style> tags)
-    for (file_path, span, classes) in file_classes {
+    for (_file_path, span, classes) in file_classes {
         let mut unused = Vec::new();
         for class in classes {
             if !used_classes.contains_key(&class) {
