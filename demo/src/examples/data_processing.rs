@@ -81,7 +81,7 @@ fn SalesAnalysis() -> impl azumi::Component {
             <div class="stats-grid">
                 <div class="stat-item">
                     <h4>"Total Revenue"</h4>
-                    <p class="big-number">{format!("${:,}", total_revenue)}</p>
+                    <p class="big-number">{format!("${}", total_revenue)}</p>
                 </div>
                 <div class="stat-item">
                     <h4>"Total Orders"</h4>
@@ -89,7 +89,7 @@ fn SalesAnalysis() -> impl azumi::Component {
                 </div>
                 <div class="stat-item">
                     <h4>"Avg per Quarter"</h4>
-                    <p class="big-number">{format!("${:,}", avg_revenue_per_quarter)}</p>
+                    <p class="big-number">{format!("${}", avg_revenue_per_quarter)}</p>
                 </div>
                 <div class="stat-item">
                     <h4>"Best Quarter"</h4>
@@ -111,7 +111,7 @@ fn SalesAnalysis() -> impl azumi::Component {
                         <div class="bar">
                             <div class={format!("bar-fill {}", performance)} style={format!("width: {}%", (revenue / 1000) / 10)}></div>
                         </div>
-                        <span class="value">{format!("${:,}", revenue)}</span>
+                        <span class="value">{format!("${}", revenue)}</span>
                     </div>
                 }
             </div>
