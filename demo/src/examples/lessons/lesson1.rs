@@ -6,14 +6,14 @@ pub fn lesson1() -> impl azumi::Component {
     html! {
         <!DOCTYPE html>
         <html>
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>"Lesson 1: Hello World - Azumi"</title>
-                <style src="/static/global.css" />
-                <style src="lessons.css" />
-            </head>
-            <body>
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>"Lesson 1: Hello World - Azumi"</title>
+        <style src="/static/global.css" />
+                <style src="lesson1.css" />
+                </head>
+                <body>
                 <div class="lesson-container">
                     <header class="lesson-header">
                         <a href="/" class="back-link">"← Back to Lessons"</a>
