@@ -111,6 +111,18 @@
     color: var(--azumi-text-dim);
 }
 
+.comment-content {
+    color: var(--azumi-text);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-xs);
+}
+
+.comment-replies {
+    margin-top: var(--spacing-sm);
+    padding-left: var(--spacing-md);
+    border-left: 2px solid var(--azumi-text-dim);
+}
+
 .comment-actions {
     margin-top: var(--spacing-sm);
 }
