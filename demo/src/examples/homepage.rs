@@ -50,8 +50,8 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
-                        @Tailwind_card()
-                        @TestCard2()
+                        @tailwind_card()
+                        @testCard2()
                         <div class="grid">
                             @example_card(
                                 title = "Hello World",
