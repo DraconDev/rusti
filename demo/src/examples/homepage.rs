@@ -13,7 +13,7 @@ fn tailwind_card() -> impl azumi::Component {
 }
 
 #[azumi::component]
-fn testCard2() -> impl azumi::Component {
+fn TestCard2() -> impl azumi::Component {
     html! {
         <style src="/static/test_card2.css" />
         <div class="card2">
