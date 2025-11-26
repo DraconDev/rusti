@@ -126,14 +126,14 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<Str
                 if let Some(class_attr) = elem.attrs.iter().find(|attr| attr.name == "class") {
                     match &class_attr.value {
                         AttributeValue::Static(class_string) => {
-                            // For static class attributes, we can't easily calculate precise spans
-                            // due to proc_macro2 limitations, so we'll use the attribute span
-                            // and note this limitation in the error messages
+                            // For static class attributes, create a better span that points more precisely
+                            // We can't easily track exact character positions, so we'll use a span that
+                            // encompasses the entire attribute and adjust our error message
                             for class in class_string.split_whitespace() {
                                 if !class.is_empty() {
                                     used_classes.entry(class.to_string())
                                         .or_insert_with(Vec::new)
-                                        .push(class_attr.span);
+                                        .push(create_class_span(class_attr));
                                 }
                             }
                         }
