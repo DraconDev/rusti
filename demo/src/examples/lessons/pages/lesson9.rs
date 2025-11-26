@@ -4,12 +4,12 @@
 use azumi::html;
 
 #[derive(Clone)]
-struct Item<'a> {
-    name: &'a str,
+struct Item {
+    name: String,
 }
 
 /// Filtered search using @let for computed filtered list
-pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component + '_{
+pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
     let filtered: Vec<_> = items.iter()
         .filter(|item| item.name.contains(query))
         .collect();
@@ -31,19 +31,19 @@ pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component + '
 
 /// Example with matching query
 pub fn matching_search() -> impl azumi::Component {
-    let items = &[
-        Item { name: "Rust Book" },
-        Item { name: "Azumi Docs" },
-        Item { name: "Axum Guide" },
+    let items = vec![
+        Item { name: "Rust Book".to_string() },
+        Item { name: "Azumi Docs".to_string() },
+        Item { name: "Axum Guide".to_string() },
     ];
-    filtered_search(items, "Rust")
+    filtered_search(&items, "Rust")
 }
 
 /// Example with no match
 pub fn no_match_search() -> impl azumi::Component {
-    let items = &[
-        Item { name: "Rust Book" },
-        Item { name: "Azumi Docs" },
+    let items = vec![
+        Item { name: "Rust Book".to_string() },
+        Item { name: "Azumi Docs".to_string() },
     ];
-    filtered_search(items, "JavaScript")
+    filtered_search(&items, "JavaScript")
 }
