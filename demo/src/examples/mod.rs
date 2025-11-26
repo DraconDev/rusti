@@ -13,10 +13,9 @@ pub mod lesson3;
 pub mod lesson4;
 pub mod tailwind;
 pub mod simple_navigation;
-// Advanced examples (commented out pending fixes)
-// pub mod navigation_component;
-// pub mod advanced_patterns;
-// pub mod data_processing;
-// pub mod let_examples;
-// pub mod real_world_apps;
-// pub mod ui_library;
+pub mod advanced_components;
+pub mod advanced_patterns;
+pub mod data_processing;
+pub mod let_examples;
+pub mod real_world_apps;
+pub mod ui_library;
