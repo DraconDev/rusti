@@ -106,6 +106,16 @@ impl GenerationContext {
     }
 }
 
+fn has_nested_style(elem: &token_parser::Element) -> bool {
+    elem.children.iter().any(|child| {
+        if let token_parser::Node::Element(el) = child {
+            el.name == "style"
+        } else {
+            false
+        }
+    })
+}
+
 /// Recursively check if any <style> tags exist anywhere in the node tree
 fn has_any_styles(nodes: &[token_parser::Node]) -> bool {
     nodes.iter().any(|node| match node {

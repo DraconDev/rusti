@@ -19,7 +19,17 @@ pub fn htmx_todo() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <title>"HTMX Todo - Azumi"</title>
                 <script src="https://unpkg.com/htmx.org@1.9.10" />
-                <link rel="stylesheet" href="/static/todo.css" />
+                <style src="/static/todo.css" />
+                // <style>
+                //     .todo-item {
+                //         display: flex;
+                //         align-items: center;
+                //         gap: 10px;
+                //     }
+                // </style>
+                // <script>
+                //     console.log("HTMX Todo loaded");
+                // </script>
             </head>
             <body>
                 <div class="container">

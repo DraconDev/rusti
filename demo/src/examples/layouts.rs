@@ -17,8 +17,8 @@ fn page_content() -> impl azumi::Component {
         <html>
             <head>
                 <title>"Layouts Demo"</title>
-                <link rel="stylesheet" href="/static/homepage.css" />
-                <link rel="stylesheet" href="/static/layouts.css" />
+                <style src="/static/homepage.css" />
+                <style src="/static/layouts.css" />
             </head>
             <body>
                 <div class="clearfix">
