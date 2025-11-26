@@ -18,7 +18,7 @@ pub fn hello_world() -> impl azumi::Component {
 pub fn basic_template() -> impl azumi::Component {
     html! {
         <div>
-            <h1 style="">"Hello, World!"</h1>
+            <h1 style="color: red;">"Hello, World!"</h1>
             <h2>"Welcome to Azumi"</h2>
             <p>"This is a simple template showing basic structure"</p>
         </div>

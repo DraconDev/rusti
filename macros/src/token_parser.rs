@@ -32,6 +32,8 @@ pub struct Element {
 #[derive(Debug, Clone)]
 pub struct Attribute {
     pub name: String,
+    #[allow(dead_code)]
+    pub name_span: Span,
     pub value: AttributeValue,
     #[allow(dead_code)]
     pub span: Span,
@@ -348,6 +350,7 @@ For dynamic styles: use style attribute with expressions"
 
 impl Parse for Attribute {
     fn parse(input: ParseStream) -> Result<Self> {
+        let name_span = input.span();
         let name = parse_html_name(input)?;
         let span = input.span();
 
@@ -391,7 +394,7 @@ impl Parse for Attribute {
                     },
                     _ => {
                         return Err(Error::new(
-                            span,
+                            name_span,
                             format!("Attribute '{}' value must be a double-quoted string literal or dynamic expression {{...}}. Non-string literals are not allowed.", name)
                         ))
                     }
@@ -406,7 +409,7 @@ impl Parse for Attribute {
             // No = sign - must be a boolean attribute
             if !BOOLEAN_ATTRS.contains(&name.as_str()) {
                 return Err(Error::new(
-                    span,
+                    name_span,
                     format!("Attribute '{}' requires a value. Use {}=\"value\" or {}={{expr}}.\nOnly boolean attributes like 'disabled', 'checked', etc. can omit values.", name, name, name)
                 ));
             }
@@ -415,6 +418,7 @@ impl Parse for Attribute {
 
         Ok(Attribute {
             name,
+            name_span,
             value,
             span,
             value_span,

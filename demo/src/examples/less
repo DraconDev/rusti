@@ -9,7 +9,7 @@ use azumi::html;
 pub fn user_greeting(user: &User) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Hello " user.name "!"}</h1>
+            <h1>"Hello, " {user.name} "!"</h1>
         </div>
     }
 }
@@ -18,10 +18,10 @@ pub fn user_greeting(user: &User) -> impl azumi::Component {
 pub fn user_profile(user: &User) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Welcome, " user.name}</h1>
-            <p>{"Email: " user.email}</p>
-            <p>{"Role: " user.role}</p>
-            <p>{"Member since: " user.created_at}</p>
+            <h1>"Welcome, " {user.name}</h1>
+            <p>"Email: " {user.email}</p>
+            <p>"Role: " {user.role}</p>
+            <p>"Member since: " {user.created_at}</p>
         </div>
     }
 }
@@ -30,13 +30,34 @@ pub fn user_profile(user: &User) -> impl azumi::Component {
 pub fn personalized_content(user: &User) -> impl azumi::Component {
     html! {
         <div>
-            <h1>{"Hello " user.name "!"}</h1>
+            <h1>"Hello, " {user.name} "!"</h1>
             @if user.is_premium {
                 <p>"Thank you for being a premium member!"</p>
             } else {
                 <p>"Upgrade to premium for more features."</p>
             }
-            <p>{"You have " user.notification_count " new notifications"}</p>
+            <p>"You have " {user.notification_count.to_string()} " new notifications"</p>
+        </div>
+    }
+}
+
+/// Data binding with formatted strings
+pub fn product_display(product: &Product) -> impl azumi::Component {
+    html! {
+        <div>
+            <h2>{product.name}</h2>
+            <p>"Price: $" {product.price.to_string()}</p>
+            <p>"In stock: " {product.stock.to_string()} " units"</p>
+        </div>
+    }
+}
+
+/// Simple string formatting in templates
+pub fn formatted_text(text: &str, count: u32) -> impl azumi::Component {
+    html! {
+        <div>
+            <p>"Text: " {text}</p>
+            <p>"Count: " {count.to_string()}</p>
         </div>
     }
 }
@@ -49,4 +70,10 @@ pub struct User {
     pub created_at: String,
     pub is_premium: bool,
     pub notification_count: u32,
+}
+
+pub struct Product {
+    pub name: String,
+    pub price: f64,
+    pub stock: u32,
 }
