@@ -288,14 +288,30 @@ html! {
 </div>
 ```
 
-**Opting Out of Scoping:**
-Use `:global()` to prevent scoping for specific selectors:
+**CSS Variables Across Components:**
+
+CSS variables defined in a component ARE accessible to child components because they inherit through the DOM:
 
 ```css
-:global(body) {
-    margin: 0;
+/* parent.css */
+:root {
+    --primary-color: #4f46e5;
+    --spacing: 1rem;
+}
+.container {
+    background: var(--primary-color);
 }
 ```
+
+```css
+/* child.css */
+.button {
+    color: var(--primary-color); /* ✅ Works! Inherits from parent */
+    margin: var(--spacing);
+}
+```
+
+This is standard CSS behavior - scoping only affects **selectors**, not CSS custom properties.
 
 ### 6. Compile-Time CSS Validation
 
