@@ -6,7 +6,6 @@
 /// 3. No dead CSS or undefined classes
 
 use std::collections::{HashSet, HashMap};
-use std::path::Path;
 
 /// Re-export token_parser types for use in this module
 use crate::token_parser::{Node, Element, AttributeValue, Block, IfBlock, ForBlock, MatchBlock, CallBlock, Fragment};
@@ -53,11 +52,11 @@ fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
 }
 
 /// Parse CSS content and extract all defined class names
-pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> {
+pub fn parse_css_classes(css_content: &str, _file_path: &str) -> HashSet<String> {
     let mut defined_classes = HashSet::new();
     let mut lines = css_content.lines().enumerate();
     
-    while let Some((line_num, line)) = lines.next() {
+    while let Some((_line_num, line)) = lines.next() {
         let trimmed = line.trim();
         
         // Skip @-rules, comments, and empty lines
@@ -128,7 +127,7 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<Str
                                 }
                             }
                         }
-                        AttributeValue::Dynamic(expr) => {
+                        AttributeValue::Dynamic(_expr) => {
                             // For dynamic expressions, we can't validate at compile time
                             // but we should warn about this
                             eprintln!("Warning: Dynamic class attribute detected. Cannot validate at compile time.");
@@ -390,6 +389,12 @@ pub fn resolve_css_file_path(css_path: &str) -> String {
         
         // 4. From workspace root -> demo (e.g. azumi/demo/style.css)
         manifest_path.join("demo").join(clean_path).to_string_lossy().to_string(),
+        
+        // 5. From workspace root -> demo/src/examples/lessons (e.g. azumi/demo/src/examples/lessons/style.css)
+        manifest_path.join("demo").join("src").join("examples").join("lessons").join(clean_path).to_string_lossy().to_string(),
+        
+        // 6. From workspace root -> demo/src (e.g. azumi/demo/src/style.css)
+        manifest_path.join("demo").join("src").join(clean_path).to_string_lossy().to_string(),
     ];
     
     eprintln!("🔍 Resolving CSS path: '{}' from '{}'", css_path, manifest_dir);
