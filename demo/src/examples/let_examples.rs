@@ -383,8 +383,8 @@ fn data_processing_let_examples() -> impl azumi::Component {
                     rate if rate >= 60 => "Fair", 
                     _ => "Needs Improvement",
                 };
-                <p>"Passing students: " {passing_scores.len()} "/" {raw_scores.len()}</p>
-                <p>"Passing rate: " {passing_rate}"%"</p>
+                <p>{format!("Passing students: {} / {}", passing_scores.len(), raw_scores.len())}</p>
+                <p>{format!("Passing rate: {}%", passing_rate)}</p>
                 <p>"Overall performance: " {performance_level}</p>
             </div>
         </div>
