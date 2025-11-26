@@ -10,7 +10,6 @@ pub fn lesson2() -> impl azumi::Component {
                     <meta charset="UTF-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                     <title>"Lesson 2: The Quoting Fundamentals - Azumi"</title>
-                    <style src="/static/pages/lessons.css" />
                     <style src="/static/pages/lesson2.css" />
                 </head>
                 <body>
