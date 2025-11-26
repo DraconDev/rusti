@@ -21,4 +21,3 @@ one change is that we are hating on tailwind and using a custom css parser, we a
 ### 3. Developer Experience
 
 -   [ ] Add CSS peek extension recommendation to README
--   [ ] Include rust-analyzer workspace settings for CSS files
