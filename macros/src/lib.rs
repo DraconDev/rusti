@@ -199,12 +199,10 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     // Extract valid selectors from the SCOPED CSS only (global CSS is opt-out)
     let (valid_classes, valid_ids) = crate::css::extract_selectors(&scoped_css);
 
-    // Validate nodes against strict rules
-    if let Err(e) = validate_nodes(nodes, &valid_classes, &valid_ids) {
-        // For now, just print to stderr so we don't break the build for other examples
-        // In a real strict mode, we would return the compile_error!
-        eprintln!("CSS Validation Error: {}", e);
-        // return quote! { compile_error!(#e); };
+    // Validate nodes against strict rules - COMPILE ERRORS
+    let style_validation_errors = validate_nodes(nodes, &valid_classes, &valid_ids);
+    if !style_validation_errors.is_empty() {
+        return style_validation_errors;
     }
 
     // Pass 1: Check if component has any style tags
@@ -264,78 +262,92 @@ fn validate_nodes(
     nodes: &[token_parser::Node],
     valid_classes: &std::collections::HashSet<String>,
     valid_ids: &std::collections::HashSet<String>,
-) -> Result<(), String> {
-    for node in nodes {
-        match node {
-            token_parser::Node::Element(elem) => {
-                // Check attributes
-                for attr in &elem.attrs {
-                    let name = &attr.name;
+) -> proc_macro2::TokenStream {
+    use quote::quote_spanned;
+    let mut errors = vec![];
 
-                    // Rule 1: Ban inline styles
-                    if name == "style" {
-                        return Err(
-                            "Inline styles are banned. Use CSS classes instead.".to_string()
-                        );
-                    }
+    fn collect_errors_recursive(
+        nodes: &[token_parser::Node],
+        valid_classes: &std::collections::HashSet<String>,
+        valid_ids: &std::collections::HashSet<String>,
+        errors: &mut Vec<proc_macro2::TokenStream>,
+    ) {
+        for node in nodes {
+            match node {
+                token_parser::Node::Element(elem) => {
+                    for attr in &elem.attrs {
+                        let name = &attr.name;
 
-                    // Rule 2: Check class existence
-                    if name == "class" {
-                        if let token_parser::AttributeValue::Static(val) = &attr.value {
-                            for class_name in val.split_whitespace() {
-                                if !valid_classes.contains(class_name) {
-                                    return Err(format!(
-                                        "Class '{}' is used in HTML but not defined in CSS.",
-                                        class_name
-                                    ));
+                        // Rule 1: Ban inline styles - COMPILE ERROR
+                        if name == "style" {
+                            errors.push(quote_spanned! { attr.span =>
+                                compile_error!("Inline styles banned. Use CSS classes instead.");
+                            });
+                        }
+
+                        // Rule 2: Check class existence - COMPILE ERROR
+                        if name == "class" {
+                            if let token_parser::AttributeValue::Static(val) = &attr.value {
+                                for class_name in val.split_whitespace() {
+                                    if !valid_classes.contains(class_name) {
+                                        errors.push(quote_spanned! { attr.span =>
+                                            compile_error!(format!("Class '{}' is used in HTML but not defined in CSS.", class_name));
+                                        });
+                                    }
+                                }
+                            }
+                        }
+
+                        // Rule 3: Check ID existence - COMPILE ERROR
+                        if name == "id" {
+                            if let token_parser::AttributeValue::Static(val) = &attr.value {
+                                if !valid_ids.contains(val) {
+                                    errors.push(quote_spanned! { attr.span =>
+                                        compile_error!(format!("ID '{}' is used in HTML but not defined in CSS.", val));
+                                    });
                                 }
                             }
                         }
                     }
 
-                    // Rule 3: Check ID existence
-                    if name == "id" {
-                        if let token_parser::AttributeValue::Static(val) = &attr.value {
-                            if !valid_ids.contains(val) {
-                                return Err(format!(
-                                    "ID '{}' is used in HTML but not defined in CSS.",
-                                    val
-                                ));
-                            }
+                    // Recurse
+                    collect_errors_recursive(&elem.children, valid_classes, valid_ids, errors);
+                }
+                token_parser::Node::Fragment(frag) => {
+                    collect_errors_recursive(&frag.children, valid_classes, valid_ids, errors);
+                }
+                token_parser::Node::Block(block) => match block {
+                    token_parser::Block::If(if_block) => {
+                        collect_errors_recursive(&if_block.then_branch, valid_classes, valid_ids, errors);
+                        if let Some(else_branch) = &if_block.else_branch {
+                            collect_errors_recursive(else_branch, valid_classes, valid_ids, errors);
                         }
                     }
-                }
-
-                // Recurse
-                validate_nodes(&elem.children, valid_classes, valid_ids)?;
-            }
-            token_parser::Node::Fragment(frag) => {
-                validate_nodes(&frag.children, valid_classes, valid_ids)?;
-            }
-            token_parser::Node::Block(block) => match block {
-                token_parser::Block::If(if_block) => {
-                    validate_nodes(&if_block.then_branch, valid_classes, valid_ids)?;
-                    if let Some(else_branch) = &if_block.else_branch {
-                        validate_nodes(else_branch, valid_classes, valid_ids)?;
+                    token_parser::Block::For(for_block) => {
+                        collect_errors_recursive(&for_block.body, valid_classes, valid_ids, errors);
                     }
-                }
-                token_parser::Block::For(for_block) => {
-                    validate_nodes(&for_block.body, valid_classes, valid_ids)?;
-                }
-                token_parser::Block::Match(match_block) => {
-                    for arm in &match_block.arms {
-                        validate_nodes(&arm.body, valid_classes, valid_ids)?;
+                    token_parser::Block::Match(match_block) => {
+                        for arm in &match_block.arms {
+                            collect_errors_recursive(&arm.body, valid_classes, valid_ids, errors);
+                        }
                     }
-                }
-                token_parser::Block::Call(call_block) => {
-                    validate_nodes(&call_block.children, valid_classes, valid_ids)?;
-                }
+                    token_parser::Block::Call(call_block) => {
+                        collect_errors_recursive(&call_block.children, valid_classes, valid_ids, errors);
+                    }
+                    _ => {}
+                },
                 _ => {}
-            },
-            _ => {}
+            }
         }
     }
-    Ok(())
+
+    collect_errors_recursive(nodes, valid_classes, valid_ids, &mut errors);
+
+    if errors.is_empty() {
+        quote! {}
+    } else {
+        quote! { #(#errors)* }
+    }
 }
 
 fn generate_body_with_context(
