@@ -43,53 +43,24 @@ Azumi makes **opinionated** choices to prevent common mistakes:
 
 ### Design Decisions Explained
 
-#### **1. `input` vs `Input` vs `@Input`**
+#### **Why `@` instead of `<>`?**
 
-Azumi follows a simple naming convention:
-
--   **`<input>`** - Raw HTML element (lowercase, no `@`)
-
-    ```rust
-    <input type="text" name="username" />
-    ```
-
--   **`@icon("user")`** - Helper function (snake_case, starts with `@`)
-
-    ```rust
-    @icon("user")  // Renders iconsvg or similar
-    ```
-
--   **`@UserCard()`** - Component (PascalCase, starts with `@`)
-    ```rust
-    @UserCard(name="Alice", role="Admin")
-    ```
-
-**Why?**
-
--   **Visual clarity**: Capitalization instantly tells you what something is.
--   **Rust conventions**: Types are PascalCase, functions are snake_case.
--   **`@` prefix**: Distinguishes Rust code from HTML tags.
-
-#### **2. PascalCase vs snake_case for Components**
-
-Both are supported, but **PascalCase is recommended** for most components:
+Azumi uses `@` to invoke Rust code (components, functions, control flow) to distinguish it from HTML tags:
 
 ```rust
-// ✅ Recommended: PascalCase for UI components
-@NavBar()
-@SubmitButton()
-@UserProfile(user=current_user)
-
-// ⚠️ Allowed but discouraged: snake_case for utility-like components
-@csrf_token()
-@spacer(4)
+<input type="text" />       // HTML element
+@UserCard(name="Alice")     // Rust component
+@icon("user")               // Rust function
+@if logged_in { ... }       // Control flow
 ```
 
-**Why PascalCase?**
+**Benefits:**
 
--   Matches the React/Vue/Svelte convention.
--   Visually distinguishes components from helper functions.
--   Aligns with Rust's type naming (components define a `Props` struct).
+-   **Clear distinction**: `@` means "this is Rust code", `<>` means "this is HTML".
+-   **No ambiguity**: You instantly know what's being rendered vs. what's executing logic.
+-   **Familiar syntax**: Similar to Razor (`@`), Blade (`@`), and JSX (`<Component>`).
+
+That's it. No complex rules about capitalization—just use `@` for Rust, `<>` for HTML.
 
 ---
 
