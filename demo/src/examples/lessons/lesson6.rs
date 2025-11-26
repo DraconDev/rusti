@@ -10,7 +10,7 @@ pub fn lesson6() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 6: HTMX Integration - Azumi"</title>
-                <style src="lessons.css" />
+                <style src="/static/lessons.css" />
                 <style src="lesson6.css" />
                 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             </head>
@@ -32,7 +32,7 @@ pub fn lesson6() -> impl azumi::Component {
                         <h2 class="section-title">"💻 Basic HTMX Request"</h2>
                         <p>"Send AJAX requests with HTML attributes:"</p>
                         <pre class="code-block">"html! {\n    <button\n        hx-post=\"/clicked\"\n        hx-swap=\"outerHTML\"\n        class=\"btn\">\n        \"Click Me\"\n    </button>\n}"</pre>
-                        
+
                         <div class="highlight-box">
                             <p><strong>"Common HTMX attributes:"</strong></p>
                             <ul>
@@ -48,9 +48,9 @@ pub fn lesson6() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"🎮 Live Demo: Interactive Button"</h2>
                         <p>"Click this button to see HTMX in action:"</p>
-                        
+
                         <div class="htmx-demo">
-                            <button 
+                            <button
                                 hx-post="/api/click"
                                 hx-swap="outerHTML"
                                 class="demo-btn"
@@ -66,11 +66,11 @@ pub fn lesson6() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"🔄 HTMX Swap Options"</h2>
                         <p>"Different ways to update the page:"</p>
-                        
+
                         <div class="swap-examples">
                             <div class="swap-demo">
                                 <h4>"innerHTML"</h4>
-                                <button 
+                                <button
                                     hx-post="/api/innerhtml"
                                     hx-swap="innerHTML"
                                     hx-target=".swap-result-1"
@@ -84,7 +84,7 @@ pub fn lesson6() -> impl azumi::Component {
 
                             <div class="swap-demo">
                                 <h4>"beforeend"</h4>
-                                <button 
+                                <button
                                     hx-post="/api/append"
                                     hx-swap="beforeend"
                                     hx-target=".swap-result-2"
@@ -98,7 +98,7 @@ pub fn lesson6() -> impl azumi::Component {
 
                             <div class="swap-demo">
                                 <h4>"outerHTML"</h4>
-                                <button 
+                                <button
                                     hx-post="/api/replace"
                                     hx-swap="outerHTML"
                                     class="demo-btn small">
@@ -112,7 +112,7 @@ pub fn lesson6() -> impl azumi::Component {
                         <h2 class="section-title">"✨ Advanced HTMX"</h2>
                         <p>"HTMX with custom headers and validation:"</p>
                         <pre class="code-block">"html! {\n    <form hx-post=\"/api/submit\" hx-swap=\"none\">\n        <input type=\"email\" name=\"email\" required />\n        <button type=\"submit\">\"Submit\"</button>\n    </form>\n}"</pre>
-                        
+
                         <div class="highlight-box">
                             <p><strong>"HTMX benefits with Azumi:"</strong></p>
                             <ul>

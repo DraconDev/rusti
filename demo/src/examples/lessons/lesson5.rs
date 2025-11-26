@@ -10,8 +10,8 @@ pub fn lesson5() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 5: Components with Props - Azumi"</title>
-                <style src="lessons.css" />
-                <style src="lesson5.css" />
+                <style src="/static/lessons.css" />
+                <style src="/static/lesson5.css" />
             </head>
             <body>
                 <div class="lesson-container">

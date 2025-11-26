@@ -10,7 +10,7 @@ pub fn lesson7() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 7: Layouts & Composition - Azumi"</title>
-                <style src="lessons.css" />
+                <style src="/static/lessons.css" />
                 <style src="lesson7.css" />
             </head>
             <body>
@@ -36,7 +36,7 @@ pub fn lesson7() -> impl azumi::Component {
                     <section class="section">
                         <h2 class="section-title">"🏠 Live Layout Example"</h2>
                         <p>"This page uses a layout! Notice the consistent navigation and structure:"</p>
-                        
+
                         <div class="layout-demo">
                             <div class="layout-nav">
                                 <span class="layout-logo">"Azumi Layout"</span>
@@ -68,7 +68,7 @@ pub fn lesson7() -> impl azumi::Component {
 
                     <section class="section">
                         <h2 class="section-title">"✨ Layout Composition Patterns"</h2>
-                        
+
                         <div class="pattern-examples">
                             <div class="pattern-demo">
                                 <h4>"Wrapper Pattern"</h4>
@@ -91,7 +91,7 @@ pub fn lesson7() -> impl azumi::Component {
                         <h2 class="section-title">"🚀 Advanced Composition"</h2>
                         <p>"Combine multiple layout functions:"</p>
                         <pre class="code-block">"fn page_with_theme(\n    theme: &Theme,\n    breadcrumbs: Vec<&str>,\n    title: &str,\n    content: impl azumi::Component,\n) -> impl azumi::Component {\n    with_theme(theme, \n        with_breadcrumbs(breadcrumbs,\n            with_page_title(title, content)\n        )\n    )\n}"</pre>
-                        
+
                         <div class="highlight-box">
                             <p><strong>"Layout benefits:"</strong></p>
                             <ul>

@@ -10,8 +10,8 @@ pub fn lesson4() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 4: Control Flow - Azumi"</title>
-                <style src="lessons.css" />
-                <style src="lesson4.css" />
+                <style src="/static/lessons.css" />
+                <style src="/static/lesson4.css" />
             </head>
             <body>
                 <div class="lesson-container">
@@ -31,7 +31,7 @@ pub fn lesson4() -> impl azumi::Component {
                         <h2 class="section-title">"💻 @if / @else"</h2>
                         <p>"Conditional rendering with Rust expressions:"</p>
                         <pre class="code-block">"@if logged_in {\n    <button>\"Log Out\"</button>\n} else {\n    <button>\"Log In\"</button>\n}"</pre>
-                        
+
                         <div class="control-demo">
                             <h3>"Demo: User Status"</h3>
                             <p>"This shows how <code>@if</code> works:"</p>
@@ -45,7 +45,7 @@ pub fn lesson4() -> impl azumi::Component {
                         <h2 class="section-title">"🔄 @for Loops"</h2>
                         <p>"Iterate over collections directly:"</p>
                         <pre class="code-block">"<ul>\n    @for item in items {\n        <li>{item.name}</li>\n    }\n</ul>"</pre>
-                        
+
                         <div class="control-demo">
                             <h3>"Demo: Item List"</h3>
                             <ul class="item-list">
@@ -60,7 +60,7 @@ pub fn lesson4() -> impl azumi::Component {
                         <h2 class="section-title">"🎯 @match Expressions"</h2>
                         <p>"Pattern matching for complex conditions:"</p>
                         <pre class="code-block">"@match status {\n    Status::Active => { <span class=\"green\">\"Active\"</span> }\n    Status::Pending => { <span class=\"orange\">\"Pending\"</span> }\n    _ => { <span>\"Unknown\"</span> }\n}"</pre>
-                        
+
                         <div class="control-demo">
                             <h3>"Demo: Status Badges"</h3>
                             <p>"Different statuses rendered with <code>@match</code>:"</p>
@@ -76,7 +76,7 @@ pub fn lesson4() -> impl azumi::Component {
                         <h2 class="section-title">"📝 @let Bindings"</h2>
                         <p>"Create local variables for complex expressions:"</p>
                         <pre class="code-block">"@let formatted_date = format_date(&post.created_at);\n<p>\"Published on \" {formatted_date}</p>"</pre>
-                        
+
                         <div class="control-demo">
                             <h3>"Demo: Formatted Content"</h3>
                             <p>"Published on November 26, 2025"</p>
