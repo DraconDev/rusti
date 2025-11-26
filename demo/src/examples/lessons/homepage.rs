@@ -21,8 +21,8 @@ pub fn homepage() -> impl azumi::Component {
                     </header>
 
                     <section>
-                        <h2 class="section-title">"📚 Interactive Lessons"</h2>
-                        <p>"Learn Azumi's core concepts through hands-on examples:"</p>
+                        <h2 class="section-title">"📚 Complete Learning Path"</h2>
+                        <p>"Master Azumi through 8 comprehensive lessons, from basics to real-world applications:"</p>
 
                         <div class="lessons-grid">
                             <a href="/lesson-1" class="lesson-card">
@@ -47,6 +47,30 @@ pub fn homepage() -> impl azumi::Component {
                                 <div class="lesson-card-number">"Lesson 4"</div>
                                 <h3 class="lesson-card-title">"Control Flow"</h3>
                                 <p class="lesson-card-desc">"Use Rust's native control flow directly in templates."</p>
+                            </a>
+
+                            <a href="/lesson-5" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 5"</div>
+                                <h3 class="lesson-card-title">"Components with Props"</h3>
+                                <p class="lesson-card-desc">"Create reusable components with type-safe props."</p>
+                            </a>
+
+                            <a href="/lesson-6" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 6"</div>
+                                <h3 class="lesson-card-title">"HTMX Integration"</h3>
+                                <p class="lesson-card-desc">"Build interactive apps with server-side rendering."</p>
+                            </a>
+
+                            <a href="/lesson-7" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 7"</div>
+                                <h3 class="lesson-card-title">"Layouts & Composition"</h3>
+                                <p class="lesson-card-desc">"Build reusable layouts with function composition."</p>
+                            </a>
+
+                            <a href="/lesson-8" class="lesson-card">
+                                <div class="lesson-card-number">"Lesson 8"</div>
+                                <h3 class="lesson-card-title">"Real-World Examples"</h3>
+                                <p class="lesson-card-desc">"See Azumi in action with practical applications."</p>
                             </a>
                         </div>
                     </section>
@@ -76,6 +100,47 @@ pub fn homepage() -> impl azumi::Component {
                                 <div class="feature-icon">"🛡️"</div>
                                 <h3 class="feature-title">"Strict by Design"</h3>
                                 <p class="feature-desc">"Mandatory quoting prevents bugs. No dead CSS allowed."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🏗️"</div>
+                                <h3 class="feature-title">"Component Architecture"</h3>
+                                <p class="feature-desc">"Reusable components with type-safe props and clean composition."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🌐"</div>
+                                <h3 class="feature-title">"Modern Web Standards"</h3>
+                                <p class="feature-desc">"Works seamlessly with HTMX, Axum, and the Rust ecosystem."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section style="margin-top: 4rem;">
+                        <h2 class="section-title">"🎯 Learning Path"</h2>
+                        <div class="learning-path">
+                            <div class="path-step">
+                                <div class="step-number">"1-3"</div>
+                                <div class="step-content">
+                                    <h4>"Fundamentals"</h4>
+                                    <p>"Master the core concepts: quoting, CSS validation, and global styles."</p>
+                                </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step">
+                                <div class="step-number">"4-5"</div>
+                                <div class="step-content">
+                                    <h4>"Advanced Features"</h4>
+                                    <p>"Learn control flow, components, and type-safe prop patterns."</p>
+                                </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step">
+                                <div class="step-number">"6-8"</div>
+                                <div class="step-content">
+                                    <h4>"Production Ready"</h4>
+                                    <p>"Build real applications with HTMX, layouts, and practical examples."</p>
+                                </div>
                             </div>
                         </div>
                     </section>
