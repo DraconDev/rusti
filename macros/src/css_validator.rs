@@ -19,7 +19,7 @@ struct CssRule {
     line_number: usize,
 }
 
-/// Extract class names from CSS selector
+/// Extract class names from CSS selector - optimized for performance
 fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
     let mut classes = HashSet::new();
     
@@ -30,20 +30,20 @@ fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
             continue;
         }
         
-        // Extract classes (.classname)
-        let mut chars = trimmed.chars().peekable();
-        while let Some(ch) = chars.next() {
-            if ch == '.' {
-                let mut class_name = String::new();
-                while let Some(&next_ch) = chars.peek() {
-                    if next_ch.is_whitespace() || next_ch == ',' || next_ch == '{' || next_ch == ';' {
-                        break;
-                    }
-                    class_name.push(chars.next().unwrap());
+        // Extract all classes (.classname) including from descendant selectors
+        // Split by dots and collect class names (skip empty parts)
+        let parts: Vec<&str> = trimmed.split('.').skip(1).collect();
+        for part in parts {
+            // Stop at whitespace, comma, brace, semicolon, or pseudo-class
+            let mut class_name = String::new();
+            for ch in part.chars() {
+                if ch.is_whitespace() || ch == ',' || ch == '{' || ch == ';' || ch == ':' || ch == '>' || ch == '+' || ch == '~' {
+                    break;
                 }
-                if !class_name.is_empty() {
-                    classes.insert(class_name);
-                }
+                class_name.push(ch);
+            }
+            if !class_name.is_empty() {
+                classes.insert(class_name);
             }
         }
     }
