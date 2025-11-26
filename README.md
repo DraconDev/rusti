@@ -164,7 +164,7 @@ html! {
 - **Validated**: Compile-time checking ensures all classes exist and are properly defined.
 - **IDE-friendly**: Full CSS support with autocomplete, linting, and error checking.
 - **Separation of concerns**: HTML structure in Rust, styling in CSS.
-- **Reusable**: Styles can be easily shared and maintained across components.
+- **Enforced consistency**: Every class must be defined and used - no exceptions, no dead CSS.
 
 ---
 
