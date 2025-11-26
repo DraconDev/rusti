@@ -105,20 +105,20 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
 }
 
 /// Extract all class names used in HTML attributes
-pub fn extract_html_classes(nodes: &[token_parser::Node]) -> HashSet<String> {
+pub fn extract_html_classes(nodes: &[Node]) -> HashSet<String> {
     let mut used_classes = HashSet::new();
     extract_html_classes_recursive(nodes, &mut used_classes);
     used_classes
 }
 
-fn extract_html_classes_recursive(nodes: &[token_parser::Node], used_classes: &mut HashSet<String>) {
+fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashSet<String>) {
     for node in nodes {
         match node {
-            token_parser::Node::Element(elem) => {
+            Node::Element(elem) => {
                 // Check class attribute
                 if let Some(class_attr) = elem.attrs.iter().find(|attr| attr.name == "class") {
                     match &class_attr.value {
-                        token_parser::AttributeValue::Static(class_string) => {
+                        AttributeValue::Static(class_string) => {
                             // Split by whitespace and add each class
                             for class in class_string.split_whitespace() {
                                 if !class.is_empty() {
@@ -126,37 +126,37 @@ fn extract_html_classes_recursive(nodes: &[token_parser::Node], used_classes: &m
                                 }
                             }
                         }
-                        token_parser::AttributeValue::Dynamic(expr) => {
+                        AttributeValue::Dynamic(expr) => {
                             // For dynamic expressions, we can't validate at compile time
                             // but we should warn about this
                             eprintln!("Warning: Dynamic class attribute detected. Cannot validate at compile time.");
                         }
-                        token_parser::AttributeValue::None => {}
+                        AttributeValue::None => {}
                     }
                 }
                 
                 // Recurse into children
                 extract_html_classes_recursive(&elem.children, used_classes);
             }
-            token_parser::Node::Fragment(frag) => {
+            Node::Fragment(frag) => {
                 extract_html_classes_recursive(&frag.children, used_classes);
             }
-            token_parser::Node::Block(block) => match block {
-                token_parser::Block::If(if_block) => {
+            Node::Block(block) => match block {
+                Block::If(if_block) => {
                     extract_html_classes_recursive(&if_block.then_branch, used_classes);
                     if let Some(else_branch) = &if_block.else_branch {
                         extract_html_classes_recursive(else_branch, used_classes);
                     }
                 }
-                token_parser::Block::For(for_block) => {
+                Block::For(for_block) => {
                     extract_html_classes_recursive(&for_block.body, used_classes);
                 }
-                token_parser::Block::Match(match_block) => {
+                Block::Match(match_block) => {
                     for arm in &match_block.arms {
                         extract_html_classes_recursive(&arm.body, used_classes);
                     }
                 }
-                token_parser::Block::Call(call_block) => {
+                Block::Call(call_block) => {
                     extract_html_classes_recursive(&call_block.children, used_classes);
                 }
                 _ => {}
