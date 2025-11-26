@@ -3,6 +3,10 @@
     margin-top: 2rem;
 }
 
-baby2 {
+.baby2 {
+    color: var(--primary);
+}
+
+.baby3 {
     color: var(--primary);
 }
