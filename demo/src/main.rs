@@ -31,6 +31,8 @@ async fn main() {
         )
         // Complex applications
         .route("/dashboard", get(examples::dashboard::dashboard_handler))
+        // Navigation component demo
+        .route("/navigation", get(examples::navigation_component::navigation_component_handler))
         // Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
 

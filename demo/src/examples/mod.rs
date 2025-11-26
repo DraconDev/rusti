@@ -9,6 +9,7 @@ pub mod htmx_todo;
 pub mod layouts;
 pub mod lesson1;
 pub mod tailwind;
+pub mod navigation_component;
 // Advanced examples (commented out pending fixes)
 // pub mod advanced_patterns;
 // pub mod data_processing;

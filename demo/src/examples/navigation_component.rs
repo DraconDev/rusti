@@ -27,9 +27,10 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
                 
                 <div class="nav-menu">
                     @for (route, label, icon) in &routes {
+                        @let is_active = route == active_route;
                         <a 
                             href={route} 
-                            class={format!("nav-link {}", if active_route == route { "active" } else { "" })}
+                            class={format!("nav-link {}", if is_active { "active" } else { "" })}
                         >
                             <i class={icon}></i>
                             <span>{label}</span>
@@ -49,9 +50,10 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
             
             <div class="mobile-menu" id="mobileMenu">
                 @for (route, label, icon) in &routes {
+                    @let is_active = route == active_route;
                     <a 
                         href={route} 
-                        class={format!("mobile-nav-link {}", if active_route == route { "active" } else { "" })}
+                        class={format!("mobile-nav-link {}", if is_active { "active" } else { "" })}
                     >
                         <i class={icon}></i>
                         <span>{label}</span>
@@ -62,8 +64,8 @@ pub fn modern_navigation(active_route: &str) -> impl Component {
     }
 }
 
-/// Advanced Feature Showcase Component
-pub fn feature_showcase() -> impl Component {
+/// Feature showcase component
+pub fn feature_showcase<'a>() -> impl Component + 'a {
     html! {
         <section class="feature-showcase">
             <div class="showcase-header">
@@ -96,8 +98,7 @@ pub fn feature_showcase() -> impl Component {
                     <p>"95% AI generation success rate. Designed for AI-assisted development."</p>
                     <div class="feature-demo">
                         <div class="ai-example">
-                            <code>// AI Prompt: "User card component"<br/>
-                            @UserCard(name="Alice", role="Admin")</code>
+                            <code>{"// AI Prompt: \"User card component\"\n@UserCard(name=\"Alice\", role=\"Admin\")"}</code>
                         </div>
                     </div>
                 </div>
@@ -110,7 +111,7 @@ pub fn feature_showcase() -> impl Component {
                     <p>"Compile-time error detection. Catch bugs before they reach production."</p>
                     <div class="feature-demo">
                         <div class="compile-demo">
-                            <span class="success">✓ Compiles successfully</span>
+                            <span class="success">"✓ Compiles successfully"</span>
                         </div>
                     </div>
                 </div>
@@ -133,77 +134,8 @@ pub fn feature_showcase() -> impl Component {
     }
 }
 
-/// Interactive Code Viewer Component
-pub fn interactive_code_viewer() -> impl Component {
-    html! {
-        <section class="code-viewer">
-            <div class="viewer-header">
-                <h2>"💻 See Azumi in Action"</h2>
-                <div class="viewer-tabs">
-                    <button class="tab active" data-tab="rust">Rust Code</button>
-                    <button class="tab" data-tab="html">Generated HTML</button>
-                    <button class="tab" data-tab="css">Scoped CSS</button>
-                </div>
-            </div>
-            
-            <div class="viewer-content">
-                <div class="code-block active" id="rust">
-                    <pre><code>use azumi::html;
-
-#[azumi::component]
-fn UserCard(name: &str, role: &str) -> impl Component {
-    html! {
-        <style src="/static/user_card.css" />
-        <div class="user-card">
-            <h2>{name}</h2>
-            <span class="role">{role}</span>
-        </div>
-    }
-}</code></pre>
-                </div>
-                
-                <div class="code-block" id="html">
-                    <pre><code><style>
-  .user-card[data-scoped123] {
-    background: white;
-    padding: 1rem;
-    border-radius: 0.5rem;
-  }
-</style>
-
-<div class="user-card" data-scoped123>
-  <h2 data-scoped123>Alice</h2>
-  <span class="role" data-scoped123>Admin</span>
-</div></code></pre>
-                </div>
-                
-                <div class="code-block" id="css">
-                    <pre><code>/* Original CSS - automatically scoped */
-.user-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-
-.user-card h2 {
-  color: #333;
-  margin: 0;
-}
-
-.user-card .role {
-  background: #6366f1;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}</code></pre>
-                </div>
-            </div>
-        </section>
-    }
-}
-
-/// Performance Comparison Component
-pub fn performance_comparison() -> impl Component {
+/// Performance comparison component
+pub fn performance_comparison<'a>() -> impl Component + 'a {
     html! {
         <section class="perf-comparison">
             <div class="comparison-header">
@@ -274,8 +206,8 @@ pub fn performance_comparison() -> impl Component {
     }
 }
 
-/// Getting Started Component
-pub fn getting_started() -> impl Component {
+/// Getting started component
+pub fn getting_started<'a>() -> impl Component + 'a {
     html! {
         <section class="getting-started">
             <div class="start-header">
@@ -316,12 +248,12 @@ pub fn getting_started() -> impl Component {
 }
 
 /// Complete navigation system for the demo
-pub fn complete_navigation(active_route: &str) -> impl Component {
+pub fn complete_navigation<'a>(active_route: &'a str) -> impl Component + 'a {
     html! {
+        <style src="/static/navigation_component.css" />
         <div class="navigation-system">
             @modern_navigation(active_route)
             @feature_showcase()
-            @interactive_code_viewer()
             @performance_comparison()
             @getting_started()
         </div>
