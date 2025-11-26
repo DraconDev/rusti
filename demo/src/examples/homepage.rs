@@ -118,12 +118,20 @@ fn example_card<'a>(
     icon: &'a str,
 ) -> impl azumi::Component + 'a {
     html! {
+        <>
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>"Azumi - Type-Safe HTML Templates"</title>
+            <link rel="stylesheet" href="/static/test_card2.css" />
+        </head>
         <a href={href} class="card">
             <div class="card-icon">{icon}</div>
             <h3 class="card-title">{title}</h3>
             <p class="card-description">{description}</p>
             <span class="card-link">"View Example →"</span>
         </a>
+        </>
     }
 }
 
