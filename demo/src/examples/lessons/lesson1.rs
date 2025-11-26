@@ -14,7 +14,7 @@ pub fn lesson1() -> impl azumi::Component {
                 <style src="lesson1.css" />
             </head>
             <body>
-                <div class="lesson-cont ainer">
+                <div class="lesson-container">
                     <header class="lesson-header">
                         <a href="/" class="back-link">"← Back to Lessons"</a>
                         <div class="lesson-number">"Lesson 1"</div>
