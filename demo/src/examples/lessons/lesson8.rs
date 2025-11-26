@@ -10,7 +10,6 @@ pub fn lesson8() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 8: Real-World Examples - Azumi"</title>
-                <style src="/static/global.css" />
                 <style src="lessons.css" />
                 <style src="lesson8.css" />
             </head>
