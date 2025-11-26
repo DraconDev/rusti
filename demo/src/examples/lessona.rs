@@ -1,4 +1,4 @@
-use axum::response::IntoResponse;
+use axum::response::{Html, IntoResponse};
 use azumi::html;
 
 /// Lesson 0: Getting Started - Your first Azumi component
@@ -14,5 +14,5 @@ pub fn lessona() -> impl azumi::Component {
 }
 
 pub async fn lesson1_handler() -> impl IntoResponse {
-    Html(azumi::render_to_string(&lessona()))
+  Html(azumi::render_to_string(&lessona()))
 }
