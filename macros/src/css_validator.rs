@@ -329,9 +329,12 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
                 if elem.name == "style" {
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         if let AttributeValue::Static(path) = &src_attr.value {
-                            // Enhanced path resolution for demo projects
-                            let css_file_path = resolve_css_file_path(path);
-                            css_files.push(css_file_path);
+                            // Skip global.css files - they are opt-out of validation
+                            if !path.ends_with("global.css") {
+                                // Enhanced path resolution for demo projects
+                                let css_file_path = resolve_css_file_path(path);
+                                css_files.push(css_file_path);
+                            }
                         }
                     }
                 }

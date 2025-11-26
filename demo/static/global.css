@@ -1,0 +1,17 @@
+:root {
+    --primary-color: #4f46e5;
+    --secondary-color: #10b981;
+    --spacing-base: 1rem;
+    --font-sans: "Inter", system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+}
