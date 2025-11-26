@@ -159,7 +159,7 @@ fn SearchFilter() -> impl azumi::Component {
             
             <div class="product-grid">
                 @for (name, category, price, rating, tags) in &filtered_products {
-                    @let category_color = match category.as_str() {
+                    @let category_color = match &category[..] {
                         "Electronics" => "category-electronics",
                         "Kitchen" => "category-kitchen", 
                         "Furniture" => "category-furniture",
@@ -220,7 +220,7 @@ fn DataPipeline() -> impl azumi::Component {
                     @let processed_step1 = if let Ok(data) = &parsed_data {
                         format!("✅ Parsed {} records successfully", data.len())
                     } else {
-                        "❌ Parsing failed"
+                        "❌ Parsing failed".to_string()
                     };
                     
                     <p>{processed_step1}</p>
@@ -235,7 +235,7 @@ fn DataPipeline() -> impl azumi::Component {
                             .map(|(name, age, role, salary)| {
                                 let clean_name = name.to_lowercase();
                                 let clean_role = role.trim();
-                                let formatted_salary = format!("${:,}", salary);
+                                let formatted_salary = format!("{{salary:,}}", salary = salary);
                                 (clean_name, age, clean_role, formatted_salary, salary >= 50000)
                             })
                             .collect();
@@ -307,7 +307,11 @@ fn StatsDashboard() -> impl azumi::Component {
             );
             
             <div class="live-stats">
-                @for (name, current, history, trend) in vec![live_metrics, server_metrics, response_metrics] {
+                @for (name, current, history, trend) in vec![
+                    (&"Live Metrics".to_string(), live_metrics, vec![1, 2, 3], &"up"),
+                    (&"Server Metrics".to_string(), server_metrics, vec![4, 5, 6], &"down"),
+                    (&"Response Metrics".to_string(), response_metrics, vec![7, 8, 9], &"stable")
+                ] {
                     @let max_value = history.iter().fold(0.0, |a, &b| a.max(b));
                     @let min_value = history.iter().fold(f64::INFINITY, |a, &b| a.min(b));
                     @let avg_value = history.iter().sum::<f64>() / history.len() as f64;
@@ -328,7 +332,7 @@ fn StatsDashboard() -> impl azumi::Component {
                         
                         <div class="metric-value">
                             @let value_text = match name {
-                                "Users Online" => format!("{:,}", current),
+                                "Users Online" => format!("{{current:,}}", current = current),
                                 "Server Load" => format!("{:.1}%", current),
                                 "Avg Response Time" => format!("{:.1}ms", current),
                                 _ => format!("{}", current),
