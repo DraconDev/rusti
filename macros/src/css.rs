@@ -76,9 +76,35 @@ pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
     let mut in_rule = false;
     let mut selector_buffer = String::new();
 
+    // Strip comments first
+    let mut clean_css = String::with_capacity(css.len());
+    let mut chars = css.chars().peekable();
+    while let Some(ch) = chars.next() {
+        if ch == '/' {
+            if let Some(&next_ch) = chars.peek() {
+                if next_ch == '*' {
+                    // Start of comment, skip until end
+                    chars.next(); // consume '*'
+                    while let Some(c) = chars.next() {
+                        if c == '*' {
+                            if let Some(&end_ch) = chars.peek() {
+                                if end_ch == '/' {
+                                    chars.next(); // consume '/'
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+        clean_css.push(ch);
+    }
+
     // Simple parser to extract selectors
     // This is a basic implementation and might need refinement for complex CSS
-    for ch in css.chars() {
+    for ch in clean_css.chars() {
         match ch {
             '{' if !in_rule => {
                 // Process selectors in buffer
