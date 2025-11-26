@@ -11,8 +11,8 @@ fn forms_demo() -> impl azumi::Component {
         <html>
             <head>
                 <title>"Forms Demo"</title>
-                <style src="/static/homepage.css" />
-                <style src="/static/forms.css" />
+                <link rel="stylesheet" href="/static/homepage.css" />
+                <link rel="stylesheet" href="/static/forms.css" />
             </head>
             <body>
                 <div class="container">
