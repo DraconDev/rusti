@@ -468,7 +468,7 @@ fn option_result_let_examples() -> impl azumi::Component {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
             };
-            @let string_status = match &result_string {
+            @let string_status = match &result_string.clone() {
                 Ok(val) => format!("Success: {}", val),
                 Err(err) => format!("Error: {}", err),
             };
