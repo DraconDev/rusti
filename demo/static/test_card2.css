@@ -1,4 +1,4 @@
-.card {
+.card2 {
     background-color: #2ff;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -6,6 +6,6 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.card:hover {
+.card2:hover {
     transform: translateY(-5px);
 }

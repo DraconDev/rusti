@@ -154,7 +154,7 @@ fn test_card2<'a>() -> impl azumi::Component + 'a {
                 <title>"Test Card 2"</title>
                 <style src="/static/test_card2.css" />
             </head>
-            <div class="card">
+            <div class="card2">
                 <div class="">"🎨"</div>
                 <h3 class="">"Test Card 2"</h3>
                 <p class="">"This is a test card 2"</p>
