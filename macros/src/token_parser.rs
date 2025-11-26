@@ -358,17 +358,18 @@ impl Parse for Attribute {
             "reversed",
         ];
 
-        let value = if input.peek(Token![=]) {
+        let (value, value_span) = if input.peek(Token![=]) {
             input.parse::<Token![=]>()?;
             if input.peek(Brace) {
                 // {expr} - dynamic expression
                 let content;
                 syn::braced!(content in input);
-                AttributeValue::Dynamic(content.parse()?)
+                (AttributeValue::Dynamic(content.parse()?), None)
             } else if input.peek(syn::Lit) {
+                let lit_span = input.span();
                 let lit: syn::Lit = input.parse()?;
                 match lit {
-                    syn::Lit::Str(s) => AttributeValue::Static(s.value()),
+                    syn::Lit::Str(s) => (AttributeValue::Static(s.value()), Some(lit_span)),
                     _ => {
                         return Err(Error::new(
                             span,
@@ -390,10 +391,15 @@ impl Parse for Attribute {
                     format!("Attribute '{}' requires a value. Use {}=\"value\" or {}={{expr}}.\nOnly boolean attributes like 'disabled', 'checked', etc. can omit values.", name, name, name)
                 ));
             }
-            AttributeValue::None
+            (AttributeValue::None, None)
         };
 
-        Ok(Attribute { name, value, span })
+        Ok(Attribute {
+            name,
+            value,
+            span,
+            value_span,
+        })
     }
 }
 
