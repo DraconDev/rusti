@@ -99,10 +99,11 @@ That's it. No complex rules about capitalization—just use `@` for Rust, `<>` f
 
 **Problems:**
 
-- **Only saves a few characters**: `class="btn-primary"` vs `class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2"`
-- **Hard to read**: You need to mentally parse 20+ utility classes to understand the design.
+- **Descriptive, not semantic**: These classes describe **how it looks** (`text-gray-600`, `leading-relaxed`), not **what it is**.
+- **Hard to understand purpose**: You have to mentally parse 20+ utility classes to understand this is meant to be a "card" or "content container".
 - **Framework dependency**: Locked into Tailwind's specific approach and limitations.
-- **No semantic meaning**: These classes describe **how it looks**, not **what it is**.
+- **No component reusability**: Can't easily extract this pattern as a reusable `.card` or `.content-section` component.
+- **Difficult to change**: Want to change the color scheme? Hope you enjoy finding and replacing `text-gray-600` across 47 files.
 
 ### The Problem with Style Blocks
 
