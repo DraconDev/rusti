@@ -14,6 +14,7 @@ pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
         .filter(|item| item.name.contains(query))
         .collect();
     html! {
+        <style src="/static/pages/lesson9.css" />
         <div class="search-container">
             @if filtered.is_empty() {
                 <p class="no-results">"No results found"</p>
