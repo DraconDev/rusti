@@ -37,7 +37,7 @@ pub fn lesson0() -> impl azumi::Component {
                                 <div class="card-icon">"📝"</div>
                                 <h3 class="card-title">"Code Example"</h3>
                                 <p class="card-description">"Here's a simple Azumi component:"</p>
-                                <pre class="card-description" style="background: var(--bg-dark); color: var(--text-main); padding: 1rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; overflow-x: auto;">{simple_message}</pre>
+                                <pre class="card-description code-block">{simple_message}</pre>
                                 <a href="#" class="card-link">"See Live Demo →"</a>
                             </div>
 
@@ -45,10 +45,10 @@ pub fn lesson0() -> impl azumi::Component {
                                 <div class="card-icon">"✅"</div>
                                 <h3 class="card-title">"What You See"</h3>
                                 <p class="card-description">"The rendered output:"</p>
-                                <div class="card-description" style="background: var(--bg-card); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <div class="card-description preview-box">
                                     {html! {<div>
-                                        <h1 style="font-size: 1.5rem; margin-bottom: 1rem;">"Hello from Azumi!"</h1>
-                                        <p style="margin-bottom: 0.5rem;">"This is your first lesson"</p>
+                                        <h1 class="preview-title">"Hello from Azumi!"</h1>
+                                        <p class="preview-text">"This is your first lesson"</p>
                                         <p>"Azumi makes HTML type-safe"</p>
                                     </div>}}
                                 </div>
@@ -74,8 +74,8 @@ pub fn lesson0() -> impl azumi::Component {
                             </div>
                         </div>
 
-                        <div style="text-align: center; margin-top: 2rem;">
-                            <a href="/lesson-1" class="card-link" style="display: inline-block; margin: 0;">"Continue to Lesson 1 →"</a>
+                        <div class="center-text">
+                            <a href="/lesson-1" class="card-link inline-link">"Continue to Lesson 1 →"</a>
                         </div>
                     </div>
                 </div>
