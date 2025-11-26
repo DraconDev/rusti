@@ -246,6 +246,11 @@ fn generate_body_with_context(
             token_parser::Node::Element(elem) => {
                 let name = &elem.name;
 
+                // Skip <style> tags - they're already processed in generate_body
+                if name == "style" {
+                    continue;
+                }
+
                 // Determine context for children
                 let child_context = if name == "script" {
                     ctx.with_mode(Context::Script)
@@ -255,463 +260,50 @@ fn generate_body_with_context(
                     ctx.clone()
                 };
 
-                // Check if this element has <style> tags as DIRECT children only
-                // OR if this is <html> and it has a <head> child with <style> tags
-                let has_style_children = elem.children.iter().any(|child| {
-                    if let token_parser::Node::Element(el) = child {
-                        if el.name == "style" {
-                            return true;
+                // Generate children
+                let children_code = generate_body_with_context(&elem.children, &child_context);
+
+                // Generate attributes
+                let mut attr_code = proc_macro2::TokenStream::new();
+                for attr in &elem.attrs {
+                    let attr_name = &attr.name;
+                    match &attr.value {
+                        token_parser::AttributeValue::Static(val) => {
+                            attr_code.extend(quote! {
+                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
+                            });
                         }
-                        if name == "html" && el.name == "head" {
-                            return has_nested_style(el);
+                        token_parser::AttributeValue::Dynamic(expr) => {
+                            attr_code.extend(quote! {
+                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
+                            });
                         }
-                    }
-                    false
-                });
-
-                // If this element has style children, it becomes a scoped container
-                if has_style_children {
-                    // Find the style child to get content and generate scope ID
-                    let mut css_content = String::new();
-                    let mut found_style = false;
-
-                    for child in &elem.children {
-                        if let token_parser::Node::Element(el) = child {
-                            if el.name == "style" {
-                                // Found style tag - get content
-                                if let Some(src_attr) = el.attrs.iter().find(|a| a.name == "src") {
-                                    if let token_parser::AttributeValue::Static(path) =
-                                        &src_attr.value
-                                    {
-                                        // Read external file
-                                        let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
-                                            .expect("CARGO_MANIFEST_DIR not set");
-                                        let file_path = if path.starts_with('/') {
-                                            std::path::Path::new(&manifest_dir).join(&path[1..])
-                                        } else {
-                                            std::path::Path::new(&manifest_dir).join(path)
-                                        };
-
-                                        if let Ok(content) = std::fs::read_to_string(&file_path) {
-                                            css_content = content;
-                                            found_style = true;
-                                        }
-                                    }
-                                } else {
-                                    // Inline content
-                                    for style_child in &el.children {
-                                        if let token_parser::Node::Text(text) = style_child {
-                                            css_content.push_str(&text.content);
-                                        }
-                                    }
-                                    if !css_content.is_empty() {
-                                        found_style = true;
-                                    }
-                                }
-                                break; // Only process first style tag for scoping
-                            } else if name == "html" && el.name == "head" {
-                                // Check head for style
-                                for head_child in &el.children {
-                                    if let token_parser::Node::Element(hc) = head_child {
-                                        if hc.name == "style" {
-                                            // Found style in head - get content
-                                            if let Some(src_attr) =
-                                                hc.attrs.iter().find(|a| a.name == "src")
-                                            {
-                                                if let token_parser::AttributeValue::Static(path) =
-                                                    &src_attr.value
-                                                {
-                                                    let manifest_dir =
-                                                        std::env::var("CARGO_MANIFEST_DIR")
-                                                            .expect("CARGO_MANIFEST_DIR not set");
-                                                    let file_path = if path.starts_with('/') {
-                                                        std::path::Path::new(&manifest_dir)
-                                                            .join(&path[1..])
-                                                    } else {
-                                                        std::path::Path::new(&manifest_dir)
-                                                            .join(path)
-                                                    };
-                                                    if let Ok(content) =
-                                                        std::fs::read_to_string(&file_path)
-                                                    {
-                                                        css_content = content;
-                                                        found_style = true;
-                                                    }
-                                                }
-                                            } else {
-                                                for style_child in &hc.children {
-                                                    if let token_parser::Node::Text(text) =
-                                                        style_child
-                                                    {
-                                                        css_content.push_str(&text.content);
-                                                    }
-                                                }
-                                                if !css_content.is_empty() {
-                                                    found_style = true;
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                                if found_style {
-                                    break;
-                                }
-                            }
+                        token_parser::AttributeValue::None => {
+                            // Boolean attribute
+                            attr_code.extend(quote! {
+                                write!(f, " {}", #attr_name)?;
+                            });
                         }
                     }
+                }
 
-                    // Generate scope ID
-                    let scope_id_val = if found_style {
-                        use std::collections::hash_map::DefaultHasher;
-                        use std::hash::{Hash, Hasher};
-                        let mut hasher = DefaultHasher::new();
-                        css_content.hash(&mut hasher);
-                        format!("s{:x}", hasher.finish())
-                    } else {
-                        // Fallback to runtime ID if no style content found (shouldn't happen due to has_style_children check)
-                        "sc-fallback".to_string()
-                    };
-
-                    // Use the generated ID
-                    let scope_id_gen = quote! { #scope_id_val };
-
-                    // Generate code for styled children with scope
-                    let mut children_code = proc_macro2::TokenStream::new();
-                    for child in &elem.children {
-                        match child {
-                            token_parser::Node::Element(child_elem)
-                                if child_elem.name == "style" =>
-                            {
-                                // Handle <style> tag - transform CSS
-                                // We already read the content, but we need to emit the scoped CSS
-                                // We re-read here to handle the error case or just use the pre-read content?
-                                // Simpler to re-use logic or just emit the pre-calculated scoped CSS.
-
-                                // Let's re-run the read logic to handle errors properly in the stream
-                                let mut current_css = String::new();
-                                let mut error_code = proc_macro2::TokenStream::new();
-
-                                if let Some(src_attr) =
-                                    child_elem.attrs.iter().find(|a| a.name == "src")
-                                {
-                                    if let token_parser::AttributeValue::Static(path) =
-                                        &src_attr.value
-                                    {
-                                        let manifest_dir =
-                                            std::env::var("CARGO_MANIFEST_DIR").unwrap();
-                                        let file_path = if path.starts_with('/') {
-                                            std::path::Path::new(&manifest_dir).join(&path[1..])
-                                        } else {
-                                            std::path::Path::new(&manifest_dir).join(path)
-                                        };
-
-                                        match std::fs::read_to_string(&file_path) {
-                                            Ok(content) => current_css = content,
-                                            Err(e) => {
-                                                let err_msg = format!(
-                                                    "Failed to read CSS file '{}': {}",
-                                                    file_path.display(),
-                                                    e
-                                                );
-                                                error_code = quote! { compile_error!(#err_msg); };
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    for style_child in &child_elem.children {
-                                        if let token_parser::Node::Text(text) = style_child {
-                                            current_css.push_str(&text.content);
-                                        }
-                                    }
-                                }
-
-                                if !error_code.is_empty() {
-                                    children_code.extend(error_code);
-                                } else if !current_css.is_empty() {
-                                    let scoped_css = css::scope_css(&current_css, &scope_id_val);
-                                    children_code.extend(quote! {
-                                        {
-                                            // We don't need runtime scope_id generation anymore
-                                            write!(f, "<style data-scope=\"{}\">", #scope_id_val)?;
-                                            write!(f, "{}", #scoped_css)?;
-                                            write!(f, "</style>")?;
-                                        }
-                                    });
-                                }
-                            }
-                            token_parser::Node::Element(child_elem)
-                                if child_elem.name == "head"
-                                    && name == "html"
-                                    && has_nested_style(child_elem) =>
-                            {
-                                // Special handling for head with nested style when html is the container
-                                // We need to manually process head children to ensure style is transformed
-
-                                // Generate attributes
-                                let mut child_attr_code = proc_macro2::TokenStream::new();
-                                for attr in &child_elem.attrs {
-                                    let attr_name = &attr.name;
-                                    match &attr.value {
-                                        token_parser::AttributeValue::Static(val) => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
-                                            });
-                                        }
-                                        token_parser::AttributeValue::Dynamic(expr) => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
-                                            });
-                                        }
-                                        token_parser::AttributeValue::None => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}", #attr_name)?;
-                                            });
-                                        }
-                                    }
-                                }
-
-                                // Generate children with style transformation
-                                let mut head_children_code = proc_macro2::TokenStream::new();
-                                for head_child in &child_elem.children {
-                                    match head_child {
-                                        token_parser::Node::Element(hc) if hc.name == "style" => {
-                                            // Transform style!
-                                            // This is duplicated from the style handler above
-                                            let mut current_css = String::new();
-                                            let mut error_code = proc_macro2::TokenStream::new();
-
-                                            if let Some(src_attr) =
-                                                hc.attrs.iter().find(|a| a.name == "src")
-                                            {
-                                                if let token_parser::AttributeValue::Static(path) =
-                                                    &src_attr.value
-                                                {
-                                                    let manifest_dir =
-                                                        std::env::var("CARGO_MANIFEST_DIR")
-                                                            .unwrap();
-                                                    let file_path = if path.starts_with('/') {
-                                                        std::path::Path::new(&manifest_dir)
-                                                            .join(&path[1..])
-                                                    } else {
-                                                        std::path::Path::new(&manifest_dir)
-                                                            .join(path)
-                                                    };
-
-                                                    match std::fs::read_to_string(&file_path) {
-                                                        Ok(content) => current_css = content,
-                                                        Err(e) => {
-                                                            let err_msg = format!(
-                                                                "Failed to read CSS file '{}': {}",
-                                                                file_path.display(),
-                                                                e
-                                                            );
-                                                            error_code = quote! { compile_error!(#err_msg); };
-                                                        }
-                                                    }
-                                                }
-                                            } else {
-                                                for style_child in &hc.children {
-                                                    if let token_parser::Node::Text(text) =
-                                                        style_child
-                                                    {
-                                                        current_css.push_str(&text.content);
-                                                    }
-                                                }
-                                            }
-
-                                            if !error_code.is_empty() {
-                                                head_children_code.extend(error_code);
-                                            } else if !current_css.is_empty() {
-                                                let scoped_css =
-                                                    css::scope_css(&current_css, &scope_id_val);
-                                                head_children_code.extend(quote! {
-                                                    {
-                                                        write!(f, "<style data-scope=\"{}\">", #scope_id_val)?;
-                                                        write!(f, "{}", #scoped_css)?;
-                                                        write!(f, "</style>")?;
-                                                    }
-                                                });
-                                            }
-                                        }
-                                        _ => {
-                                            // Regular child of head
-                                            let gc_ctx =
-                                                GenerationContext::with_scope(scope_id_val.clone());
-                                            let nodes = vec![head_child.clone()];
-                                            head_children_code.extend(generate_body_with_context(
-                                                &nodes, &gc_ctx,
-                                            ));
-                                        }
-                                    }
-                                }
-
-                                children_code.extend(quote! {
-                                    write!(f, "<head")?;
-                                    write!(f, " data-{}", #scope_id_val)?;
-                                    #child_attr_code
-                                    write!(f, ">")?;
-                                    #head_children_code
-                                    write!(f, "</head>")?;
-                                });
-                            }
-                            token_parser::Node::Element(child_elem) => {
-                                // Regular element - add data-scope attribute
-                                let child_name = &child_elem.name;
-
-                                // Generate child attributes
-                                let mut child_attr_code = proc_macro2::TokenStream::new();
-                                for attr in &child_elem.attrs {
-                                    let attr_name = &attr.name;
-                                    match &attr.value {
-                                        token_parser::AttributeValue::Static(val) => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
-                                            });
-                                        }
-                                        token_parser::AttributeValue::Dynamic(expr) => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
-                                            });
-                                        }
-                                        token_parser::AttributeValue::None => {
-                                            child_attr_code.extend(quote! {
-                                                write!(f, " {}", #attr_name)?;
-                                            });
-                                        }
-                                    }
-                                }
-
-                                // Determine child context
-                                let grandchild_context = if child_name == "script" {
-                                    ctx.with_mode(Context::Script)
-                                } else if child_name == "style" {
-                                    ctx.with_mode(Context::Style)
-                                } else {
-                                    GenerationContext::with_scope(scope_id_val.clone())
-                                };
-
-                                let grandchildren_code = generate_body_with_context(
-                                    &child_elem.children,
-                                    &grandchild_context,
-                                );
-
-                                // Add data-scope attribute using compile-time ID
-                                children_code.extend(quote! {
-                                    write!(f, "<{}", #child_name)?;
-                                    write!(f, " data-{}", #scope_id_val)?;
-                                    #child_attr_code
-                                    write!(f, ">")?;
-                                    #grandchildren_code
-                                    write!(f, "</{}>", #child_name)?;
-                                });
-                            }
-                            token_parser::Node::Text(text) => {
-                                let content = &text.content;
-                                if !content.is_empty() {
-                                    let stripped = strip_outer_quotes(content);
-                                    children_code.extend(quote! {
-                                        write!(f, "{}", #stripped)?;
-                                    });
-                                }
-                            }
-                            token_parser::Node::Expression(expr) => {
-                                let content = &expr.content;
-                                children_code.extend(quote! {
-                                    write!(f, "{}", azumi::Escaped(&(#content)))?;
-                                });
-                            }
-                            _ => {
-                                // Handle other node types
-                                let fallback_nodes = vec![child.clone()];
-                                let fallback_code =
-                                    generate_body_with_context(&fallback_nodes, ctx);
-                                children_code.extend(fallback_code);
-                            }
-                        }
-                    }
-
-                    // Generate parent element with scoped children
-                    let mut attr_code = proc_macro2::TokenStream::new();
-                    for attr in &elem.attrs {
-                        let attr_name = &attr.name;
-                        match &attr.value {
-                            token_parser::AttributeValue::Static(val) => {
-                                attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
-                                });
-                            }
-                            token_parser::AttributeValue::Dynamic(expr) => {
-                                attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
-                                });
-                            }
-                            token_parser::AttributeValue::None => {
-                                attr_code.extend(quote! {
-                                    write!(f, " {}", #attr_name)?;
-                                });
-                            }
-                        }
-                    }
-
-                    // Don't return early! We need to process sibling elements too
+                // Generate element with potential scope attribute from context
+                if let Some(ref scope_id) = ctx.scope_id {
                     quote! {
-                        {
-                            // Define scope_id for potential use in expressions (though we use literal mostly)
-                            let scope_id = #scope_id_gen;
-                            write!(f, "<{}", #name)?;
-                            write!(f, " data-{}", #scope_id_val)?;  // Add scope to parent container
-                            #attr_code
-                            write!(f, ">")?;
-                            #children_code
-                            write!(f, "</{}>", #name)?;
-                        }
+                        write!(f, "<{}", #name)?;
+                        write!(f, " data-{}", #scope_id)?;
+                        #attr_code
+                        write!(f, ">")?;
+                        #children_code
+                        write!(f, "</{}>", #name)?;
                     }
                 } else {
-                    // Regular element (no style children) - original logic
-                    let children_code = generate_body_with_context(&elem.children, &child_context);
-
-                    let mut attr_code = proc_macro2::TokenStream::new();
-                    for attr in &elem.attrs {
-                        let attr_name = &attr.name;
-                        match &attr.value {
-                            token_parser::AttributeValue::Static(val) => {
-                                attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(#val))?;
-                                });
-                            }
-                            token_parser::AttributeValue::Dynamic(expr) => {
-                                attr_code.extend(quote! {
-                                    write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
-                                });
-                            }
-                            token_parser::AttributeValue::None => {
-                                // Boolean attribute
-                                attr_code.extend(quote! {
-                                    write!(f, " {}", #attr_name)?;
-                                });
-                            }
-                        }
-                    }
-
-                    // Generate element with potential scope attribute
-                    if let Some(ref scope_id) = ctx.scope_id {
-                        quote! {
-                            write!(f, "<{}", #name)?;
-                            write!(f, " data-{}", #scope_id)?;  // Apply scope from context
-                            #attr_code
-                            write!(f, ">")?;
-                            #children_code
-                            write!(f, "</{}>", #name)?;
-                        }
-                    } else {
-                        quote! {
-                            write!(f, "<{}", #name)?;
-                            #attr_code
-                            write!(f, ">")?;
-                            #children_code
-                            write!(f, "</{}>", #name)?;
-                        }
+                    quote! {
+                        write!(f, "<{}", #name)?;
+                        #attr_code
+                        write!(f, ">")?;
+                        #children_code
+                        write!(f, "</{}>", #name)?;
                     }
                 }
             }
