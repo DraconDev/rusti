@@ -7,6 +7,7 @@ pub mod hello;
 pub mod homepage;
 pub mod htmx_todo;
 pub mod layouts;
+pub mod lesson1;
 pub mod tailwind;
 // Advanced examples (commented out pending fixes)
 // pub mod advanced_patterns;
