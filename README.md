@@ -1,337 +1,337 @@
-# Azumi 🌀
+# Azumi
 
 **Type-Safe, Compile-Time Validated HTML Templates for Rust & Axum.**
 
-[![Crates.io](https://img.shields.io/crates/v/azumi.svg)](https://crates.io/crates/azumi)
-[![Docs](https://docs.rs/azumi/badge.svg)](https://docs.rs/azumi)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+Azumi is a **strict** HTML template system for Rust. It validates your CSS at compile time with **location-specific errors**, enforces component-scoped styling, and ensures **type safety**. Every class you use must be defined. No exceptions.
 
-Azumi is a **strict** HTML template system for Rust that **validates CSS at compile time** with **location-specific errors**, enforces **component-scoped styling**, ensures **type safety**, and provides **zero runtime overhead**. Every class you use **must be defined**. No exceptions. No runtime surprises.
+---
 
-## 🎯 What is Azumi? (TL;DR)
+## 🎯 What is Azumi?
+
+Azumi is a **compile-time HTML template macro** for Rust that:
+
+-   ✅ **Validates every CSS class** at compile time with **location-specific errors**
+-   ✅ Enforces **strict quoting** to eliminate lexer ambiguity
+-   ✅ Provides **automatic CSS scoping** for component isolation
+-   ✅ Integrates seamlessly with **Axum** and **HTMX**
+-   ✅ Offers **zero runtime overhead** (everything happens at compile time)
+-   ✅ Enables **full IDE support** for CSS through external files
+
+---
+
+## ❌ What Azumi is NOT
+
+-   ❌ **Not a JavaScript Framework** - Azumi is server-side only. Use it with HTMX or Alpine.js for interactivity.
+-   ❌ **Not "HTML in Rust"** - It's a **macro**, not a parser. Text must be quoted.
+-   ❌ **Not a CSS Framework** - Azumi **validates** your custom CSS. No Tailwind, no utility classes, no framework dependencies. Write real CSS.
+-   ❌ **Not a Style Soup** - Stop mixing your structure, behavior, and presentation in one file. This creates impossible-to-maintain codebases.
+-   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. All CSS must be in external files with `<style src>`.
+-   ❌ **Not Lenient** - If you break the rules, it won't compile. This is intentional.
+
+---
+
+## 🧭 Design Philosophy
+
+### Why So Strict?
+
+Azumi makes **opinionated** choices because most "flexible" approaches **create technical debt**:
+
+| Approach                   | Problem                                                                                          | Azumi's Solution                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| **Inline styles**          | Undescriptive, error-prone, typos are invisible, no IDE support, poor separation of concerns     | External CSS files with full IDE support, autocomplete, linting, and compile-time validation  |
+| **Utility CSS (Tailwind)** | Only saves a few characters but creates hard-to-read code, poor separation, framework dependency | Real CSS classes that are readable, maintainable, and framework-independent                   |
+| **Big style blocks**       | Mixing structure, behavior, and presentation creates unmaintainable "style soup"                 | Clean separation: HTML structure in Rust, CSS presentation in separate files                  |
+| **Quoted text**            | Requires extra typing, poorer syntax highlighting                                                | Prevents lexer ambiguity, enables arbitrary content, and provides type safety at compile time |
+| **No CSS validation**      | Typos, dead CSS, missing definitions all go unnoticed until runtime                              | Every class validated at compile time with exact location errors                              |
+| **Global CSS leakage**     | Styles from one component accidentally affect others                                             | Automatic component-scoped CSS prevents styling conflicts                                     |
+
+### Design Decisions Explained
+
+#### **Why `@` instead of `<>`?**
+
+Azumi uses `@` to invoke Rust code (components, functions, control flow) to distinguish it from HTML tags:
+
+```rust
+<input type="text" />       // HTML element
+@UserCard(name="Alice")     // Rust component
+@icon("user")               // Rust function
+@if logged_in { ... }       // Control flow
+```
+
+**Benefits:**
+
+-   **Clear distinction**: `@` means "this is Rust code", `<>` means "this is HTML".
+-   **No ambiguity**: You instantly know what's being rendered vs. what's executing logic.
+-   **Familiar syntax**: Similar to Razor (`@`), Blade (`@`), and JSX (`<Component>`).
+
+That's it. No complex rules about capitalization—just use `@` for Rust, `<>` for HTML.
+
+---
+
+## 🎭 Why External CSS? (Anti-Patterns We Prevent)
+
+### The Problem with Inline Styles
+
+```rust
+// ❌ This seems convenient but creates problems:
+<div class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded">
+    Click Me
+</div>
+```
+
+**Problems:**
+
+-   **Takes up visual space**: Long class lists clutter HTML and make the structure hard to read.
+-   **Error-prone**: Typos like `bg-blue-60` silently fail - no error, just broken styles.
+-   **Limited IDE validation**: Basic syntax highlighting works, but no compile-time checking, linting, or validation.
+-   **Poor separation**: Structure, behavior, and presentation all mixed together.
+
+### The Problem with Tailwind/Utility CSS
+
+```rust
+// ❌ This is only "shorter" but destroys readability:
+<div class="flex items-center justify-between w-full max-w-sm mx-auto bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-2">Title</h2>
+    <p class="text-gray-600 text-sm leading-relaxed">Content here</p>
+</div>
+```
+
+**Problems:**
+
+-   **Descriptive, not semantic**: These classes describe **how it looks** (`text-gray-600`, `leading-relaxed`), not **what it is**.
+-   **Hard to understand purpose**: You have to mentally parse 20+ utility classes to understand this is meant to be a "card" or "content container".
+-   **Framework dependency**: Locked into Tailwind's specific approach and limitations.
+-   **No component reusability**: Can't easily extract this pattern as a reusable `.card` or `.content-section` component.
+-   **Difficult to change**: Want to change the color scheme? Hope you enjoy finding and replacing `text-gray-600` across 47 files.
+
+### The Problem with Style Blocks
+
+```rust
+// ❌ This is the "modern" approach that creates maintenance nightmares:
+<div class="card">
+    <style>
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+    </style>
+    <h2>"Title"</h2>
+    <p>"Content"</p>
+</div>
+```
+
+**Problems:**
+
+-   **Mixing concerns**: Structure, behavior, and presentation in one file.
+-   **No compilation validation**: Typos, unused styles, missing definitions all slip through.
+-   **Poor IDE support**: CSS inside Rust strings gets minimal editing assistance.
+-   **No reuse**: Styles can't be shared across components without duplication.
+
+### Azumi's Approach: Clean Separation
+
+```rust
+// ✅ External CSS file (button.css):
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+// ✅ Clean Rust code:
+html! {
+    <style src="button.css" />
+    <button class="btn-primary">"Click Me"</button>
+}
+```
+
+**Benefits:**
+
+-   **Descriptive**: `.btn-primary` clearly describes **what it is**, not how it looks.
+-   **Validated**: Compile-time checking ensures all classes exist and are properly defined.
+-   **IDE-friendly**: Full CSS support with autocomplete, linting, and error checking.
+-   **Separation of concerns**: HTML structure in Rust, styling in CSS.
+-   **Enforced consistency**: Every class must be defined - no exceptions.
+
+---
+
+## ⚡ The Rules
+
+Azumi is strict. Follow these rules or it won't compile.
+
+### ✅ Must Do
+
+1. **Quote all text:** `<h1>"Hello World"</h1>`
+
+    - _Why?_ Prevents lexer ambiguity and enables arbitrary text content.
+
+2. **Quote all attribute values:** `<div class="container">`
+
+    - _Why?_ Consistent syntax, no guessing if quotes are needed.
+
+3. **External CSS:** `<style src="styles.css" />`
+
+    - _Why?_ **Automatic Scoping + Validation.** CSS is scoped to the component and validated at compile time.
+    - _Bonus:_ Full IDE support (linting, colors, autocomplete) for your CSS files.
+
+4. **All classes used in HTML must be defined in CSS:**
+
+    ```rust
+    // ❌ Compile Error: class 'btn' not defined
+    <button class="btn">"Click"</button>
+    ```
+
+    - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
+
+5. **External JS:** `<script src="/static/app.js" />`
+    - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
+
+### ❌ Not Allowed
+
+1. **Unquoted text:** `<h1>Hello</h1>` → Compile Error
+2. **Unquoted attributes:** `<div class=box>` → Compile Error
+3. **Undefined CSS classes:** `<div class="typo">` → **Compile Error with location**
+4. **Inline styles:** `<style>.box { color: red; }</style>` → Compile Error
+    - **Why?** Creates "style soup" - mixing structure, behavior, and presentation. No IDE support, no validation, poor maintainability.
+5. **Inline scripts:** `<script>console.log("hi")</script>` → Compile Error
+6. **Local file `<link>`:** `<link rel="stylesheet" href="/static/pages/local.css">` → Compile Error
+    - Use `<style src="/static/pages/local.css" />` instead for automatic scoping and validation.
+
+### ⚠️ Exceptions
+
+1. **Boolean Attributes:** `<input disabled checked />`
+
+    - Standard HTML behavior. No value required.
+
+2. **JSON Data Injection:** `<script type="application/json">{json_data}</script>`
+
+    - The **only** allowed inline script. Safe way to pass server data to client-side code.
+
+3. **CDN Stylesheets:** `<link rel="stylesheet" href="https://cdn.example.com/font-awesome.css">`
+    - External CDN links are allowed (no validation). Only _local_ files must use `<style src>`.
+
+---
+
+## 🚀 Features & Examples
+
+### 1. Basic Usage
+
+Simple, type-safe HTML generation.
 
 ```rust
 use azumi::html;
 
-#[azumi::component]
-fn Button(text: &str) -> impl azumi::Component {
+fn hello(name: &str) -> impl azumi::Component {
     html! {
-        <style src=\"/static/button.css\" />
-        <button class=\"btn-primary\">{text}</button>
+        <div class="greeting">
+            <h1>"Hello, " {name} "!"</h1>
+            <p>"Welcome to Azumi."</p>
+        </div>
     }
 }
 ```
 
-**Key Features:**
-- ✅ **Compile-time CSS validation** - Undefined classes → compile errors at **exact locations**
-- ✅ **Automatic CSS scoping** - No global style leaks, component isolation out-of-the-box
-- ✅ **Strict quoting** - Lexer-proof templates, arbitrary content support
-- ✅ **Zero runtime** - Pure `proc_macro` expansion to `fmt::Display`
-- ✅ **Full IDE support** - Autocomplete, linting for external CSS files
-- ✅ **Axum + HTMX ready** - Server-side rendering powerhouse
-- ✅ **Component system** - Auto-generated builder props with defaults
+### 2. Control Flow
 
-**Azumi is NOT:**
-- ❌ Tailwind/UnoCSS - Write *real* semantic CSS classes
-- ❌ JSX/Leptos - Server-side only, no client hydration complexity
-- ❌ Inline styles - External files only, full separation of concerns
-- ❌ Lenient - Break rules → won't compile (intentional)
+Azumi supports Rust-native control flow directly in your templates.
 
-## 🚀 Quick Start
+**If / Else:**
 
-### 1. Install
-```toml
-[dependencies]
-azumi = { git = \"https://github.com/DraconDev/azumi\" } # or crates.io when stable
-azumi-macros = { git = \"https://github.com/DraconDev/azumi\" }
-axum = \"0.7\"
-tower-http = { version = \"0.5\", features = [\"fs\"] }
-```
-
-### 2. Basic Template
 ```rust
-use azumi::{html, component};
-
-html! {
-    <style src=\"/static/app.css\" />
-    <div class=\"container\">
-        <h1 class=\"title\">\"Hello Azumi!\"</h1>
-        @if user.is_logged_in {
-            <p>\"Welcome back, \" {user.name}!\"</p>
-        }
-    </div>
-}
-```
-
-### 3. Run Demo
-```bash
-git clone https://github.com/DraconDev/azumi
-cd azumi/demo
-cargo run
-# Visit http://localhost:8081
-```
-
-## 🧭 Design Philosophy
-
-Azumi solves **technical debt** from \"flexible\" templating:
-
-| Problem | Traditional Approach | Azumi Solution |
-|---------|---------------------|---------------|
-| **Typos in classes** | Runtime invisible fails | Compile-time errors at **exact line/col** |
-| **Style leaks** | Global CSS pollution | Auto-scoped `[data-sabc123]` attributes |
-| **Inline styles** | No IDE, unmaintainable | External CSS + full VSCode support |
-| **Utility CSS** | Unreadable HTML | Semantic `.btn-primary`, `.card` |
-| **Mixed concerns** | HTML/CSS/JS soup | Strict separation enforced |
-| **Dead CSS** | Bloats bundle | Validates used vs defined (future) |
-
-## 📖 Complete Syntax Guide
-
-### HTML Elements & Attributes
-```rust
-html! {
-    <div class=\"container\" id=\"main\">
-        <input type=\"text\" placeholder=\"Search...\" disabled />
-        <img src=\"/logo.png\" alt=\"Logo\" />
-    </div>
-}
-```
-- **All text/attrs quoted** - `<h1>\"Title\"</h1>`
-- **Boolean attrs** - `<input disabled />`
-- **Self-closing** - `<br />`
-
-### Rust Interop (`@`)
-```rust
-@if condition {
-    <p>Yes</p>
+@if logged_in {
+    <button>"Log Out"</button>
 } else {
-    <p>No</p>
+    <button>"Log In"</button>
 }
-
-@for item in items {
-    <li>{item}</li>
-}
-
-@match status {
-    Ok(data) => { <span class=\"success\">OK</span> }
-    Err(e) => { <span class=\"error\">{e}</span> }
-}
-
-@let computed = format!(\"${:.2}\", price);
-<p>{computed}</p>
-
-@Component(name=\"Alice\")  // Component call
 ```
 
-### Components (Auto-Props)
+**For Loops:**
+
+```rust
+<ul>
+    @for item in items {
+        <li>{item.name}</li>
+    }
+</ul>
+```
+
+**Match Expressions:**
+
+```rust
+@match status {
+    Status::Active => { <span class="green">"Active"</span> }
+    Status::Pending => { <span class="orange">"Pending"</span> }
+    _ => { <span>"Unknown"</span> }
+}
+```
+
+**Let Bindings:**
+
+```rust
+@let formatted_date = format_date(&post.created_at);
+<p>"Published on " {formatted_date}</p>
+```
+
+### 3. Components with Props
+
+Use the `#[azumi::component]` macro to create reusable components with type-safe props.
+
 ```rust
 #[azumi::component]
 fn UserCard(
     name: &str,
-    #[prop(default = r#\"User\"#)] role: &str,
-    children: impl azumi::Component,  // Optional children
+    #[prop(default = "\"Member\"")] role: &str,
 ) -> impl azumi::Component {
     html! {
-        <div class=\"user-card\">
-            <h3>{name} ({role})</h3>
-            {children}
+        <style src="/static/user_card.css" />
+        <div class="user-card">
+            <h2>{name}</h2>
+            <span class="role">{role}</span>
         </div>
     }
 }
 
 // Usage
-@UserCard(name=\"Alice\", role=\"Admin\") {
-    <p>Bio here</p>
-}
+@UserCard(name="Alice", role="Admin")
+@UserCard(name="Bob")  // Uses default role="Member"
 ```
 
-Generates `UserCard::Props::builder().name(\"Alice\").role(\"Admin\").build()`
+### 4. Layouts
 
-### CSS Integration
-```rust
-html! {
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <style src=\"/static/global.css\" />  // Unscoped globals
-            <style src=\"/static/card.css\" />    // Scoped to component
-        </head>
-        <body class=\"app\">  // Uses global
-            <div class=\"card\">  // Scoped
-                ...
-            </div>
-        </body>
-    </html>
-}
-```
-
-## 🎨 CSS System Deep Dive
-
-### Automatic Scoping
-```
-card.css: .card { padding: 1rem; }
-```
-Expands to:
-```html
-<style>
-.card[data-s1a2b3c] { padding: 1rem; }
-</style>
-<div class=\"card\" data-s1a2b3c>...</div>
-```
-
-- **Hash-based scope ID** from CSS content
-- **Preserves pseudo-classes** `:hover`, `::before`
-- **@-rules untouched** (`@media`, `@keyframes`)
-
-### Validation Pipeline
-1. **Collect** `<style src>` files (skip `global.css`)
-2. **Parse** classes with regex (fast)
-3. **Validate** every `class=\"...\"` → compile error if missing
-4. **Scope** CSS + inject `<style>`
-
-**Error Example:**
-```
-error[E0425]: CSS class 'btn-primry' not defined
-  --> src/component.rs:10:20
-   |
-10 |     <button class=\"btn-primry\">
-   |                      ^^^^^^^^
-```
-
-### Global CSS (`global.css`)
-- **Unscoped** - No `[data-scope]`
-- **Injected first** - Lower specificity
-- **No validation** - Design tokens, resets
-```css
-/* global.css */
-:root { --primary: #3b82f6; }
-* { box-sizing: border-box; }
-```
-
-## 🛠️ Components API
-
-`#[azumi::component]` auto-generates:
+Use function composition to create reusable layouts.
 
 ```rust
-// Input fn
-fn MyComp(name: &str, optional: Option<&str>) -> impl Component { ... }
-
-// Output
-mod my_comp {
-    #[derive(Debug)]
-    pub struct Props { pub name: &'static str, pub optional: Option<&'static str> }
-    
-    pub struct PropsBuilder { ... }
-    
-    impl Props { pub fn builder() -> PropsBuilder { ... } }
-    
-    impl PropsBuilder {
-        pub fn name(self, v: &'static str) -> Self { ... }
-        pub fn optional(self, v: Option<&'static str>) -> Self { ... }
-        pub fn build(self) -> Result<Props, &'static str> { ... }
+fn main_layout(title: &str, content: impl azumi::Component) -> impl azumi::Component {
+    html! {
+        <html>
+            <head><title>{title}</title></head>
+            <body>
+                <nav>"..."</nav>
+                <main>{content}</main>
+            </body>
+        </html>
     }
-    
-    pub fn render(props: Props) -> impl Component { ... }
-}
-```
-
-## 🔧 Editor Setup (VS Code)
-
-1. **CSS Peek** - Ctrl+Click `<style src>`
-```json
-{
-    \"cssPeek.peekFromLanguages\": [\"rust\"],
-    \"cssPeek.searchFileExtensions\": [\".css\"]
-}
-```
-
-2. **rust-analyzer** - Native proc_macro support
-3. **Better TOML** - Cargo.toml syntax
-
-## 📚 Interactive Lessons
-
-Run `cargo run` in `demo/` → **20 Progressive Lessons**:
-
-- **1-5**: Basics (HTML, data, CSS)
-- **6-10**: Control flow (@if/@for/@match)
-- **11-15**: Components (props, children, composition)
-- **16-20**: HTMX, layouts, full apps
-
-Each lesson: **Live demo + source code + rendered HTML**.
-
-## 🚀 Production Axum Integration
-
-```rust
-use axum::{response::Html, routing::get, Router};
-
-async fn home() -> Html<String> {
-    let component = html! { <h1>Hello</h1> };
-    Html(azumi::render_to_string(&component))
 }
 
-let app = Router::new().route(\"/\", get(home));
-```
-
-**HTMX Example:**
-```rust
-html! {
-    <button hx-post=\"/api/action\" hx-swap=\"outerHTML\" class=\"btn\">\"Click\"</button>
+// Usage
+fn home_page() -> impl azumi::Component {
+    main_layout("Home", html! {
+        <h1>"Welcome Home"</h1>
+    })
 }
 ```
-
-## ⚠️ Strict Rules (Won't Compile Otherwise)
-
-✅ **Must:**
-- Quote text: `\"Hello\"`
-- `<style src=\"/path.css\" />`
-- Define all classes used
-
-❌ **Banned:**
-- Inline `<style>...</style>`
-- Inline `<script>...</script>`
-- Unquoted text/attrs
-- `<link href=\"/local.css\">` (use `<style src>`)
-
-**Exceptions:**
-- `<script type=\"application/json\">{data}</script>`
-- CDN `<link href=\"https://...\">`
-
-## 🔍 Internals (For AIs & Experts)
-
-### Macro Pipeline (`macros/src/lib.rs`)
-```
-html! { ... } ──parse──> Nodes ──validate_css──> Errors?
-                          ↓
-                    collect_styles ──scope_css──> Scoped CSS
-                          ↓
-                    generate_body ──> fmt::Display impl
-```
-
-### Key Modules:
-- `token_parser.rs`: Custom lexer for `@` syntax
-- `css_validator.rs`: Regex class extraction + file resolution
-- `css.rs`: Selector scoping (handles `:hover`, `::before`)
-- `component.rs`: Props builder gen (defaults, children)
-
-### Validation Flow:
-```
-HTML classes ──> css_validator::validate_component_css ──> compile_error!()
-CSS files ───> resolve_css_file_path (7 fallback paths) ──> parse_css_classes
-```
-
-## 📈 Roadmap
-- [x] CSS scoping/validation
-- [x] Component props builder
-- [x] 20-lesson curriculum
-- [ ] Dead CSS warnings
-- [ ] ID validation
-- [ ] TSX-like children API
-- [ ] Crates.io 1.0
-
-## 🤝 Contributing
-1. `cargo test`
-2. `cd demo && cargo run`
-3. PRs welcome!
-
 
 ### 5. Automatic CSS Scoping
 
