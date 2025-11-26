@@ -11,7 +11,6 @@ async fn main() {
     // Azumi Demo Server
     let app = Router::new()
         // Example Routes
-        .route("/lesson-a", get(examples::lesson_a::lesson_a_handler))
         // .route("/", get(examples::homepage::homepage_handler))
         // // Educational lessons
         // .route("/lesson-1", get(examples::lesson1::lesson1_handler))

@@ -10,7 +10,6 @@ pub fn lesson7() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 7: Layouts & Composition - Azumi"</title>
-                <style src="/static/global.css" />
                 <style src="lessons.css" />
                 <style src="lesson7.css" />
             </head>
