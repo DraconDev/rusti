@@ -1,0 +1,90 @@
+.component-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+}
+
+.user-card-demo {
+    background: linear-gradient(135deg, var(--azumi-surface), rgba(30, 41, 59, 0.8));
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    text-align: center;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.user-card-demo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--azumi-primary), var(--azumi-secondary));
+}
+
+.user-card-demo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: var(--azumi-primary);
+}
+
+.user-card-demo h2 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1.25rem;
+    color: var(--azumi-text);
+    font-weight: 600;
+}
+
+.user-card-demo .role {
+    background: linear-gradient(135deg, var(--azumi-primary), #4338ca);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Component props demo */
+.component-props-demo {
+    background: var(--azumi-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-sm);
+    margin: var(--spacing-md) 0;
+    border-left: 3px solid var(--azumi-secondary);
+}
+
+.component-props-demo h4 {
+    color: var(--azumi-secondary);
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.props-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.props-list li {
+    background: var(--azumi-surface);
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.props-list li:hover {
+    border-color: var(--azumi-secondary);
+    background: rgba(16, 185, 129, 0.1);
+}
