@@ -71,7 +71,7 @@ fn match_let_examples() -> impl azumi::Component {
                     <p>"Status: " {urgency_text}</p>
                     <div class="progress-bar">
                         <div class="progress-fill" style={format!("width: {}%", progress_percent)}>
-                            {progress_percent}%
+                            {format!("{}%", progress_percent)}
                         </div>
                     </div>
                 </div>
@@ -230,7 +230,7 @@ fn math_let_examples() -> impl azumi::Component {
             
             <div class="temperature-converter">
                 <h3>"Temperature Converter"</h3>
-                <p>{celsius}°C = {fahrenheit}°F</p>
+                <p>{format!("{}°C = {}°F", celsius, fahrenheit)}</p>
                 <p>"Weather: " {temp_description}</p>
             </div>
             
