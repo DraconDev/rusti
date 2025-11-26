@@ -371,13 +371,9 @@ impl Parse for Attribute {
                 let lit_after = input.span();
                 match lit {
                     syn::Lit::Str(s) => {
-                        // Calculate proper content span (exclude quotes)
-                        // We need to find the content start/end positions
-                        let lit_str = s.to_string(); // "\"content\"" with quotes
-                        let content_start = lit_before.lo() + 1; // Skip opening quote
-                        let content_end = lit_after.hi() - 1; // Skip closing quote
-                        let content_span = proc_macro2::Span::new(content_start, content_end, None);
-                        (AttributeValue::Static(s.value()), Some(content_span))
+                        // Use a better span that points more precisely to the value
+                        // We'll use the span after parsing the literal to point more accurately
+                        (AttributeValue::Static(s.value()), Some(lit_after))
                     },
                     _ => {
                         return Err(Error::new(
