@@ -67,16 +67,16 @@ fn calculation_let_example() -> impl azumi::Component {
 /// @let with collections
 fn collection_let_example() -> impl azumi::Component {
     let items = vec!["apple", "banana", "orange"];
-    let item_count = items.len();
-    let first_item = items.first().unwrap_or(&"none");
 
     html! {
         <div class="example-card">
             <h2>"@let with Collections"</h2>
+            @let item_count = items.len();
+            @let first_item = items.first().unwrap_or(&"none");
             <p>"Total items: " {item_count}</p>
             <p>"First item: " {first_item}</p>
             <ul>
-                @for item in items {
+                @for item in &items {
                     <li>{item}</li>
                 }
             </ul>
@@ -86,20 +86,20 @@ fn collection_let_example() -> impl azumi::Component {
 
 /// @let inside control flow
 fn let_in_control_flow_example() -> impl azumi::Component {
-    let show_details = true;
-    let user_level = 5;
-
     html! {
         <div class="example-card">
             <h2>"@let in Control Flow"</h2>
 
+            @let show_details = true;
+            @let user_level = 5;
+            @let full_name = "John Doe";
+            @let role = "Developer";
+            @let level_badge = format!("Level {}", user_level);
+
             @if show_details {
-                @let full_name = "John Doe";
-                @let role = "Developer";
                 <div class="user-details">
                     <p>"Name: " {full_name}</p>
                     <p>"Role: " {role}</p>
-                    @let level_badge = format!("Level {}", user_level);
                     <span class="level-badge">{level_badge}</span>
                 </div>
             } @else {
