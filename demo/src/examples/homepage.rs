@@ -27,7 +27,7 @@ pub fn homepage() -> impl azumi::Component {
 
                     <section class="examples">
                         <h2>"Examples"</h2>
-                        @tailwind_card()
+                        @Tailwind_card()
                         @TestCard2()
                         <div class="grid">
                             @example_card(
@@ -134,7 +134,7 @@ fn example_card(
 
 /// Example: Tailwind CSS (inline utility classes)
 #[azumi::component]
-fn tailwind_card() -> impl azumi::Component {
+fn Tailwind_card() -> impl azumi::Component {
     html! {
         <div class="bg-blue-500 rounded-xl shadow-lg p-6 hover:scale-105 transition">
             <h3 class="text-2xl font-bold text-white mb-2">"Tailwind Example"</h3>
