@@ -366,10 +366,20 @@ impl Parse for Attribute {
                 syn::braced!(content in input);
                 (AttributeValue::Dynamic(content.parse()?), None)
             } else if input.peek(syn::Lit) {
-                let lit_span = input.span();
+                let lit_before = input.span();
                 let lit: syn::Lit = input.parse()?;
+                let lit_after = input.span();
                 match lit {
-                    syn::Lit::Str(s) => (AttributeValue::Static(s.value()), Some(lit_span)),
+                    syn::Lit::Str(s) => {
+                        // Create a span that excludes the quotes - just the content
+                        use proc_macro2::ByteOffset;
+                        let content_span = proc_macro2::Span::new(
+                            lit_before.lo() + ByteOffset(1), // Skip opening quote
+                            lit_after.hi() - ByteOffset(1),   // Skip closing quote
+                            None, // We'll use the same source text
+                        );
+                        (AttributeValue::Static(s.value()), Some(content_span))
+                    },
                     _ => {
                         return Err(Error::new(
                             span,
