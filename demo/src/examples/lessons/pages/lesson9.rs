@@ -66,7 +66,7 @@ pub fn lesson9() -> impl azumi::Component {
                                 <pre class="code-block">{"pub fn user_greeting(user: &User) -> impl azumi::Component {"}
         {"    html! {"}
         {"        <div>"}
-        {"            @let full_name = format!(\"{} {}\", user.first_name, user.last_name);"}
+        {"            @let full_name = format!(\"{}\", user.first_name, user.last_name);"}
         {"            <p>{\"Welcome, \" full_name \"!\"}</p>"}
         {"        </div>"}
         {"    }"}
