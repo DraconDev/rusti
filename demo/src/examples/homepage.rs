@@ -129,7 +129,7 @@ fn example_card<'a>(
 
 fn test_card<'a>() -> impl azumi::Component + 'a {
     html! {
-        <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition border-l-4 bg-blue-500">
+        <div class="bg-red-500 rounded-xl shadow-lg p-6 transform hover:scale-105 transition border-l-4 bg-blue-500">
             <h3 class="text-2xl font-bold text-gray-800 mb-2">"Test Card"</h3>
             <p class="text-gray-600">"This is a test card"</p>
         </div>
