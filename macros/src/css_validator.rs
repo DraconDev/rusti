@@ -320,15 +320,9 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
                 if elem.name == "style" {
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         if let AttributeValue::Static(path) = &src_attr.value {
-                            // Convert relative paths to absolute
-                            let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
-                                .expect("CARGO_MANIFEST_DIR not set");
-                            let full_path = if path.starts_with('/') {
-                                std::path::Path::new(&manifest_dir).join(&path[1..]).to_string_lossy().to_string()
-                            } else {
-                                std::path::Path::new(&manifest_dir).join(path).to_string_lossy().to_string()
-                            };
-                            css_files.push(full_path);
+                            // Enhanced path resolution for demo projects
+                            let css_file_path = resolve_css_file_path(path);
+                            css_files.push(css_file_path);
                         }
                     }
                 }
@@ -361,6 +355,42 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
             _ => {}
         }
     }
+}
+
+/// Enhanced CSS file path resolution
+fn resolve_css_file_path(css_path: &str) -> String {
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
+        .expect("CARGO_MANIFEST_DIR not set");
+    
+    let manifest_path = std::path::Path::new(&manifest_dir);
+    
+    // Handle different project structures
+    let possible_paths = vec![
+        // Direct path from manifest dir
+        manifest_path.join(css_path).to_string_lossy().to_string(),
+        // If path starts with /, remove it first
+        if css_path.starts_with('/') {
+            manifest_path.join(&css_path[1..]).to_string_lossy().to_string()
+        } else {
+            css_path.to_string()
+        },
+        // Check if we're in a demo/ subdirectory
+        manifest_path.join("demo").join(css_path).to_string_lossy().to_string(),
+        // Check demo/static/ directory
+        manifest_path.join("demo").join("static").join(css_path.trim_start_matches('/')).to_string_lossy().to_string(),
+    ];
+    
+    // Try each possible path and return the first one that exists
+    for path in possible_paths {
+        if std::path::Path::new(&path).exists() {
+            eprintln!("✅ Found CSS file: {}", path);
+            return path;
+        }
+    }
+    
+    // If no file found, return the first path anyway and let the file read fail with proper error
+    eprintln!("⚠️  CSS file not found: {}", possible_paths[0]);
+    possible_paths[0].clone()
 }
 
 #[cfg(test)]
