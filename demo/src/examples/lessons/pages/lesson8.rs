@@ -26,9 +26,7 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
                                 @let label = format!("Chart: {}", name);
                                 <div class="widget chart">{label}</div>
                             },
-                            Widget::Table(name) => {
-                                <div class="widget table">{format!("Table: {}", name)}</div>
-                            }
+                            Widget::Table(name) => <div class="widget table">{format!("Table: {}", name)}</div>
                         }
                     }
                 </div>
