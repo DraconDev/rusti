@@ -185,23 +185,26 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
             token_parser::Node::Fragment(frag) => {
                 collect_styles_recursive(&frag.children, css_content);
             }
-            token_parser::Node::IfBlock(if_block) => {
-                collect_styles_recursive(&if_block.then_branch, css_content);
-                if let Some(else_branch) = &if_block.else_branch {
-                    collect_styles_recursive(else_branch, css_content);
+            token_parser::Node::Block(block) => match block {
+                token_parser::Block::If(if_block) => {
+                    collect_styles_recursive(&if_block.then_branch, css_content);
+                    if let Some(else_branch) = &if_block.else_branch {
+                        collect_styles_recursive(else_branch, css_content);
+                    }
                 }
-            }
-            token_parser::Node::ForBlock(for_block) => {
-                collect_styles_recursive(&for_block.body, css_content);
-            }
-            token_parser::Node::MatchBlock(match_block) => {
-                for arm in &match_block.arms {
-                    collect_styles_recursive(&arm.body, css_content);
+                token_parser::Block::For(for_block) => {
+                    collect_styles_recursive(&for_block.body, css_content);
                 }
-            }
-            token_parser::Node::CallBlock(call_block) => {
-                collect_styles_recursive(&call_block.children, css_content);
-            }
+                token_parser::Block::Match(match_block) => {
+                    for arm in &match_block.arms {
+                        collect_styles_recursive(&arm.body, css_content);
+                    }
+                }
+                token_parser::Block::Call(call_block) => {
+                    collect_styles_recursive(&call_block.children, css_content);
+                }
+                _ => {}
+            },
             _ => {}
         }
     }
