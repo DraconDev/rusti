@@ -1,8 +1,8 @@
 # Azumi 2.0
 
-**Type-Safe, Zero-Cost HTML Templates for Rust & Axum.**
+**Type-Safe, Compile-Time Validated HTML Templates for Rust & Axum.**
 
-Azumi is an opinionated, compile-time HTML macro that enforces best practices. It blocks anti-patterns (like `<style>` tags and inline scripts) while embracing utility-first CSS frameworks like Tailwind to ensure your code is maintainable, secure, and IDE-friendly.
+Azumi is the **strictest** HTML template system for Rust. It validates your CSS at compile time with **location-specific errors**, enforces component-scoped styling, and ensures **zero dead CSS**. Every class you use must be defined. Every class you define must be used. No exceptions.
 
 ---
 
@@ -10,12 +10,13 @@ Azumi is an opinionated, compile-time HTML macro that enforces best practices. I
 
 Azumi is a **compile-time HTML template macro** for Rust that:
 
+-   ✅ **Validates every CSS class** at compile time with **location-specific errors**
 -   ✅ Enforces **strict quoting** to eliminate lexer ambiguity
 -   ✅ Provides **automatic CSS scoping** for component isolation
+-   ✅ Prevents **dead CSS** - every class must be used
 -   ✅ Integrates seamlessly with **Axum** and **HTMX**
--   ✅ Supports **Tailwind CSS** and other utility-first frameworks
 -   ✅ Offers **zero runtime overhead** (everything happens at compile time)
--   ✅ Enables **full IDE support** for CSS and JS through external files
+-   ✅ Enables **full IDE support** for CSS through external files
 
 ---
 
@@ -23,7 +24,8 @@ Azumi is a **compile-time HTML template macro** for Rust that:
 
 -   ❌ **Not a JavaScript Framework** - Azumi is server-side only. Use it with HTMX or Alpine.js for interactivity.
 -   ❌ **Not "HTML in Rust"** - It's a **macro**, not a parser. Text must be quoted.
--   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. Use `<style src>` for local CSS files or `<link>` for CDNs. Utility classes (like Tailwind) are **encouraged** for styling.
+-   ❌ **Not a CSS Framework** - Azumi **validates** your custom CSS. No Tailwind, no utility classes, no framework dependencies. Write real CSS.
+-   ❌ **Not Flexible About Styles** - Inline `<style>` tags are **blocked**. All CSS must be in external files with `<style src>`.
 -   ❌ **Not Lenient** - If you break the rules, it won't compile. This is intentional.
 
 ---
@@ -34,12 +36,14 @@ Azumi is a **compile-time HTML template macro** for Rust that:
 
 Azumi makes **opinionated** choices to prevent common mistakes:
 
-| Rule                     | Reason                                                                                                                      |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| **Mandatory Quoting**    | Prevents Rust lexer confusion with special characters like `<`, `>`, `{`, `}`.                                              |
-| **No Inline `<style>`**  | Forces you into **external CSS files** or **utility classes** (like Tailwind) which get full IDE support.                 |
-| **Component-Scoped CSS** | Automatic scoping prevents style leakage. No more "why is this button blue?" debugging.                                     |
-| **CDN-Only `<link>`**    | Local files must use `<style src>` for scoping. `<link>` is reserved for external stylesheets (Font Awesome, Tailwind CDN). |
+| Rule                     | Reason                                                                                             |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| **Mandatory Quoting**    | Prevents Rust lexer confusion with special characters like `<`, `>`, `{`, `}`.                     |
+| **No Inline `<style>`**  | Forces you into **external CSS files** which get full IDE support and compile-time validation.     |
+| **Component-Scoped CSS** | Automatic scoping prevents style leakage. No more "why is this button blue?" debugging.            |
+| **CSS Must Match HTML**  | Every class you use must be defined in CSS. Compile error with **exact location** if not.          |
+| **No Dead CSS**          | Every class you define must be used in HTML. Warning at compile time if not.                       |
+| **CDN-Only `<link>`**    | Local files must use `<style src>` for scoping and validation. `<link>` is reserved for externals. |
 
 ### Design Decisions Explained
 
@@ -80,20 +84,41 @@ Azumi is strict. Follow these rules or it won't compile.
 
 3. **External CSS:** `<style src="styles.css" />`
 
-    - _Why?_ **Automatic Scoping.** CSS is scoped to the component at compile time.
+    - _Why?_ **Automatic Scoping + Validation.** CSS is scoped to the component and validated at compile time.
     - _Bonus:_ Full IDE support (linting, colors, autocomplete) for your CSS files.
 
-4. **External JS:** `<script src="/static/app.js" />`
+4. **All classes must be defined in CSS:**
+
+    ```rust
+    // ❌ Compile Error: class 'btn' not defined
+    <button class="btn">"Click"</button>
+    ```
+
+    - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
+
+5. **All CSS must be used in HTML:**
+
+    ```css
+    /* ⚠️ Warning: class 'unused' is never used */
+    .unused {
+        color: red;
+    }
+    ```
+
+    - _Why?_ Prevents dead CSS that bloats your bundle.
+
+6. **External JS:** `<script src="/static/app.js" />`
     - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
 
 ### ❌ Not Allowed
 
-1. **Unquoted text:** `<h1>Hello</h1>` (Compile Error)
-2. **Unquoted attributes:** `<div class=box>` (Compile Error)
-3. **Inline styles:** `<style>.box { color: red; }</style>` (Compile Error)
-4. **Inline scripts:** `<script>console.log("hi")</script>` (Compile Error)
-5. **Local file `<link>`:** `<link rel="stylesheet" href="/static/local.css">` (Compile Error)
-    - Use `<style src="/static/local.css" />` instead for automatic scoping.
+1. **Unquoted text:** `<h1>Hello</h1>` → Compile Error
+2. **Unquoted attributes:** `<div class=box>` → Compile Error
+3. **Undefined CSS classes:** `<div class="typo">` → **Compile Error with location**
+4. **Inline styles:** `<style>.box { color: red; }</style>` → Compile Error
+5. **Inline scripts:** `<script>console.log("hi")</script>` → Compile Error
+6. **Local file `<link>`:** `<link rel="stylesheet" href="/static/local.css">` → Compile Error
+    - Use `<style src="/static/local.css" />` instead for automatic scoping and validation.
 
 ### ⚠️ Exceptions
 
@@ -105,8 +130,8 @@ Azumi is strict. Follow these rules or it won't compile.
 
     - The **only** allowed inline script. Safe way to pass server data to client-side code.
 
-3. **CDN Stylesheets:** `<link rel="stylesheet" href="https://cdn.example.com/theme.css">`
-    - External CDN links are allowed. Only _local_ files must use `<style src>`.
+3. **CDN Stylesheets:** `<link rel="stylesheet" href="https://cdn.example.com/font-awesome.css">`
+    - External CDN links are allowed (no validation). Only _local_ files must use `<style src>`.
 
 ---
 
@@ -272,30 +297,62 @@ Use `:global()` to prevent scoping for specific selectors:
 }
 ```
 
-### 6. Tailwind CSS Support
+### 6. Compile-Time CSS Validation
 
-Azumi works perfectly with Tailwind. Just include the CDN or your build output.
+Azumi validates your CSS at compile time and shows **exact locations** of errors.
+
+**Example Error:**
 
 ```rust
 html! {
-    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
-    <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold">"Tailwind Ready"</h1>
-    </div>
+    <style src="button.css" />
+    <button class="btn-primary">"Click Me"</button>
+    //              ^^^^^^^^^^^
+    //              error: CSS class 'btn-primary' is not defined in any CSS file
 }
 ```
+
+**The error appears:**
+
+-   ✅ At the **exact line and column** in your editor
+-   ✅ With IDE underlining (red squiggly)
+-   ✅ Click to jump directly to the problem
+-   ✅ Same experience as regular Rust compiler errors
+
+**Prevents:**
+
+-   Typos in class names
+-   Removed CSS that's still used
+-   Dead CSS that's never used
 
 ### 7. HTMX Integration
 
 Server-side rendering is back. Azumi + HTMX is a powerful combo.
 
 ```rust
-<button
-    hx-post="/clicked"
-    hx-swap="outerHTML"
-    class="btn">
-    "Click Me"
-</button>
+html! {
+    <style src="button.css" />
+    <button
+        hx-post="/clicked"
+        hx-swap="outerHTML"
+        class="btn">
+        "Click Me"
+    </button>
+}
+```
+
+**button.css:**
+
+```css
+.btn {
+    background: #4f46e5;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+.btn:hover {
+    background: #4338ca;
+}
 ```
 
 ---
