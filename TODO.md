@@ -18,12 +18,6 @@ one change is that we are hating on tailwind and using a custom css parser, we a
 -   [ ] Clear explanation of what Azumi is and is NOT
 -   [ ] Design philosophy and why we made our choices
 
-### 2. More Complex Component Examples
-
--   [ ] Form components with validation
--   [ ] Modal/Dialog components
--   [ ] Nested component composition patterns
-
 ### 3. Developer Experience
 
 -   [ ] Add CSS peek extension recommendation to README
