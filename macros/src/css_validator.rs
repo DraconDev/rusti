@@ -54,26 +54,25 @@ fn extract_classes_from_selector(selector: &str) -> HashSet<String> {
 /// Parse CSS content and extract all defined class names
 pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> {
     let mut defined_classes = HashSet::new();
-    let mut lines = css_content.lines().enumerate();
     
     eprintln!("🔍 Parsing CSS file: {}", file_path);
     eprintln!("📄 CSS content preview (first 200 chars): {:?}", &css_content[..css_content.len().min(200)]);
     
-    while let Some((line_num, line)) = lines.next() {
+    for (line_num, line) in css_content.lines().enumerate() {
         let trimmed = line.trim();
         eprintln!("🔍 Line {}: '{}' (trimmed: '{}')", line_num + 1, line, trimmed);
         
         // Skip @-rules, comments, and empty lines
         if trimmed.starts_with('@') || trimmed.starts_with("/*") || trimmed.is_empty() {
-            if trimmed.starts_with("/*") {
-                // Skip multi-line comments
-                while let Some((_, comment_line)) = lines.next() {
-                    if comment_line.trim().ends_with("*/") {
-                        break;
-                    }
-                }
-            }
             eprintln!("⏭️  Skipping line (comment/empty/@-rule)");
+            continue;
+        }
+        
+        // Skip to end of multi-line comments
+        if trimmed.contains("/*") && !trimmed.contains("*/") {
+            continue;
+        }
+        if trimmed.ends_with("*/") {
             continue;
         }
         
@@ -89,24 +88,6 @@ pub fn parse_css_classes(css_content: &str, file_path: &str) -> HashSet<String> 
             if !classes.is_empty() {
                 defined_classes.extend(classes.clone());
                 eprintln!("✅ Added classes to set: {:?}", classes);
-            }
-            
-            // Skip to closing brace
-            let mut brace_count = 1;
-            while let Some((_, next_line)) = lines.next() {
-                for ch in next_line.chars() {
-                    if ch == '{' {
-                        brace_count += 1;
-                    } else if ch == '}' {
-                        brace_count -= 1;
-                        if brace_count == 0 {
-                            break;
-                        }
-                    }
-                }
-                if brace_count == 0 {
-                    break;
-                }
             }
         } else {
             eprintln!("❌ No brace found in line: '{}'", trimmed);
