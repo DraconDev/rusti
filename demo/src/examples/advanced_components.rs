@@ -182,7 +182,7 @@ fn Card(title: &'static str, children: impl Component) -> impl Component {
             </div>
             <div class="card-body">
                 <div class="stats-grid">
-                    {children}
+                    @children
                 </div>
             </div>
         </div>
