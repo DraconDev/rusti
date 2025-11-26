@@ -220,7 +220,7 @@ impl Parse for Element {
     fn parse(input: ParseStream) -> Result<Self> {
         let start_span = input.span();
         input.parse::<Token![<]>()?;
-        let name = parse_html_name(input)?;
+        let (name, name_span) = parse_html_name(input)?;
         eprintln!("Parsing element: {}", name);
 
         let mut attrs = Vec::new();
@@ -254,7 +254,7 @@ For dynamic styles: use style attribute with expressions"
                 };
 
                 return Err(Error::new(
-                    start_span,
+                    if let Some(joined) = start_span.join(name_span) { joined } else { name_span },
                     format!(
                         "Inline <{}> tags not allowed in Azumi 2.0\n\n{}\n\nWhy? External files get full IDE support (linting, autocomplete, error checking).",
                         name, tag_help
@@ -315,7 +315,7 @@ For dynamic styles: use style attribute with expressions"
                     eprintln!("Element::parse: Found closing tag sequence");
                     input.parse::<Token![<]>()?;
                     input.parse::<Token![/]>()?;
-                    let closing_name = parse_html_name(input)?;
+                    let (closing_name, _) = parse_html_name(input)?;
                     eprintln!(
                         "Found closing tag: </{}>  (expected </{}>)",
                         closing_name, name
@@ -350,9 +350,7 @@ For dynamic styles: use style attribute with expressions"
 
 impl Parse for Attribute {
     fn parse(input: ParseStream) -> Result<Self> {
-        let name_span = input.span();
-        let name = parse_html_name(input)?;
-        let span = input.span();
+        let (name, name_span) = parse_html_name(input)?;
 
         // Check if this is a boolean attribute (no value required)
         const BOOLEAN_ATTRS: &[&str] = &[
@@ -415,6 +413,13 @@ impl Parse for Attribute {
             }
             (AttributeValue::None, None)
         };
+
+        let mut span = name_span;
+        if let Some(v_span) = value_span {
+            if let Some(joined) = span.join(v_span) {
+                span = joined;
+            }
+        }
 
         Ok(Attribute {
             name,
@@ -520,23 +525,22 @@ impl Parse for Block {
 
 // Helpers
 
-fn parse_html_name(input: ParseStream) -> Result<String> {
+fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
     let mut name = String::new();
+    let mut full_span = input.span();
+
     if input.peek(Ident)
         || input.peek(Token![type])
         || input.peek(Token![for])
         || input.peek(Token![match])
         || input.peek(Token![async])
     {
-        // We can't use Ident::parse_any easily because it's an extension trait method on Ident type?
-        // No, it's `Ident::parse_any(input)`.
-        // Wait, `Ident::parse_any` is a function in `ext::IdentExt` trait?
-        // `fn parse_any(input: ParseStream) -> Result<Self>`
-        // Yes.
         let ident = Ident::parse_any(input)?;
         name.push_str(&ident.to_string());
+        full_span = ident.span();
 
         while input.peek(Token![-]) || input.peek(Token![:]) {
+            let punct_span = input.span();
             if input.peek(Token![-]) {
                 input.parse::<Token![-]>()?;
                 name.push('-');
@@ -544,22 +548,31 @@ fn parse_html_name(input: ParseStream) -> Result<String> {
                 input.parse::<Token![:]>()?;
                 name.push(':');
             }
+            if let Some(joined) = full_span.join(punct_span) {
+                full_span = joined;
+            }
 
             if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
                 let part = Ident::parse_any(input)?;
                 name.push_str(&part.to_string());
+                if let Some(joined) = full_span.join(part.span()) {
+                    full_span = joined;
+                }
             } else {
                 // Allow numbers?
                 if input.peek(syn::Lit) {
                     let lit: syn::Lit = input.parse()?;
                     name.push_str(&lit.to_token_stream().to_string());
+                    if let Some(joined) = full_span.join(lit.span()) {
+                        full_span = joined;
+                    }
                 }
             }
         }
     } else {
         return Err(input.error("Expected identifier"));
     }
-    Ok(name)
+    Ok((name, full_span))
 }
 
 fn is_void_element(name: &str) -> bool {
@@ -616,7 +629,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
             let fork = input.fork();
             fork.parse::<Token![<]>()?;
             fork.parse::<Token![/]>()?;
-            if let Ok(name) = parse_html_name(&fork) {
+            if let Ok((name, _)) = parse_html_name(&fork) {
                 if name == tag_name {
                     eprintln!("Found closing tag: </{}>", name);
                     break;
@@ -657,7 +670,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
                     let fork = input.fork();
                     fork.parse::<Token![<]>()?;
                     fork.parse::<Token![/]>()?;
-                    if let Ok(name) = parse_html_name(&fork) {
+                    if let Ok((name, _)) = parse_html_name(&fork) {
                         if name == tag_name {
                             eprintln!("Stopped text at closing tag");
                             break;
