@@ -245,8 +245,8 @@ fn math_let_examples() -> impl azumi::Component {
             
             <div class="responsive-layout">
                 <h3>"Responsive Calculations"</h3>
-                <p>"Viewport: " {viewport_width}px</p>
-                <p>"Container: " {container_width}px</p>
+                <p>"Viewport: " {viewport_width}"px"</p>
+                <p>"Container: " {container_width}"px"</p>
                 <p>"Columns: " {columns}</p>
             </div>
         </div>
@@ -384,7 +384,7 @@ fn data_processing_let_examples() -> impl azumi::Component {
                     _ => "Needs Improvement",
                 };
                 <p>"Passing students: " {passing_scores.len()} "/" {raw_scores.len()}</p>
-                <p>"Passing rate: " {passing_rate}%</p>
+                <p>"Passing rate: " {passing_rate}"%"</p>
                 <p>"Overall performance: " {performance_level}</p>
             </div>
         </div>
