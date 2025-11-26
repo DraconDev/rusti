@@ -10,8 +10,8 @@ pub fn lesson4() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 4: Control Flow - Azumi"</title>
-                <style src="/static/lessons.css" />
-                <style src="/static/lesson4.css" />
+                <style src="/static/page/lessons.css" />
+                <style src="/static/page/lesson4.css" />
             </head>
             <body>
                 <div class="lesson-container">

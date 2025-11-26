@@ -10,8 +10,8 @@ pub fn lesson3() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Lesson 3: Global Styles - Azumi"</title>
-                <style src="/static/lessons.css" />
-                <style src="/static/lesson3.css" />
+                <style src="/static/page/lessons.css" />
+                <style src="/static/page/lesson3.css" />
             </head>
             <body>
                 <div class="lesson-container">

@@ -9,7 +9,7 @@ pub fn homepage() -> impl azumi::Component {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>"Azumi Lessons - Learn Type-Safe HTML"</title>
-                <style src="/static/lessons.css" />
+                <style src="/static/page/lessons.css" />
                 <style src="/static/homepage.css" />
                 <style src="/static/global.css" />
             </head>
