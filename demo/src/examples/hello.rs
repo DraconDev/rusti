@@ -2,19 +2,19 @@ use axum::response::{Html, IntoResponse};
 use azumi::html;
 use azumi::Component;
 
-/// Simple hello world page demonstrating Rusti 2.0 basics
+/// Simple hello world page demonstrating Azumi basics
 pub fn hello_world() -> impl Component {
     html! {
         <!DOCTYPE html>
         <html>
             <head>
                 <meta charset="UTF-8" />
-                <title>"Hello World - Rusti 2.0"</title>
+                <title>"Hello World - Azumi"</title>
                 <style src="/static/hello.css" />
             </head>
             <body>
                 <div class="container">
-                    <h1>"Hello, Rusti 2.0!"</h1>
+                    <h1>"Hello, Azumi!"</h1>
                     <p>"This demonstrates the new mandatory quoting rules."</p>
 
                     <div class="features">

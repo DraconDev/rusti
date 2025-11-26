@@ -1,7 +1,7 @@
 use axum::response::{Html, IntoResponse};
 use azumi::html;
 
-/// Homepage showcasing all Azumi 2.0 examples
+/// Homepage showcasing all Azumi examples
 pub fn homepage() -> impl azumi::Component {
     html! {
         <!DOCTYPE html>
@@ -9,13 +9,13 @@ pub fn homepage() -> impl azumi::Component {
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>"Azumi 2.0 - Type-Safe HTML Templates"</title>
+                <title>"Azumi - Type-Safe HTML Templates"</title>
                 <style src="/static/homepage.css" />
             </head>
             <body>
                 <div class="container">
                     <header class="hero">
-                        <h1>"⚡ Azumi 2.0"</h1>
+                        <h1>"⚡ Azumi"</h1>
                         <p class="tagline">"Type-safe HTML templates for Rust + Axum"</p>
                         <div class="badges">
                             <span class="badge">"Zero-cost"</span>
@@ -101,7 +101,7 @@ pub fn homepage() -> impl azumi::Component {
                     </section>
 
                     <footer class="footer">
-                        <p>"Built with Azumi 2.0 • Designed for Axum"</p>
+                        <p>"Built with Azumi • Designed for Axum"</p>
                     </footer>
                 </div>
             </body>
