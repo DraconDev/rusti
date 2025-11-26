@@ -5,7 +5,7 @@ use azumi::html;
 pub fn lesson_a() -> impl azumi::Component {
     html! {
         <style src="/static/lesson_a.css" />
-        <div class="baasdadb">
+        <div class="baby">
             <h1>"Hello from Azumi!"</h1>
             <p>"This is your first lesson"</p>
             <p>"Azumi makes HTML type-safe"</p>
