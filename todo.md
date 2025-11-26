@@ -8,3 +8,5 @@
 ?
 
 also type check the css files we have and if any are unused then we mark what imports then with a warning
+
+another problem is that we underline both classes if either is wrong, we should only underline the incorrect one
