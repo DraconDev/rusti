@@ -146,9 +146,11 @@ fn test_card<'a>() -> impl azumi::Component + 'a {
 
 fn test_card2<'a>() -> impl azumi::Component + 'a {
     html! {
-        <div class="bg-red-500 rounded-xl shadow-lg p-6 transform hover:scale-105 transition border-l-4">
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">"Test Card 2"</h3>
-            <p class="text-gray-600">"This is a test card 2"</p>
+        <div class="card">
+            <div class="card-icon">"🎨"</div>
+            <h3 class="card-title">"Test Card 2"</h3>
+            <p class="card-description">"This is a test card 2"</p>
+            <span class="card-link">"View Example →"</span>
         </div>
     }
 }
