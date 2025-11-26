@@ -208,12 +208,11 @@ fn collect_styles_recursive(nodes: &[token_parser::Node], css_content: &mut Stri
 
 fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     // Pass 0: CSS Validation - Revolutionary compile-time CSS type checking!
-    if let Err(css_error) = css_validator::validate_component_css(nodes) {
-        // Convert the error into a compile error
-        let error_message = css_error.to_string();
-        return quote! {
-            compile_error!(#error_message);
-        };
+    let css_validation_errors = css_validator::validate_component_css(nodes);
+
+    // If there are compile errors from CSS validation, emit them
+    if !css_validation_errors.is_empty() {
+        return css_validation_errors;
     }
 
     // Collect all CSS content first (needed for validation and scoping)
