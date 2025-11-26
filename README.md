@@ -84,7 +84,7 @@ That's it. No complex rules about capitalization—just use `@` for Rust, `<>` f
 
 - **Undescriptive**: What does `mt-4` mean? `bg-blue-500`? Good luck reading this in 6 months.
 - **Error-prone**: Typos like `bg-blue-60` silently fail - no error, just broken styles.
-- **No IDE support**: Your editor can't help you with inline strings.
+- **Limited IDE validation**: Basic syntax highlighting works, but no compile-time checking, linting, or validation.
 - **Poor separation**: Structure, behavior, and presentation all mixed together.
 
 ### The Problem with Tailwind/Utility CSS
