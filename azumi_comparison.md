@@ -20,7 +20,7 @@ Azumi is an **outstanding, opinionated Rust templating library** for **strict, t
 | **Compile-Time CSS Validate** | ✅ Exact spans/deadcode | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Auto CSS Scoping** | ✅ Hash selectors/pseudos | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ Scoped |
 | **Strictness** | 🔒 Ultra (no inline, quoted all) | ⚠️ Loose | ⚠️ Jinja | ✅ Typed HTML | ✅ Typed | ⚠️ JS | ⚠️ |
-| **Syntax** | `<div class=\"foo\">\"text\" @if{}` | `div { \"text\" }` | `{%if%}` | `templ <div>{.foo}</div>` | Signals | JSX | `<div class>` |
+| **Syntax** | `<div class="foo">"text" @if{}` | `div { \"text\" }` | `{%if%}` | `templ <div>{.foo}</div>` | Signals | JSX | `<div class>` |
 | **Runtime Overhead** | 0 | 0 | Low | 0 | Signals | VDOM High | Compiled Low |
 | **Components** | ✅ Props builder/defaults | Basic | Includes | Typed | Reactive | Hooks | Stores |
 | **Control Flow** | ✅ @if/@for/@match/@let | Rust blocks | Jinja | Rust blocks | ✅ | JS if | {#if}{#each} |
