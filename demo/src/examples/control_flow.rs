@@ -14,8 +14,8 @@ fn control_flow_demo() -> impl azumi::Component {
         <html>
             <head>
                 <title>"Control Flow Demo"</title>
-                <style src="/static/homepage.css" />
-                <style src="/static/control_flow.css" />
+                <link rel="stylesheet" href="/static/homepage.css" />
+                <link rel="stylesheet" href="/static/control_flow.css" />
             </head>
             <body>
                 <div class="container">
