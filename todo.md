@@ -26,4 +26,4 @@ also type check the css files we have and if any are unused then we mark what im
                 }
             }
 
-            ? clean up this code related to script 
+            ? clean up this code related to script tags
