@@ -8,6 +8,9 @@ pub mod homepage;
 pub mod htmx_todo;
 pub mod layouts;
 pub mod lesson1;
+pub mod lesson2;
+pub mod lesson3;
+pub mod lesson4;
 pub mod tailwind;
 pub mod simple_navigation;
 // Advanced examples (commented out pending fixes)

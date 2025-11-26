@@ -14,6 +14,9 @@ async fn main() {
         .route("/", get(examples::homepage::homepage_handler))
         // Educational lessons
         .route("/lesson-1", get(examples::lesson1::lesson1_handler))
+        .route("/lesson-2", get(examples::lesson2::lesson2_handler))
+        .route("/lesson-3", get(examples::lesson3::lesson3_handler))
+        .route("/lesson-4", get(examples::lesson4::lesson4_handler))
         // Basic examples
         .route("/hello", get(examples::hello::hello_handler))
         .route("/tailwind", get(examples::tailwind::tailwind_handler))
