@@ -33,6 +33,7 @@ pub struct Attribute {
     pub name: String,
     pub value: AttributeValue,
     pub span: Span,
+    pub value_span: Option<Span>,
 }
 
 #[derive(Debug, Clone)]
