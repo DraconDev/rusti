@@ -1,0 +1,105 @@
+//! Lesson 3: Conditional Rendering
+//! 
+//! Using @if for conditional content
+//! This demonstrates how to conditionally render different content based on data.
+
+use azumi::html;
+
+/// Basic conditional rendering based on user status
+pub fn user_status(is_logged_in: bool) -> impl azumi::Component {
+    html! {
+        <div>
+            @if is_logged_in {
+                <p>"Welcome back!"</p>
+            } else {
+                <p>"Please log in"</p>
+            }
+        </div>
+    }
+}
+
+/// Conditional rendering with multiple states
+pub fn notification_display(notification_count: i32) -> impl azumi::Component {
+    html! {
+        <div>
+            @if notification_count == 0 {
+                <p>"No new notifications"</p>
+            } else if notification_count == 1 {
+                <p>"You have 1 new notification"</p>
+            } else {
+                <p>"You have " {notification_count.to_string()} " new notifications"</p>
+            }
+        </div>
+    }
+}
+
+/// Content based on user permissions
+pub fn admin_panel(is_admin: bool, username: String) -> impl azumi::Component {
+    html! {
+        <div>
+            @if is_admin {
+                <h1>"Admin Panel"</h1>
+                <p>"Welcome, " {username}</p>
+                <p>"You have full access to all features"</p>
+            } else {
+                <h1>"User Dashboard"</h1>
+                <p>"Welcome, " {username}</p>
+                <p>"You have limited access"</p>
+            }
+        </div>
+    }
+}
+
+/// Simple price display with basic conditional logic
+pub fn price_display(original_price: f64, has_discount: bool) -> impl azumi::Component {
+    html! {
+        <div>
+            <h2>"Pricing Information"</h2>
+            @if has_discount {
+                <p>"Price: $" {(original_price * 0.9).to_string()} " (10% off!)"</p>
+            } else {
+                <p>"Price: $" {original_price.to_string()}</p>
+            }
+        </div>
+    }
+}
+
+/// Form validation display
+pub fn form_feedback(is_submitted: bool, has_errors: bool, message: String) -> impl azumi::Component {
+    html! {
+        <div>
+            @if is_submitted {
+                @if has_errors {
+                    <div style="color: red;">
+                        <p>"Error: " {message}</p>
+                    </div>
+                } else {
+                    <div style="color: green;">
+                        <p>"Success: " {message}</p>
+                    </div>
+                }
+            } else {
+                <p>"Please fill out the form"</p>
+            }
+        </div>
+    }
+}
+
+/// Weather display based on temperature
+pub fn weather_display(temperature: i32, condition: String) -> impl azumi::Component {
+    html! {
+        <div>
+            <h2>"Weather Update"</h2>
+            <p>"Current temperature: " {temperature.to_string()} "°F"</p>
+            <p>"Condition: " {condition}</p>
+            
+            @if temperature < 32 {
+                <p>"It's freezing! Bundle up!"</p>
+            } else if temperature > 80 {
+                <p>"It's hot! Stay hydrated!"</p>
+            } else {
+                <p>"Perfect weather!"</p>
+            }
+        </div>
+    }
+}
