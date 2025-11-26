@@ -82,7 +82,7 @@ That's it. No complex rules about capitalization—just use `@` for Rust, `<>` f
 
 **Problems:**
 
-- **Undescriptive**: What does `mt-4` mean? `bg-blue-500`? Good luck reading this in 6 months.
+- **Takes up visual space**: Long class lists clutter HTML and make the structure hard to read.
 - **Error-prone**: Typos like `bg-blue-60` silently fail - no error, just broken styles.
 - **Limited IDE validation**: Basic syntax highlighting works, but no compile-time checking, linting, or validation.
 - **Poor separation**: Structure, behavior, and presentation all mixed together.
