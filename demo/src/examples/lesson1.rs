@@ -3,6 +3,17 @@ use azumi::html;
 
 /// Lesson 1: Text & Quotes - Learn mandatory quoting rules
 pub fn lesson1() -> impl azumi::Component {
+    let wrong_code = r#"<div>
+    <h1>Hello World</h1>
+    <p>This text is unquoted</p>
+</div>"#;
+
+    let correct_code = r#"<div>
+    <h1>"Hello, World!"</h1>
+    <p>"This text is properly quoted"</p>
+    <p>"Azumi requires quotes for ALL text content"</p>
+</div>"#;
+
     html! {
         <!DOCTYPE html>
         <html>
@@ -36,12 +47,7 @@ pub fn lesson1() -> impl azumi::Component {
                                 <div class="code-section">
                                     <h3>"❌ Wrong (Won't Compile)"</h3>
                                     <pre class="code-block">
-{html!(
-    <div>
-        <h1>Hello World</h1>
-        <p>This text is unquoted</p>
-    </div>
-)}</pre>
+{wrong_code}</pre>
                                 </div>
                                 <div class="output-section">
                                     <h3>"❌ Error Message"</h3>
@@ -60,13 +66,7 @@ pub fn lesson1() -> impl azumi::Component {
                                 <div class="code-section">
                                     <h3>"✅ Correct Code"</h3>
                                     <pre class="code-block">
-{html!(
-    <div>
-        <h1>"Hello, World!"</h1>
-        <p>"This text is properly quoted"</p>
-        <p>"Azumi requires quotes for ALL text content"</p>
-    </div>
-)}</pre>
+{correct_code}</pre>
                                 </div>
                                 <div class="output-section">
                                     <h3>"✅ What It Renders"</h3>
