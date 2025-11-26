@@ -106,7 +106,6 @@ impl GenerationContext {
     }
 }
 
-
 /// Collect ALL CSS content from all <style> tags in the component
 /// Returns (global_css, scoped_css)
 fn collect_all_styles(nodes: &[token_parser::Node]) -> (String, String) {
@@ -280,7 +279,7 @@ fn validate_nodes(
 
                         // Rule 1: Ban inline styles - COMPILE ERROR
                         if name == "style" {
-                            errors.push(quote_spanned! { attr.name_span =>
+                            errors.push(quote_spanned! { attr.span =>
                                 compile_error!("Inline styles banned. Use CSS classes instead.");
                             });
                         }
@@ -318,7 +317,12 @@ fn validate_nodes(
                 }
                 token_parser::Node::Block(block) => match block {
                     token_parser::Block::If(if_block) => {
-                        collect_errors_recursive(&if_block.then_branch, valid_classes, valid_ids, errors);
+                        collect_errors_recursive(
+                            &if_block.then_branch,
+                            valid_classes,
+                            valid_ids,
+                            errors,
+                        );
                         if let Some(else_branch) = &if_block.else_branch {
                             collect_errors_recursive(else_branch, valid_classes, valid_ids, errors);
                         }
@@ -332,7 +336,12 @@ fn validate_nodes(
                         }
                     }
                     token_parser::Block::Call(call_block) => {
-                        collect_errors_recursive(&call_block.children, valid_classes, valid_ids, errors);
+                        collect_errors_recursive(
+                            &call_block.children,
+                            valid_classes,
+                            valid_ids,
+                            errors,
+                        );
                     }
                     _ => {}
                 },
