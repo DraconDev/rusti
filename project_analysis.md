@@ -80,10 +80,18 @@ Rust control flow works directly in templates:
 
 ## 🚫 What Azumi Blocks (By Design)
 
-1. **Inline styles/scripts** - Forces external files
+1. **Inline `<style>` tags** - Forces external CSS files or utility classes
 2. **Unquoted text/attributes** - Eliminates ambiguity  
 3. **Local file `<link>` tags** - Must use `<style src>` for scoping
-4. **Flexible syntax** - If you break the rules, it won't compile
+4. **Inline scripts** - Forces external JS files
+5. **Flexible syntax** - If you break the rules, it won't compile
+
+### ✅ What Azumi Embraces
+
+1. **Utility-First CSS** - Encourages Tailwind and similar frameworks
+2. **External CSS Files** - Recommended for complex styling with automatic scoping
+3. **Inline Utility Classes** - Perfect for simple, readable styling
+4. **Mixed Approaches** - Use utility classes for simple stuff, CSS files for complex components
 
 ## 💪 Strengths
 
@@ -98,11 +106,13 @@ Rust control flow works directly in templates:
 - **Clear patterns**: Opinionated but consistent
 - **Great examples**: Comprehensive demo application
 - **Documentation**: Well-explained design decisions
+- **Flexibility**: Works great with Tailwind AND external CSS
 
 ### **Practical Benefits**
 - **Security**: Blocks XSS-prone patterns
 - **Maintainability**: Scoped CSS prevents conflicts
 - **Team consistency**: Rules enforce best practices
+- **Best of both worlds**: Utility classes for simple styling, scoped CSS for complex components
 
 ## ⚠️ Potential Concerns
 
@@ -112,14 +122,15 @@ Rust control flow works directly in templates:
 - Some edge cases might be confusing
 
 ### **Flexibility Trade-offs**
-- Can't use inline styles (even for quick prototyping)
+- Can't use inline `<style>` tags (but utility classes work great!)
 - Must quote everything (reduces flexibility)
-- External CSS requirement adds file management
+- External CSS requirement adds file management for complex styles
+- **But**: Utility classes like Tailwind provide excellent inline styling
 
 ### **Ecosystem Integration**
 - Limited to Axum framework
 - CSS preprocessing would require manual setup
-- No built-in support for CSS frameworks (beyond Tailwind CDN)
+- **But**: Works perfectly with Tailwind CDN and external CSS files
 
 ## 🎪 Demo Application Quality
 
@@ -130,6 +141,8 @@ The demo is **exceptional**:
 - ✅ Proper Axum integration
 - ✅ Interactive HTMX examples
 - ✅ Comprehensive documentation
+- ✅ **Great Tailwind integration** - utility classes work beautifully
+- ✅ **Excellent external CSS examples** - scoped styling in action
 
 ## 📊 Project Maturity Assessment
 
@@ -137,10 +150,10 @@ The demo is **exceptional**:
 |--------|--------|-------|
 | **Concept** | 🌟🌟🌟🌟🌟 | Innovative and well-thought-out |
 | **Implementation** | 🌟🌟🌟🌟 | Solid technical foundation |
-| **Documentation** | 🌟🌟🌟🌟🌟 | Excellent README and examples |
+| **Documentation** | 🌟🌟🌟🌟 | Excellent README and examples |
 | **Code Quality** | 🌟🌟🌟🌟 | Clean, well-structured |
 | **Demo Quality** | 🌟🌟🌟🌟🌟 | Professional, comprehensive |
-| **Real-world Ready** | 🌟🌟🌟 | Good for specific use cases |
+| **Real-world Ready** | 🌟🌟🌟🌟 | Great for utility-first + scoped CSS approach |
 
 ## 🎯 Target Use Cases
 
@@ -149,12 +162,14 @@ The demo is **exceptional**:
 - Teams wanting strict code quality
 - High-performance web services
 - Projects already using Axum
+- Teams that love utility-first CSS (Tailwind, etc.)
+- Projects wanting automatic CSS scoping
 
 **Not ideal for:**
-- Rapid prototyping
-- Teams preferring templating flexibility
-- Projects needing inline styles/scripts
+- Teams that prefer inline `<style>` tags
+- Rapid prototyping with complex inline CSS
 - Non-Axum frameworks
+- Projects where CSS scoping isn't needed
 
 ## 🚀 Overall Assessment
 
@@ -164,7 +179,10 @@ The demo is **exceptional**:
 2. **Innovative solution**: Compile-time CSS scoping is clever and useful
 3. **Well-executed**: Solid implementation with great examples
 4. **Thoughtful design**: Opinionated choices are justified and consistent
+5. **Flexible approach**: Embraces both utility-first CSS and external CSS files
 
-**Verdict**: This could be a game-changer for Rust web development, especially for teams prioritizing security and maintainability. The strictness that might seem limiting is actually a feature - it forces better practices.
+**Key Insight**: The styling philosophy is actually very smart - use utility classes for simple, readable styling (like Tailwind), and external CSS files with automatic scoping for complex components. This gives you the best of both worlds.
 
-**Recommendation**: For any Rust/Axum project where code quality and security are priorities, Azumi deserves serious consideration. The learning curve is worth the benefits.
+**Verdict**: This could be a game-changer for Rust web development, especially for teams prioritizing security and maintainability. The strictness that might seem limiting is actually a feature - it forces better practices while remaining flexible for different styling approaches.
+
+**Recommendation**: For any Rust/Axum project where code quality and security are priorities, Azumi deserves serious consideration. The learning curve is worth the benefits, especially if you appreciate utility-first CSS or want automatic CSS scoping.
