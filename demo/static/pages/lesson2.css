@@ -1,7 +1,7 @@
 /* Lesson 2: Data Binding Styles */
 
 /* Container styling */
-div {
+.lesson2-container {
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   border-radius: 16px;
   padding: 2rem;
@@ -11,13 +11,18 @@ div {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-div:hover {
+.lesson2-container:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
 }
 
+/* Product specific container */
+.lesson2-container.product {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+}
+
 /* Heading styling */
-h1 {
+.lesson2-title {
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   color: #f1f5f9;
@@ -30,7 +35,7 @@ h1 {
   text-align: center;
 }
 
-h2 {
+.lesson2-subtitle {
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 600;
   color: #e2e8f0;
@@ -39,8 +44,16 @@ h2 {
   text-align: center;
 }
 
-/* Paragraph styling */
-p {
+/* Counter specific styling */
+.lesson2-title.counter {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Text styling */
+.lesson2-text {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   font-weight: 400;
   color: #cbd5e1;
@@ -49,43 +62,38 @@ p {
   text-align: center;
 }
 
-/* Special styling for different content types */
-p:has(strong) {
-  color: #94a3b8;
-  font-style: italic;
+/* Price specific styling */
+.lesson2-text.price {
+  color: #fbbf24;
+  font-weight: 600;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
 }
 
-/* Product info specific styling */
-div:has(h2:contains("Price")) {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-}
-
-/* Stock status styling */
-p:contains("In stock") {
+/* Status colors */
+.lesson2-text.success {
   color: #22c55e;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-p:contains("Out of stock") {
+.lesson2-text.warning {
+  color: #f59e0b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lesson2-text.error {
   color: #ef4444;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-/* Counter styling */
-h1:contains("count") {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
-  div {
+  .lesson2-container {
     margin: 1rem 0;
     padding: 1.5rem;
   }
