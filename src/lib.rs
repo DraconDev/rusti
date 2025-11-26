@@ -1,13 +1,7 @@
 pub use azumi_macros::{component, html};
 
-pub trait Component: std::fmt::Display {
+pub trait Component {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
-}
-
-impl std::fmt::Display for dyn Component + 'static {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.render(f)
-    }
 }
 
 pub struct FnComponent<F>(F);
