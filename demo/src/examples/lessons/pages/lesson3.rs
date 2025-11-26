@@ -6,11 +6,12 @@ use azumi::html;
 /// User status display with conditional rendering
 pub fn user_status(is_logged_in: bool) -> impl azumi::Component {
     html! {
-        <div>
+        <style src="/static/pages/lesson3.css" />
+        <div class="lesson3-container">
             @if is_logged_in {
-                <p>"Welcome back!"</p>
+                <p class="lesson3-text success">"Welcome back!"</p>
             } else {
-                <p>"Please log in"</p>
+                <p class="lesson3-text warning">"Please log in"</p>
             }
         </div>
     }
