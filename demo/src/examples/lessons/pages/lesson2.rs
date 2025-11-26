@@ -1,50 +1,69 @@
-use axum::response::{Html, IntoResponse};
+//! Lesson 2: Data Binding
+//!
+//! Passing data to templates
+//! This demonstrates how to pass data and render it in templates.
+
 use azumi::html;
 
-/// Lesson 2: Data Binding Basics
-pub fn lesson2() -> impl azumi::Component {
+/// Basic data binding example
+pub fn user_greeting(user: &User) -> impl azumi::Component {
     html! {
-            <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset="UTF-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <title>"Lesson 2: Data Binding - Azumi"</title>
-                </head>
-                <body>
-                    <div>
-                        <a href="/">"← Back to Lessons"</a>
-                        <h1>"Lesson 2: Data Binding Basics"</h1>
-
-                        <section>
-                            <h2>"Working Example"</h2>
-                            <div>
-                                <h1>"Hello Alice!"</h1>
-                            </div>
-                        </section>
-
-                        <section>
-                            <h2>"Code"</h2>
-                            <pre>{"// Passing data to templates"}
-    {"pub fn user_greeting(user: &User) -> impl azumi::Component {"}
-    {"    html! {"}
-    {"        <div>"}
-    {"            <h1>{\"Hello \" user.name \"!\"}</h1>"}
-    {"        </div>"}
-    {"    }"}
-    {"}"}</pre>
-                        </section>
-
-                        <nav>
-                            <a href="/lesson-1">"← Previous"</a>
-                            <a href="/lesson-3">"Next: Conditional Rendering →"</a>
-                        </nav>
-                    </div>
-                </body>
-            </html>
-        }
+        <div>
+            <h1>{"Hello, " user.name "!"}</h1>
+        </div>
+    }
 }
 
-pub async fn lesson2_handler() -> impl IntoResponse {
-    Html(azumi::render_to_string(&lesson2()))
+/// Complex data binding with multiple fields
+pub fn user_profile(user: &User) -> impl azumi::Component {
+    html! {
+        <div>
+            <h1>{"Welcome, " user.name}</h1>
+            <p>{"Email: " user.email}</p>
+            <p>{"Role: " user.role}</p>
+            <p>{"Member since: " user.created_at}</p>
+        </div>
+    }
+}
+
+/// Dynamic content based on user data
+pub fn personalized_content(user: &User) -> impl azumi::Component {
+    html! {
+        <div>
+            <h1>{"Hello, " user.name "!"}</h1>
+            @if user.is_premium {
+                <p>"Thank you for being a premium member!"</p>
+            } else {
+                <p>"Upgrade to premium for more features."</p>
+            }
+            <p>{"You have " user.notification_count.to_string() " new notifications"}</p>
+        </div>
+    }
+}
+
+/// Data binding with formatted strings
+pub fn product_display(product: &Product) -> impl azumi::Component {
+    html! {
+        <div>
+            <h2>{product.name}</h2>
+            <p>{"Price: $" product.price.to_string()}</p>
+            <p>{"In stock: " product.stock.to_string() " units"}</p>
+        </div>
+    }
+}
+
+// Example data structures for demonstration
+pub struct User {
+    pub name: String,
+    pub email: String,
+    pub role: String,
+    pub created_at: String,
+    pub is_premium: bool,
+    pub notification_count: u32,
+}
+
+pub struct Product {
+    pub name: String,
+    pub price: f64,
+    pub stock: u32,
 }
