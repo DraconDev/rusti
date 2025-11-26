@@ -15,10 +15,8 @@ pub fn formatted_price(product: Product) -> impl azumi::Component {
         <style src="/static/pages/lesson7.css" />
         <div>
             @let final_price = product.price * (1.0 - product.discount);
-            @let original_text = format!("Original: ${}", product.price);
-            @let final_text = format!("Final: ${:.2}", final_price);
-            <p>{original_text}</p>
-            <p class="discounted-price">{final_text}</p>
+            <p>{"Original: $" (product.price).to_string()}</p>
+            <p class="discounted-price">{"Final: $" (final_price).to_string()}</p>
         </div>
     }
 }
