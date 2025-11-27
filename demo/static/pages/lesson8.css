@@ -154,3 +154,8 @@ pre {
     flex-direction: column;
     gap: 1.5rem;
 }
+
+.access-denied {
+    color: #b91c1c;
+    font-weight: 600;
+}
