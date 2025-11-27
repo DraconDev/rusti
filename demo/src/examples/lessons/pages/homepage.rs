@@ -287,7 +287,7 @@ pub fn home_page() -> impl azumi::Component {
         </html>
     }
 }
-Handler for Axum
+// Handler for Axum
 pub async fn homepage_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&home_page()))
 }
