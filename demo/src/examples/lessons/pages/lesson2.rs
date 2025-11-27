@@ -65,3 +65,10 @@ pub fn product_info(name: String, price: f64, in_stock: bool) -> impl azumi::Com
         </div>
     }
 }
+
+/// Handler for Axum
+pub async fn lesson2_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&simple_greeting(
+        "World".to_string(),
+    )))
+}
