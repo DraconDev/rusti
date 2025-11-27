@@ -49,9 +49,9 @@ pub fn integration_example() -> impl azumi::Component {
             <h3 class="lesson1-subtitle">"Using with Axum"</h3>
             <pre class="lesson1-code">
 "// In your handler:
-pub async fn my_handler() -> impl IntoResponse {{"}"
+pub async fn my_handler() -> impl IntoResponse {
     Html(azumi::render_to_string(&hello_world()))
-{"}"}"
+}"
             </pre>
             <p class="lesson1-small">"Azumi components integrate seamlessly with Axum handlers."</p>
         </div>
@@ -103,7 +103,7 @@ pub fn lesson1() -> impl azumi::Component {
 
             <section class="lesson1-section">
                 <h2 class="lesson1-section-title">"Live Examples"</h2>
-                
+
                 <div class="lesson1-example">
                     <h3 class="lesson1-example-title">"Example 1: Hello World"</h3>
                     @hello_world()
@@ -136,14 +136,14 @@ pub fn lesson1() -> impl azumi::Component {
                     <details class="lesson1-hint">
                         <summary>"Hint"</summary>
                         <pre class="lesson1-code">
-"fn my_card(title: &str, desc: &str) -> impl Component {{"}"
-    html! {{" "}}
-        <div class=\"card\">
+"fn my_card(title: &str, desc: &str) -> impl Component {
+    html! {
+        <div class=\\\"card\\\">
             <h2>{title}</h2>
             <p>{desc}</p>
         </div>
-    {"}"}
-{"}"}"
+    }
+}"
                         </pre>
                     </details>
                 </div>
