@@ -11,6 +11,8 @@ Azumi is a **strict** HTML template system for Rust. It validates your CSS at co
 Azumi is a **compile-time HTML template macro** for Rust that:
 
 -   ✅ **Validates every CSS class** at compile time with **location-specific errors**
+-   ✅ **Enforces accessibility** - img alt attributes, valid input types, ARIA roles
+-   ✅ **Supports CSS variables** - pass dynamic values with `--variable={value}` syntax
 -   ✅ Enforces **strict quoting** to eliminate lexer ambiguity
 -   ✅ Provides **automatic CSS scoping** for component isolation
 -   ✅ Integrates seamlessly with **Axum** and **HTMX**
