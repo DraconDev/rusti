@@ -11,17 +11,21 @@ async fn main() {
     // 🚀 Azumi Demo Server - Complete Learning Path
     let app = Router::new()
         // 🏠 Homepage - Learning Portal
-        // .route("/", get(examples::lessons::pages::homepage::homepage_handler))
-        .route("/css_variables", get(examples::css_variables::css_variables_handler))
-        // 📚 Interactive Lessons (1-8)
-        // .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
-        // .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
-        // .route("/lesson-3", get(examples::lessons::pages::lesson3::lesson3_handler))
-        // .route("/lesson-4", get(examples::lessons::pages::lesson4::lesson4_handler))
-        // .route("/lesson-5", get(examples::lessons::pages::lesson5::lesson5_handler))
-        // .route("/lesson-6", get(examples::lessons::pages::lesson6::lesson6_handler))
-        // .route("/lesson-7", get(examples::lessons::pages::lesson7::lesson7_handler))
-        // .route("/lesson-8", get(examples::lessons::pages::lesson8::lesson8_handler))
+        .route("/", get(examples::lessons::pages::homepage::homepage_handler))
+        
+        // 📚 Interactive Lessons (1-12)
+        .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
+        .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
+        .route("/lesson-3", get(examples::lessons::pages::lesson3::lesson3_handler))
+        .route("/lesson-4", get(examples::lessons::pages::lesson4::lesson4_handler))
+        .route("/lesson-5", get(examples::lessons::pages::lesson5::lesson5_handler))
+        .route("/lesson-6", get(examples::lessons::pages::lesson6::lesson6_handler))
+        .route("/lesson-7", get(examples::lessons::pages::lesson7::lesson7_handler))
+        .route("/lesson-8", get(examples::lessons::pages::lesson8::lesson8_handler))
+        .route("/lesson-9", get(examples::lessons::pages::lesson9::lesson9_handler))
+        .route("/lesson-10", get(examples::lessons::pages::lesson10::lesson10_handler))
+        .route("/lesson-11", get(examples::lessons::pages::lesson11::lesson11_handler))
+        .route("/lesson-12", get(examples::lessons::pages::lesson12::lesson12_handler))
         
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
