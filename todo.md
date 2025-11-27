@@ -11,4 +11,14 @@ Example:
 this should be valid css, we pass percentage variable to the css file and use it
 
 
-ban ids?
+2. ban ids?
+
+
+3. Enforce Accessibility (A11y)
+This is the ultimate flex for a strict library. Since you are parsing the attributes anyway, validate them for correctness, not just existence.
+The Rules:
+<img /> without alt -> Compile Error.
+<button /> with no text content and no aria-label -> Compile Error.
+<a href="#"> (Empty link) -> Compile Warning.
+<input> without a matching <label> (or aria-label) -> Compile Warning.
+This moves you from "Type Safe" to "User Safe."
