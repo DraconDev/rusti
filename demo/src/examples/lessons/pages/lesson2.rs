@@ -1,74 +1,56 @@
-//! Lesson 2: Data Binding
+//! Lesson 2: The Quoting Rule
 //!
-//! Passing data to templates
-//! This demonstrates how to pass data and render it in templates.
-
+//! Demonstrates Azumi's strict quoting requirements
 use azumi::html;
 
-/// Simple greeting with data binding
-pub fn simple_greeting(name: String) -> impl azumi::Component {
+/// Example 1: Text content must be quoted
+pub fn quoted_text() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
-        <div class="lesson2-container">
-            <h1 class="lesson2-title">"Hello, " {name}</h1>
+        <div class="demo">
+            <h1>"Text must always be quoted"</h1>
+            <p>"This is correct syntax."</p>
         </div>
     }
 }
 
-/// Multiple data fields in template
-pub fn user_info(name: String, role: String) -> impl azumi::Component {
+/// Example 2: Attribute values must be quoted
+pub fn quoted_attributes() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
-        <div class="lesson2-container">
-            <h1 class="lesson2-title">"Welcome, " {name}</h1>
-            <p class="lesson2-text">"Role: " {role}</p>
+        <div class="demo">
+            <button type="button" class="btn">"Attributes are quoted"</button>
+            <input type="text" placeholder="Always use quotes" />
         </div>
     }
 }
 
-/// Data binding with conditional content
-pub fn user_status(is_logged_in: bool, name: String) -> impl azumi::Component {
+/// Example 3: Variables don't need quotes
+pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson2.css" />
-        <div class="lesson2-container">
-            @if is_logged_in {
-                <p class="lesson2-text success">"Welcome back, " {name} "!"</p>
-            } else {
-                <p class="lesson2-text warning">"Please log in"</p>
-            }
+        <div class="demo">
+            <p>"Hello, " {name} "!"</p>
+            <p>"Count: " {count}</p>
         </div>
     }
 }
 
-/// Simple counter component
-pub fn counter_component(count: i32) -> impl azumi::Component {
+/// Main lesson demonstration
+pub fn lesson2() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
-        <div class="lesson2-container">
-            <h1 class="lesson2-title counter">"Current count: " {count.to_string()}</h1>
+        <div class="lesson-container">
+            <h1 class="lesson-title">"Lesson 2: The Quoting Rule"</h1>
+
+            @quoted_text()
+            @quoted_attributes()
+            @unquoted_variables("Alice", 42)
         </div>
     }
 }
 
-/// Product display with formatted data
-pub fn product_info(name: String, price: f64, in_stock: bool) -> impl azumi::Component {
-    html! {
-        <style src="/static/pages/lesson2.css" />
-        <div class="lesson2-container product">
-            <h2 class="lesson2-subtitle">{name}</h2>
-            <p class="lesson2-text price">"Price: $" {price.to_string()}</p>
-            @if in_stock {
-                <p class="lesson2-text success">"In stock"</p>
-            } else {
-                <p class="lesson2-text error">"Out of stock"</p>
-            }
-        </div>
-    }
-}
-
-/// Handler for Axum
+// Handler for Axum
 pub async fn lesson2_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&simple_greeting(
-        "World".to_string(),
-    )))
+    axum::response::Html(azumi::render_to_string(&lesson2()))
 }
