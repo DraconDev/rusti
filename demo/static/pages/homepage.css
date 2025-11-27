@@ -159,6 +159,10 @@
     margin-bottom: 0.5rem;
 }
 
+.step-content {
+    /* Wrapper for step text */
+}
+
 /* .step-content {
     Container for step description
 } */
