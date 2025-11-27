@@ -13,7 +13,6 @@ Azumi is a **compile-time HTML template macro** (`html!`) for Rust that brings f
 - ✅ **Validates HTML structure** - no `<div>` in `<ul>`, required children for semantic elements
 - ✅ **Supports CSS variables** - dynamic values via `--variable={rust_value}` syntax
 - ✅ **Automatic CSS scoping** - generates unique `[data-s{hash}]` selectors per component to prevent leakage
-- ✅ **Dead CSS detection** - warns about unused rules in your CSS files
 - ✅ **Strict quoting** - all text/content quoted to eliminate parser ambiguity
 - ✅ **Zero runtime overhead** - everything validated & expanded at compile time
 - ✅ **Full IDE support** - CSS Peek for \"Go to Definition\" on `<style src>`, LSP-aware errors
