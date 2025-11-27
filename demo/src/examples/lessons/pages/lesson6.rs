@@ -1,4 +1,6 @@
-use azumi::prelude::*;
+use azumi::html;
+
+
 
 // 1. Define an enum for pattern matching
 #[derive(Debug, Clone, PartialEq)]
@@ -48,7 +50,7 @@ pub fn lesson6() -> impl azumi::Component {
             <div class="demo-section">
                 <h2>"User Role Badges"</h2>
                 <div class="user-list">
-                    @for user in users {
+                    @for user in &users {
                         <div class="user-card">
                             <span class="user-name">{&user.name}</span>
                             // Match on the user's role to render the appropriate badge
