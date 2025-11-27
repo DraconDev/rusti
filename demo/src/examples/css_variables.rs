@@ -17,3 +17,7 @@ pub fn css_variables_demo() -> impl azumi::Component {
     }
 }
 
+pub async fn css_variables_handler() -> axum::response::Html<String> {
+    let component = css_variables_demo();
+    axum::response::Html(component.to_string())
+}
