@@ -159,7 +159,21 @@ Azumi is strict. Follow these rules or it won't compile.
 
     - _Why?_ Invalid roles don't work. Enforces WAI-ARIA spec compliance.
 
-8. **External JS:** `<script src="/static/app.js" />`
+8. **Buttons must have accessible text:**
+
+    ```rust
+    // ❌ Compile Error: empty button with no label
+    <button type="button"></button>
+
+    // ✅ Correct - at least one of these:
+    <button>"Click me"</button>
+    <button aria-label="Close dialog"></button>
+    <button title="Submit form">"→"</button>
+    ```
+
+    - _Why?_ Buttons without accessible text are useless for screen readers.
+
+9. **External JS:** `<script src="/static/app.js" />`
     - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
 
 ### ❌ Not Allowed
