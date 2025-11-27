@@ -580,8 +580,16 @@ fn generate_body_with_context(
                         quote! { write!(f, "{}", #content)?; }
                     }
                     Context::Normal => {
-                        // In normal HTML, use Escaped (HTML escaping)
-                        quote! { write!(f, "{}", azumi::Escaped(&(#content)))?; }
+                        // In normal HTML, use Smart Interpolation
+                        // RenderWrapper::render_azumi will pick:
+                        // 1. Component::render (if it's a Component)
+                        // 2. Escaped Display (if it's just Display)
+                        quote! {
+                            {
+                                use azumi::FallbackRender; // Import trait for fallback
+                                azumi::RenderWrapper(&(#content)).render_azumi(f)?;
+                            }
+                        }
                     }
                 }
             }

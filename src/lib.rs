@@ -51,6 +51,33 @@ impl<T: std::fmt::Display> std::fmt::Display for Escaped<T> {
     }
 }
 
+// Smart Interpolation Machinery
+// Allows {} to handle both Components (render) and Display types (escape)
+
+pub struct RenderWrapper<T>(pub T);
+
+impl<T> RenderWrapper<T> {
+    // Priority 1: Component (Render directly)
+    // This inherent method takes precedence over the trait implementation below
+    pub fn render_azumi(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    where
+        T: Component,
+    {
+        self.0.render(f)
+    }
+}
+
+pub trait FallbackRender {
+    fn render_azumi(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
+}
+
+// Priority 2: Display (Escape HTML)
+impl<T: std::fmt::Display> FallbackRender for RenderWrapper<T> {
+    fn render_azumi(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", Escaped(&self.0))
+    }
+}
+
 pub fn js<T: std::fmt::Debug>(v: T) -> String {
     format!("{:?}", v)
 }
