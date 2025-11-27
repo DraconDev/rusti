@@ -270,6 +270,8 @@ fn validate_nodes(
         valid_classes: &std::collections::HashSet<String>,
         valid_ids: &std::collections::HashSet<String>,
         errors: &mut Vec<proc_macro2::TokenStream>,
+        is_inside_form: bool,
+        is_inside_button: bool,
     ) {
         for node in nodes {
             match node {
@@ -331,11 +333,48 @@ fn validate_nodes(
                         errors.push(err);
                     }
 
-                    // Recurse
-                    collect_errors_recursive(&elem.children, valid_classes, valid_ids, errors);
+                    // HTML Structure validation
+                    // Rule 1: Table children
+                    errors.extend(html_structure_validator::validate_table_children(elem));
+
+                    // Rule 2: List children
+                    errors.extend(html_structure_validator::validate_list_children(elem));
+
+                    // Rule 3: Nested forms
+                    errors.extend(html_structure_validator::validate_nested_forms(
+                        elem,
+                        is_inside_form,
+                    ));
+
+                    // Rule 4: Button interactive content
+                    errors.extend(html_structure_validator::validate_button_interactive(
+                        elem,
+                        is_inside_button,
+                    ));
+
+                    // Update context for recursion
+                    let new_is_inside_form = is_inside_form || elem.name == "form";
+                    let new_is_inside_button = is_inside_button || elem.name == "button";
+
+                    // Recurse with updated context
+                    collect_errors_recursive(
+                        &elem.children,
+                        valid_classes,
+                        valid_ids,
+                        errors,
+                        new_is_inside_form,
+                        new_is_inside_button,
+                    );
                 }
                 token_parser::Node::Fragment(frag) => {
-                    collect_errors_recursive(&frag.children, valid_classes, valid_ids, errors);
+                    collect_errors_recursive(
+                        &frag.children,
+                        valid_classes,
+                        valid_ids,
+                        errors,
+                        is_inside_form,
+                        is_inside_button,
+                    );
                 }
                 token_parser::Node::Block(block) => match block {
                     token_parser::Block::If(if_block) => {
@@ -344,17 +383,40 @@ fn validate_nodes(
                             valid_classes,
                             valid_ids,
                             errors,
+                            is_inside_form,
+                            is_inside_button,
                         );
                         if let Some(else_branch) = &if_block.else_branch {
-                            collect_errors_recursive(else_branch, valid_classes, valid_ids, errors);
+                            collect_errors_recursive(
+                                else_branch,
+                                valid_classes,
+                                valid_ids,
+                                errors,
+                                is_inside_form,
+                                is_inside_button,
+                            );
                         }
                     }
                     token_parser::Block::For(for_block) => {
-                        collect_errors_recursive(&for_block.body, valid_classes, valid_ids, errors);
+                        collect_errors_recursive(
+                            &for_block.body,
+                            valid_classes,
+                            valid_ids,
+                            errors,
+                            is_inside_form,
+                            is_inside_button,
+                        );
                     }
                     token_parser::Block::Match(match_block) => {
                         for arm in &match_block.arms {
-                            collect_errors_recursive(&arm.body, valid_classes, valid_ids, errors);
+                            collect_errors_recursive(
+                                &arm.body,
+                                valid_classes,
+                                valid_ids,
+                                errors,
+                                is_inside_form,
+                                is_inside_button,
+                            );
                         }
                     }
                     token_parser::Block::Call(call_block) => {
@@ -363,6 +425,8 @@ fn validate_nodes(
                             valid_classes,
                             valid_ids,
                             errors,
+                            is_inside_form,
+                            is_inside_button,
                         );
                     }
                     _ => {}
@@ -372,7 +436,7 @@ fn validate_nodes(
         }
     }
 
-    collect_errors_recursive(nodes, valid_classes, valid_ids, &mut errors);
+    collect_errors_recursive(nodes, valid_classes, valid_ids, &mut errors, false, false);
 
     if errors.is_empty() {
         quote! {}
