@@ -287,8 +287,12 @@ fn validate_nodes(
                             if let token_parser::AttributeValue::Static(val) = &attr.value {
                                 for class_name in val.split_whitespace() {
                                     if !valid_classes.contains(class_name) {
+                                        let msg = format!(
+                                            "Class '{}' is used in HTML but not defined in CSS.",
+                                            class_name
+                                        );
                                         errors.push(quote_spanned! { attr.span =>
-                                            compile_error!(format!("Class '{}' is used in HTML but not defined in CSS.", class_name));
+                                            compile_error!(#msg);
                                         });
                                     }
                                 }
@@ -299,8 +303,12 @@ fn validate_nodes(
                         if name == "id" {
                             if let token_parser::AttributeValue::Static(val) = &attr.value {
                                 if !valid_ids.contains(val) {
+                                    let msg = format!(
+                                        "ID '{}' is used in HTML but not defined in CSS.",
+                                        val
+                                    );
                                     errors.push(quote_spanned! { attr.span =>
-                                        compile_error!(format!("ID '{}' is used in HTML but not defined in CSS.", val));
+                                        compile_error!(#msg);
                                     });
                                 }
                             }
