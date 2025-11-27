@@ -177,3 +177,58 @@ fn is_valid_aria_role(role_value: &str) -> bool {
             | "alertdialog" | "dialog"
     )
 }
+
+/// Rule 5: Links with target="_blank" must have rel="noopener" (security)
+pub fn validate_anchor_target_blank(elem: &Element) -> Option<TokenStream> {
+    if elem.name != "a" {
+        return None;
+    }
+
+    let target_attr = elem.attrs.iter().find(|attr| attr.name == "target");
+
+    if let Some(target) = target_attr {
+        if let AttributeValue::Static(val) = &target.value {
+            if val == "_blank" {
+                // Check for rel attribute
+                let rel_attr = elem.attrs.iter().find(|attr| attr.name == "rel");
+
+                let has_noopener = if let Some(rel) = rel_attr {
+                    if let AttributeValue::Static(rel_val) = &rel.value {
+                        rel_val.contains("noopener") || rel_val.contains("noreferrer")
+                    } else {
+                        // Dynamic rel attribute - assume it's handled or warn?
+                        // For now, let's be strict about static values.
+                        false
+                    }
+                } else {
+                    false
+                };
+
+                if !has_noopener {
+                    return Some(quote_spanned! { target.span =>
+                        compile_error!("Security Risk: Links with target=\"_blank\" must have rel=\"noopener\" or rel=\"noreferrer\" to prevent Reverse Tabnabbing attacks.");
+                    });
+                }
+            }
+        }
+    }
+
+    None
+}
+
+/// Rule 6: <iframe> must have a title attribute
+pub fn validate_iframe_title(elem: &Element) -> Option<TokenStream> {
+    if elem.name != "iframe" {
+        return None;
+    }
+
+    let has_title = elem.attrs.iter().any(|attr| attr.name == "title");
+
+    if !has_title {
+        Some(quote_spanned! { elem.span =>
+            compile_error!("<iframe> is missing 'title' attribute. Frames must have a unique title for accessibility.");
+        })
+    } else {
+        None
+    }
+}
