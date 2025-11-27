@@ -1,205 +1,316 @@
-//! Lesson 13: component_composition.rs
+//! Lesson 13: Component Composition
 //!
-//! Building complex UIs from simple components
+//! Building complex UIs from simple, reusable components
+
 use azumi::html;
 
-/// Simple card component
-#[azumi::component]
-fn Card(title: &str, children: impl azumi::Component) {
+// ============================================================================
+// SECTION 1: Card Component - The Building Block
+// ============================================================================
+
+/// Props for the Card component
+#[derive(Clone)]
+pub struct CardProps {
+    pub title: String,
+    pub content: String,
+}
+
+/// A reusable card component
+/// Cards are fundamental UI building blocks that can contain any content
+pub fn card(props: CardProps) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson13.css" />
         <div class="card">
-            <h3 class="card-title">{title}</h3>
-            <div class="card-content">
-                {children}
+            <div class="card-header">
+                <h3 class="card-title">{&props.title}</h3>
+            </div>
+            <div class="card-body">
+                <p>{&props.content}</p>
             </div>
         </div>
     }
 }
 
-/// Profile component
+// ============================================================================
+// SECTION 2: User Profile Components
+// ============================================================================
+
 #[derive(Clone)]
 pub struct User {
     pub name: String,
     pub email: String,
-    pub avatar: String,
+    pub role: String,
+    pub avatar_url: String,
 }
 
-pub fn user_profile(user: &User) -> impl azumi::Component {
+/// A compact user profile display component
+pub fn user_profile_compact(user: &User) -> impl azumi::Component {
     html! {
-        <div class="user-profile">
-            <img src={&user.avatar} alt={format!("Avatar of {}", user.name)} class="avatar" />
-            <div class="user-info">
-                <h4>{&user.name}</h4>
-                <p>{&user.email}</p>
+        <div class="user-profile-compact">
+            <img src={&user.avatar_url} alt={format!("{} avatar", user.name)} class="user-avatar" />
+            <div class="user-details">
+                <h4 class="user-name">{&user.name}</h4>
+                <p class="user-email">{&user.email}</p>
+                <span class="user-role">{&user.role}</span>
             </div>
         </div>
     }
 }
 
-/// Activity component
+/// A detailed user profile card
+pub fn user_profile_card(user: &User) -> impl azumi::Component {
+    html! {
+        <div class="user-profile-card">
+            <div class="profile-header">
+                <img src={&user.avatar_url} alt={format!("{} avatar", user.name)} class="profile-avatar" />
+                <div class="profile-info">
+                    <h2 class="profile-name">{&user.name}</h2>
+                    <p class="profile-email">{&user.email}</p>
+                    <span class="profile-role-badge">{&user.role}</span>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value">"127"</span>
+                    <span class="stat-label">"Posts"</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">"1.2k"</span>
+                    <span class="stat-label">"Followers"</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">"43"</span>
+                    <span class="stat-label">"Following"</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+// ============================================================================
+// SECTION 3: Activity Feed Components
+// ============================================================================
+
 #[derive(Clone)]
 pub struct Activity {
-    pub description: String,
+    pub id: u32,
+    pub user_name: String,
+    pub action: String,
+    pub target: String,
     pub timestamp: String,
 }
 
+/// Single activity item component
 pub fn activity_item(activity: &Activity) -> impl azumi::Component {
     html! {
         <div class="activity-item">
-            <p class="activity-desc">{&activity.description}</p>
-            <span class="activity-time">{&activity.timestamp}</span>
+            <div class="activity-icon">"📝"</div>
+            <div class="activity-content">
+                <p class="activity-text">
+                    <strong>{&activity.user_name}</strong>
+                    " "
+                    {&activity.action}
+                    " "
+                    <em>{&activity.target}</em>
+                </p>
+                <span class="activity-timestamp">{&activity.timestamp}</span>
+            </div>
         </div>
     }
 }
 
-/// Complex profile with composition
-pub fn complex_profile(user: &User, activities: &[Activity]) -> impl azumi::Component {
+/// Activity feed component showing multiple activities
+pub fn activity_feed(activities: &[Activity]) -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson13.css" />
-        <div class="profile-container">
-            @Card(
-                title="Profile",
-                children=html! {
-                    <div>
-                        <div class="profile-section">
-                            <h4>"Personal Information"</h4>
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <label>"Name:"</label>
-                                    <span>{&user.name}</span>
-                                </div>
-                                <div class="info-item">
-                                    <label>"Email:"</label>
-                                    <span>{&user.email}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="activity-feed">
+            <h3 class="feed-title">"Recent Activity"</h3>
+            <div class="feed-items">
+                @for activity in activities {
+                    {activity_item(activity)}
                 }
-            )
-
-            @Card(
-                title="Recent Activity",
-                children=html! {
-                    <div class="activities">
-                        @for activity in activities {
-                            {activity_item(activity)}
-                        }
-                    </div>
-                }
-            )
-
-            @Card(
-                title="Quick Actions",
-                children=html! {
-                    <div class="actions">
-                        <button class="btn btn-primary">"Edit Profile"</button>
-                        <button class="btn btn-secondary">"Change Password"</button>
-                        <button class="btn btn-outline">"View Settings"</button>
-                    </div>
-                }
-            )
+            </div>
         </div>
     }
 }
 
-/// Component composition demo
-pub fn composition_demo() -> impl azumi::Component {
-    let user = User {
+// ============================================================================
+// SECTION 4: Complex Composition Example - Dashboard
+// ============================================================================
+
+/// Dashboard demo showing composition of multiple components
+pub fn dashboard_demo() -> impl azumi::Component {
+    let current_user = User {
         name: "Alice Johnson".to_string(),
-        email: "alice@example.com".to_string(),
-        avatar: "https://via.placeholder.com/80".to_string(),
+        email: "alice.johnson@example.com".to_string(),
+        role: "Administrator".to_string(),
+        avatar_url: "https://i.pravatar.cc/150?img=1".to_string(),
     };
 
-    let activities = vec![
+    let team_members = vec![
+        User {
+            name: "Bob Smith".to_string(),
+            email: "bob.smith@example.com".to_string(),
+            role: "Developer".to_string(),
+            avatar_url: "https://i.pravatar.cc/150?img=12".to_string(),
+        },
+        User {
+            name: "Carol White".to_string(),
+            email: "carol.white@example.com".to_string(),
+            role: "Designer".to_string(),
+            avatar_url: "https://i.pravatar.cc/150?img=5".to_string(),
+        },
+        User {
+            name: "David Brown".to_string(),
+            email: "david.brown@example.com".to_string(),
+            role: "Developer".to_string(),
+            avatar_url: "https://i.pravatar.cc/150?img=13".to_string(),
+        },
+    ];
+
+    let recent_activities = vec![
         Activity {
-            description: "Updated profile picture".to_string(),
+            id: 1,
+            user_name: "Bob Smith".to_string(),
+            action: "completed".to_string(),
+            target: "Feature X implementation".to_string(),
             timestamp: "2 hours ago".to_string(),
         },
         Activity {
-            description: "Posted a new article".to_string(),
+            id: 2,
+            user_name: "Carol White".to_string(),
+            action: "updated".to_string(),
+            target: "Design System v2".to_string(),
+            timestamp: "5 hours ago".to_string(),
+        },
+        Activity {
+            id: 3,
+            user_name: "David Brown".to_string(),
+            action: "created".to_string(),
+            target: "API Documentation".to_string(),
             timestamp: "1 day ago".to_string(),
         },
         Activity {
-            description: "Commented on a discussion".to_string(),
-            timestamp: "3 days ago".to_string(),
+            id: 4,
+            user_name: "Alice Johnson".to_string(),
+            action: "approved".to_string(),
+            target: "Budget Request Q4".to_string(),
+            timestamp: "2 days ago".to_string(),
         },
-    ];
-
-    complex_profile(&user, &activities)
-}
-
-/// Nested component composition
-pub fn dashboard_with_components() -> impl azumi::Component {
-    let stats = vec![
-        ("Total Users", "1,234", "up"),
-        ("Active Sessions", "89", "stable"),
-        ("Revenue", "$12,345", "up"),
-        ("Conversion", "3.2%", "down"),
     ];
 
     html! {
         <style src="/static/pages/lesson13.css" />
-        <div class="dashboard">
-            <h1>"Dashboard"</h1>
+        <div class="lesson-container">
+            <header class="lesson-header">
+                <h1 class="lesson-title">"Lesson 13: Component Composition"</h1>
+                <p class="lesson-subtitle">
+                    "Building complex UIs by composing simple, reusable components"
+                </p>
+            </header>
 
-            @Card(
-                title="Statistics",
-                children=html! {
-                    <div class="stats-grid">
-                        @for (label, value, trend) in &stats {
-                            <div class="stat-item">
-                                <div class="stat-value">{value}</div>
-                                <div class="stat-label">{label}</div>
-                                <div class={format!("stat-trend trend-{}", trend)}>
-                                    @if *trend == "up" {
-                                        "↗️"
-                                    } else if *trend == "down" {
-                                        "↘️"
-                                    } else {
-                                        "➡️"
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-            )
+            <section class="lesson-section">
+                <h2 class="section-title">"Introduction"</h2>
+                <p class="section-content">
+                    "Component composition is a powerful pattern where you build complex user interfaces "
+                    "by combining simple, focused components. This approach promotes code reuse, "
+                    "maintainability, and separation of concerns."
+                </p>
+            </section>
 
-            @Card(
-                title="Recent Activity",
-                children=html! {
-                    <div class="activity-feed">
-                        <div class="activity-item">
-                            <span class="activity-dot"></span>
-                            <div>
-                                <p>"New user registered"</p>
-                                <span>"5 minutes ago"</span>
+            <section class="lesson-section">
+                <h2 class="section-title">"Example 1: Simple Cards"</h2>
+                <div class="example-grid">
+                    {card(CardProps {
+                        title: "Welcome".to_string(),
+                        content: "This is a simple reusable card component. Cards are versatile building blocks for modern UIs.".to_string(),
+                    })}
+
+                    {card(CardProps {
+                        title: "Composability".to_string(),
+                        content: "By creating small, focused components, we can combine them in various ways to build complex interfaces.".to_string(),
+                    })}
+
+                    {card(CardProps {
+                        title: "Reusability".to_string(),
+                        content: "Each component can be reused across different parts of your application, reducing code duplication.".to_string(),
+                    })}
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2 class="section-title">"Example 2: User Profile Composition"</h2>
+                <div class="profile-demo">
+                    <div class="demo-item">
+                        <h3>"Compact Profile"</h3>
+                        {user_profile_compact(&current_user)}
+                    </div>
+                    <div class="demo-item">
+                        <h3>"Detailed Profile Card"</h3>
+                        {user_profile_card(&current_user)}
+                    </div>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2 class="section-title">"Example 3: Team Dashboard"</h2>
+                <div class="dashboard-layout">
+                    <div class="dashboard-sidebar">
+                        <div class="sidebar-section">
+                            <h3>"Your Profile"</h3>
+                            {user_profile_card(&current_user)}
+                        </div>
+                    </div>
+
+                    <div class="dashboard-main">
+                        <div class="dashboard-row">
+                            <h3>"Team Members"</h3>
+                            <div class="team-grid">
+                                @for member in &team_members {
+                                    {user_profile_compact(member)}
+                                }
                             </div>
                         </div>
-                        <div class="activity-item">
-                            <span class="activity-dot"></span>
-                            <div>
-                                <p>"Payment processed"</p>
-                                <span>"1 hour ago"</span>
-                            </div>
+
+                        <div class="dashboard-row">
+                            {activity_feed(&recent_activities)}
                         </div>
-                        <div class="activity-item">
-                            <span class="activity-dot"></span>
-                            <div>
-                                <p>"Report generated"</p>
-                                <span>"2 hours ago"</span>
+
+                        <div class="dashboard-row">
+                            <h3>"Quick Stats"</h3>
+                            <div class="stats-grid">
+                                {card(CardProps {
+                                    title: "Total Projects".to_string(),
+                                    content: "12 active projects".to_string(),
+                                })}
+                                {card(CardProps {
+                                    title: "Tasks Completed".to_string(),
+                                    content: "87 tasks this week".to_string(),
+                                })}
+                                {card(CardProps {
+                                    title: "Team Velocity".to_string(),
+                                    content: "23 points per sprint".to_string(),
+                                })}
                             </div>
                         </div>
                     </div>
-                }
-            )
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2 class="section-title">"Key Takeaways"</h2>
+                <ul class="takeaways-list">
+                    <li>"✓ Build small, focused components with clear responsibilities"</li>
+                    <li>"✓ Use Props structs to pass data and configuration to components"</li>
+                    <li>"✓ Compose complex UIs by combining simple components"</li>
+                    <li>"✓ Iterate over collections to render multiple component instances"</li>
+                    <li>"✓ Keep components pure and predictable"</li>
+                </ul>
+            </section>
         </div>
     }
 }
 
-/// Handler for Axum
+/// Axum handler for Lesson 13
 pub async fn lesson13_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&composition_demo()))
+    axum::response::Html(azumi::render_to_string(&dashboard_demo()))
 }
