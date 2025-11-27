@@ -12,7 +12,7 @@ async fn main() {
     let app = Router::new()
         // 🏠 Homepage - Learning Portal
         .route("/", get(examples::lessons::pages::homepage::homepage_handler))
-        .route("/css_variables", get(examples::css_variables::css_variables_demo))    
+        .route("/css_variables", get(examples::css_variables::css_variables_handler))
         // 📚 Interactive Lessons (1-8)
         // .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
         // .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
