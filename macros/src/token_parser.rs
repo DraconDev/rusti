@@ -573,8 +573,9 @@ fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
         input.parse::<Token![-]>()?;
         name.push_str("--");
 
-        // After --, we expect an identifier
-        if input.peek(Ident) {
+        // After --, we expect an identifier (including keywords like static)
+        let fork = input.fork();
+        if Ident::parse_any(&fork).is_ok() {
             let ident = Ident::parse_any(input)?;
             name.push_str(&ident.to_string());
             if let Some(joined) = full_span.join(ident.span()) {
@@ -583,17 +584,16 @@ fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
         } else {
             return Err(input.error("Expected identifier after --"));
         }
-    } else if input.peek(Ident)
-        || input.peek(Token![type])
-        || input.peek(Token![for])
-        || input.peek(Token![match])
-        || input.peek(Token![async])
-    {
-        let ident = Ident::parse_any(input)?;
-        name.push_str(&ident.to_string());
-        full_span = ident.span();
     } else {
-        return Err(input.error("Expected identifier"));
+        // Check if it starts with an identifier (or keyword)
+        let fork = input.fork();
+        if Ident::parse_any(&fork).is_ok() {
+            let ident = Ident::parse_any(input)?;
+            name.push_str(&ident.to_string());
+            full_span = ident.span();
+        } else {
+            return Err(input.error("Expected identifier"));
+        }
     }
 
     // Continue parsing rest of the name (e.g. -foo:bar)
@@ -610,7 +610,8 @@ fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
             full_span = joined;
         }
 
-        if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
+        let fork = input.fork();
+        if Ident::parse_any(&fork).is_ok() {
             let part = Ident::parse_any(input)?;
             name.push_str(&part.to_string());
             if let Some(joined) = full_span.join(part.span()) {
