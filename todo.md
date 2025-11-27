@@ -3,27 +3,4 @@ i did investivate the css dead code situation and there are extensions that can 
 also type check the css files we have and if any are unused then we mark what imports then with a warning
 
 
-           token_parser::Node::Expression(expr) => {
-                let content = &expr.content;
-                println!(
-                    "Generating expression: {:?} in context: {:?}",
-                    content, ctx.mode
-                );
-                match ctx.mode {
-                    Context::Script => {
-                        // In script tags, use azumi::js() to safely inject values (Debug formatting)
-                        println!("  -> Script context, using azumi::js");
-                        quote! { write!(f, "{}", azumi::js(&(#content)))?; }
-                    }
-                    Context::Style => {
-                        // In style tags, use Display (raw text)
-                        quote! { write!(f, "{}", #content)?; }
-                    }
-                    Context::Normal => {
-                        // In normal HTML, use Escaped (HTML escaping)
-                        quote! { write!(f, "{}", azumi::Escaped(&(#content)))?; }
-                    }
-                }
-            }
-
-            ? clean up this code related to script tags
+ --
