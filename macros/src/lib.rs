@@ -4,6 +4,7 @@ mod component;
 mod accessibility_validator;
 mod css;
 mod css_validator;
+mod html_structure_validator;
 mod test_spacing;
 mod token_parser;
 
