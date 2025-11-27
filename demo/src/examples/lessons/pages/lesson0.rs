@@ -60,7 +60,7 @@ pub fn control_flow_fragments() -> impl azumi::Component {
 
 /// Example 4: When Fragments Are Useful
 pub fn fragment_use_cases() -> impl azumi::Component {
-    let items = vec!["Apple", "Banana", "Cherry"];
+    let items = ["Apple", "Banana", "Cherry"];
 
     html! {
         <style src="/static/pages/lesson0.css" />

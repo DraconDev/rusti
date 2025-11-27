@@ -1,4 +1,3 @@
-use axum::response::{Html, IntoResponse};
 use azumi::html;
 
 pub fn home_page() -> impl azumi::Component {
