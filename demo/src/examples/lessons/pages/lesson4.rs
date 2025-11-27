@@ -27,3 +27,4 @@ pub fn example_todo_list() -> impl azumi::Component {
 pub fn empty_todo_list() -> impl azumi::Component {
     todo_list(&[])
 }
+pub async fn lesson4_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 4") }

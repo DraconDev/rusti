@@ -46,3 +46,4 @@ pub fn admin_dashboard() -> impl azumi::Component {
 pub fn user_dashboard() -> impl azumi::Component {
     dashboard(false)
 }
+pub async fn lesson8_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 8") }

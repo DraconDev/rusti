@@ -44,3 +44,4 @@ pub fn secondary_button() -> impl azumi::Component {
         variant: ButtonVariant::Secondary,
     })
 }
+pub async fn lesson11_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 11") }

@@ -36,3 +36,4 @@ pub fn full_price_product() -> impl azumi::Component {
         discount: 0.0,
     })
 }
+pub async fn lesson7_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 7") }

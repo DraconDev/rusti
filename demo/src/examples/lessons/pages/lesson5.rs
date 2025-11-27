@@ -29,4 +29,4 @@ pub fn buttons_showcase() -> impl azumi::Component {
             <button class="btn-secondary">"Secondary"</button>
         </div>
     }
-}
+}pub async fn lesson5_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 5") }
