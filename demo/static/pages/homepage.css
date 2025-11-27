@@ -179,13 +179,13 @@
     }
 }
 
-/* Utility classes to replace inline styles */
-.p-8 {
+/* Semantic layout classes */
+.page-container {
     padding: 2rem;
 }
-.mb-4 {
+.curriculum-title {
     margin-bottom: 1rem;
 }
-.mt-16 {
+.marketing-section {
     margin-top: 4rem;
 }

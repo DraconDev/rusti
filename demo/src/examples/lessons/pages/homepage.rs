@@ -13,14 +13,14 @@ pub fn home_page() -> impl azumi::Component {
                 <style src="/static/global.css" />
             </head>
             <body>
-                <div class="p-8">
+                <div class="page-container">
                     <header class="hero">
                         <h1 class="hero-title">"Azumi"</h1>
                         <p class="hero-subtitle">"Type-Safe, Compile-Time Validated HTML Templates for Rust"</p>
                     </header>
 
                     <section>
-                        <h2 class="mb-4">"📚 Complete 20-Lesson Curriculum"</h2>
+                        <h2 class="curriculum-title">"📚 Complete 20-Lesson Curriculum"</h2>
                         <p>"Master Azumi through 20 comprehensive lessons, featuring control flow, components, JavaScript integration, and production patterns:"</p>
 
                         <!-- Phase 1: Foundation Building -->
@@ -164,7 +164,7 @@ pub fn home_page() -> impl azumi::Component {
                         </div>
                     </section>
 
-                    <section class="mt-16">
+                    <section class="marketing-section">
                         <h2 class="section-title">"✨ Why Azumi?"</h2>
                         <div class="features-grid">
                             <div class="feature-box">
@@ -205,7 +205,7 @@ pub fn home_page() -> impl azumi::Component {
                         </div>
                     </section>
 
-                    <section class="mt-16">
+                    <section class="marketing-section">
                         <h2 class="section-title">"🎯 Learning Path"</h2>
                         <div class="learning-path">
                             <div class="path-step foundation">
@@ -242,7 +242,7 @@ pub fn home_page() -> impl azumi::Component {
                         </div>
                     </section>
 
-                    <section class="mt-16">
+                    <section class="marketing-section">
                         <h2 class="section-title">"💡 What Makes This Different"</h2>
                         <div class="features-grid">
                             <div class="feature-box">
