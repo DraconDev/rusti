@@ -272,6 +272,7 @@ fn validate_nodes(
         errors: &mut Vec<proc_macro2::TokenStream>,
         is_inside_form: bool,
         is_inside_button: bool,
+        is_inside_anchor: bool,
     ) {
         for node in nodes {
             match node {
@@ -319,7 +320,7 @@ fn validate_nodes(
                         }
                     }
 
-                    // Accessibility validation (Rule 1: img alt, Rule 2: input/button type, Rule 3: ARIA roles, Rule 4: button content)
+                    // Accessibility validation
                     if let Some(err) = accessibility_validator::validate_img_alt(elem) {
                         errors.push(err);
                     }
@@ -332,29 +333,38 @@ fn validate_nodes(
                     if let Some(err) = accessibility_validator::validate_button_content(elem) {
                         errors.push(err);
                     }
+                    if let Some(err) = accessibility_validator::validate_anchor_target_blank(elem) {
+                        errors.push(err);
+                    }
+                    if let Some(err) = accessibility_validator::validate_iframe_title(elem) {
+                        errors.push(err);
+                    }
 
                     // HTML Structure validation
-                    // Rule 1: Table children
+                    if let Some(err) = html_structure_validator::validate_tag_name(elem) {
+                        errors.push(err);
+                    }
                     errors.extend(html_structure_validator::validate_table_children(elem));
-
-                    // Rule 2: List children
                     errors.extend(html_structure_validator::validate_list_children(elem));
-
-                    // Rule 3: Nested forms
                     errors.extend(html_structure_validator::validate_nested_forms(
                         elem,
                         is_inside_form,
                     ));
-
-                    // Rule 4: Button interactive content
                     errors.extend(html_structure_validator::validate_button_interactive(
                         elem,
                         is_inside_button,
                     ));
+                    errors.extend(html_structure_validator::validate_paragraph_content(elem));
+                    errors.extend(html_structure_validator::validate_anchor_nesting(
+                        elem,
+                        is_inside_anchor,
+                    ));
+                    errors.extend(html_structure_validator::validate_heading_content(elem));
 
                     // Update context for recursion
                     let new_is_inside_form = is_inside_form || elem.name == "form";
                     let new_is_inside_button = is_inside_button || elem.name == "button";
+                    let new_is_inside_anchor = is_inside_anchor || elem.name == "a";
 
                     // Recurse with updated context
                     collect_errors_recursive(
@@ -364,6 +374,7 @@ fn validate_nodes(
                         errors,
                         new_is_inside_form,
                         new_is_inside_button,
+                        new_is_inside_anchor,
                     );
                 }
                 token_parser::Node::Fragment(frag) => {
@@ -374,6 +385,7 @@ fn validate_nodes(
                         errors,
                         is_inside_form,
                         is_inside_button,
+                        is_inside_anchor,
                     );
                 }
                 token_parser::Node::Block(block) => match block {
@@ -385,6 +397,7 @@ fn validate_nodes(
                             errors,
                             is_inside_form,
                             is_inside_button,
+                            is_inside_anchor,
                         );
                         if let Some(else_branch) = &if_block.else_branch {
                             collect_errors_recursive(
@@ -394,6 +407,7 @@ fn validate_nodes(
                                 errors,
                                 is_inside_form,
                                 is_inside_button,
+                                is_inside_anchor,
                             );
                         }
                     }
@@ -405,6 +419,7 @@ fn validate_nodes(
                             errors,
                             is_inside_form,
                             is_inside_button,
+                            is_inside_anchor,
                         );
                     }
                     token_parser::Block::Match(match_block) => {
@@ -416,6 +431,7 @@ fn validate_nodes(
                                 errors,
                                 is_inside_form,
                                 is_inside_button,
+                                is_inside_anchor,
                             );
                         }
                     }
@@ -427,6 +443,7 @@ fn validate_nodes(
                             errors,
                             is_inside_form,
                             is_inside_button,
+                            is_inside_anchor,
                         );
                     }
                     _ => {}
@@ -436,7 +453,15 @@ fn validate_nodes(
         }
     }
 
-    collect_errors_recursive(nodes, valid_classes, valid_ids, &mut errors, false, false);
+    collect_errors_recursive(
+        nodes,
+        valid_classes,
+        valid_ids,
+        &mut errors,
+        false,
+        false,
+        false,
+    );
 
     if errors.is_empty() {
         quote! {}
