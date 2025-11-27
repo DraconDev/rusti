@@ -24,3 +24,8 @@ pub fn basic_template() -> impl azumi::Component {
         </div>
     }
 }
+
+// Handler for Axum
+pub async fn lesson1_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&hello_world()))
+}
