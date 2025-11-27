@@ -1,0 +1,404 @@
+/* Lesson 17: HTMX Interactive Features Styles */
+.htmx-integration {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 80vh;
+}
+
+.demo-header {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 8px;
+}
+
+.demo-header h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2.5rem;
+}
+
+.demo-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nav-btn.active {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.nav-btn:hover:not(.active) {
+    background: #e9ecef;
+}
+
+.demo-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.demo-section {
+    padding: 1rem;
+}
+
+.demo-section h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #28a745;
+    padding-bottom: 0.5rem;
+}
+
+.demo-sidebar {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.demo-sidebar h3 {
+    margin: 0 0 1rem 0;
+    color: #28a745;
+    font-size: 1.1rem;
+}
+
+.demo-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.demo-sidebar li {
+    padding: 0.25rem 0;
+    color: #666;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.demo-sidebar li:last-child {
+    border-bottom: none;
+}
+
+/* Todo List Styles */
+.todo-demo {
+    padding: 1rem;
+}
+
+.todo-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.todo-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.todo-input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.todo-item span {
+    flex: 1;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+/* Search Styles */
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.search-results {
+    min-height: 100px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+/* Form Demo Styles */
+.form-demo {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.demo-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.info-box {
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
+    border-radius: 4px;
+    padding: 1rem;
+    color: #004085;
+}
+
+.info-box h3 {
+    margin: 0 0 1rem 0;
+    color: #004085;
+}
+
+.info-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+/* Table Styles */
+.table-demo {
+    padding: 1rem;
+}
+
+.editable-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.editable-table th,
+.editable-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.editable-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.editable-table tr:hover {
+    background: #f8f9fa;
+}
+
+.table-info {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 1rem;
+    color: #856404;
+}
+
+.table-info h3 {
+    margin: 0 0 1rem 0;
+    color: #856404;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.btn-small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background: #28a745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #218838;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+/* Modal Styles */
+.modal-demo {
+    padding: 1rem;
+}
+
+.modal-container {
+    margin-top: 1rem;
+}
+
+.modal-info {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 1rem;
+    color: #155724;
+}
+
+.modal-info h3 {
+    margin: 0 0 1rem 0;
+    color: #155724;
+}
+
+/* Progress Styles */
+.progress-demo {
+    padding: 1rem;
+}
+
+.htmx-indicator {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    color: #856404;
+    text-align: center;
+    font-weight: 500;
+}
+
+.htmx-request .htmx-indicator {
+    display: block;
+}
+
+.task-result {
+    margin-top: 1rem;
+    min-height: 100px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.progress-info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    border-radius: 4px;
+    padding: 1rem;
+    color: #0c5460;
+    margin-top: 1rem;
+}
+
+.progress-info h3 {
+    margin: 0 0 1rem 0;
+    color: #0c5460;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .htmx-integration {
+        grid-template-columns: 1fr;
+    }
+    
+    .demo-nav {
+        justify-content: center;
+    }
+    
+    .todo-form {
+        flex-direction: column;
+    }
+}

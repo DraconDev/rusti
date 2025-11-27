@@ -13,7 +13,7 @@ async fn main() {
         // 🏠 Homepage - Learning Portal
         .route("/", get(examples::lessons::pages::homepage::homepage_handler))
         
-        // 📚 Interactive Lessons (1-12)
+        // 📚 Interactive Lessons (0-20)
         .route("/lesson-0", get(examples::lessons::pages::lesson0::lesson0_handler))
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
         .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
@@ -27,6 +27,14 @@ async fn main() {
         .route("/lesson-10", get(examples::lessons::pages::lesson10::lesson10_handler))
         .route("/lesson-11", get(examples::lessons::pages::lesson11::lesson11_handler))
         .route("/lesson-12", get(examples::lessons::pages::lesson12::lesson12_handler))
+        .route("/lesson-13", get(examples::lessons::pages::lesson13::lesson13_handler))
+        .route("/lesson-14", get(examples::lessons::pages::lesson14::lesson14_handler))
+        .route("/lesson-15", get(examples::lessons::pages::lesson15::lesson15_handler))
+        .route("/lesson-16", get(examples::lessons::pages::lesson16::lesson16_handler))
+        .route("/lesson-17", get(examples::lessons::pages::lesson17::lesson17_handler))
+        .route("/lesson-18", get(examples::lessons::pages::lesson18::lesson18_handler))
+        .route("/lesson-19", get(examples::lessons::pages::lesson19::lesson19_handler))
+        .route("/lesson-20", get(examples::lessons::pages::lesson20::lesson20_handler))
         
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
@@ -50,15 +58,28 @@ async fn main() {
     println!("🧭 Navigation:");
     println!("  🌐 /              - Learning Homepage");
     println!();
-    println!("📚 Interactive Lessons:");
+    println!("📚 Interactive Lessons (0-20):");
+    println!("  📖 Lesson 0:      Fragments & Basic Structure");
     println!("  📖 Lesson 1:      Hello World & Quoting");
     println!("  🎨 Lesson 2:      CSS Validation & Scoping");
     println!("  🌍 Lesson 3:      Global Styles & Tokens");
-    println!("  ⚡ Lesson 4:      Control Flow");
+    println!("  ⚡ Lesson 4:      Control Flow (@if, @for, @match)");
     println!("  🧩 Lesson 5:      Components with Props");
-    println!("  🌐 Lesson 6:      HTMX Integration");
-    println!("  🏗️  Lesson 7:      Layouts & Composition");
-    println!("  🚀 Lesson 8:      Real-World Examples");
+    println!("  🎭 Lesson 6:      Pattern Matching");
+    println!("  📊 Lesson 7:      CSS Variables & Interpolation");
+    println!("  🔄 Lesson 8:      Nested Control Flow");
+    println!("  📱 Lesson 9:      HTML Structure Validation");
+    println!("  🔍 Lesson 10:     Accessibility Testing");
+    println!("  🎨 Lesson 11:     Button Components");
+    println!("  🧪 Lesson 12:     Fragment Testing");
+    println!("  🏗️  Lesson 13:     Component Composition");
+    println!("  🔧 Lesson 14:     Advanced Component Patterns");
+    println!("  📝 Lesson 15:     Form Components & State");
+    println!("  🌐 Lesson 16:     JavaScript Integration");
+    println!("  🚀 Lesson 17:     HTMX Interactive Features");
+    println!("  ⚡ Lesson 18:     Real-Time Updates");
+    println!("  🎨 Lesson 19:     Layout System Patterns");
+    println!("  📚 Lesson 20:     Full Application Example");
     println!();
     println!("🎯 Learning Path: Fundamentals → Advanced → Production");
     println!();
