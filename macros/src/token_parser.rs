@@ -220,7 +220,7 @@ impl Parse for Element {
     fn parse(input: ParseStream) -> Result<Self> {
         let start_span = input.span();
         input.parse::<Token![<]>()?;
-        let (name, name_span) = parse_html_name(input)?;
+        let (name, name_span) = parse_html_name(input, false)?; // false = don't allow double dash in tag names
         eprintln!("Parsing element: {}", name);
 
         let mut attrs = Vec::new();
@@ -315,7 +315,7 @@ For dynamic styles: use style attribute with expressions"
                     eprintln!("Element::parse: Found closing tag sequence");
                     input.parse::<Token![<]>()?;
                     input.parse::<Token![/]>()?;
-                    let (closing_name, _) = parse_html_name(input)?;
+                    let (closing_name, _) = parse_html_name(input, false)?;
                     eprintln!(
                         "Found closing tag: </{}>  (expected </{}>)",
                         closing_name, name
@@ -350,7 +350,7 @@ For dynamic styles: use style attribute with expressions"
 
 impl Parse for Attribute {
     fn parse(input: ParseStream) -> Result<Self> {
-        let (name, name_span) = parse_html_name(input)?;
+        let (name, name_span) = parse_html_name(input, true)?; // true = allow double dash in attributes
 
         // Check if this is a boolean attribute (no value required)
         const BOOLEAN_ATTRS: &[&str] = &[
@@ -405,6 +405,17 @@ impl Parse for Attribute {
             }
         } else {
             // No = sign - must be a boolean attribute
+            // CSS variables (starting with --) are NOT boolean attributes, they require a value
+            if name.starts_with("--") {
+                return Err(Error::new(
+                    name_span,
+                    format!(
+                        "CSS variable '{}' requires a value. Example: {}=\"value\"",
+                        name, name
+                    ),
+                ));
+            }
+
             if !BOOLEAN_ATTRS.contains(&name.as_str()) {
                 return Err(Error::new(
                     name_span,
