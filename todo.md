@@ -3,3 +3,10 @@ i did investivate the css dead code situation and there are extensions that can 
 mention that we also support fragments <> inthe readme
 
 
+<!-- wait before we proceed regarding lesson 14 we do have a possible bug that what you create the rust file write in it, then create teh css we are getting 
+
+ailed to read CSS file '/home/dracon/_Dev/_Fun/azumi/demo/static/pages/lesson14.css': No such file or directory (os error 2)rust-analyzermacro-error
+azumi_macros
+proc_macro html
+
+now i think it work but our rust analyzer shows it as an error  -->
