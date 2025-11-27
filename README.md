@@ -235,7 +235,7 @@ Azumi supports smart string concatenation within expressions:
 
 Use the `#[azumi::component]` macro to create reusable components with type-safe props.
 
-```rust
+````rust
 #[azumi::component]
 fn UserCard(
     name: &str,
@@ -250,10 +250,40 @@ fn UserCard(
     }
 }
 
+### 5. CSS Variables
+
+Pass dynamic values to your CSS using attribute syntax. Attributes starting with `--` are automatically converted to inline styles.
+
+```rust
+let progress = "75%";
+let color = "blue";
+
+html! {
+    <style src="progress.css" />
+
+    // Renders: <div class="bar" style="--width: 75%; --bg: blue">
+    <div class="bar" --width={progress} --bg={color}>
+        "Loading..."
+    </div>
+}
+````
+
+In `progress.css`:
+
+```css
+.bar {
+    width: var(--width);
+    background-color: var(--bg);
+}
+```
+
+}
+
 // Usage
 @UserCard(name="Alice", role="Admin")
-@UserCard(name="Bob")  // Uses default role="Member"
-```
+@UserCard(name="Bob") // Uses default role="Member"
+
+````
 
 ### 5. Automatic CSS Scoping
 
@@ -268,7 +298,7 @@ Azumi reads your CSS files at compile time, generates a unique hash, and scopes 
 h2 {
     color: #333;
 }
-```
+````
 
 **Component:**
 
