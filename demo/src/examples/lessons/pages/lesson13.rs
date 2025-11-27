@@ -46,6 +46,8 @@ pub struct User {
 /// A compact user profile display component
 pub fn user_profile_compact(user: &User) -> impl azumi::Component {
     html! {
+<style src="/static/pages/lesson13.css" />
+
         <div class="user-profile-compact">
             <img src={&user.avatar_url} alt={format!("{} avatar", user.name)} class="user-avatar" />
             <div class="user-details">
@@ -60,7 +62,8 @@ pub fn user_profile_compact(user: &User) -> impl azumi::Component {
 /// A detailed user profile card
 pub fn user_profile_card(user: &User) -> impl azumi::Component {
     html! {
-        <div class="user-profile-card">
+                <style src="/static/pages/lesson13.css" />
+            <div class="user-profile-card">
             <div class="profile-header">
                 <img src={&user.avatar_url} alt={format!("{} avatar", user.name)} class="profile-avatar" />
                 <div class="profile-info">
