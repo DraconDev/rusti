@@ -76,6 +76,28 @@ pub fn validate_aria_roles(elem: &Element) -> Option<TokenStream> {
     None
 }
 
+/// Rule 4: Buttons must have content OR aria-label OR title
+pub fn validate_button_content(elem: &crate::token_parser::Element) -> Option<TokenStream> {
+    if elem.name != "button" {
+        return None;
+    }
+
+    // Check if button has text content (children)
+    let has_content = !elem.children.is_empty();
+
+    // Check if button has aria-label or title attribute
+    let has_aria_label = elem.attrs.iter().any(|attr| attr.name == "aria-label");
+    let has_title = elem.attrs.iter().any(|attr| attr.name == "title");
+
+    if !has_content && !has_aria_label && !has_title {
+        Some(quote_spanned! { elem.span =>
+            compile_error!("Button must have text content OR 'aria-label' OR 'title' attribute for accessibility.");
+        })
+    } else {
+        None
+    }
+}
+
 // Helper: Valid input types (HTML5)
 fn is_valid_input_type(type_value: &str) -> bool {
     matches!(
