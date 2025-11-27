@@ -15,7 +15,7 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
         <style src="/static/pages/lesson8.css" />
         <div>
             @if is_admin {
-                <h2 te>"Admin Dashboard"</h2>
+                <h2>"Admin Dashboard"</h2>
                 <div class="widgets">
                     @for widget in &[
                         Widget::Chart("sales-data"),
