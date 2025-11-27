@@ -579,7 +579,7 @@ fn parse_html_name(input: ParseStream, allow_double_dash: bool) -> Result<(Strin
     let mut full_span = input.span();
 
     // Check for CSS variable prefix --
-    if input.peek(Token![-]) && input.peek2(Token![-]) {
+    if allow_double_dash && input.peek(Token![-]) && input.peek2(Token![-]) {
         input.parse::<Token![-]>()?;
         input.parse::<Token![-]>()?;
         name.push_str("--");
@@ -609,6 +609,13 @@ fn parse_html_name(input: ParseStream, allow_double_dash: bool) -> Result<(Strin
 
     // Continue parsing rest of the name (e.g. -foo:bar)
     while input.peek(Token![-]) || input.peek(Token![:]) {
+        // Check for double dash - stop if not allowed
+        if input.peek(Token![-]) && input.peek2(Token![-]) {
+            if !allow_double_dash {
+                break;
+            }
+        }
+
         let punct_span = input.span();
         if input.peek(Token![-]) {
             input.parse::<Token![-]>()?;
