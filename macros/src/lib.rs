@@ -318,6 +318,11 @@ fn validate_nodes(
                                 }
                             }
                         }
+
+                        // Rule 4: Validate attribute name (Strict HTML)
+                        if let Some(err) = html_structure_validator::validate_attribute_name(attr) {
+                            errors.push(err);
+                        }
                     }
 
                     // Accessibility validation
