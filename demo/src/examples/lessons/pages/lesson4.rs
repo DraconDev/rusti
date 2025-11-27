@@ -18,10 +18,10 @@ pub fn valid_classes() -> impl azumi::Component {
 pub fn another_valid() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson4.css" />
-        <div class="validated-box highlight">
+        <di class="validated-box highlight">
             <h2 class="validated-title">"Another Valid Example"</h2>
             <p class="validated-text">"Azumi validates at compile time."</p>
-        </div>
+        </di>
     }
 }
 
