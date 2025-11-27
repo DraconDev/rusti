@@ -72,131 +72,406 @@ That's it. No complex rules about capitalization—just use `@` for Rust, `<>` f
 
 ## 📊 Comparison: Azumi vs. The World
 
-Azumi is built for developers who want **Rust's safety guarantees applied to their frontend code**.
+Azumi is designed specifically for **Rust SSR** with a focus on **correctness and maintainability**.
 
-| Feature            |  **Azumi** (Rust)   |  **Templ** (Go)  | **Maud** (Rust) | **Askama** (Rust) | **Leptos** (Rust) | **React / Next.js**  |
-| :----------------- | :-----------------: | :--------------: | :-------------: | :---------------: | :---------------: | :------------------: |
-| **Syntax**         |  HTML-like (Macro)  | HTML-like (File) |    Rust DSL     |    Jinja-like     | JSX-like (Macro)  |         JSX          |
-| **CSS Validation** | ✅ **Compile-Time** |      ❌ No       |      ❌ No      |       ❌ No       |       ❌ No       |        ❌ No         |
-| **CSS Scoping**    |  ✅ **Automatic**   |    ❌ Manual     |    ❌ Manual    |     ❌ Manual     |     ❌ Manual     | ⚠️ Modules/CSS-in-JS |
-| **A11y Checks**    | ✅ **Compile-Time** |      ❌ No       |      ❌ No      |       ❌ No       | ⚠️ Runtime/Linter |   ⚠️ ESLint Plugin   |
-| **Runtime Cost**   |     🚀 **Zero**     |     🚀 Zero      |     🚀 Zero     |      🚀 Zero      |   ⚡ Low (WASM)   |    🐢 High (VDOM)    |
-| **Ergonomics**     |      ⭐⭐⭐⭐       |     ⭐⭐⭐⭐     |     ⭐⭐⭐      |      ⭐⭐⭐       |     ⭐⭐⭐⭐      |        ⭐⭐⭐        |
+| Lib              | Compile Safety | CSS Validation |  CSS Scoping   | Ergonomics | Runtime Perf | Strictness |  SSR/HTMX  |
+| ---------------- | :------------: | :------------: | :------------: | :--------: | :----------: | :--------: | :--------: |
+| **Azumi**        |   ⭐⭐⭐⭐⭐   |   ✅ **Yes**   |   ✅ **Yes**   |  ⭐⭐⭐⭐  |  ⭐⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Templ** (Go)   |    ⭐⭐⭐⭐    |     ❌ No      |     ❌ No      |  ⭐⭐⭐⭐  |  ⭐⭐⭐⭐⭐  |    ⭐⭐    |  ⭐⭐⭐⭐  |
+| **Maud**         |     ⭐⭐⭐     |     ❌ No      |     ❌ No      |   ⭐⭐⭐   |   ⭐⭐⭐⭐   |    ⭐⭐    |   ⭐⭐⭐   |
+| **Askama**       |    ⭐⭐⭐⭐    |     ❌ No      |     ❌ No      |   ⭐⭐⭐   |  ⭐⭐⭐⭐⭐  |    ⭐⭐    |  ⭐⭐⭐⭐  |
+| **Leptos**       |   ⭐⭐⭐⭐⭐   |     ❌ No      |     ❌ No      |  ⭐⭐⭐⭐  |    ⭐⭐⭐    |   ⭐⭐⭐   |  ⭐⭐⭐⭐  |
+| **React** (Next) |      ⭐⭐      |     ❌ No      | ❌ (CSS-in-JS) | ⭐⭐⭐⭐⭐ |     ⭐⭐     |     ⭐     |    ⭐⭐    |
 
-### Why the ratings?
+**Azumi Wins On:**
 
--   **Azumi**: Strict but helpful. You get HTML syntax with Rust's power. CSS and A11y errors are caught _before_ you run the app.
--   **Templ**: Great Go library, similar vibes. Lacks the deep CSS integration and strict validation of Azumi.
--   **Maud**: Fast, but writing HTML as Rust function calls (`div { "text" }`) can be hard for designers to read.
--   **Askama**: Familiar for Python/Jinja users, but string-based templates lose some type safety and IDE support compared to macros.
--   **Leptos**: Amazing for interactive apps (WASM), but brings reactivity overhead (Signals) that isn't needed for pure SSR.
--   **React/Next.js**: The giant. Incredible ecosystem, but heavy runtime (hydration), complex build tooling, and "useEffect" fatigue lower the ergonomics for simple SSR tasks.
+1.  **CSS Validation**: The only library that validates CSS classes at compile time.
+2.  **Scoping**: Built-in, zero-config CSS scoping.
+3.  **Zero Runtime**: Compiles to pure Rust code that writes strings. No VDOM, no runtime overhead.
 
 ---
 
-## ⚡ The Rules & Features
+## ⚡ The Rules
 
-Azumi enforces best practices so you don't have to remember them.
+Azumi is strict. Follow these rules or it won't compile.
 
-### ✅ Compile-Time Validation (New!)
+### ✅ Must Do
 
-Azumi doesn't just check your syntax; it checks your **semantics**.
+1. **Quote all text:** `<h1>"Hello World"</h1>`
 
-1.  **CSS Validation**:
+    - _Why?_ Prevents lexer ambiguity and enables arbitrary text content.
+
+2. **Quote all attribute values:** `<div class="container">`
+
+    - _Why?_ Consistent syntax, no guessing if quotes are needed.
+
+3. **External CSS:** `<style src="styles.css" />`
+
+    - _Why?_ **Automatic Scoping + Validation.** CSS is scoped to the component and validated at compile time.
+    - _Bonus:_ Full IDE support (linting, colors, autocomplete) for your CSS files.
+
+4. **All classes used in HTML must be defined in CSS:**
 
     ```rust
-    // ❌ Compile Error: class 'btn-primry' not found in button.css
-    <button class="btn-primry">"Click"</button>
+    // ❌ Compile Error: class 'btn' not defined
+    <button class="btn">"Click"</button>
     ```
 
-2.  **Accessibility (A11y) Validation**:
+    - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
+
+5. **Images must have `alt` attributes:**
 
     ```rust
-    // ❌ Compile Error: <img> missing alt attribute
-    <img src="cat.jpg" />
+    // ❌ Compile Error: missing alt attribute
+    <img src="logo.png" />
 
-    // ❌ Compile Error: <button> must have text content or aria-label
-    <button class="icon-only"></button>
+    // ✅ Correct
+    <img src="logo.png" alt="Company Logo" />
+    <img src="decoration.png" alt="" />  // Empty for decorative images
     ```
 
-3.  **HTML Structure Validation**:
+    - _Why?_ Required by HTML spec. Essential for accessibility (screen readers).
+
+6. **Input and button types must be valid:**
+
     ```rust
-    // ❌ Compile Error: <ul> can only contain <li>
-    <ul>
-        <div>"Invalid"</div>
-    </ul>
+    // ❌ Compile Error: invalid type (typo)
+    <input type="txt" />
+    <button type="sumbit">"Submit"</button>
+
+    // ✅ Correct
+    <input type="text" />
+    <button type="submit">"Submit"</button>
     ```
 
-### 🚀 Smart Interpolation
+    - _Why?_ Catches common typos that cause silent failures. Provides helpful suggestions.
 
-Azumi knows how to render your types intelligently.
+7. **ARIA roles must be valid:**
+
+    ```rust
+    // ❌ Compile Error: invalid role
+    <div role="btn">"Click"</div>
+
+    // ✅ Correct
+    <button role="button">"Click"</button>
+    <div role="navigation">"Nav"</div>
+    ```
+
+    - _Why?_ Invalid roles don't work. Enforces WAI-ARIA spec compliance.
+
+8. **Buttons must have accessible text:**
+
+    ```rust
+    // ❌ Compile Error: empty button with no label
+    <button type="button"></button>
+
+    // ✅ Correct - at least one of these:
+    <button>"Click me"</button>
+    <button aria-label="Close dialog"></button>
+    <button title="Submit form">"→"</button>
+    ```
+
+    - _Why?_ Buttons without accessible text are useless for screen readers.
+
+9. **External JS:** `<script src="/static/app.js" />`
+    - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
+
+### ❌ Not Allowed
+
+1. **Unquoted text:** `<h1>Hello</h1>` → Compile Error
+2. **Unquoted attributes:** `<div class=box>` → Compile Error
+3. **Undefined CSS classes:** `<div class="typo">` → **Compile Error with location**
+4. **Inline styles:** `<style>.box { color: red; }</style>` → Compile Error
+    - **Why?** Creates "style soup" - mixing structure, behavior, and presentation. No IDE support, no validation, poor maintainability.
+5. **Inline scripts:** `<script>console.log("hi")</script>` → Compile Error
+6. **Local file `<link>`:** `<link rel="stylesheet" href="/static/pages/local.css">` → Compile Error
+    - Use `<style src="/static/pages/local.css" />` instead for automatic scoping and validation.
+
+### ⚠️ Exceptions
+
+1. **Boolean Attributes:** `<input disabled checked />`
+
+    - Standard HTML behavior. No value required.
+
+2. **JSON Data Injection:** `<script type="application/json">{json_data}</script>`
+
+    - The **only** allowed inline script. Safe way to pass server data to client-side code.
+
+3. **CDN Stylesheets:** `<link rel="stylesheet" href="https://cdn.example.com/font-awesome.css">`
+
+    - External CDN links are allowed (no validation). Only _local_ files must use `<style src>`.
+
+4. **Global CSS:** `<style src="global.css" />`
+    - Files named `global.css` are **exempt** from scoping and validation. Use for resets, variables, and global tokens.
+
+---
+
+## 🚀 Features & Examples
+
+### 1. Basic Usage
+
+Simple, type-safe HTML generation.
 
 ```rust
-// 1. Render Components directly
-@UserCard(user)
+use azumi::html;
 
-// 2. Render Strings (Automatically Escaped)
-<p>{user_input}</p>
-
-// 3. Render Integers/Floats
-<span>"Count: " {count}</span>
+fn hello(name: &str) -> impl azumi::Component {
+    html! {
+        <div class="greeting">
+            <h1>"Hello, " {name} "!"</h1>
+            <p>"Welcome to Azumi."</p>
+        </div>
+    }
+}
 ```
 
-### 🎨 CSS Variables & Scoping
+### 1. Fragments
 
-Pass Rust data into your CSS effortlessly.
+Azumi supports **both automatic and explicit fragments** for returning multiple elements without wrapper divs.
+
+**Automatic Fragments (Implicit):**
+
+When you write multiple elements at the top level or in control flow blocks, Azumi automatically treats them as fragments - **no explicit `<>` wrapper needed**:
 
 ```rust
-let progress = 75;
-let color = "red";
-
+// ✅ Automatic fragment - just works!
 html! {
-    <style src="bar.css" />
-    // Variables --width and --bg are available in bar.css!
-    <div class="progress-bar" --width={format!("{}%", progress)} --bg={color}></div>
+    <h1>"Title"</h1>
+    <p>"Paragraph 1"</p>
+    <p>"Paragraph 2"</p>
+}
+
+// ✅ In control flow - automatic
+@if show_content {
+    <h1>"Title"</h1>
+    <p>"Content"</p>
 }
 ```
 
-**In `bar.css`:**
+**Explicit Fragments (Optional):**
 
-```css
-.progress-bar {
-    width: var(--width); /* It just works */
-    background: var(--bg);
-}
-```
-
-### 🧩 Fragments
-
-Return multiple elements without wrapper `<div>` soup.
+You can use `<>` `</>` tags for semantic clarity. They're functionally identical to automatic fragments:
 
 ```rust
-// Automatic:
-html! {
-    <h1>"Hello"</h1>
-    <p>"World"</p>
-}
-
-// Explicit (optional):
+// ✅ Explicit fragment - same output as above
 html! {
     <>
-        <h1>"Hello"</h1>
-        <p>"World"</p>
+        <h1>"Title"</h1>
+        <p>"Paragraph 1"</p>
+        <p>"Paragraph 2"</p>
     </>
 }
 ```
 
-### 🔌 HTMX Integration
+**Key Points:**
 
-Azumi + HTMX is the perfect stack for modern SSR.
+-   ✅ Multiple elements work automatically without `<>`
+-   ✅ Explicit `<>` `</>` is optional syntax for clarity
+-   ✅ Both generate identical output (no wrapper div)
+-   ✅ Works everywhere: top-level, control flow, components
+-   ✅ Avoids unnecessary DOM nesting
+
+**When to use explicit `<>`:**
+
+-   Component returns where you want to emphasize "no wrapper"
+-   Semantic clarity in complex templates
+-   Personal/team preference
+
+Perfect for returning multiple root elements from components or control flow blocks without polluting your DOM with wrapper divs.
+
+### 2. Control Flow
+
+Azumi supports Rust-native control flow directly in your templates.
+
+**If / Else:**
 
 ```rust
-<button
-    hx-post="/clicked"
-    hx-swap="outerHTML"
-    class="btn">
-    "Click Me"
-</button>
+@if logged_in {
+    <button>"Log Out"</button>
+} else {
+    <button>"Log In"</button>
+}
+```
+
+**For Loops:**
+
+```rust
+<ul>
+    @for item in items {
+        <li>{item.name}</li>
+    }
+</ul>
+```
+
+**Match Expressions:**
+
+Azumi supports both braced blocks and **ergonomic single-expression arms**:
+
+```rust
+@match status {
+    // Single expression (No braces needed!)
+    Status::Active => <span class="green">"Active"</span>,
+
+    // Block with multiple statements
+    Status::Pending => {
+        @let msg = "Waiting...";
+        <span class="orange">{msg}</span>
+    },
+
+    _ => <span class="gray">"Unknown"</span>,
+}
+```
+
+**Let Bindings:**
+
+```rust
+@let formatted_date = format_date(&post.created_at);
+<p>"Published on " {formatted_date}</p>
+```
+
+### 3. String Interpolation
+
+Azumi supports smart string concatenation within expressions:
+
+```rust
+// Automatic concatenation of string literal + expression
+<p>{"Price: $" (product.price)}</p>
+
+// Equivalent to:
+// format!("Price: ${}", product.price)
+```
+
+### 4. Components with Props
+
+Use the `#[azumi::component]` macro to create reusable components with type-safe props.
+
+````rust
+#[azumi::component]
+fn UserCard(
+    name: &str,
+    #[prop(default = "\"Member\"")] role: &str,
+) -> impl azumi::Component {
+    html! {
+        <style src="/static/user_card.css" />
+        <div class="user-card">
+            <h2>{name}</h2>
+            <span class="role">{role}</span>
+        </div>
+    }
+}
+
+### 5. CSS Variables
+
+Pass dynamic values to your CSS using attribute syntax. Attributes starting with `--` are automatically available in the css file as variables.
+
+```rust
+let progress = "75%";
+let color = "blue";
+
+html! {
+    <style src="progress.css" />
+
+    // Renders: <div class="bar" style="--width: 75%; --bg: blue">
+    <div class="bar" --width={progress} --bg={color}>
+        "Loading..."
+    </div>
+}
+````
+
+In `progress.css`:
+
+```css
+.bar {
+    width: var(--width);
+    background-color: var(--bg);
+}
+```
+
+}
+
+// Usage
+@UserCard(name="Alice", role="Admin")
+@UserCard(name="Bob") // Uses default role="Member"
+
+````
+
+### 5. Automatic CSS Scoping
+
+Azumi reads your CSS files at compile time, generates a unique hash, and scopes your styles to the component.
+
+**Input (`card.css`):**
+
+```css
+.card {
+    background: #fff;
+}
+h2 {
+    color: #333;
+}
+````
+
+**Component:**
+
+```rust
+html! {
+    <style src="card.css" />
+    <div class="card">
+        <h2>"Scoped Title"</h2>
+    </div>
+}
+```
+
+**Output:**
+
+```html
+<style>
+    .card[data-s12345] {
+        background: #fff;
+    }
+    h2[data-s12345] {
+        color: #333;
+    }
+</style>
+<div class="card" data-s12345>
+    <h2 data-s12345>Scoped Title</h2>
+</div>
+```
+
+### 6. Compile-Time CSS Validation
+
+Azumi validates your CSS at compile time and shows **exact locations** of errors.
+
+**Example Error:**
+
+```rust
+html! {
+    <style src="button.css" />
+    <button class="btn-primary">"Click Me"</button>
+    //              ^^^^^^^^^^^
+    //              error: CSS class 'btn-primary' is not defined in any CSS file
+}
+```
+
+**The error appears:**
+
+-   ✅ At the **exact line and column** in your editor
+-   ✅ With IDE underlining (red squiggly)
+-   ✅ Click to jump directly to the problem
+
+### 7. HTMX Integration
+
+Server-side rendering is back. Azumi + HTMX is a powerful combo.
+
+```rust
+html! {
+    <style src="button.css" />
+    <button
+        hx-post="/clicked"
+        hx-swap="outerHTML"
+        class="btn">
+        "Click Me"
+    </button>
+}
 ```
 
 ---
