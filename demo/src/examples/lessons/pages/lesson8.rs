@@ -33,10 +33,10 @@ pub fn lesson8() -> impl azumi::Component {
                 "Azumi allows you to nest control flow blocks arbitrarily. You can put " <code>"@match"</code> " inside " <code>"@for"</code> " inside " <code>"@if"</code> ", just like in regular Rust code."
             </p>
 
-            <div class="demo-section" aaaauser="user">
+            <div class="demo-section" aaaauser="user"> SYNTAX ERROR HERE
                 <h2>"Dashboard"</h2>
                 <div class="dashboard">
-                    @if user.is_admin { 
+                    @if user.is_admin {
                         <div class="welcome-banner">
                             "Welcome back, Administrator " {&user.name}
                         </div>
