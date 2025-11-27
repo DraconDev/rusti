@@ -17,10 +17,10 @@ pub fn card<'a>(
     html! {
         <style src="/static/pages/lesson12.css" />
         <div class="card">
-            <h3 cla ss="card-title">{title}</h3>
-            <div class="card-content">
+            <h3 class="card-title">{title}</h3>
+            <di v class="card-content">
                 {children}
-            </div>
+            </di>
         </div>
     }
 }
