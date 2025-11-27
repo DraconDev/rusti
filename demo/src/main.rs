@@ -1,7 +1,7 @@
 mod examples;
 
 use axum::{
-    routing::{delete, get, post},
+    routing::{get, post},
     Router,
 };
 use tower_http::services::ServeDir;
