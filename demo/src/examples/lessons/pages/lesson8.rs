@@ -1,7 +1,5 @@
 use azumi::html;
 
-
-
 #[derive(Debug, Clone)]
 pub enum Widget {
     Chart(Vec<i32>),
@@ -64,7 +62,7 @@ pub fn lesson8() -> impl azumi::Component {
                                                 <h4>"Activity Chart"</h4>
                                                 <div class="chart-bars">
                                                     @for val in data {
-                                                        <div class="bar" style={format!("height: {}px", val * 2)}></div>
+                                                        <div class="bar" --chart-height={val}></div>
                                                     }
                                                 </div>
                                             </div>
