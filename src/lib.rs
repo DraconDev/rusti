@@ -56,13 +56,10 @@ impl<T: std::fmt::Display> std::fmt::Display for Escaped<T> {
 
 pub struct RenderWrapper<T>(pub T);
 
-impl<T> RenderWrapper<T> {
+impl<T: Component> RenderWrapper<T> {
     // Priority 1: Component (Render directly)
     // This inherent method takes precedence over the trait implementation below
-    pub fn render_azumi(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
-    where
-        T: Component,
-    {
+    pub fn render_azumi(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         self.0.render(f)
     }
 }
