@@ -13,7 +13,7 @@ pub fn validate_img_alt(elem: &Element) -> Option<TokenStream> {
 
     if !has_alt {
         Some(quote_spanned! { elem.span =>
-            compile_error!("Image is missing 'alt' attribute. If decorative, use alt=\"\".");
+            compile_error!("<img> is missing 'alt' attribute. Add alt=\"description\" or alt=\"\" for decorative images.");
         })
     } else {
         None
@@ -41,7 +41,7 @@ pub fn validate_input_type(elem: &Element) -> Option<TokenStream> {
         if !valid {
             let suggestion = suggest_type_correction(type_value, elem.name == "input");
             let msg = format!(
-                "Invalid {} type='{}'. {}",
+                "Invalid <{}> type=\"{}\". {}",
                 elem.name, type_value, suggestion
             );
 
@@ -63,7 +63,7 @@ pub fn validate_aria_roles(elem: &Element) -> Option<TokenStream> {
     if let AttributeValue::Static(role_value) = &role_attr.value {
         if !is_valid_aria_role(role_value) {
             let msg = format!(
-                "Invalid ARIA role='{}'. See https://www.w3.org/TR/wai-aria-1.2/#role_definitions for valid roles.",
+                "Invalid role=\"{}\". Must be a valid WAI-ARIA role. See: https://www.w3.org/TR/wai-aria-1.2/#role_definitions",
                 role_value
             );
 
@@ -91,7 +91,7 @@ pub fn validate_button_content(elem: &crate::token_parser::Element) -> Option<To
 
     if !has_content && !has_aria_label && !has_title {
         Some(quote_spanned! { elem.span =>
-            compile_error!("Button must have text content OR 'aria-label' OR 'title' attribute for accessibility.");
+            compile_error!("<button> has no accessible text. Add text content, aria-label=\"...\", or title=\"...\".");
         })
     } else {
         None
