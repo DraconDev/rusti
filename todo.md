@@ -22,3 +22,16 @@ The Rules:
 <a href="#"> (Empty link) -> Compile Warning.
 <input> without a matching <label> (or aria-label) -> Compile Warning.
 This moves you from "Type Safe" to "User Safe."
+
+4. The "Unused CSS" Trap (The Reverse Check)
+You mentioned you briefly had errors if the CSS file had unused classes.
+Why you likely turned it off:
+CSS is not just a static map. It has State and JavaScript.
+The :hover Problem:
+HTML: <button class="btn">
+CSS: .btn { ... } .btn:hover { ... }
+Strict Compiler: "Error: You never used class btn:hover in your HTML." -> FALSE POSITIVE.
+The JavaScript Problem:
+JS: document.querySelector('.menu').classList.add('open')
+CSS: .menu.open { ... }
+Strict Compiler: "Error: .menu.open is never used." -> FALSE POSITIVE.
