@@ -18,9 +18,9 @@ pub fn card<'a>(
         <style src="/static/pages/lesson12.css" />
         <div class="card">
             <h3 class="card-title">{title}</h3>
-            <di v class="card-content">
+            <div class="card-content">
                 {children}
-            </di>
+            </div>
         </div>
     }
 }
