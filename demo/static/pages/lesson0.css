@@ -1,0 +1,149 @@
+.lesson0-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.lesson0-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.lesson0-main-title {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.lesson0-title {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.lesson0-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.lesson0-section-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.lesson0-text {
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.lesson0-key-points {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.lesson0-points-list {
+    list-style: none;
+    padding: 0;
+}
+
+.lesson0-point {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--background);
+    border-left: 3px solid var(--primary);
+    border-radius: 0.25rem;
+}
+
+.lesson0-examples {
+    display: grid;
+    gap: 2rem;
+}
+
+.lesson0-example-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.lesson0-box {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.lesson0-section {
+    margin-bottom: 2rem;
+}
+
+.lesson0-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.lesson0-before,
+.lesson0-after {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+.lesson0-before h4,
+.lesson0-after h4 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.lesson0-code {
+    display: block;
+    background: var(--surface-alt);
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--text-primary);
+}
+
+.lesson0-list {
+    list-style: none;
+    padding: 0;
+}
+
+.lesson0-item {
+    padding: 0.5rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.lesson0-item-note {
+    padding: 0.25rem 0.5rem;
+    background: var(--surface-alt);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .lesson0-comparison {
+        grid-template-columns: 1fr;
+    }
+}

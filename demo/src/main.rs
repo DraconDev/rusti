@@ -14,6 +14,7 @@ async fn main() {
         .route("/", get(examples::lessons::pages::homepage::homepage_handler))
         
         // 📚 Interactive Lessons (1-12)
+        .route("/lesson-0", get(examples::lessons::pages::lesson0::lesson0_handler))
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
         .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
         .route("/lesson-3", get(examples::lessons::pages::lesson3::lesson3_handler))

@@ -1,4 +1,5 @@
 pub mod homepage;
+pub mod lesson0;
 pub mod lesson1;
 pub mod lesson10;
 pub mod lesson11;

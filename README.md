@@ -227,23 +227,57 @@ fn hello(name: &str) -> impl azumi::Component {
 
 ### 1. Fragments
 
-Use `<>` `</>` to group elements without adding an extra DOM node:
+Azumi supports **both automatic and explicit fragments** for returning multiple elements without wrapper divs.
+
+**Automatic Fragments (Implicit):**
+
+When you write multiple elements at the top level or in control flow blocks, Azumi automatically treats them as fragments - **no explicit `<>` wrapper needed**:
 
 ```rust
-// Without fragment - adds unnecessary <div>
-<div>
+// ✅ Automatic fragment - just works!
+html! {
     <h1>"Title"</h1>
-    <p>"Paragraph"</p>
-</div>
+    <p>"Paragraph 1"</p>
+    <p>"Paragraph 2"</p>
+}
 
-// With fragment - no wrapper element
-<>
+// ✅ In control flow - automatic
+@if show_content {
     <h1>"Title"</h1>
-    <p>"Paragraph"</p>
-</>
+    <p>"Content"</p>
+}
 ```
 
-Perfect for returning multiple root elements from components or control flow blocks.
+**Explicit Fragments (Optional):**
+
+You can use `<>` `</>` tags for semantic clarity. They're functionally identical to automatic fragments:
+
+```rust
+// ✅ Explicit fragment - same output as above
+html! {
+    <>
+        <h1>"Title"</h1>
+        <p>"Paragraph 1"</p>
+        <p>"Paragraph 2"</p>
+    </>
+}
+```
+
+**Key Points:**
+
+-   ✅ Multiple elements work automatically without `<>`
+-   ✅ Explicit `<>` `</>` is optional syntax for clarity
+-   ✅ Both generate identical output (no wrapper div)
+-   ✅ Works everywhere: top-level, control flow, components
+-   ✅ Avoids unnecessary DOM nesting
+
+**When to use explicit `<>`:**
+
+-   Component returns where you want to emphasize "no wrapper"
+-   Semantic clarity in complex templates
+-   Personal/team preference
+
+Perfect for returning multiple root elements from components or control flow blocks without polluting your DOM with wrapper divs.
 
 ### 2. Control Flow
 
