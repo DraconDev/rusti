@@ -36,7 +36,7 @@ pub fn lesson8() -> impl azumi::Component {
             <div class="demo-section" aaaauser="user">
                 <h2>"Dashboard"</h2>
                 <div class="dashboard">
-                    @if user.is_admin {
+                    @if user.is_admin { 
                         <div class="welcome-banner">
                             "Welcome back, Administrator " {&user.name}
                         </div>
