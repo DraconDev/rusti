@@ -117,7 +117,47 @@ Azumi is strict. Follow these rules or it won't compile.
 
     - _Why?_ Catches typos at compile time. **Error shows exact location** in your code.
 
-5. **External JS:** `<script src="/static/app.js" />`
+5. **Images must have `alt` attributes:**
+
+    ```rust
+    // ❌ Compile Error: missing alt attribute
+    <img src="logo.png" />
+
+    // ✅ Correct
+    <img src="logo.png" alt="Company Logo" />
+    <img src="decoration.png" alt="" />  // Empty for decorative images
+    ```
+
+    - _Why?_ Required by HTML spec. Essential for accessibility (screen readers).
+
+6. **Input and button types must be valid:**
+
+    ```rust
+    // ❌ Compile Error: invalid type (typo)
+    <input type="txt" />
+    <button type="sumbit">"Submit"</button>
+
+    // ✅ Correct
+    <input type="text" />
+    <button type="submit">"Submit"</button>
+    ```
+
+    - _Why?_ Catches common typos that cause silent failures. Provides helpful suggestions.
+
+7. **ARIA roles must be valid:**
+
+    ```rust
+    // ❌ Compile Error: invalid role
+    <div role="btn">"Click"</div>
+
+    // ✅ Correct
+    <button role="button">"Click"</button>
+    <div role="navigation">"Nav"</div>
+    ```
+
+    - _Why?_ Invalid roles don't work. Enforces WAI-ARIA spec compliance.
+
+8. **External JS:** `<script src="/static/app.js" />`
     - _Why?_ Use the right tools (TypeScript, ESLint, Prettier) for JavaScript.
 
 ### ❌ Not Allowed
