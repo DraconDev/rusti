@@ -3,15 +3,7 @@ i did investivate the css dead code situation and there are extensions that can 
 also type check the css files we have and if any are unused then we mark what imports then with a warning
 
 
-Feature 
 
-Example:
-<div --percentage="50%"> </div>
-
-this should be valid css, we pass percentage variable to the css file and use it
-
-
-2. ban ids?
 
 
 3. Enforce Accessibility (A11y)
