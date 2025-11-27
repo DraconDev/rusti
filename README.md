@@ -362,7 +362,7 @@ fn UserCard(
 
 ### 5. CSS Variables
 
-Pass dynamic values to your CSS using attribute syntax. Attributes starting with `--` are automatically converted to inline styles, and the css file has access to the same variables.
+Pass dynamic values to your CSS using attribute syntax. Attributes starting with `--` are automatically available in the css file as variables.
 
 ```rust
 let progress = "75%";
