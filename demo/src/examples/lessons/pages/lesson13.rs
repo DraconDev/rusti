@@ -3,12 +3,6 @@
 //! Building complex UIs from simple components
 use azumi::html;
 
-/// Card component that accepts children
-#[derive(Clone)]
-pub struct CardProps {
-    pub title: String,
-    pub children: impl azumi::Component,
-}
 
 /// Simple card component
 pub fn card(props: CardProps) -> impl azumi::Component {
