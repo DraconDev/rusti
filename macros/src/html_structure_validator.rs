@@ -398,42 +398,23 @@ pub fn validate_tag_name(elem: &Element) -> Option<TokenStream> {
 pub fn validate_attribute_name(attr: &crate::token_parser::Attribute) -> Option<TokenStream> {
     let name = &attr.name;
 
-    // 1. Allow data-* attributes
-    if name.starts_with("data-") {
+    // 1. Allow ANY attribute containing a hyphen
+    // This covers data-*, aria-*, hx-*, x-*, and any future library using hyphenated attributes.
+    if name.contains('-') {
         return None;
     }
 
-    // 2. Allow aria-* attributes
-    if name.starts_with("aria-") {
-        return None;
-    }
-
-    // 3. Allow event handlers (on*)
+    // 2. Allow event handlers (on*)
     if name.starts_with("on") {
         return None;
     }
 
-    // 4. Allow HTMX attributes (hx-*)
-    if name.starts_with("hx-") {
+    // 3. Allow XML namespaces (xmlns) - though usually contains colon or is just xmlns
+    if name == "xmlns" || name.contains(':') {
         return None;
     }
 
-    // 5. Allow Alpine.js / other x-* attributes (common in modern stacks)
-    if name.starts_with("x-") {
-        return None;
-    }
-
-    // 6. Allow XML namespaces (xmlns, etc.)
-    if name.starts_with("xmlns") || name.contains(':') {
-        return None;
-    }
-
-    // 7. Allow CSS variables (--)
-    if name.starts_with("--") {
-        return None;
-    }
-
-    // 8. Standard HTML Global Attributes
+    // 4. Standard HTML Global Attributes
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
     let global_attributes = [
         "accesskey",
