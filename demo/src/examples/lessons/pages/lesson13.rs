@@ -62,6 +62,16 @@ pub fn user_profile(user: &User) -> impl azumi::Component {
     }
 }
 
+/// Handler for Axum
+pub async fn lesson13_handler() -> impl axum::response::IntoResponse {
+    let user = User {
+        name: "Alice Johnson".to_string(),
+        email: "alice@example.com".to_string(),
+        role: "Administrator",
+    };
+    axum::response::Html(azumi::render_to_string(&user_profile(&user)))
+}
+
 /// Example with mixed content
 pub fn dashboard_example() -> impl azumi::Component {
     let user = User {
