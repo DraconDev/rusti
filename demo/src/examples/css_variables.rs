@@ -5,7 +5,7 @@ pub fn css_variables_demo() -> impl azumi::Component {
     let color = "blue";
 
     html! {
-        <style src="examples/css_variables.css" />
+        <style src="/static/css_variables.css" />
 
         <div class="progress-bar" --width={percentage} --bg-color={color}>
             "Progress"
