@@ -15,7 +15,7 @@ pub fn hello_world() -> impl azumi::Component {
 }
 
 /// Example 2: Templates are Functions
-pub fn greeting(name: &str) -> impl azumi::Component {
+pub fn greeting<'a>(name: &'a str) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson1.css" />
         <div class="lesson1-box">
