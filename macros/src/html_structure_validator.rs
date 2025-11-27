@@ -393,3 +393,217 @@ pub fn validate_tag_name(elem: &Element) -> Option<TokenStream> {
 
     None
 }
+
+/// Rule 9: Attribute names must be valid HTML attributes, data-*, aria-*, or event handlers
+pub fn validate_attribute_name(attr: &crate::token_parser::Attribute) -> Option<TokenStream> {
+    let name = &attr.name;
+
+    // 1. Allow data-* attributes
+    if name.starts_with("data-") {
+        return None;
+    }
+
+    // 2. Allow aria-* attributes
+    if name.starts_with("aria-") {
+        return None;
+    }
+
+    // 3. Allow event handlers (on*)
+    if name.starts_with("on") {
+        return None;
+    }
+
+    // 4. Allow HTMX attributes (hx-*)
+    if name.starts_with("hx-") {
+        return None;
+    }
+
+    // 5. Allow Alpine.js / other x-* attributes (common in modern stacks)
+    if name.starts_with("x-") {
+        return None;
+    }
+
+    // 6. Allow XML namespaces (xmlns, etc.)
+    if name.starts_with("xmlns") || name.contains(':') {
+        return None;
+    }
+
+    // 7. Allow CSS variables (--)
+    if name.starts_with("--") {
+        return None;
+    }
+
+    // 8. Standard HTML Global Attributes
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
+    let global_attributes = [
+        "accesskey",
+        "autocapitalize",
+        "autofocus",
+        "class",
+        "contenteditable",
+        "dir",
+        "draggable",
+        "enterkeyhint",
+        "hidden",
+        "id",
+        "inputmode",
+        "is",
+        "itemid",
+        "itemprop",
+        "itemref",
+        "itemscope",
+        "itemtype",
+        "lang",
+        "nonce",
+        "part",
+        "popover",
+        "role",
+        "slot",
+        "spellcheck",
+        "style",
+        "tabindex",
+        "title",
+        "translate",
+        "virtualkeyboardpolicy",
+    ];
+
+    if global_attributes.contains(&name.as_str()) {
+        return None;
+    }
+
+    // 9. Specific Element Attributes (Common ones)
+    // This is a large list, but essential for strictness.
+    // We'll include common attributes for all standard tags.
+    let common_attributes = [
+        "accept",
+        "accept-charset",
+        "action",
+        "align",
+        "allow",
+        "alt",
+        "async",
+        "autocomplete",
+        "autoplay",
+        "background",
+        "bgcolor",
+        "border",
+        "capture",
+        "charset",
+        "checked",
+        "cite",
+        "color",
+        "cols",
+        "colspan",
+        "content",
+        "controls",
+        "coords",
+        "crossorigin",
+        "datetime",
+        "decoding",
+        "default",
+        "defer",
+        "dirname",
+        "disabled",
+        "download",
+        "enctype",
+        "for",
+        "form",
+        "formaction",
+        "formenctype",
+        "formmethod",
+        "formnovalidate",
+        "formtarget",
+        "headers",
+        "height",
+        "high",
+        "href",
+        "hreflang",
+        "http-equiv",
+        "integrity",
+        "kind",
+        "label",
+        "list",
+        "loop",
+        "low",
+        "max",
+        "maxlength",
+        "media",
+        "method",
+        "min",
+        "minlength",
+        "multiple",
+        "muted",
+        "name",
+        "novalidate",
+        "open",
+        "optimum",
+        "pattern",
+        "placeholder",
+        "playsinline",
+        "poster",
+        "preload",
+        "readonly",
+        "referrerpolicy",
+        "rel",
+        "required",
+        "reversed",
+        "rows",
+        "rowspan",
+        "sandbox",
+        "scope",
+        "selected",
+        "shape",
+        "size",
+        "sizes",
+        "span",
+        "src",
+        "srcdoc",
+        "srclang",
+        "srcset",
+        "start",
+        "step",
+        "target",
+        "type",
+        "usemap",
+        "value",
+        "width",
+        "wrap",
+        // SVG specific (common)
+        "viewBox",
+        "d",
+        "fill",
+        "stroke",
+        "stroke-width",
+        "stroke-linecap",
+        "stroke-linejoin",
+        "transform",
+        "opacity",
+        "points",
+        "cx",
+        "cy",
+        "r",
+        "rx",
+        "ry",
+        "x",
+        "y",
+        "x1",
+        "y1",
+        "x2",
+        "y2",
+        "preserveAspectRatio",
+    ];
+
+    if common_attributes.contains(&name.as_str()) {
+        return None;
+    }
+
+    // If we get here, it's an unknown attribute
+    let msg = format!(
+        "Unknown attribute '{}'. Check for typos. If this is a custom attribute, prefix it with 'data-' (e.g., data-{}).",
+        name, name
+    );
+
+    Some(quote_spanned! { attr.span =>
+        compile_error!(#msg);
+    })
+}
