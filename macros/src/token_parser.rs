@@ -697,7 +697,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
             let fork = input.fork();
             fork.parse::<Token![<]>()?;
             fork.parse::<Token![/]>()?;
-            if let Ok((name, _)) = parse_html_name(&fork) {
+            if let Ok((name, _)) = parse_html_name(&fork, false) {
                 if name == tag_name {
                     eprintln!("Found closing tag: </{}>", name);
                     break;
@@ -738,7 +738,7 @@ fn parse_script_content(input: ParseStream, tag_name: &str) -> Result<Vec<Node>>
                     let fork = input.fork();
                     fork.parse::<Token![<]>()?;
                     fork.parse::<Token![/]>()?;
-                    if let Ok((name, _)) = parse_html_name(&fork) {
+                    if let Ok((name, _)) = parse_html_name(&fork, false) {
                         if name == tag_name {
                             eprintln!("Stopped text at closing tag");
                             break;
