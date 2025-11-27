@@ -574,7 +574,7 @@ impl Parse for Block {
 
 // Helpers
 
-fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
+fn parse_html_name(input: ParseStream, allow_double_dash: bool) -> Result<(String, Span)> {
     let mut name = String::new();
     let mut full_span = input.span();
 
