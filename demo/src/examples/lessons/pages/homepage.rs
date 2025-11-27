@@ -286,8 +286,9 @@
 //             </body>
 //         </html>
 //     }
-// }
+}
 
-// pub async fn homepage_handler() -> impl IntoResponse {
-//     Html(azumi::render_to_string(&homepage()))
-// }
+// Handler for Axum
+pub async fn homepage_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&home_page()))
+}
