@@ -3,4 +3,8 @@ i did investivate the css dead code situation and there are extensions that can 
 also type check the css files we have and if any are unused then we mark what imports then with a warning
 
 
- --
+Example:
+<div --percentage="50%"> </div>
+
+this should be valid css and should work
+we press the 
