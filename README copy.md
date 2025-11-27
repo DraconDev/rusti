@@ -247,8 +247,6 @@ azumi/
 -   [x] 20-lesson curriculum
 -   [ ] CSS vars expansion
 -   [ ] Component prop defaults
--   [ ] Component prop defaults
--   [ ] Dead CSS pruning
 -   [ ] Leptos integration?
 
 ## 📜 License
