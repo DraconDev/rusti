@@ -1,6 +1,7 @@
 // Force rebuild 3
 mod component;
 
+mod accessibility_validator;
 mod css;
 mod css_validator;
 mod test_spacing;
@@ -313,6 +314,17 @@ fn validate_nodes(
                                 }
                             }
                         }
+                    }
+
+                    // Accessibility validation (Rule 1: img alt, Rule 2: input/button type, Rule 3: ARIA roles)
+                    if let Some(err) = accessibility_validator::validate_img_alt(elem) {
+                        errors.push(err);
+                    }
+                    if let Some(err) = accessibility_validator::validate_input_type(elem) {
+                        errors.push(err);
+                    }
+                    if let Some(err) = accessibility_validator::validate_aria_roles(elem) {
+                        errors.push(err);
                     }
 
                     // Recurse
