@@ -225,6 +225,26 @@ fn hello(name: &str) -> impl azumi::Component {
 }
 ```
 
+### 1. Fragments
+
+Use `<>` `</>` to group elements without adding an extra DOM node:
+
+```rust
+// Without fragment - adds unnecessary <div>
+<div>
+    <h1>"Title"</h1>
+    <p>"Paragraph"</p>
+</div>
+
+// With fragment - no wrapper element
+<>
+    <h1>"Title"</h1>
+    <p>"Paragraph"</p>
+</>
+```
+
+Perfect for returning multiple root elements from components or control flow blocks.
+
 ### 2. Control Flow
 
 Azumi supports Rust-native control flow directly in your templates.
