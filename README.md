@@ -521,16 +521,6 @@ Now you can **Ctrl+Click** (Cmd+Click on Mac) on `<style src="path/to/file.css" 
 
 ---
 
-## 🔮 Future Roadmap
-
-Azumi is constantly evolving. Here's what's coming next:
-
--   **Accessibility Enforcement**: Compile-time checks for A11y rules (e.g., `<img>` missing `alt`, empty buttons).
--   **CSS Variable Injection**: Pass Rust variables directly to CSS (e.g., `<div --color={user_color}>`).
--   **LSP Support**: Dedicated Language Server for even better IDE integration.
-
----
-
 ## 🏗️ Project Structure
 
 ```
