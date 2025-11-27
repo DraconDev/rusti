@@ -24,7 +24,7 @@ pub fn logged_in_example() -> impl azumi::Component {
 
 /// Example usage with guest user
 pub fn guest_example() -> impl azumi::Component {
-    user_status(false, "Guest")
+    user_status(false)
 }
 
 // Handler for Axum
