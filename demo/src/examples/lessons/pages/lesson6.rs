@@ -38,3 +38,8 @@ pub fn user_example() -> impl azumi::Component {
 pub fn guest_example() -> impl azumi::Component {
     user_role_display(Role::Guest)
 }
+
+/// Handler for Axum
+pub async fn lesson6_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&admin_example()))
+}

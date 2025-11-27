@@ -10,7 +10,7 @@ pub struct CardProps<'a> {
 }
 
 /// Card wrapper that accepts children content
-pub fn card<'a>(title: &'a str, children: impl azumi::Component + 'a) -> impl azumi::Component + 'a {
+pub fn card<'a>(title: &'a str, children: impl azumi::Component + 'a) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson12.css" />
         <div class="card">
@@ -20,6 +20,11 @@ pub fn card<'a>(title: &'a str, children: impl azumi::Component + 'a) -> impl az
             </div>
         </div>
     }
+}
+
+/// Handler for Axum
+pub async fn lesson12_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&example_card()))
 }
 
 /// Example card with content
