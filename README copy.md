@@ -13,7 +13,6 @@ Azumi is a **compile-time HTML template macro** (`html!`) for Rust that brings f
 -   ✅ **Validates HTML structure** - no `<div>` in `<ul>`, required children for semantic elements
 -   ✅ **Supports CSS variables** - dynamic values via `--variable={rust_value}` syntax
 -   ✅ **Automatic CSS scoping** - generates unique `[data-s{hash}]` selectors per component to prevent leakage
--   ✅ **Dead CSS detection** - warns about unused rules in your CSS files
 -   ✅ **Strict quoting** - all text/content quoted to eliminate parser ambiguity
 -   ✅ **Zero runtime overhead** - everything validated & expanded at compile time
 -   ✅ **Full IDE support** - CSS Peek for \"Go to Definition\" on `<style src>`, LSP-aware errors
@@ -74,7 +73,7 @@ Azumi is **opinionated** to prevent frontend mistakes at scale:
 | **Utility CSS**    | Unreadable HTML, framework lock-in, no semantics | Semantic classes, full CSS power             |
 | **Global styles**  | Component leakage, cascading hell                | Auto-hashed scoping `[data-s{hash}]`         |
 | **Unquoted HTML**  | Lexer ambiguity with Rust generics/traits        | Strict quoted text, type-safe interpolation  |
-| **No validation**  | Typos/dead CSS found at runtime (or never)       | Line-precise errors + dead CSS warnings      |
+| **No validation**  | Typos found at runtime (or never)                | Line-precise class errors                    |
 | **Runtime checks** | Slow, error-prone, no IDE integration            | Zero-cost compile-time + LSP errors          |
 
 ### Why `@` Syntax?
@@ -116,7 +115,7 @@ No capitalization rules—just `@` = Rust, everything else = HTML.
 | **Paradigm**       | Strict Macro SSR      | Simple Macro    | Jinja Macro | Typed Macro          | Reactive Islands | VDOM SSR  |
 | **Syntax**         | `<div>\"text\" @if{}` | `div{\"text\"}` | `{%if%}`    | `templ<div>{}</div>` | Signals/JSX      | JSX       |
 | **Compile Parse**  | ✅ Full HTML/CSS      | ✅ Basic        | ❌          | ✅ Typed             | ✅ Signals       | ❌        |
-| **CSS Validation** | ✅ Exact errors/dead  | ❌              | ❌          | ❌                   | ❌               | ❌        |
+| **CSS Validation** | ✅ Exact errors       | ❌              | ❌          | ❌                   | ❌               | ❌        |
 | **CSS Scoping**    | ✅ Auto-hash          | ❌ Global       | ❌          | ❌                   | ❌               | CSS-in-JS |
 | **Strictness**     | 🔒 Ultra-strict       | ⚠️              | ⚠️          | ✅ Typed             | ✅               | ⚠️ JS     |
 | **Components**     | ✅ Props/defaults     | Basic           | Includes    | Typed fn             | Reactive         | Hooks     |
@@ -247,6 +246,7 @@ azumi/
 -   [x] A11y/HTML structure checks
 -   [x] 20-lesson curriculum
 -   [ ] CSS vars expansion
+-   [ ] Component prop defaults
 -   [ ] Component prop defaults
 -   [ ] Dead CSS pruning
 -   [ ] Leptos integration?
