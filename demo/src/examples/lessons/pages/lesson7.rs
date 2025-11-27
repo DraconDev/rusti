@@ -1,4 +1,6 @@
-use azumi::prelude::*;
+use azumi::html;
+
+
 
 #[derive(Debug, Clone)]
 pub struct Product {
@@ -37,7 +39,7 @@ pub fn lesson7() -> impl azumi::Component {
             <div class="demo-section">
                 <h2>"Product Pricing"</h2>
                 <div class="product-grid">
-                    @for product in products {
+                    @for product in &products {
                         <div class="product-card">
                             <h3>{&product.name}</h3>
 
