@@ -17,7 +17,7 @@ pub fn hello_world() -> impl azumi::Component {
 pub fn basic_template() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson1.css" />
-        <div class="basic-template">
+        <div class="basic-template" percent="100%">
             <h1 class="basic-h1">"Hello, World!"</h1>
             <h2 class="basic-h2">"Welcome to Azumi"</h2>
             <p class="basic-p">"This is a simple styled template"</p>
