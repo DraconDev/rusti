@@ -84,11 +84,11 @@ pub fn lesson1() -> impl azumi::Component {
                 <div class="lesson1-code-demo">
                     <h3 class="lesson1-demo-title">"Basic Syntax"</h3>
                     <pre class="lesson1-code">
-"html! {{"}"
-    <div class=\"container\">
-        <h1>\"Hello, World!\"</h1>
+"html! {
+    <div class=\\\"container\\\">
+        <h1>\\\"Hello, World!\\\"</h1>
     </div>
-{"}"}"
+}"
                     </pre>
                     <div class="lesson1-key-points">
                         <h4>"Key Points:"</h4>
