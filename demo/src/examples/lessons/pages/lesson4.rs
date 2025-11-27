@@ -1,30 +1,44 @@
-//! Lesson 4: loops_and_iteration.rs
+//! Lesson 4: CSS Validation
 //!
-//! Using @for to render lists
+//! Demonstrates compile-time CSS validation
 use azumi::html;
 
-/// Todo list renderer using @for loop
-pub fn todo_list<'a>(todos: &'a [&'a str]) -> impl azumi::Component + 'a {
+/// Example: All classes defined - compiles successfully
+pub fn valid_classes() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson4.css" />
-        <div class="lesson4-container">
-            <h1 class="lesson4-title">"Todo List"</h1>
-            <ul class="lesson4-todo-list">
-                @for todo in todos {
-                    <li class="lesson4-todo-item">{todo}</li>
-                }
-            </ul>
+        <div class="validated-box">
+            <h2 class="validated-title">"Valid CSS"</h2>
+            <p class="validated-text">"All classes are defined in CSS."</p>
         </div>
     }
 }
 
-/// Example todo list with sample data
-pub fn example_todo_list() -> impl azumi::Component {
-    todo_list(&["Buy groceries", "Clean the house", "Call mom"])
+/// Example: Shows what valid CSS looks like
+pub fn another_valid() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson4.css" />
+        <div class="validated-box highlight">
+            <h2 class="validated-title">"Another Valid Example"</h2>
+            <p class="validated-text">"Azumi validates at compile time."</p>
+        </div>
+    }
 }
 
-/// Empty list handling
-pub fn empty_todo_list() -> impl azumi::Component {
-    todo_list(&[])
+/// Main lesson
+pub fn lesson4() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson4.css" />
+        <div class="lesson-container">
+            <h1 class="lesson-title">"Lesson 4: CSS Validation"</h1>
+            <p class="lesson-desc">"Every class must be defined in CSS or it won't compile."</p>
+            @valid_classes()
+            @another_valid()
+        </div>
+    }
 }
-pub async fn lesson4_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 4") }
+
+// Handler
+pub async fn lesson4_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&lesson4()))
+}

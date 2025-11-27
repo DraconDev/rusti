@@ -6,27 +6,12 @@ Azumi **redefines Rust SSR templating** with **compile-time CSS validation, scop
 
 ## 🎯 Azumi Strengths
 - **CSS Compile-Time Magic**: Exact-line errors, auto-scoping `[data-s{hash}]`, dead CSS warnings.
+- **CSS Variables**: Inline dynamic Rust values e.g. `--progress={format!("{}%", value)}` directly in HTML attributes.
 - **Strict Best Practices**: No inline style/script, semantic classes, quoted all.
 - **Ergonomics**: `@if/@for/@match/@let`, props builders/defaults.
 - **Zero Cost**: Formatter writes, context-aware escaping.
 - **Demo**: Progressive lessons.
 
-## 📊 Weighted Score Comparison (Key Criteria)
-
-**Weights**: Compile Safety (25%), CSS Handling (20%), Ergonomics/DX (15%), Runtime Perf (15%), Strictness/Maintainability (10%), SSR/HTMX Fit (10%), Ecosystem (5%).
-
-| Lib | Compile Safety | CSS | Ergonomics | Runtime | Strictness | SSR/HTMX | Ecosystem | **Total** |
-|-----|----------------|-----|------------|---------|------------|----------|-----------|-----------|
-| **Azumi** | 10 | 10 | 9 | 10 | 10 | 10 | 7 | **9.65** |
-| Templ | 9 | 3 | 8 | 10 | 5 | 8 | 9 | **7.85** |
-| React | 4 | 6 | 10 | 5 | 3 | 4 | 10 | **6.25** |
-| Maud | 7 | 2 | 7 | 9 | 4 | 7 | 6 | **6.50** |
-| Askama | 8 | 2 | 6 | 10 | 4 | 9 | 8 | **7.20** |
-| Leptos | 9 | 5 | 9 | 7 | 6 | 8 | 8 | **8.00** |
-| Dioxus | 8 | 5 | 9 | 6 | 5 | 5 | 8 | **7.35** |
-| Svelte | 6 | 8 | 9 | 8 | 7 | 3 | 9 | **7.40** |
-
-**Azumi Wins**: Unmatched CSS validation/scoping, zero-overhead SSR. Tops Rust SSR niche.
 
 ## 📊 Ultimate Comparison Table (20+ Criteria)
 
@@ -53,4 +38,3 @@ Azumi **redefines Rust SSR templating** with **compile-time CSS validation, scop
 | **Typesafe** | ✅ Full | ✅ Partial | ⚠️ | ✅ HTML | ✅ Partial | ❌ | ✅ | ✅ | TS optional | TS optional | TS |
 | **Best For** | Validated SSR | Simple | Familiar | Typed | Speed | Dynamic | SPA | Desktop | Complex | Batteries | Edge |
 | **Weakness** | SSR-only | No CSS | Runtime | No CSS | Basic | Runtime | Heavy | Heavy | JS/Bloat | JS | JS |
-

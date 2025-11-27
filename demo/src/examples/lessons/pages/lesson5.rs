@@ -1,32 +1,44 @@
-//! Lesson 5: css_integration.rs
+//! Lesson 5: CSS Scoping
 //!
-//! Adding styles to templates
+//! Shows automatic component-scoped CSS
 use azumi::html;
 
-/// Styled button example
-/// Loads external CSS and uses validated classes
-pub fn styled_button() -> impl azumi::Component {
+/// Component A with scoped styles
+pub fn component_a() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/button.css" />
-        <button class="btn-primary">"Click Me"</button>
-    }
-}
-
-/// Button with hover state demonstration
-pub fn hover_button() -> impl azumi::Component {
-    html! {
-        <style src="/static/pages/button.css" />
-        <button class="btn-hover">"Hover Me"</button>
-    }
-}
-
-/// Multiple buttons showcase
-pub fn buttons_showcase() -> impl azumi::Component {
-    html! {
-        <style src="/static/pages/button.css" />
-        <div>
-            <button class="btn-primary">"Primary"</button>
-            <button class="btn-secondary">"Secondary"</button>
+        <style src="/static/pages/lesson5.css" />
+        <div class="scoped-demo">
+            <h2 class="demo-title">"Component A"</h2>
+            <p class="primary-text">"This uses scoped CSS."</p>
         </div>
     }
-}pub async fn lesson5_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 5") }
+}
+
+/// Component B - same CSS file, automatically scoped
+pub fn component_b() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson5.css" />
+        <div class="scoped-demo alternate">
+            <h2 class="demo-title">"Component B"</h2>
+            <p class="primary-text">"Same CSS, no conflicts!"</p>
+        </div>
+    }
+}
+
+/// Main lesson
+pub fn lesson5() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson5.css" />
+        <div class="lesson-container">
+            <h1 class="lesson-title">"Lesson 5: CSS Scoping"</h1>
+            <p class="lesson-desc">"Azumi automatically scopes CSS to prevent conflicts."</p>
+            @component_a()
+            @component_b()
+        </div>
+    }
+}
+
+// Handler
+pub async fn lesson5_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&lesson5()))
+}

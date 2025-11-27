@@ -15,29 +15,28 @@
     text-align: center;
     color: var(--text-secondary);
     margin-bottom: 2rem;
-    font-size: 1.1rem;
 }
 
-.validated-box {
+.scoped-demo {
     background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary);
     padding: 2rem;
     margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
 }
 
-.validated-box.highlight {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, var(--surface), var(--background));
+.scoped-demo.alternate {
+    border-left-color: var(--secondary);
+    background: var(--background);
 }
 
-.validated-title {
+.demo-title {
     font-size: 1.5rem;
     color: var(--text-primary);
     margin-bottom: 0.75rem;
 }
 
-.validated-text {
+.primary-text {
     color: var(--text-secondary);
     line-height: 1.6;
 }

@@ -1,33 +1,43 @@
-//! Lesson 3: conditional_rendering.rs
+// ! Lesson 3: Introduction to CSS
 //!
-//! Using @if for conditional content
+//! Shows how to link external CSS files
 use azumi::html;
 
-/// User status display with conditional rendering
-pub fn user_status(is_logged_in: bool) -> impl azumi::Component {
+/// Example: Basic CSS linking
+pub fn styled_card() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson3.css" />
-        <div class="lesson3-container">
-            @if is_logged_in {
-                <p class="lesson3-text success">"Welcome back!"</p>
-            } else {
-                <p class="lesson3-text warning">"Please log in"</p>
-            }
+        <div class="card">
+            <h2 class="card-title">"Styled Card"</h2>
+            <p class="card-text">"This card uses external CSS."</p>
         </div>
     }
 }
 
-/// Example usage with logged in user
-pub fn logged_in_example() -> impl azumi::Component {
-    user_status(true)
+/// Example: Multiple components, same CSS
+pub fn another_card() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson3.css" />
+        <div class="card">
+            <h2 class="card-title">"Another Card"</h2>
+            <p class="card-text">"Same CSS file, different content."</p>
+        </div>
+    }
 }
 
-/// Example usage with guest user
-pub fn guest_example() -> impl azumi::Component {
-    user_status(false)
+/// Main lesson
+pub fn lesson3() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson3.css" />
+        <div class="lesson-container">
+            <h1 class="lesson-title">"Lesson 3: CSS Integration"</h1>
+            @styled_card()
+            @another_card()
+        </div>
+    }
 }
 
-// Handler for Axum
+// Handler
 pub async fn lesson3_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&logged_in_example()))
+    axum::response::Html(azumi::render_to_string(&lesson3()))
 }
