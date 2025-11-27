@@ -567,7 +567,23 @@ fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
     let mut name = String::new();
     let mut full_span = input.span();
 
-    if input.peek(Ident)
+    // Check for CSS variable prefix --
+    if input.peek(Token![-]) && input.peek2(Token![-]) {
+        input.parse::<Token![-]>()?;
+        input.parse::<Token![-]>()?;
+        name.push_str("--");
+
+        // After --, we expect an identifier
+        if input.peek(Ident) {
+            let ident = Ident::parse_any(input)?;
+            name.push_str(&ident.to_string());
+            if let Some(joined) = full_span.join(ident.span()) {
+                full_span = joined;
+            }
+        } else {
+            return Err(input.error("Expected identifier after --"));
+        }
+    } else if input.peek(Ident)
         || input.peek(Token![type])
         || input.peek(Token![for])
         || input.peek(Token![match])
@@ -576,40 +592,42 @@ fn parse_html_name(input: ParseStream) -> Result<(String, Span)> {
         let ident = Ident::parse_any(input)?;
         name.push_str(&ident.to_string());
         full_span = ident.span();
-
-        while input.peek(Token![-]) || input.peek(Token![:]) {
-            let punct_span = input.span();
-            if input.peek(Token![-]) {
-                input.parse::<Token![-]>()?;
-                name.push('-');
-            } else {
-                input.parse::<Token![:]>()?;
-                name.push(':');
-            }
-            if let Some(joined) = full_span.join(punct_span) {
-                full_span = joined;
-            }
-
-            if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
-                let part = Ident::parse_any(input)?;
-                name.push_str(&part.to_string());
-                if let Some(joined) = full_span.join(part.span()) {
-                    full_span = joined;
-                }
-            } else {
-                // Allow numbers?
-                if input.peek(syn::Lit) {
-                    let lit: syn::Lit = input.parse()?;
-                    name.push_str(&lit.to_token_stream().to_string());
-                    if let Some(joined) = full_span.join(lit.span()) {
-                        full_span = joined;
-                    }
-                }
-            }
-        }
     } else {
         return Err(input.error("Expected identifier"));
     }
+
+    // Continue parsing rest of the name (e.g. -foo:bar)
+    while input.peek(Token![-]) || input.peek(Token![:]) {
+        let punct_span = input.span();
+        if input.peek(Token![-]) {
+            input.parse::<Token![-]>()?;
+            name.push('-');
+        } else {
+            input.parse::<Token![:]>()?;
+            name.push(':');
+        }
+        if let Some(joined) = full_span.join(punct_span) {
+            full_span = joined;
+        }
+
+        if input.peek(Ident) || input.peek(Token![type]) || input.peek(Token![for]) {
+            let part = Ident::parse_any(input)?;
+            name.push_str(&part.to_string());
+            if let Some(joined) = full_span.join(part.span()) {
+                full_span = joined;
+            }
+        } else {
+            // Allow numbers?
+            if input.peek(syn::Lit) {
+                let lit: syn::Lit = input.parse()?;
+                name.push_str(&lit.to_token_stream().to_string());
+                if let Some(joined) = full_span.join(lit.span()) {
+                    full_span = joined;
+                }
+            }
+        }
+    }
+
     Ok((name, full_span))
 }
 
