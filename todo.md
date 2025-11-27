@@ -9,3 +9,6 @@ Example:
 <div --percentage="50%"> </div>
 
 this should be valid css, we pass percentage variable to the css file and use it
+
+
+ban ids?
