@@ -2,7 +2,7 @@ use azumi::html;
 
 pub fn css_variables_demo() -> impl azumi::Component {
     let percentage = "50%";
-    let color = "blue";
+    let color = "yellow";
 
     html! {
         <style src="/static/css_variables.css" />
