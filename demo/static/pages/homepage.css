@@ -178,3 +178,14 @@
         width: 100%;
     }
 }
+
+/* Utility classes to replace inline styles */
+.p-8 {
+    padding: 2rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+.mt-16 {
+    margin-top: 4rem;
+}

@@ -13,14 +13,14 @@ pub fn home_page() -> impl azumi::Component {
                 <style src="/static/global.css" />
             </head>
             <body>
-                <div style="padding: 2rem;">
+                <div class="p-8">
                     <header class="hero">
                         <h1 class="hero-title">"Azumi"</h1>
                         <p class="hero-subtitle">"Type-Safe, Compile-Time Validated HTML Templates for Rust"</p>
                     </header>
 
                     <section>
-                        <h2 style="margin-bottom: 1rem;">"📚 Complete 20-Lesson Curriculum"</h2>
+                        <h2 class="mb-4">"📚 Complete 20-Lesson Curriculum"</h2>
                         <p>"Master Azumi through 20 comprehensive lessons, featuring control flow, components, JavaScript integration, and production patterns:"</p>
 
                         <!-- Phase 1: Foundation Building -->
@@ -164,8 +164,86 @@ pub fn home_page() -> impl azumi::Component {
                         </div>
                     </section>
 
-                    <section style="margin-top: 4rem;">
+                    <section class="mt-16">
                         <h2 class="section-title">"✨ Why Azumi?"</h2>
+                        <div class="features-grid">
+                            <div class="feature-box">
+                                <div class="feature-icon">"🔍"</div>
+                                <h3 class="feature-title">"Compile-Time Validation"</h3>
+                                <p class="feature-desc">"Every CSS class checked at compile time with exact error locations."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🎨"</div>
+                                <h3 class="feature-title">"Automatic Scoping"</h3>
+                                <p class="feature-desc">"CSS is scoped to components automatically. No style leakage."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"⚡"</div>
+                                <h3 class="feature-title">"Zero Runtime Cost"</h3>
+                                <p class="feature-desc">"Everything happens at compile time. Pure Rust performance."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🛡️"</div>
+                                <h3 class="feature-title">"Strict by Design"</h3>
+                                <p class="feature-desc">"Mandatory quoting prevents bugs. No dead CSS allowed."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🏗️"</div>
+                                <h3 class="feature-title">"Component Architecture"</h3>
+                                <p class="feature-desc">"Reusable components with type-safe props and clean composition."</p>
+                            </div>
+
+                            <div class="feature-box">
+                                <div class="feature-icon">"🌐"</div>
+                                <h3 class="feature-title">"Modern Web Standards"</h3>
+                                <p class="feature-desc">"Works seamlessly with HTMX, Axum, and the Rust ecosystem."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mt-16">
+                        <h2 class="section-title">"🎯 Learning Path"</h2>
+                        <div class="learning-path">
+                            <div class="path-step foundation">
+                                <div class="step-number">"1-5"</div>
+                                <div class="step-content">
+                                    <h4>"Foundation Building"</h4>
+                                    <p>"Master core concepts: getting started, quoting, CSS basics, scoping, and data binding."</p>
+                                </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step core">
+                                <div class="step-number">"6-10"</div>
+                                <div class="step-content">
+                                    <h4>"Control Flow Mastery"</h4>
+                                    <p>"Learn @if, @for, @match, @let, and advanced template logic patterns."</p>
+                                </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step advanced">
+                                <div class="step-number">"11-15"</div>
+                                <div class="step-content">
+                                    <h4>"Component Architecture"</h4>
+                                    <p>"Build reusable components with props, composition, and state management."</p>
+                                </div>
+                            </div>
+                            <div class="path-arrow">"→"</div>
+                            <div class="path-step mastery">
+                                <div class="step-number">"16-20"</div>
+                                <div class="step-content">
+                                    <h4>"JavaScript & Production"</h4>
+                                    <p>"Integrate JavaScript safely and build production-ready applications."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mt-16">
+                        <h2 class="section-title">"💡 What Makes This Different"</h2>
                         <div class="features-grid">
                             <div class="feature-box">
                                 <div class="feature-icon">"🔍"</div>
