@@ -316,7 +316,7 @@ fn validate_nodes(
                         }
                     }
 
-                    // Accessibility validation (Rule 1: img alt, Rule 2: input/button type, Rule 3: ARIA roles)
+                    // Accessibility validation (Rule 1: img alt, Rule 2: input/button type, Rule 3: ARIA roles, Rule 4: button content)
                     if let Some(err) = accessibility_validator::validate_img_alt(elem) {
                         errors.push(err);
                     }
@@ -324,6 +324,9 @@ fn validate_nodes(
                         errors.push(err);
                     }
                     if let Some(err) = accessibility_validator::validate_aria_roles(elem) {
+                        errors.push(err);
+                    }
+                    if let Some(err) = accessibility_validator::validate_button_content(elem) {
                         errors.push(err);
                     }
 

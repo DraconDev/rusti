@@ -1,4 +1,5 @@
 pub mod css_variables;
 pub mod lessons;
 pub mod test_accessibility_pass;
-//pub mod test_img_fail;
+pub mod test_button_fail;
+//pub mod test_img_fail;  // Comment out failing test
