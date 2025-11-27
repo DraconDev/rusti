@@ -8,6 +8,7 @@
     font-weight: 800;
     margin-bottom: 1rem;
     background: linear-gradient(to right, var(--primary), var(--secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
 }
@@ -158,9 +159,9 @@
     margin-bottom: 0.5rem;
 }
 
-.step-content {
-    /* Container for step description */
-}
+/* .step-content {
+    Container for step description
+} */
 
 .path-arrow {
     font-size: 1.5rem;
