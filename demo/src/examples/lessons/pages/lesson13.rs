@@ -44,10 +44,9 @@ pub struct User {
 }
 
 /// A compact user profile display component
-pub fn user_profile_compact(user: &User) -> impl azumi::Component {
+pub fn user_profile_compact(user: &User) -> impl azumi::Component + '_ {
     html! {
-<style src="/static/pages/lesson13.css" />
-
+        <style src="/static/pages/lesson13.css" />
         <div class="user-profile-compact">
             <img src={&user.avatar_url} alt={format!("{} avatar", user.name)} class="user-avatar" />
             <div class="user-details">
@@ -60,7 +59,7 @@ pub fn user_profile_compact(user: &User) -> impl azumi::Component {
 }
 
 /// A detailed user profile card
-pub fn user_profile_card(user: &User) -> impl azumi::Component {
+pub fn user_profile_card(user: &User) -> impl azumi::Component + '_ {
     html! {
                 <style src="/static/pages/lesson13.css" />
             <div class="user-profile-card">
@@ -104,8 +103,9 @@ pub struct Activity {
 }
 
 /// Single activity item component
-pub fn activity_item(activity: &Activity) -> impl azumi::Component {
+pub fn activity_item(activity: &Activity) -> impl azumi::Component + '_ {
     html! {
+        <style src="/static/pages/lesson13.css" />
         <div class="activity-item">
             <div class="activity-icon">"📝"</div>
             <div class="activity-content">
@@ -123,8 +123,9 @@ pub fn activity_item(activity: &Activity) -> impl azumi::Component {
 }
 
 /// Activity feed component showing multiple activities
-pub fn activity_feed(activities: &[Activity]) -> impl azumi::Component {
+pub fn activity_feed(activities: &[Activity]) -> impl azumi::Component + '_ {
     html! {
+        <style src="/static/pages/lesson13.css" />
         <div class="activity-feed">
             <h3 class="feed-title">"Recent Activity"</h3>
             <div class="feed-items">
