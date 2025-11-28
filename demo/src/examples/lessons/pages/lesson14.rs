@@ -224,151 +224,85 @@ pub fn advanced_patterns_demo() -> impl azumi::Component {
     ];
 
     html! {
-            <style src="/static/pages/lesson14.css" />
-            <div class="lesson-container">
-                <header class="lesson-header">
-                    <h1 class="lesson-title">"Lesson 14: Advanced Component Patterns"</h1>
-                    <p class="lesson-subtitle">
-                        "Master component design with variants, compositions, and best practices"
-                    </p>
-                </header>
+        <style src="/static/pages/lesson14.css" />
+        <div class="lesson-container">
+            <header class="lesson-header">
+                <h1 class="lesson-title">"Lesson 14: Advanced Component Patterns"</h1>
+                <p class="lesson-subtitle">
+                    "Master component design with variants, compositions, and best practices"
+                </p>
+            </header>
 
-                <section class="lesson-section">
-                    <h2 class="section-title">"Introduction"</h2>
-                    <p class="section-text">
-                        "Advanced component patterns help you build flexible, reusable UI elements. "
-                        "This lesson covers enums for variants, composition strategies, and real-world examples."
-                    </p>
-                </section>
+            <section class="lesson-section">
+                <h2 class="section-title">"Introduction"</h2>
+                <p class="section-text">
+                    "Advanced component patterns help you build flexible, reusable UI elements. "
+                    "This lesson covers enums for variants, composition strategies, and real-world examples."
+                </p>
+            </section>
 
-                <section class="lesson-section">
-                    <h2 class="section-title">"Pattern 1: Button Variants"</h2>
-                    <p class="section-text">"Using enums to create flexible button components with different styles and sizes."</p>
+            <section class="lesson-section">
+                <h2 class="section-title">"Pattern 1: Button Variants"</h2>
+                <p class="section-text">"Using enums to create flexible button components with different styles and sizes."</p>
 
-                    <div class="demo-grid">
-                        <div class="demo-column">
-                            <h3 class="demo-heading">"Variants"</h3>
-                            {button(&ButtonProps {
-                                text: "Primary".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Secondary".to_string(),
-                                variant: ButtonVariant::Secondary,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Success".to_string(),
-                                variant: ButtonVariant::Success,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Danger".to_string(),
-                                variant: ButtonVariant::Danger,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Outline".to_string(),
-                                variant: ButtonVariant::Outline,
-                                size: ButtonSize::Medium,
-    disabled: false,
-                            })}
-                        </div>
-
-                        <div class="demo-column">
-                            <h3 class="demo-heading">"Sizes"</h3>
-                            {button(&ButtonProps {
-                                text: "Small".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Small,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Medium".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Large".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Large,
-                                disabled: false,
-                            })}
-                        </div>
-
-                        <div class="demo-column">
-                            <h3 class="demo-heading">"States"</h3>
-                            {button(&ButtonProps {
-                                text: "Enabled".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Medium,
-                                disabled: false,
-                            })}
-                            {button(&ButtonProps {
-                                text: "Disabled".to_string(),
-                                variant: ButtonVariant::Primary,
-                                size: ButtonSize::Medium,
-                                disabled: true,
-                            })}
-                        </div>
+                <div class="demo-grid">
+                    <div class="demo-column">
+                        <h3 class="demo-heading">"Variants"</h3>
+                        @button(text="Primary", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Secondary", variant=ButtonVariant::Secondary, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Success", variant=ButtonVariant::Success, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Danger", variant=ButtonVariant::Danger, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Outline", variant=ButtonVariant::Outline, size=ButtonSize::Medium, disabled=false)
                     </div>
-                </section>
 
-                <section class="lesson-section">
-                    <h2 class="section-title">"Pattern 2: Alert Components"</h2>
-                    <p class="section-text">"Contextual alerts with different types and dismissible options."</p>
-
-                    <div class="alert-demo">
-                        {alert(&AlertProps {
-                            message: "This is an informational message.".to_string(),
-                            alert_type: AlertType::Info,
-                            dismissible: true,
-                        })}
-                        {alert(&AlertProps {
-                            message: "Operation completed successfully!".to_string(),
-                            alert_type: AlertType::Success,
-                            dismissible: true,
-                        })}
-                        {alert(&AlertProps {
-                            message: "Warning: Please review your input.".to_string(),
-                            alert_type: AlertType::Warning,
-                            dismissible: false,
-                        })}
-                        {alert(&AlertProps {
-                            message: "Error: Something went wrong.".to_string(),
-                            alert_type: AlertType::Error,
-                            dismissible: true,
-                        })}
+                    <div class="demo-column">
+                        <h3 class="demo-heading">"Sizes"</h3>
+                        @button(text="Small", variant=ButtonVariant::Primary, size=ButtonSize::Small, disabled=false)
+                        @button(text="Medium", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Large", variant=ButtonVariant::Primary, size=ButtonSize::Large, disabled=false)
                     </div>
-                </section>
 
-                <section class="lesson-section">
-                    <h2 class="section-title">"Pattern 3: List Components"</h2>
-                    <p class="section-text">"Composable list items with badges and status indicators."</p>
+                    <div class="demo-column">
+                        <h3 class="demo-heading">"States"</h3>
+                        @button(text="Enabled", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
+                        @button(text="Disabled", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=true)
+                    </div>
+                </div>
+            </section>
 
-                    {item_list(&sample_items)}
-                </section>
+            <section class="lesson-section">
+                <h2 class="section-title">"Pattern 2: Alert Components"</h2>
+                <p class="section-text">"Contextual alerts with different types and dismissible options."</p>
 
-                <section class="lesson-section">
-                    <h2 class="section-title">"Key Takeaways"</h2>
-                    <ul class="takeaways-list">
-                        <li>"✓ Use enums to define component variants and types"</li>
-                        <li>"✓ Create Props structs with clear, semantic fields"</li>
-                        <li>"✓ Compose small components to build complex UIs"</li>
-                        <li>"✓ Use pattern matching to generate variant-specific classes"</li>
-                        <li>"✓ Keep components focused on a single responsibility"</li>
-                        <li>"✓ Always add lifetime bounds (`+ '_`) when borrowing data"</li>
-                        <li>"✓ Import CSS in every component for validation"</li>
-                    </ul>
-                </section>
-            </div>
-        }
+                <div class="alert-demo">
+                    @alert(message="This is an informational message.", alert_type=AlertType::Info, dismissible=true)
+                    @alert(message="Operation completed successfully!", alert_type=AlertType::Success, dismissible=true)
+                    @alert(message="Warning: Please review your input.", alert_type=AlertType::Warning, dismissible=false)
+                    @alert(message="Error: Something went wrong.", alert_type=AlertType::Error, dismissible=true)
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2 class="section-title">"Pattern 3: List Components"</h2>
+                <p class="section-text">"Composing lists with custom item components and dynamic badges."</p>
+
+                @item_list(items=&sample_items)
+            </section>
+
+            <section class="lesson-section">
+                <h2 class="section-title">"Key Takeaways"</h2>
+                <ul class="takeaways-list">
+                    <li>"✓ Use enums to define component variants and types"</li>
+                    <li>"✓ Create Props structs with clear, semantic fields"</li>
+                    <li>"✓ Compose small components to build complex UIs"</li>
+                    <li>"✓ Use pattern matching to generate variant-specific classes"</li>
+                    <li>"✓ Keep components focused on a single responsibility"</li>
+                    <li>"✓ Always add lifetime bounds (`+ '_`) when borrowing data"</li>
+                    <li>"✓ Import CSS in every component for validation"</li>
+                </ul>
+            </section>
+        </div>
+    }
 }
 
 /// Axum handler for Lesson 14
