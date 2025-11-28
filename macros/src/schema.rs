@@ -67,48 +67,21 @@ pub fn derive_schema(input: TokenStream) -> TokenStream {
             }
 
             fn to_schema_json_value(&self) -> serde_json::Value {
-                // Helper trait for type-aware serialization
-                trait SchemaValueSerializer {
-                    fn to_json(&self) -> serde_json::Value;
-                }
-
-                // Priority 1: Types that implement Schema (nested structs)
-                impl<T: azumi::Schema> SchemaValueSerializer for T {
-                    fn to_json(&self) -> serde_json::Value {
-                        self.to_schema_json_value()
-                    }
-                }
-
-                // Helper function that tries Schema first, falls back to serde
-                fn value_to_json<T>(value: &T) -> serde_json::Value
-                where
-                    T: azumi::Schema + serde::Serialize,
-                {
-                    // Try Schema trait first (for nested types)
-                    value.to_schema_json_value()
-                }
-
-                // Overload for primitives that don't implement Schema
-                fn value_to_json_primitive<T>(value: &T) -> serde_json::Value
-                where
-                    T: serde::Serialize,
-                {
-                    serde_json::to_value(value).unwrap_or(serde_json::Value::Null)
-                }
+                use serde_json::Value;
 
                 let mut map = serde_json::Map::new();
                 map.insert(
                     "@context".to_string(),
-                    serde_json::Value::String("https://schema.org".to_string())
+                    Value::String("https://schema.org".to_string())
                 );
                 map.insert(
                     "@type".to_string(),
-                    serde_json::Value::String(#schema_type.to_string())
+                    Value::String(#schema_type.to_string())
                 );
 
                 #(#field_serializations)*
 
-                serde_json::Value::Object(map)
+                Value::Object(map)
             }
         }
     };
@@ -194,7 +167,7 @@ fn generate_field_serialization(
             if let Some(ref value) = self.#field_name {
                 map.insert(
                     #json_key.to_string(),
-                    value_to_json(value)
+                    azumi::schema_value_to_json(value)
                 );
             }
         };
@@ -204,13 +177,13 @@ fn generate_field_serialization(
     if type_str.contains("Vec") {
         return quote! {
             {
-                let array: Vec<serde_json::Value> = self.#field_name
+                let array: Vec<Value> = self.#field_name
                     .iter()
-                    .map(|item| value_to_json(item))
+                    .map(|item| azumi::schema_value_to_json(item))
                     .collect();
                 map.insert(
                     #json_key.to_string(),
-                    serde_json::Value::Array(array)
+                    Value::Array(array)
                 );
             }
         };
@@ -220,18 +193,7 @@ fn generate_field_serialization(
     quote! {
         map.insert(
             #json_key.to_string(),
-            value_to_json(&self.#field_name)
+           azumi::schema_value_to_json(&self.#field_name)
         );
     }
-}
-
-/// Helper function to serialize values (will be generated inline)
-/// This is a placeholder - the actual implementation needs to handle:
-/// - Nested structs that implement Schema
-/// - Primitive types
-/// - Generic serialization fallback
-#[allow(dead_code)]
-fn serialize_value_placeholder() {
-    // This function exists to demonstrate the concept
-    // The actual code generation will inline this logic
 }
