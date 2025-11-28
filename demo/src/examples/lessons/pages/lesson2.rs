@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Example 1: Text content must be quoted
+#[azumi::component]
 pub fn quoted_text() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
@@ -15,6 +16,7 @@ pub fn quoted_text() -> impl azumi::Component {
 }
 
 /// Example 2: Attribute values must be quoted
+#[azumi::component]
 pub fn quoted_attributes() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
@@ -26,6 +28,7 @@ pub fn quoted_attributes() -> impl azumi::Component {
 }
 
 /// Example 3: Variables don't need quotes
+#[azumi::component]
 pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson2.css" />
@@ -37,6 +40,7 @@ pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Componen
 }
 
 /// Main lesson demonstration
+#[azumi::component]
 pub fn lesson2() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson2.css" />
