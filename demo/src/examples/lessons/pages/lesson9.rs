@@ -9,8 +9,10 @@ struct Item {
 }
 
 /// Filtered search using @let for computed filtered list
-pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
-    let filtered: Vec<Item> = items.iter()
+#[azumi::component]
+pub fn filtered_search<'a>(items: &'a [Item], query: &'a str) -> impl azumi::Component + 'a {
+    let filtered: Vec<Item> = items
+        .iter()
         .filter(|item| item.name.contains(query))
         .cloned()
         .collect();
@@ -31,23 +33,39 @@ pub fn filtered_search(items: &[Item], query: &str) -> impl azumi::Component {
 }
 
 /// Example with matching query
+#[azumi::component]
 pub fn matching_search() -> impl azumi::Component {
     let items = vec![
-        Item { name: "Rust Book".to_string() },
-        Item { name: "Azumi Docs".to_string() },
-        Item { name: "Axum Guide".to_string() },
+        Item {
+            name: "Rust Book".to_string(),
+        },
+        Item {
+            name: "Azumi Docs".to_string(),
+        },
+        Item {
+            name: "Axum Guide".to_string(),
+        },
     ];
-    filtered_search(&items, "Rust")
+    html! {
+        @filtered_search(items=&items, query="Rust")
+    }
 }
 
 /// Example with no match
+#[azumi::component]
 pub fn no_match_search() -> impl azumi::Component {
     let items = vec![
-        Item { name: "Rust Book".to_string() },
-        Item { name: "Azumi Docs".to_string() },
+        Item {
+            name: "Rust Book".to_string(),
+        },
+        Item {
+            name: "Azumi Docs".to_string(),
+        },
     ];
-    filtered_search(&items, "JavaScript")
+    html! {
+        @filtered_search(items=&items, query="JavaScript")
+    }
 }
 pub async fn lesson9_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&matching_search()))
+    axum::response::Html(azumi::render_to_string(&html! { @matching_search() }))
 }

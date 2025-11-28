@@ -17,15 +17,18 @@ pub struct CardProps {
 
 /// A reusable card component
 /// Cards are fundamental UI building blocks that can contain any content
-pub fn card(props: CardProps) -> impl azumi::Component {
+/// A reusable card component
+/// Cards are fundamental UI building blocks that can contain any content
+#[azumi::component]
+pub fn card(title: String, content: String) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson13.css" />
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">{&props.title}</h3>
+                <h3 class="card-title">{title}</h3>
             </div>
             <div class="card-body">
-                <p>{&props.content}</p>
+                <p>{content}</p>
             </div>
         </div>
     }
@@ -44,7 +47,8 @@ pub struct User {
 }
 
 /// A compact user profile display component
-pub fn user_profile_compact(user: &User) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn user_profile_compact<'a>(user: &'a User) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson13.css" />
         <div class="user-profile-compact">
@@ -59,7 +63,8 @@ pub fn user_profile_compact(user: &User) -> impl azumi::Component + '_ {
 }
 
 /// A detailed user profile card
-pub fn user_profile_card(user: &User) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn user_profile_card<'a>(user: &'a User) -> impl azumi::Component + 'a {
     html! {
                 <style src="/static/pages/lesson13.css" />
             <div class="user-profile-card">
@@ -103,7 +108,8 @@ pub struct Activity {
 }
 
 /// Single activity item component
-pub fn activity_item(activity: &Activity) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn activity_item<'a>(activity: &'a Activity) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson13.css" />
         <div class="activity-item">
@@ -123,14 +129,15 @@ pub fn activity_item(activity: &Activity) -> impl azumi::Component + '_ {
 }
 
 /// Activity feed component showing multiple activities
-pub fn activity_feed(activities: &[Activity]) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn activity_feed<'a>(activities: &'a [Activity]) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson13.css" />
         <div class="activity-feed">
             <h3 class="feed-title">"Recent Activity"</h3>
             <div class="feed-items">
                 @for activity in activities {
-                    {activity_item(activity)}
+                    @activity_item(activity=activity)
                 }
             </div>
         </div>
@@ -142,6 +149,7 @@ pub fn activity_feed(activities: &[Activity]) -> impl azumi::Component + '_ {
 // ============================================================================
 
 /// Dashboard demo showing composition of multiple components
+#[azumi::component]
 pub fn dashboard_demo() -> impl azumi::Component {
     let current_user = User {
         name: "Alice Johnson".to_string(),
@@ -224,20 +232,20 @@ pub fn dashboard_demo() -> impl azumi::Component {
             <section class="lesson-section">
                 <h2 class="section-title">"Example 1: Simple Cards"</h2>
                 <div class="example-grid">
-                    {card(CardProps {
-                        title: "Welcome".to_string(),
-                        content: "This is a simple reusable card component. Cards are versatile building blocks for modern UIs.".to_string(),
-                    })}
+                    @card(
+                        title="Welcome".to_string(),
+                        content="This is a simple reusable card component. Cards are versatile building blocks for modern UIs.".to_string()
+                    )
 
-                    {card(CardProps {
-                        title: "Composability".to_string(),
-                        content: "By creating small, focused components, we can combine them in various ways to build complex interfaces.".to_string(),
-                    })}
+                    @card(
+                        title="Composability".to_string(),
+                        content="By creating small, focused components, we can combine them in various ways to build complex interfaces.".to_string()
+                    )
 
-                    {card(CardProps {
-                        title: "Reusability".to_string(),
-                        content: "Each component can be reused across different parts of your application, reducing code duplication.".to_string(),
-                    })}
+                    @card(
+                        title="Reusability".to_string(),
+                        content="Each component can be reused across different parts of your application, reducing code duplication.".to_string()
+                    )
                 </div>
             </section>
 
@@ -245,12 +253,13 @@ pub fn dashboard_demo() -> impl azumi::Component {
                 <h2 class="section-title">"Example 2: User Profile Composition"</h2>
                 <div class="profile-demo">
                     <div class="demo-item">
+                    <div class="demo-item">
                         <h3>"Compact Profile"</h3>
-                        {user_profile_compact(&current_user)}
+                        @user_profile_compact(user=&current_user)
                     </div>
                     <div class="demo-item">
                         <h3>"Detailed Profile Card"</h3>
-                        {user_profile_card(&current_user)}
+                        @user_profile_card(user=&current_user)
                     </div>
                 </div>
             </section>
@@ -261,7 +270,8 @@ pub fn dashboard_demo() -> impl azumi::Component {
                     <div class="dashboard-sidebar">
                         <div class="sidebar-section">
                             <h3>"Your Profile"</h3>
-                            {user_profile_card(&current_user)}
+                            <h3>"Your Profile"</h3>
+                            @user_profile_card(user=&current_user)
                         </div>
                     </div>
 
@@ -270,30 +280,32 @@ pub fn dashboard_demo() -> impl azumi::Component {
                             <h3>"Team Members"</h3>
                             <div class="team-grid">
                                 @for member in &team_members {
-                                    {user_profile_compact(member)}
+                                    @user_profile_compact(user=member)
                                 }
                             </div>
                         </div>
 
                         <div class="dashboard-row">
-                            {activity_feed(&recent_activities)}
+                        <div class="dashboard-row">
+                            @activity_feed(activities=&recent_activities)
+                        </div>
                         </div>
 
                         <div class="dashboard-row">
                             <h3>"Quick Stats"</h3>
                             <div class="stats-grid">
-                                {card(CardProps {
-                                    title: "Total Projects".to_string(),
-                                    content: "12 active projects".to_string(),
-                                })}
-                                {card(CardProps {
-                                    title: "Tasks Completed".to_string(),
-                                    content: "87 tasks this week".to_string(),
-                                })}
-                                {card(CardProps {
-                                    title: "Team Velocity".to_string(),
-                                    content: "23 points per sprint".to_string(),
-                                })}
+                                @card(
+                                    title="Total Projects".to_string(),
+                                    content="12 active projects".to_string()
+                                )
+                                @card(
+                                    title="Tasks Completed".to_string(),
+                                    content="87 tasks this week".to_string()
+                                )
+                                @card(
+                                    title="Team Velocity".to_string(),
+                                    content="23 points per sprint".to_string()
+                                )
                             </div>
                         </div>
                     </div>
@@ -316,5 +328,5 @@ pub fn dashboard_demo() -> impl azumi::Component {
 
 /// Axum handler for Lesson 13
 pub async fn lesson13_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&dashboard_demo()))
+    axum::response::Html(azumi::render_to_string(&html! { @dashboard_demo() }))
 }
