@@ -30,7 +30,7 @@ async fn main() {
         .route("/lesson-13", get(examples::lessons::pages::lesson13::lesson13_handler))
         .route("/lesson-14", get(examples::lessons::pages::lesson14::lesson14_handler))
         .route("/lesson-15", get(examples::lessons::pages::lesson15::lesson15_handler))
-        // .route("/lesson-16", get(examples::lessons::pages::lesson16::lesson16_handler)) // TODO
+        .route("/lesson-16", get(examples::lessons::pages::lesson16::lesson16_handler))
         // .route("/lesson-17", get(examples::lessons::pages::lesson17::lesson17_handler)) // TODO
         // .route("/lesson-18", get(examples::lessons::pages::lesson18::lesson18_handler)) // TODO
         // .route("/lesson-19", get(examples::lessons::pages::lesson19::lesson19_handler)) // TODO
