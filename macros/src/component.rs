@@ -93,6 +93,9 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         }
     }
 
+    let fn_generics = &input.sig.generics;
+    let (impl_generics, ty_generics, where_clause) = fn_generics.split_for_impl();
+
     // Generate the output
     let render_fn = if has_children {
         let children_ty = children_type.as_ref().unwrap();
@@ -110,9 +113,6 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             }
         }
     };
-
-    let fn_generics = &input.sig.generics;
-    let (impl_generics, ty_generics, where_clause) = fn_generics.split_for_impl();
 
     // Check if function name is snake_case
     let name_str = fn_name.to_string();
