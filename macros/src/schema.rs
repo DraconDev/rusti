@@ -165,7 +165,7 @@ fn generate_field_serialization(
             if let Some(ref value) = self.#field_name {
                 map.insert(
                     #json_key.to_string(),
-                    serialize_value(value)
+                    value_to_json(value)
                 );
             }
         };
@@ -177,7 +177,7 @@ fn generate_field_serialization(
             {
                 let array: Vec<serde_json::Value> = self.#field_name
                     .iter()
-                    .map(|item| serialize_value(item))
+                    .map(|item| value_to_json(item))
                     .collect();
                 map.insert(
                     #json_key.to_string(),
@@ -191,7 +191,7 @@ fn generate_field_serialization(
     quote! {
         map.insert(
             #json_key.to_string(),
-            serialize_value(&self.#field_name)
+            value_to_json(&self.#field_name)
         );
     }
 }
