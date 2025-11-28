@@ -219,14 +219,15 @@ html! {
 </div>
 ```
 
-### 4. Fragments
+### 4. Fragments (Automatic)
 
-Return multiple root elements with or without a wrapper:
+**Azumi automatically handles multiple root elements** - you don't need explicit fragment syntax:
 
 ```rust
 #[azumi::component]
 fn user_stats<'a>(name: &'a str, posts: u32, followers: u32) -> impl azumi::Component + 'a {
-    <>
+    html! {
+        // Multiple root elements work automatically
         <div class="stat">
             <span class="label">"Posts"</span>
             <span class="value">{posts}</span>
@@ -235,17 +236,17 @@ fn user_stats<'a>(name: &'a str, posts: u32, followers: u32) -> impl azumi::Comp
             <span class="label">"Followers"</span>
             <span class="value">{followers}</span>
         </div>
-    </>
+    }
 }
 
-// Use directly - fragments unwrap to multiple elements
+// Both elements are inserted directly into the parent
 <div class="user-card">
     <h3>{user_name}</h3>
     @user_stats(name=&user_name, posts=42, followers=1337)
 </div>
 ```
 
-**No extra `<div>` wrappers polluting your DOM.** Fragment children are inserted directly.
+**Optional explicit syntax:** You _can_ use `<></>` for clarity, but it's not required:
 
 ### 5. Components with #[component]
 
