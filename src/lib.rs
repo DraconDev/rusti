@@ -154,46 +154,6 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
 #[cfg(feature = "schema")]
 pub use azumi_macros::Schema;
 
-/// Helper trait for type-aware schema value serialization
-#[cfg(feature = "schema")]
-pub trait SchemaValueToJson {
-    fn schema_to_json(&self) -> serde_json::Value;
-}
-
-/// Priority 1: Types implementing Schema (nested structs)
-#[cfg(feature = "schema")]
-impl<T: Schema> SchemaValueToJson for T {
-    fn schema_to_json(&self) -> serde_json::Value {
-        self.to_schema_json_value()
-    }
-}
-
-/// Priority 2: All serde-serializable types (primitives, strings, etc.)
-/// This uses a wrapper to avoid trait overlap
-#[cfg(feature = "schema")]
-pub fn schema_value_to_json<T>(value: &T) -> serde_json::Value
-where
-    T: ?Sized,
-{
-    // Try to call Schema trait if available (compile-time selection)
-    // Otherwise use serde serialization
-    schema_value_to_json_impl(value)
-}
-
-#[cfg(feature = "schema")]
-fn schema_value_to_json_impl<T>(value: &T) -> serde_json::Value
-where
-    T: ?Sized + serde::Serialize,
-{
-    serde_json::to_value(value).unwrap_or(serde_json::Value::Null)
-}
-
-// Specialization for Schema types (this will be called by the trait)
-#[cfg(feature = "schema")]
-pub fn schema_value_to_json_schema<T: Schema>(value: &T) -> serde_json::Value {
-    value.to_schema_json_value()
-}
-
 #[cfg(feature = "schema")]
 pub trait Schema {
     /// Generate a complete <script type="application/ld+json"> tag
