@@ -71,5 +71,5 @@ pub fn data_table_demo() -> impl azumi::Component {
 }
 
 pub async fn lesson22_handler() -> impl axum::response::IntoResponse {
-    axumi::response::Html(azumi::render_to_string(&html! { @data_table_demo() }))
+    axum::response::Html(azumi::render_to_string(&html! { @data_table_demo() }))
 }
