@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Example: Basic CSS linking
+#[azumi::component]
 pub fn styled_card() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson3.css" />
@@ -15,6 +16,7 @@ pub fn styled_card() -> impl azumi::Component {
 }
 
 /// Example: Multiple components, same CSS
+#[azumi::component]
 pub fn another_card() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson3.css" />
@@ -26,6 +28,7 @@ pub fn another_card() -> impl azumi::Component {
 }
 
 /// Main lesson
+#[azumi::component]
 pub fn lesson3() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson3.css" />

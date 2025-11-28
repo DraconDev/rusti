@@ -10,6 +10,7 @@ enum Widget<'a> {
 }
 
 /// Dashboard with nested control flow
+#[azumi::component]
 pub fn dashboard(is_admin: bool) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson8.css" />
@@ -38,11 +39,13 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
 }
 
 /// Admin dashboard example
+#[azumi::component]
 pub fn admin_dashboard() -> impl azumi::Component {
     dashboard(true)
 }
 
 /// User dashboard example
+#[azumi::component]
 pub fn user_dashboard() -> impl azumi::Component {
     dashboard(false)
 }
