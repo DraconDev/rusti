@@ -69,10 +69,10 @@ Azumi is a **compile-time HTML/CSS macro** that:
 
 ### ✅ Must
 
-1. **Quote text/attrs:** `<h1>\"Hello\" class=\"box\">`
-2. **External CSS:** `<style src=\"file.css\" />`
+1. **Quote text/attrs:** `<h1>"Hello" class="box">`
+2. **External CSS:** `<style src="file.css" />`
 3. **Define all classes** - or compile error @ exact spot
-4. **Images:** `<img alt=\"\" />`
+4. **Images:** `<img alt="" />`
 5. **Valid types:** input/button types checked w/ suggestions
 6. **ARIA roles:** Valid only
 7. **Buttons:** Text or `aria-label`/title
@@ -80,7 +80,7 @@ Azumi is a **compile-time HTML/CSS macro** that:
 ### ❌ Blocked
 
 1. Inline `<style>`/`<script>`
-2. Local `<link href=\"/local.css\">` - use `<style src>`
+2. Local `<link href="/local.css">` - use `<style src>`
 3. Unquoted text/attrs
 4. Undefined classes
 
@@ -88,8 +88,8 @@ Azumi is a **compile-time HTML/CSS macro** that:
 
 1. **Boolean attrs:** `<input disabled />`
 2. **Global CSS:** `global.css` - no scope/validate
-3. **CDN:** `<link href=\"https://cdn...\">`
-4. **JSON:** `<script type=\"application/json\">{data}</script>`
+3. **CDN:** `<link href="https://cdn...">`
+4. **JSON:** `<script type="application/json">{data}</script>`
 
 ---
 
@@ -101,20 +101,20 @@ Azumi is a **compile-time HTML/CSS macro** that:
 use azumi::html;
 
 html! {
-    <div class=\"container\">
-        <h1>\"Hello \" {name} \"!\"</h1>
+    <div class="container">
+        <h1>"Hello " {name} "!"</h1>
     </div>
 }
 ```
 
-**Interpolation:** Auto-concat `{\"$\" price}`.
+**Interpolation:** Auto-concat `{"$" price}`.
 
 ### 2. Fragments
 
 ```rust
 <>
-    <h1>\"Title\"</h1>
-    <p>\"Para\"</p>
+    <h1>"Title"</h1>
+    <p>"Para"</p>
 </>
 ```
 
@@ -127,12 +127,12 @@ html! {
 @if logged_in {
     @for item in items {
         @match item.status {
-            Active => <span class=\"green\">\"OK\"</span>,
-            _ => <span class=\"red\">\"Fail\"</span>,
+            Active => <span class="green">"OK"</span>,
+            _ => <span class="red">"Fail"</span>,
         }
     }
 } else {
-    <p>\"Login\"</p>
+    <p>"Login"</p>
 }
 ```
 
@@ -142,14 +142,14 @@ html! {
 
 ```rust
 #[azumi::component]
-fn Button(text: &str, #[prop(default = \"primary\")] variant: &str) {
+fn Button(text: &str, #[prop(default = "primary")] variant: &str) {
     html! {
-        <style src=\"/static/button.css\" />
-        <button class={format!(\"btn-{}\", variant)}>{text}</button>
+        <style src="/static/button.css" />
+        <button class={format!("btn-{}", variant)}>{text}</button>
     }
 }
 
-// Use: @Button(text=\"Click\", variant=\"secondary\")
+// Use: @Button(text="Click", variant="secondary")
 ```
 
 ### 5. CSS Features
@@ -158,7 +158,7 @@ fn Button(text: &str, #[prop(default = \"primary\")] variant: &str) {
 
 **Variables:**
 
-HTML: `<div class=\"bar\" --width={progress} --color={color}>`
+HTML: `<div class="bar" --width={progress} --color={color}>`
 
 CSS: `.bar { width: var(--width); background: var(--color); }`
 
@@ -169,7 +169,7 @@ CSS: `.bar { width: var(--width); background: var(--color); }`
 - **CSS:** All classes used/defined, dead CSS
 - **A11y:**
   - `img` alt req'd (empty OK for decor)
-  - Input/button types valid (+ suggestions: \"text\" → \"text\")
+  - Input/button types valid (+ suggestions: "text" → "text")
   - ARIA roles valid
   - Buttons: text/aria-label/title req'd
 - **HTML:**
@@ -183,7 +183,7 @@ Errors: **Exact line/col** in editor.
 ### 7. HTMX
 
 ```rust
-<button hx-post=\"/api\" hx-swap=\"outerHTML\" class=\"btn\">\"Click\"</button>
+<button hx-post="/api" hx-swap="outerHTML" class="btn">"Click"</button>
 ```
 
 ---
@@ -192,8 +192,8 @@ Errors: **Exact line/col** in editor.
 
 ```toml
 [dependencies]
-azumi = { path = \"./\" }  # or git/crates.io
-azumi-macros = { path = \"./macros\" }
+azumi = { path = "./" }  # or git/crates.io
+azumi-macros = { path = "./macros" }
 ```
 
 For Axum: See demo.
