@@ -1,7 +1,7 @@
 use heck::ToLowerCamelCase;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Fields, Lit, Meta, NestedMeta};
+use syn::{parse_macro_input, Data, DeriveInput, Fields, Lit};
 
 pub fn derive_schema(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -91,66 +91,69 @@ pub fn derive_schema(input: TokenStream) -> TokenStream {
 
 /// Extract schema type from #[schema(type = "...")] attribute
 fn extract_schema_type(attrs: &[syn::Attribute], default: String) -> String {
+    let mut schema_type = default;
+
     for attr in attrs {
-        if !attr.path.is_ident("schema") {
+        if !attr.path().is_ident("schema") {
             continue;
         }
 
-        if let Ok(Meta::List(meta_list)) = attr.parse_meta() {
-            for nested in meta_list.nested {
-                if let NestedMeta::Meta(Meta::NameValue(nv)) = nested {
-                    if nv.path.is_ident("type") {
-                        if let Lit::Str(lit_str) = nv.lit {
-                            return lit_str.value();
-                        }
-                    }
+        let _ = attr.parse_nested_meta(|meta| {
+            if meta.path.is_ident("type") {
+                let value = meta.value()?;
+                let s: Lit = value.parse()?;
+                if let Lit::Str(lit) = s {
+                    schema_type = lit.value();
                 }
+                return Ok(());
             }
-        }
+            Ok(())
+        });
     }
-    default
+    schema_type
 }
 
 /// Check if field has #[schema(skip)]
 fn should_skip_field(attrs: &[syn::Attribute]) -> bool {
+    let mut skip = false;
+
     for attr in attrs {
-        if !attr.path.is_ident("schema") {
+        if !attr.path().is_ident("schema") {
             continue;
         }
 
-        if let Ok(Meta::List(meta_list)) = attr.parse_meta() {
-            for nested in meta_list.nested {
-                if let NestedMeta::Meta(Meta::Path(path)) = nested {
-                    if path.is_ident("skip") {
-                        return true;
-                    }
-                }
+        let _ = attr.parse_nested_meta(|meta| {
+            if meta.path.is_ident("skip") {
+                skip = true;
             }
-        }
+            Ok(())
+        });
     }
-    false
+    skip
 }
 
 /// Extract custom field name from #[schema(name = "...")]
 fn extract_field_name(attrs: &[syn::Attribute]) -> Option<String> {
+    let mut name = None;
+
     for attr in attrs {
-        if !attr.path.is_ident("schema") {
+        if !attr.path().is_ident("schema") {
             continue;
         }
 
-        if let Ok(Meta::List(meta_list)) = attr.parse_meta() {
-            for nested in meta_list.nested {
-                if let NestedMeta::Meta(Meta::NameValue(nv)) = nested {
-                    if nv.path.is_ident("name") {
-                        if let Lit::Str(lit_str) = nv.lit {
-                            return Some(lit_str.value());
-                        }
-                    }
+        let _ = attr.parse_nested_meta(|meta| {
+            if meta.path.is_ident("name") {
+                let value = meta.value()?;
+                let s: Lit = value.parse()?;
+                if let Lit::Str(lit) = s {
+                    name = Some(lit.value());
                 }
+                return Ok(());
             }
-        }
+            Ok(())
+        });
     }
-    None
+    name
 }
 
 /// Generate field serialization code based on the type
