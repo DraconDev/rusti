@@ -419,4 +419,3 @@ pub fn contact_form_demo() -> impl azumi::Component {
 pub async fn lesson15_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&html! { @contact_form_demo() }))
 }
-}
