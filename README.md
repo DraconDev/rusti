@@ -221,7 +221,7 @@ html! {
 
 ### 4. Fragments
 
-Return multiple root elements without a wrapper:
+Return multiple root elements with or without a wrapper:
 
 ```rust
 #[azumi::component]
