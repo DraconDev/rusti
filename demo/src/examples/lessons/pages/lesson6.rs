@@ -11,7 +11,7 @@ enum Role {
 }
 
 /// User role display using @match
-
+#[azumi::component]
 pub fn user_role_display(role: Role) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson6.css" />

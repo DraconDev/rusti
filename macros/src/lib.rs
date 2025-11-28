@@ -905,6 +905,7 @@ fn generate_body_with_context(
                         if has_positional {
                             // Positional arguments detected - generate clear compile error
                             // We enforce named arguments for ALL components to ensure #[component] usage
+                            let name_str = quote!(#name).to_string();
 
                             // First, try to find the first positional argument to highlight
                             // This helps users see exactly which argument is the problem

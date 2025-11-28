@@ -16,16 +16,16 @@ pub struct ButtonProps {
 }
 
 /// Reusable button component
-// TODO: Refactor to use #[component] with individual args instead of struct
-pub fn button(props: ButtonProps) -> impl azumi::Component {
-    let class = match props.variant {
+#[azumi::component]
+pub fn button(text: String, variant: ButtonVariant) -> impl azumi::Component {
+    let class = match variant {
         ButtonVariant::Primary => "btn btn-primary",
         ButtonVariant::Secondary => "btn btn-secondary",
     };
     html! {
         <style src="/static/pages/lesson11.css" />
         <button class={class}>
-            {&props.text}
+            {text}
         </button>
     }
 }
@@ -33,19 +33,17 @@ pub fn button(props: ButtonProps) -> impl azumi::Component {
 /// Primary button example
 #[azumi::component]
 pub fn primary_button() -> impl azumi::Component {
-    button(ButtonProps {
-        text: "Primary Button".to_string(),
-        variant: ButtonVariant::Primary,
-    })
+    html! {
+        @button(text="Primary Button".to_string(), variant=ButtonVariant::Primary)
+    }
 }
 
 /// Secondary button example
 #[azumi::component]
 pub fn secondary_button() -> impl azumi::Component {
-    button(ButtonProps {
-        text: "Secondary Button".to_string(),
-        variant: ButtonVariant::Secondary,
-    })
+    html! {
+        @button(text="Secondary Button".to_string(), variant=ButtonVariant::Secondary)
+    }
 }
 pub async fn lesson11_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&html! {
