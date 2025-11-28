@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// HTMX Todo app demo
+#[azumi::component]
 pub fn todo_with_htmx() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson17.css" />
@@ -61,5 +62,5 @@ pub fn todo_with_htmx() -> impl azumi::Component {
 
 /// Handler
 pub async fn lesson17_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&todo_with_htmx()))
+    axum::response::Html(azumi::render_to_string(&html! { @todo_with_htmx() }))
 }
