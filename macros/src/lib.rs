@@ -906,36 +906,35 @@ fn generate_body_with_context(
                             // Positional arguments detected - generate clear compile error
                             // We enforce named arguments for ALL components to ensure #[component] usage
 
+                            // First, try to find the first positional argument to highlight
+                            // This helps users see exactly which argument is the problem
+                            let error_span = if let Some(first_positional) =
+                                exprs.iter().find(|e| !matches!(e, syn::Expr::Assign(_)))
+                            {
+                                // Use the span of the first positional argument for precision
+                                first_positional.span()
+                            } else {
+                                // Fallback to the entire call span
+                                call_block.span
+                            };
 
-                                // First, try to find the first positional argument to highlight
-                                // This helps users see exactly which argument is the problem
-                                let error_span = if let Some(first_positional) =
-                                    exprs.iter().find(|e| !matches!(e, syn::Expr::Assign(_)))
-                                {
-                                    // Use the span of the first positional argument for precision
-                                    first_positional.span()
-                                } else {
-                                    // Fallback to the entire call span
-                                    call_block.span
-                                };
+                            // Show the actual problematic call for better context
+                            let positional_values: Vec<String> = exprs
+                                .iter()
+                                .filter(|e| !matches!(e, syn::Expr::Assign(_)))
+                                .map(|e| {
+                                    let s = quote!(#e).to_string();
+                                    // Truncate long values
+                                    if s.len() > 20 {
+                                        format!("{}...", &s[..17])
+                                    } else {
+                                        s
+                                    }
+                                })
+                                .collect();
 
-                                // Show the actual problematic call for better context
-                                let positional_values: Vec<String> = exprs
-                                    .iter()
-                                    .filter(|e| !matches!(e, syn::Expr::Assign(_)))
-                                    .map(|e| {
-                                        let s = quote!(#e).to_string();
-                                        // Truncate long values
-                                        if s.len() > 20 {
-                                            format!("{}...", &s[..17])
-                                        } else {
-                                            s
-                                        }
-                                    })
-                                    .collect();
-
-                                let error_msg = if !positional_values.is_empty() {
-                                    format!(
+                            let error_msg = if !positional_values.is_empty() {
+                                format!(
                                         "Component '{}' must be called with named arguments.\n\
                                          \n\
                                          ❌ You wrote:\n\
@@ -953,8 +952,8 @@ fn generate_body_with_context(
                                         positional_values.get(0).unwrap_or(&"...".to_string()),
                                         positional_values.get(1).unwrap_or(&"...".to_string())
                                     )
-                                } else {
-                                    format!(
+                            } else {
+                                format!(
                                         "Component '{}' must be called with named arguments.\n\
                                          \n\
                                          ❌ Positional arguments are not allowed:\n\
@@ -967,10 +966,9 @@ fn generate_body_with_context(
                                          and make code self-documenting.",
                                         name_str, name_str, name_str
                                     )
-                                };
+                            };
 
-                                return syn::Error::new(error_span, error_msg).to_compile_error();
-                            }
+                            return syn::Error::new(error_span, error_msg).to_compile_error();
                         } else if !exprs.is_empty() {
                             // All are named arguments - good!
                             Some(exprs)
