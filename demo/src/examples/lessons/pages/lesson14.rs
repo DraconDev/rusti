@@ -290,12 +290,12 @@ pub fn advanced_patterns_demo() -> impl azumi::Component {
                                 size: ButtonSize::Medium,
                                 disabled: false,
                             })}
-                            button(&ButtonProps {
+                            {button(&ButtonProps {
                                 text: "Disabled".to_string(),
                                 variant: ButtonVariant::Primary,
                                 size: ButtonSize::Medium,
                                 disabled: true,
-                            })
+                            })}
                         </div>
                     </div>
                 </section>
