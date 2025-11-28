@@ -28,7 +28,7 @@ pub fn quoted_attributes() -> impl azumi::Component {
 }
 
 /// Example 3: Variables don't need quotes
-#[azumi::component]
+// TODO: Add #[component] when lifetime support is added
 pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson2.css" />
