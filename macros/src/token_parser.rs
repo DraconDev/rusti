@@ -21,6 +21,27 @@ pub enum Node {
 }
 
 #[derive(Debug, Clone)]
+pub struct Element {
+    pub name: String,
+    pub attrs: Vec<Attribute>,
+    pub children: Vec<Node>,
+    pub bind_struct: Option<syn::Path>,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone)]
+pub struct Text {
+    pub content: String,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone)]
+pub struct Expression {
+    pub content: TokenStream,
+    pub span: Span,
+}
+
+#[derive(Debug, Clone)]
 pub struct Attribute {
     pub name: String,
     #[allow(dead_code)]

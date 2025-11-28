@@ -370,7 +370,6 @@ mod tests {
                     assert_eq!(class_name, "undefined-class");
                     assert_eq!(spans.len(), 1);
                 }
-                _ => panic!("Expected UndefinedClass error"),
             }
         }
     }
