@@ -335,14 +335,14 @@ pub fn contact_form_demo() -> impl azumi::Component {
                     {select_field(&SelectProps {
                         label: "Country".to_string(),
                         name: "country".to_string(),
-                        options: countries,
+                        options: countries.clone(),
                         required: true,
                     })}
 
                     {radio_group(&RadioGroupProps {
                         label: "Preferred Contact Method".to_string(),
                         name: "contact_method".to_string(),
-                        options: contact_methods,
+                        options: contact_methods.clone(),
                         required: true,
                     })}
 
