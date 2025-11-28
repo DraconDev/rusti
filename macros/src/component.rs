@@ -97,14 +97,14 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let render_fn = if has_children {
         let children_ty = children_type.as_ref().unwrap();
         quote! {
-            pub fn render(props: Props, children: #children_ty) #fn_output {
+            pub fn render #impl_generics (props: Props #ty_generics, children: #children_ty) #fn_output #where_clause {
                 #(#props_init)*
                 #fn_block
             }
         }
     } else {
         quote! {
-            pub fn render(props: Props) #fn_output {
+            pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
                 #fn_block
             }

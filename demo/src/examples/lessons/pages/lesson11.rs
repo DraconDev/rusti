@@ -3,7 +3,7 @@
 //! Creating reusable components
 use azumi::html;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum ButtonVariant {
     Primary,
     Secondary,
