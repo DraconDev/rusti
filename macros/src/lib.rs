@@ -914,8 +914,8 @@ fn generate_body_with_context(
 
                             if !is_pascal_case {
                                 // Allow positional args for snake_case
-                                return None;
-                            }
+                                None
+                            } else {
 
                             // Positional arguments detected for PascalCase component - generate clear compile error
 
