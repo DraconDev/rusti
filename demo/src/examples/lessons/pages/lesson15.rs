@@ -8,7 +8,7 @@ use azumi::html;
 // SECTION 1: Input Field Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct InputProps {
     pub label: String,
     pub name: String,
@@ -17,23 +17,30 @@ pub struct InputProps {
     pub required: bool,
 }
 
-pub fn input_field(props: &InputProps) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn input_field<'a>(
+    label: &'a str,
+    name: &'a str,
+    input_type: &'a str,
+    placeholder: &'a str,
+    required: bool,
+) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson15.css" />
         <div class="form-group">
-            <label class="form-label" for={&props.name}>
-                {&props.label}
-                @if props.required {
+            <label class="form-label" for={name}>
+                {label}
+                @if required {
                     <span class="required-mark">" *"</span>
                 }
             </label>
             <input
-                type={&props.input_type}
-                name={&props.name}
-                id={&props.name}
+                type={input_type}
+                name={name}
+                id={name}
                 class="form-input"
-                placeholder={&props.placeholder}
-                required={props.required}
+                placeholder={placeholder}
+                required={required}
             />
         </div>
     }
@@ -43,7 +50,7 @@ pub fn input_field(props: &InputProps) -> impl azumi::Component + '_ {
 // SECTION 2: Textarea Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct TextareaProps {
     pub label: String,
     pub name: String,
@@ -52,23 +59,30 @@ pub struct TextareaProps {
     pub required: bool,
 }
 
-pub fn textarea_field(props: &TextareaProps) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn textarea_field<'a>(
+    label: &'a str,
+    name: &'a str,
+    placeholder: &'a str,
+    rows: u32,
+    required: bool,
+) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson15.css" />
         <div class="form-group">
-            <label class="form-label" for={&props.name}>
-                {&props.label}
-                @if props.required {
+            <label class="form-label" for={name}>
+                {label}
+                @if required {
                     <span class="required-mark">" *"</span>
                 }
             </label>
             <textarea
-                name={&props.name}
-                id={&props.name}
+                name={name}
+                id={name}
                 class="form-textarea"
-                placeholder={&props.placeholder}
-                rows={props.rows.to_string()}
-                required={props.required}
+                placeholder={placeholder}
+                rows={rows.to_string()}
+                required={required}
             ></textarea>
         </div>
     }
@@ -78,13 +92,13 @@ pub fn textarea_field(props: &TextareaProps) -> impl azumi::Component + '_ {
 // SECTION 3: Select Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct SelectOption {
     pub value: String,
     pub label: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct SelectProps {
     pub label: String,
     pub name: String,
@@ -92,24 +106,30 @@ pub struct SelectProps {
     pub required: bool,
 }
 
-pub fn select_field(props: &SelectProps) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn select_field<'a>(
+    label: &'a str,
+    name: &'a str,
+    options: &'a [SelectOption],
+    required: bool,
+) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson15.css" />
         <div class="form-group">
-            <label class="form-label" for={&props.name}>
-                {&props.label}
-                @if props.required {
+            <label class="form-label" for={name}>
+                {label}
+                @if required {
                     <span class="required-mark">" *"</span>
                 }
             </label>
             <select
-                name={&props.name}
-                id={&props.name}
+                name={name}
+                id={name}
                 class="form-select"
-                required={props.required}
+                required={required}
             >
                 <option value="">"-- Select an option --"</option>
-                @for option in &props.options {
+                @for option in options {
                     <option value={&option.value}>{&option.label}</option>
                 }
             </select>
@@ -121,26 +141,31 @@ pub fn select_field(props: &SelectProps) -> impl azumi::Component + '_ {
 // SECTION 4: Checkbox Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct CheckboxProps {
     pub label: String,
     pub name: String,
     pub checked: bool,
 }
 
-pub fn checkbox_field(props: &CheckboxProps) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn checkbox_field<'a>(
+    label: &'a str,
+    name: &'a str,
+    checked: bool,
+) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson15.css" />
         <div class="form-group-inline">
             <input
                 type="checkbox"
-                name={&props.name}
-                id={&props.name}
+                name={name}
+                id={name}
                 class="form-checkbox"
-                checked={props.checked}
+                checked={checked}
             />
-            <label class="form-label-inline" for={&props.name}>
-                {&props.label}
+            <label class="form-label-inline" for={name}>
+                {label}
             </label>
         </div>
     }
@@ -150,13 +175,13 @@ pub fn checkbox_field(props: &CheckboxProps) -> impl azumi::Component + '_ {
 // SECTION 5: Radio Group Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct RadioOption {
     pub value: String,
     pub label: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct RadioGroupProps {
     pub label: String,
     pub name: String,
@@ -164,28 +189,34 @@ pub struct RadioGroupProps {
     pub required: bool,
 }
 
-pub fn radio_group(props: &RadioGroupProps) -> impl azumi::Component + '_ {
+#[azumi::component]
+pub fn radio_group<'a>(
+    label: &'a str,
+    name: &'a str,
+    options: &'a [RadioOption],
+    required: bool,
+) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson15.css" />
         <div class="form-group">
             <label class="form-label">
-                {&props.label}
-                @if props.required {
+                {label}
+                @if required {
                     <span class="required-mark">" *"</span>
                 }
             </label>
             <div class="radio-group">
-                @for option in &props.options {
+                @for option in options {
                     <div class="radio-item">
                         <input
                             type="radio"
-                            name={&props.name}
-                            id={format!("{}_{}", props.name, option.value)}
+                            name={name}
+                            id={format!("{}_{}", name, option.value)}
                             value={&option.value}
                             class="form-radio"
-                            required={props.required}
+                            required={required}
                         />
-                        <label class="form-label-inline" for={format!("{}_{}", props.name, option.value)}>
+                        <label class="form-label-inline" for={format!("{}_{}", name, option.value)}>
                             {&option.label}
                         </label>
                     </div>
