@@ -903,21 +903,9 @@ fn generate_body_with_context(
                             && !exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)));
 
                         if has_positional {
-                            // Check if name is PascalCase (starts with Uppercase)
-                            // We only enforce named arguments for PascalCase components (which use the builder pattern)
-                            // snake_case components (plain functions) can still use positional arguments
-                            let name_str = quote!(#name).to_string();
-                            let last_segment = name_str.split("::").last().unwrap_or("");
-                            let is_pascal_case = last_segment
-                                .chars()
-                                .next()
-                                .is_some_and(|c| c.is_uppercase());
+                            // Positional arguments detected - generate clear compile error
+                            // We enforce named arguments for ALL components to ensure #[component] usage
 
-                            if !is_pascal_case {
-                                // Allow positional args for snake_case
-                                None
-                            } else {
-                                // Positional arguments detected for PascalCase component - generate clear compile error
 
                                 // First, try to find the first positional argument to highlight
                                 // This helps users see exactly which argument is the problem
@@ -987,19 +975,9 @@ fn generate_body_with_context(
                             // All are named arguments - good!
                             Some(exprs)
                         } else {
-                            // Empty args: check if name starts with Uppercase (Component convention)
-                            // If so, treat as named args (Builder pattern) to support defaults
-                            let name_str = quote!(#name).to_string();
-                            let last_segment = name_str.split("::").last().unwrap_or("");
-                            if last_segment
-                                .chars()
-                                .next()
-                                .is_some_and(|c| c.is_uppercase())
-                            {
-                                Some(exprs)
-                            } else {
-                                None
-                            }
+                            // Empty args: treat as named args (Builder pattern) to support defaults
+                            // This enforces #[component] even for empty arg calls
+                            Some(exprs)
                         }
                     } else {
                         None
