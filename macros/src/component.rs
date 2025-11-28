@@ -111,6 +111,9 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         }
     };
 
+    let fn_generics = &input.sig.generics;
+    let (impl_generics, ty_generics, where_clause) = fn_generics.split_for_impl();
+
     // Check if function name is snake_case
     let name_str = fn_name.to_string();
     let is_snake_case = name_str.chars().next().is_some_and(|c| c.is_lowercase());
@@ -120,12 +123,12 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
         // Generate wrapper function for direct calls (e.g. @snake_case())
         // Note: This only works for components with no required props or children
-        let wrapper = if has_children {
-            // For now, don't generate wrapper for components with children to avoid complexity
+        let wrapper = if has_children || !props_fields.is_empty() {
+            // Don't generate wrapper if props/children are required
             quote! {}
         } else {
             quote! {
-                #fn_vis fn #fn_name() -> impl azumi::Component {
+                #fn_vis fn #fn_name #fn_generics () -> impl azumi::Component #where_clause {
                     #mod_ident::render(#mod_ident::Props::builder().build().expect("Missing required props in wrapper call"))
                 }
             }
@@ -142,26 +145,26 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             use super::*;
 
             #[derive(Debug)]
-            pub struct Props {
+            pub struct Props #fn_generics #where_clause {
                 #(#props_fields),*
             }
 
-            pub struct PropsBuilder {
+            pub struct PropsBuilder #fn_generics #where_clause {
                 #(#builder_fields),*
             }
 
-            impl Props {
-                pub fn builder() -> PropsBuilder {
+            impl #impl_generics Props #ty_generics #where_clause {
+                pub fn builder() -> PropsBuilder #ty_generics {
                     PropsBuilder {
                         #(#builder_init),*
                     }
                 }
             }
 
-            impl PropsBuilder {
+            impl #impl_generics PropsBuilder #ty_generics #where_clause {
                 #(#builder_setters)*
 
-                pub fn build(self) -> Result<Props, &'static str> {
+                pub fn build(self) -> Result<Props #ty_generics, &'static str> {
                     #(#build_logic)*
                     Ok(Props {
                         #(#struct_fields: #struct_fields),*
