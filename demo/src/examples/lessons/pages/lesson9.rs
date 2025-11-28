@@ -3,7 +3,7 @@
 //! Complex data transformations
 use azumi::html;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Item {
     name: String,
 }

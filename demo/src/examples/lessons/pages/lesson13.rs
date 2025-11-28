@@ -9,7 +9,7 @@ use azumi::html;
 // ============================================================================
 
 /// Props for the Card component
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct CardProps {
     pub title: String,
     pub content: String,
@@ -38,7 +38,7 @@ pub fn card(title: String, content: String) -> impl azumi::Component {
 // SECTION 2: User Profile Components
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct User {
     pub name: String,
     pub email: String,
@@ -98,7 +98,7 @@ pub fn user_profile_card<'a>(user: &'a User) -> impl azumi::Component + 'a {
 // SECTION 3: Activity Feed Components
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Activity {
     pub id: u32,
     pub user_name: String,
