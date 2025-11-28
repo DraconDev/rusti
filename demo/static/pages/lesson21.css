@@ -1,0 +1,57 @@
+/* Lesson 21: CSS Scoping Demo */
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: sans-serif;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+.description {
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.demo {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.explanation {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: #2c3e50;
+    color: #ecf0f1;
+    border-radius: 8px;
+}
+
+.explanation h2 {
+    color: #3498db;
+    margin-top: 0;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+.explanation code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+}
+
+pre {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+    line-height: 1.5;
+}

@@ -1,0 +1,71 @@
+/* Lesson 27: Meta Tags */
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+h1,
+h2 {
+    color: #2c3e50;
+}
+
+.description {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.meta-group {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.meta-group h2 {
+    margin-top: 0;
+}
+
+.meta-example {
+    background: #2c3e50;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.meta-example code {
+    display: block;
+    color: #ecf0f1;
+    font-family: "Courier New", monospace;
+    margin: 0.5rem 0;
+}
+
+.help-text {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+.note {
+    background: #e8f5e9;
+    padding: 1.5rem;
+    border-radius: 4px;
+    border-left: 4px solid #4caf50;
+    margin-top: 2rem;
+}
+
+.note strong {
+    color: #2e7d32;
+}
+
+.note p {
+    margin: 0.5rem 0 0 0;
+    color: #388e3c;
+}

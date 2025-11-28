@@ -1,0 +1,52 @@
+/* Layout styles - spacing and grid */
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.card {
+    margin: 2rem 0;
+}
+
+.card-header {
+    padding: 1rem 1.5rem;
+}
+
+.card-header h2 {
+    margin: 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.grid-item {
+    padding: 2rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+.note {
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-top: 2rem;
+}
+
+.note ul {
+    margin: 0.5rem 0;
+}
+
+.note p {
+    margin: 0.5rem 0 0 0;
+    font-weight: 600;
+}

@@ -1,0 +1,46 @@
+/* Theme styles - colors */
+
+.title {
+    color: #2c3e50;
+}
+
+.description {
+    color: #7f8c8d;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: #3498db;
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.card-body {
+    color: #2c3e50;
+}
+
+.grid-item.primary {
+    background: #3498db;
+    color: white;
+}
+
+.grid-item.secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.grid-item.accent {
+    background: #e74c3c;
+    color: white;
+}
+
+.note {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+}
