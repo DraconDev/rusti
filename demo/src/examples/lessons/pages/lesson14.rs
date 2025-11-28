@@ -116,7 +116,7 @@ pub struct BadgeProps {
     pub color: String,
 }
 
-pub fn badge(badge: &BadgeProps) -> impl azumi::Component + '_ {
+pub fn badge(ba: &BadgeProps) -> impl azumi::Component + '_ {
     html! {
         <style src="/static/pages/lesson14.css" />
         <span class={format!("badge badge-{}", props.color)}>
@@ -146,7 +146,7 @@ pub fn list_item(item: &ListItem) -> impl azumi::Component + '_ {
                 <p class="list-item-description">{&item.description}</p>
             </div>
             <div class="list-item-meta">
-                @badge(badge=BadgeProps {
+                @badge( BadgeProps {
                     text: item.status.clone(),
                     color: match item.status.as_str() {
                         "Active" => "success",
