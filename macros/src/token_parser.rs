@@ -15,18 +15,18 @@ pub enum Node {
     Text(Text),
     Expression(Expression),
     Comment(Comment),
-    Doctype(Doctype),
-    Fragment(Fragment),
-    Block(Block),
-}
-
-#[derive(Debug, Clone)]
-pub struct Element {
-    pub name: String,
-    pub attrs: Vec<Attribute>,
-    pub children: Vec<Node>,
-    #[allow(dead_code)]
-    pub span: Span,
+    Element {
+        tag_name: String,
+        attributes: Vec<Attribute>,
+        children: Vec<Node>,
+        self_closing: bool,
+        bind_struct: Option<syn::Path>, // New field for bind={Struct}
+    },
+    Text(String),
+    Block(TokenStream),
+    Comment(String),
+    Doctype,
+    Fragment(Vec<Node>),
 }
 
 #[derive(Debug, Clone)]
@@ -48,16 +48,6 @@ pub enum AttributeValue {
     None,
 }
 
-#[derive(Debug, Clone)]
-pub struct Text {
-    pub content: String,
-    #[allow(dead_code)]
-    pub span: Span,
-}
-
-#[derive(Debug, Clone)]
-pub struct Expression {
-    pub content: TokenStream,
     #[allow(dead_code)]
     pub span: Span,
 }
