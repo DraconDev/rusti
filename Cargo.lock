@@ -118,9 +118,11 @@ dependencies = [
 
 [[package]]
 name = "azumi"
-version = "1.7.28"
+version = "1.7.29"
 dependencies = [
  "azumi-macros",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -141,6 +143,7 @@ dependencies = [
 name = "azumi-macros"
 version = "0.1.0"
 dependencies = [
+ "heck",
  "nom",
  "proc-macro2",
  "quote",
@@ -296,6 +299,12 @@ checksum = "e8094feaf31ff591f651a2664fb9cfd92bba7a60ce3197265e9482ebe753c8f7"
 dependencies = [
  "hashbrown",
 ]
+
+[[package]]
+name = "heck"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "http"

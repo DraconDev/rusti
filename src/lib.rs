@@ -147,5 +147,21 @@ pub fn scope_css(css: &str, scope_id: &str) -> String {
     result
 }
 
+// ============================================================================
+// Schema.org JSON-LD Support (Optional Feature)
+// ============================================================================
+
+#[cfg(feature = "schema")]
+pub use azumi_macros::Schema;
+
+#[cfg(feature = "schema")]
+pub trait Schema {
+    /// Generate a complete <script type="application/ld+json"> tag
+    fn to_schema_script(&self) -> String;
+
+    /// Generate just the JSON value (for recursive nesting)
+    fn to_schema_json_value(&self) -> serde_json::Value;
+}
+
 #[cfg(test)]
 mod tests;
