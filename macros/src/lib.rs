@@ -4,6 +4,7 @@ mod component;
 mod accessibility_validator;
 mod css;
 mod css_validator;
+mod head;
 mod html_structure_validator;
 #[cfg(feature = "schema")]
 mod schema;
@@ -13,6 +14,11 @@ mod token_parser;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse::{Parse, ParseStream};
+
+#[proc_macro]
+pub fn head(input: TokenStream) -> TokenStream {
+    head::expand_head(input)
+}
 
 #[cfg(feature = "schema")]
 #[proc_macro_derive(Schema, attributes(schema))]
