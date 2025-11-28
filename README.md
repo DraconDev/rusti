@@ -571,9 +571,9 @@ html! {
 
 ## 🛠️ IDE Integration
 
-### CSS Peek Extension (VS Code)
+### CSS Peek Pro Extension (VS Code)
 
-Install **CSS Peek** to jump to CSS definitions:
+Install **CSS Peek Pro** to jump to CSS definitions:
 
 1. Install extension
 2. Hover over `src="/static/file.css"`
