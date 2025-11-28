@@ -214,7 +214,24 @@ impl Parse for Element {
         eprintln!("Parsing element: {}", name);
 
         let mut attrs = Vec::new();
+        let mut bind_struct = None;
+
         while !input.peek(Token![>]) && !input.peek(Token![/]) {
+            // Check for bind={Struct} on <form> tags
+            if name == "form" && input.peek(Ident) {
+                let fork = input.fork();
+                let key: Ident = fork.parse()?;
+                if key == "bind" {
+                    input.parse::<Ident>()?; // consume "bind"
+                    input.parse::<Token![=]>()?;
+                    
+                    let content;
+                    syn::braced!(content in input);
+                    let path: syn::Path = content.parse()?;
+                    bind_struct = Some(path);
+                    continue;
+                }
+            }
             attrs.push(input.parse()?);
         }
 
@@ -333,6 +350,7 @@ For dynamic styles: use style attribute with expressions"
             name,
             attrs,
             children,
+            bind_struct,
             span: start_span,
         })
     }
