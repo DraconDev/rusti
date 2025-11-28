@@ -45,15 +45,21 @@ pub fn html(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as token_parser::HtmlInput);
     let nodes = input.nodes;
 
-    // 1. Generate HTML string construction code
+    // 1. Collect CSS dependencies for hot-reloading
+    let css_deps = collect_css_dependencies(&nodes);
+
+    // 2. Generate HTML string construction code
     let html_construction = generate_nodes(&nodes);
 
-    // 2. Generate bind validation checks
+    // 3. Generate bind validation checks
     let mut validation_checks = Vec::new();
     collect_bind_checks(&nodes, &mut validation_checks);
 
     let expanded = quote! {
         {
+            // CSS dependency tracking (forces recompile when CSS changes)
+            #(#css_deps)*
+
             // Validation block (compile-time only)
             const _: () = {
                 #(#validation_checks)*
@@ -156,6 +162,92 @@ fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_mac
             _ => {}
         }
     }
+}
+
+/// Collect CSS dependencies for hot-reloading
+/// Generates `const _: &[u8] = include_bytes!(...)` for each CSS file
+fn collect_css_dependencies(nodes: &[token_parser::Node]) -> Vec<proc_macro2::TokenStream> {
+    let mut deps = Vec::new();
+    let mut dep_counter = 0;
+    collect_css_deps_recursive(nodes, &mut deps, &mut dep_counter);
+    deps
+}
+
+fn collect_css_deps_recursive(
+    nodes: &[token_parser::Node],
+    deps: &mut Vec<proc_macro2::TokenStream>,
+    counter: &mut usize,
+) {
+    for node in nodes {
+        match node {
+            token_parser::Node::Element(elem) => {
+                // Look for <style src="..."> tags
+                if elem.name == "style" {
+                    if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
+                        if let token_parser::AttributeValue::Static(css_path) = &src_attr.value {
+                            // Generate a unique constant name
+                            let const_name = quote::format_ident!("_AZUMI_CSS_DEP_{}", counter);
+                            *counter += 1;
+
+                            // Resolve the CSS path for include_bytes!
+                            // For now, use the existing CSS resolution from css_validator
+                            let resolved_path =
+                                crate::css_validator::resolve_css_file_path(css_path);
+
+                            // Calculate relative path from source file to CSS file
+                            // This is crucial for include_bytes! to work correctly
+                            let relative_path = calculate_relative_path_for_include(&resolved_path);
+
+                            deps.push(quote! {
+                                #[allow(dead_code)]
+                                const #const_name: &[u8] = include_bytes!(#relative_path);
+                            });
+                        }
+                    }
+                }
+                // Recurse into children
+                collect_css_deps_recursive(&elem.children, deps, counter);
+            }
+            token_parser::Node::Fragment(frag) => {
+                collect_css_deps_recursive(&frag.children, deps, counter);
+            }
+            token_parser::Node::Block(block) => match block {
+                token_parser::Block::If(if_block) => {
+                    collect_css_deps_recursive(&if_block.then_branch, deps, counter);
+                    if let Some(else_branch) = &if_block.else_branch {
+                        collect_css_deps_recursive(else_branch, deps, counter);
+                    }
+                }
+                token_parser::Block::For(for_block) => {
+                    collect_css_deps_recursive(&for_block.body, deps, counter);
+                }
+                token_parser::Block::Match(match_block) => {
+                    for arm in &match_block.arms {
+                        collect_css_deps_recursive(&arm.body, deps, counter);
+                    }
+                }
+                token_parser::Block::Call(call_block) => {
+                    collect_css_deps_recursive(&call_block.children, deps, counter);
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+}
+
+/// Calculate the relative path from the calling .rs file to the CSS file
+/// This is needed for include_bytes! to work correctly
+fn calculate_relative_path_for_include(absolute_css_path: &str) -> String {
+    // For now, we'll use the absolute path directly
+    // In a more sophisticated implementation, we would:
+    // 1. Get the calling file location using Span::source_file()
+    // 2. Calculate the relative path from that file to the CSS file
+    // 3. Return the properly formatted relative path
+
+    // Since we're in a proc macro, we need to be careful about paths
+    // The absolute path from resolve_css_file_path should work with include_bytes!
+    absolute_css_path.to_string()
 }
 
 fn generate_nodes(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
