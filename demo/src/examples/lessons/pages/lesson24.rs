@@ -1,90 +1,91 @@
 //! Lesson 24: Boolean Attributes
 //!
-//! HTML boolean attributes without values
+//! Using dynamic boolean attributes in forms
 
 use azumi::html;
 
 #[azumi::component]
-pub fn boolean_attributes_demo() -> impl azumi::Component {
-    let is_readonly = true;
-    let is_checked = false;
+pub fn form_states_demo() -> impl azumi::Component {
+    let is_admin = true;
+    let email_verified = false;
+    let subscribe_checked = true;
 
     html! {
         <style src="/static/pages/lesson24.css" />
         <div class="container">
             <h1>"Lesson 24: Boolean Attributes"</h1>
-            <p class="description">
-                "Boolean attributes don't need values - just their presence = true"
-            </p>
 
-            <h2>"Form Inputs"</h2>
-            <div class="form-group">
-                <label for="username">"Username"</label>
-                <input
-                    type="text"
-                    id="username"
-                    required=true
-                    disabled=false
-                    value="admin"
-                />
-            </div>
+            <form class="demo-form">
+                <h2>"Dynamic States"</h2>
 
-            <div class="form-group">
-                <label for="email">"Email (readonly)"</label>
-                <input
-                    type="email"
-                    id="email"
-                    value="user@example.com"
-                    readonly={is_readonly}
-                />
-            </div>
-
-            <div class="form-group">
-                <label>
+                // Disabled based on Rust variable
+                <div class="field">
+                    <label for="username">"Username"</label>
                     <input
-                        type="checkbox"
-                        checked={is_checked}
+                        type="text"
+                        id="username"
+                        value="admin"
+                        disabled={!is_admin}  // Dynamic!
                     />
-                    " Subscribe to newsletter"
-                </label>
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label for="bio">"Bio"</label>
-                <textarea
-                    id="bio"
-                    rows="3"
-                    disabled=true
-                >"This textarea is disabled"</textarea>
-            </div>
+                // Readonly from variable
+                <div class="field">
+                    <label for="email">"Email"</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value="user@example.com"
+                        readonly={email_verified}  // Dynamic!
+                    />
+                </div>
 
-            <h2>"Buttons"</h2>
-            <button disabled=false>"Enabled Button"</button>
-            <button disabled=true>"Disabled Button"</button>
+                // Checked from variable
+                <div class="field">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={subscribe_checked}  // Dynamic!
+                        />
+                        " Newsletter subscription"
+                    </label>
+                </div>
 
-            <h2>"Select"</h2>
-            <select>
-                <option>"Option 1"</option>
-                <option selected=true>"Option 2 (selected)"</option>
-                <option disabled=true>"Option 3 (disabled)"</option>
-            </select>
+                <h2>"Static Booleans"</h2>
 
-            <div class="note">
-                <strong>"Common boolean attributes:"</strong>
-                <code>"disabled"</code> ", "
-                <code>"readonly"</code> ", "
-                <code>"required"</code> ", "
-                <code>"checked"</code> ", "
-                <code>"selected"</code> ", "
-                <code>"autofocus"</code> ", "
-                <code>"multiple"</code>
+                <div class="field">
+                    <label for="bio">"Bio"</label>
+                    <textarea
+                        id="bio"
+                        rows="3"
+                        disabled=true  // Always disabled
+                    >"Read only content"</textarea>
+                </div>
+
+                <select>
+                    <option>"Choose"</option>
+                    <option selected=true>"Default"</option>
+                    <option disabled=true>"Unavailable"</option>
+                </select>
+
+                <div class="buttons">
+                    <button type="submit" disabled=false>"Submit"</button>
+                    <button type="button" disabled=true>"Disabled"</button>
+                </div>
+            </form>
+
+            <div class="state-display">
+                <h3>"Current state:"</h3>
+                <ul>
+                    <li>"is_admin = " {is_admin.to_string()}</li>
+                    <li>"email_verified = " {email_verified.to_string()}</li>
+                    <li>"subscribe_checked = " {subscribe_checked.to_string()}</li>
+                </ul>
             </div>
         </div>
     }
 }
 
 pub async fn lesson24_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(
-        &html! { @boolean_attributes_demo() },
-    ))
+    axum::response::Html(azumi::render_to_string(&html! { @form_states_demo() }))
 }
