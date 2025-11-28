@@ -4,9 +4,8 @@ pub fn form() -> impl azumi::Component {
     html! {
         <form>
             <input type="text" name="name" />
-            <input type="email" name="email" />
+            <input type="email" name="emiil" />
             <button type="submit">"Submit"</button>
         </form>
     }
 }
-
