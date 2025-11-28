@@ -902,8 +902,22 @@ fn generate_body_with_context(
                         if !exprs.is_empty()
                             && !exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
                         {
-                            // Positional arguments detected - generate clear compile error
+                            // Check if name is PascalCase (starts with Uppercase)
+                            // We only enforce named arguments for PascalCase components (which use the builder pattern)
+                            // snake_case components (plain functions) can still use positional arguments
                             let name_str = quote!(#name).to_string();
+                            let last_segment = name_str.split("::").last().unwrap_or("");
+                            let is_pascal_case = last_segment
+                                .chars()
+                                .next()
+                                .is_some_and(|c| c.is_uppercase());
+
+                            if !is_pascal_case {
+                                // Allow positional args for snake_case
+                                return None;
+                            }
+
+                            // Positional arguments detected for PascalCase component - generate clear compile error
 
                             // First, try to find the first positional argument to highlight
                             // This helps users see exactly which argument is the problem

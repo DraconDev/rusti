@@ -49,7 +49,7 @@ pub fn lesson2() -> impl azumi::Component {
 
             @quoted_text()
             @quoted_attributes()
-            @unquoted_variables(name="Alice", count=42)
+            @unquoted_variables("Alice", 42)
         </div>
     }
 }

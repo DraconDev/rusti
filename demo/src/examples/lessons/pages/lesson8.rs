@@ -41,13 +41,17 @@ pub fn dashboard(is_admin: bool) -> impl azumi::Component {
 /// Admin dashboard example
 #[azumi::component]
 pub fn admin_dashboard() -> impl azumi::Component {
-    dashboard(true)
+    html! {
+        @dashboard(is_admin=true)
+    }
 }
 
 /// User dashboard example
 #[azumi::component]
 pub fn user_dashboard() -> impl azumi::Component {
-    dashboard(false)
+    html! {
+        @dashboard(is_admin=false)
+    }
 }
 pub async fn lesson8_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&admin_dashboard()))
