@@ -899,9 +899,10 @@ fn generate_body_with_context(
                         syn::parse::Parser::parse2(parser, args.clone())
                     {
                         // Check if we have positional arguments (not all are Assign expressions)
-                        if !exprs.is_empty()
-                            && !exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
-                        {
+                        let has_positional = !exprs.is_empty()
+                            && !exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)));
+
+                        if has_positional {
                             // Check if name is PascalCase (starts with Uppercase)
                             // We only enforce named arguments for PascalCase components (which use the builder pattern)
                             // snake_case components (plain functions) can still use positional arguments
@@ -916,75 +917,73 @@ fn generate_body_with_context(
                                 // Allow positional args for snake_case
                                 None
                             } else {
+                                // Positional arguments detected for PascalCase component - generate clear compile error
 
-                            // Positional arguments detected for PascalCase component - generate clear compile error
+                                // First, try to find the first positional argument to highlight
+                                // This helps users see exactly which argument is the problem
+                                let error_span = if let Some(first_positional) =
+                                    exprs.iter().find(|e| !matches!(e, syn::Expr::Assign(_)))
+                                {
+                                    // Use the span of the first positional argument for precision
+                                    first_positional.span()
+                                } else {
+                                    // Fallback to the entire call span
+                                    call_block.span
+                                };
 
-                            // First, try to find the first positional argument to highlight
-                            // This helps users see exactly which argument is the problem
-                            let error_span = if let Some(first_positional) =
-                                exprs.iter().find(|e| !matches!(e, syn::Expr::Assign(_)))
-                            {
-                                // Use the span of the first positional argument for precision
-                                first_positional.span()
-                            } else {
-                                // Fallback to the entire call span
-                                call_block.span
-                            };
+                                // Show the actual problematic call for better context
+                                let positional_values: Vec<String> = exprs
+                                    .iter()
+                                    .filter(|e| !matches!(e, syn::Expr::Assign(_)))
+                                    .map(|e| {
+                                        let s = quote!(#e).to_string();
+                                        // Truncate long values
+                                        if s.len() > 20 {
+                                            format!("{}...", &s[..17])
+                                        } else {
+                                            s
+                                        }
+                                    })
+                                    .collect();
 
-                            // Show the actual problematic call for better context
-                            let positional_values: Vec<String> = exprs
-                                .iter()
-                                .filter(|e| !matches!(e, syn::Expr::Assign(_)))
-                                .map(|e| {
-                                    let s = quote!(#e).to_string();
-                                    // Truncate long values
-                                    if s.len() > 20 {
-                                        format!("{}...", &s[..17])
-                                    } else {
-                                        s
-                                    }
-                                })
-                                .collect();
+                                let error_msg = if !positional_values.is_empty() {
+                                    format!(
+                                        "Component '{}' must be called with named arguments.\n\
+                                         \n\
+                                         ❌ You wrote:\n\
+                                         @{}({})\n\
+                                         \n\
+                                         ✅ Use named arguments instead:\n\
+                                         @{}(param1={}, param2={}, ...)\n\
+                                         \n\
+                                         💡 Tip: Check the component definition to find the exact parameter names.\n\
+                                         Named arguments prevent bugs when signatures change and make code self-documenting.",
+                                        name_str,
+                                        name_str,
+                                        positional_values.join(", "),
+                                        name_str,
+                                        positional_values.get(0).unwrap_or(&"...".to_string()),
+                                        positional_values.get(1).unwrap_or(&"...".to_string())
+                                    )
+                                } else {
+                                    format!(
+                                        "Component '{}' must be called with named arguments.\n\
+                                         \n\
+                                         ❌ Positional arguments are not allowed:\n\
+                                         @{}(\"value1\", \"value2\")  // Error!\n\
+                                         \n\
+                                         ✅ Use named arguments instead:\n\
+                                         @{}(arg1=\"value1\", arg2=\"value2\")\n\
+                                         \n\
+                                         Why? Named arguments prevent bugs when component signatures change\n\
+                                         and make code self-documenting.",
+                                        name_str, name_str, name_str
+                                    )
+                                };
 
-                            let error_msg = if !positional_values.is_empty() {
-                                format!(
-                                    "Component '{}' must be called with named arguments.\n\
-                                     \n\
-                                     ❌ You wrote:\n\
-                                     @{}({})\n\
-                                     \n\
-                                     ✅ Use named arguments instead:\n\
-                                     @{}(param1={}, param2={}, ...)\n\
-                                     \n\
-                                     💡 Tip: Check the component definition to find the exact parameter names.\n\
-                                     Named arguments prevent bugs when signatures change and make code self-documenting.",
-                                    name_str,
-                                    name_str,
-                                    positional_values.join(", "),
-                                    name_str,
-                                    positional_values.get(0).unwrap_or(&"...".to_string()),
-                                    positional_values.get(1).unwrap_or(&"...".to_string())
-                                )
-                            } else {
-                                format!(
-                                    "Component '{}' must be called with named arguments.\n\
-                                     \n\
-                                     ❌ Positional arguments are not allowed:\n\
-                                     @{}(\"value1\", \"value2\")  // Error!\n\
-                                     \n\
-                                     ✅ Use named arguments instead:\n\
-                                     @{}(arg1=\"value1\", arg2=\"value2\")\n\
-                                     \n\
-                                     Why? Named arguments prevent bugs when component signatures change\n\
-                                     and make code self-documenting.",
-                                    name_str, name_str, name_str
-                                )
-                            };
-
-                            return syn::Error::new(error_span, error_msg).to_compile_error();
-                        }
-
-                        if !exprs.is_empty() {
+                                return syn::Error::new(error_span, error_msg).to_compile_error();
+                            }
+                        } else if !exprs.is_empty() {
                             // All are named arguments - good!
                             Some(exprs)
                         } else {
