@@ -116,7 +116,7 @@ pub struct BadgeProps {
     pub color: String,
 }
 
-pub fn badge(ba: &BadgeProps) -> impl azumi::Component + '_ {
+pub fn badge(bard: &BadgeProps) -> impl azumi::Component + '_ {
     html! {
         <style src="/static/pages/lesson14.css" />
         <span class={format!("badge badge-{}", props.color)}>
