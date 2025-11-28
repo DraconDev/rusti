@@ -67,6 +67,35 @@ pub fn derive_schema(input: TokenStream) -> TokenStream {
             }
 
             fn to_schema_json_value(&self) -> serde_json::Value {
+                // Helper trait for type-aware serialization
+                trait SchemaValueSerializer {
+                    fn to_json(&self) -> serde_json::Value;
+                }
+
+                // Priority 1: Types that implement Schema (nested structs)
+                impl<T: azumi::Schema> SchemaValueSerializer for T {
+                    fn to_json(&self) -> serde_json::Value {
+                        self.to_schema_json_value()
+                    }
+                }
+
+                // Helper function that tries Schema first, falls back to serde
+                fn value_to_json<T>(value: &T) -> serde_json::Value
+                where
+                    T: azumi::Schema + serde::Serialize,
+                {
+                    // Try Schema trait first (for nested types)
+                    value.to_schema_json_value()
+                }
+
+                // Overload for primitives that don't implement Schema
+                fn value_to_json_primitive<T>(value: &T) -> serde_json::Value
+                where
+                    T: serde::Serialize,
+                {
+                    serde_json::to_value(value).unwrap_or(serde_json::Value::Null)
+                }
+
                 let mut map = serde_json::Map::new();
                 map.insert(
                     "@context".to_string(),
