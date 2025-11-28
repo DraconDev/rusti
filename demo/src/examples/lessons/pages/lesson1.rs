@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Simple hello world with fancy styling
+#[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson1.css" />
@@ -14,6 +15,7 @@ pub fn hello_world() -> impl azumi::Component {
 }
 
 /// Basic template with styling
+#[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson1.css" />

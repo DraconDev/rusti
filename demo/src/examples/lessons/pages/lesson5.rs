@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Component A with scoped styles
+#[azumi::component]
 pub fn component_a() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson5.css" />
@@ -15,6 +16,7 @@ pub fn component_a() -> impl azumi::Component {
 }
 
 /// Component B - same CSS file, automatically scoped
+#[azumi::component]
 pub fn component_b() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson5.css" />
@@ -26,6 +28,7 @@ pub fn component_b() -> impl azumi::Component {
 }
 
 /// Main lesson
+#[azumi::component]
 pub fn lesson5() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson5.css" />

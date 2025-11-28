@@ -175,6 +175,7 @@ pub fn item_list(items: &[ListItem]) -> impl azumi::Component + '_ {
 // SECTION 5: Complex Example - Feature Showcase
 // ============================================================================
 
+#[azumi::component]
 pub fn advanced_patterns_demo() -> impl azumi::Component {
     let sample_items = vec![
         ListItem {

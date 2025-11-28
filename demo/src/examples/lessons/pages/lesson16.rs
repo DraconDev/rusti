@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Interactive Chart.js example
+#[azumi::component]
 pub fn interactive_chart() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson16.css" />

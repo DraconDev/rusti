@@ -3,7 +3,7 @@
 //! Using @match for complex conditions
 use azumi::html;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 enum Role {
     Admin,
     User,
