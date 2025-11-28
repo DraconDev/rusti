@@ -225,21 +225,27 @@ Return multiple root elements with or without a wrapper:
 
 ```rust
 #[azumi::component]
-fn navigation_items() -> impl azumi::Component {
+fn user_stats<'a>(name: &'a str, posts: u32, followers: u32) -> impl azumi::Component + 'a {
     <>
-        <li><a href="/">"Home"</a></li>
-        <li><a href="/about">"About"</a></li>
-        <li><a href="/contact">"Contact"</a></li>
+        <div class="stat">
+            <span class="label">"Posts"</span>
+            <span class="value">{posts}</span>
+        </div>
+        <div class="stat">
+            <span class="label">"Followers"</span>
+            <span class="value">{followers}</span>
+        </div>
     </>
 }
 
-// Use directly:
-<ul class="nav">
-    @navigation_items()
-</ul>
+// Use directly - fragments unwrap to multiple elements
+<div class="user-card">
+    <h3>{user_name}</h3>
+    @user_stats(name=&user_name, posts=42, followers=1337)
+</div>
 ```
 
-**No extra `<div>` wrappers polluting your DOM.**
+**No extra `<div>` wrappers polluting your DOM.** Fragment children are inserted directly.
 
 ### 5. Components with #[component]
 
