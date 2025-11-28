@@ -1,101 +1,50 @@
-/* Lesson 18: CSS Variables & Dynamic Theming */
+/* Lesson 18: CSS Variables */
 
-.lesson18-container {
-    max-width: 1200px;
-    margin: 0 auto;
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
     padding: 2rem;
-    font-family: "Inter", sans-serif;
+    font-family: sans-serif;
 }
 
-.lesson18-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px solid #e0e0e0;
-}
-
-.lesson18-title {
-    font-size: 2.5rem;
+h1 {
     color: #2c3e50;
     margin-bottom: 0.5rem;
 }
 
-.lesson18-subtitle {
-    font-size: 1.25rem;
+.description {
     color: #7f8c8d;
+    margin-bottom: 2rem;
 }
 
-.lesson18-section {
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: #f8f9fa;
-    border-radius: 8px;
+h2 {
+    color: #34495e;
+    margin: 2rem 0 1rem;
 }
 
-.section-title {
-    font-size: 1.75rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-}
-
-.section-text {
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-/* Theme Demo */
-.theme-demo {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.color-box {
-    padding: 2rem 1rem;
-    text-align: center;
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.color-box.primary {
+/* Theme example */
+.theme-box {
     background: var(--primary);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
 }
 
-.color-box.secondary {
-    background: var(--secondary);
-}
-
-.color-box.danger {
-    background: var(--danger);
-}
-
-.color-box.success {
-    background: var(--success);
-}
-
-/* Progress Demo */
-.progress-demo {
-    margin: 2rem 0;
-}
-
-.progress-bar {
+/* Progress bar */
+.progress {
     position: relative;
-    width: 100%;
-    height: 40px;
-    background: #e0e0e0;
-    border-radius: 20px;
+    background: #ecf0f1;
+    height: 30px;
+    border-radius: 15px;
     overflow: hidden;
 }
 
-.progress-fill {
+.progress-bar {
     height: 100%;
-    width: calc(var(--completion) * 1%);
+    width: calc(var(--width) * 1%);
     background: linear-gradient(90deg, #3498db, #2ecc71);
-    transition: width 0.5s ease;
+    transition: width 0.3s;
 }
 
 .progress-label {
@@ -107,98 +56,32 @@
     color: #2c3e50;
 }
 
-/* Loading Demo */
-.loading-demo {
-    text-align: center;
-    padding: 2rem;
-}
-
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #e0e0e0;
-    border-top-color: #3498db;
-    border-radius: 50%;
-    animation: spin calc(var(--duration) * 1s) linear infinite;
-    margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Elevation Demo */
-.elevation-demo {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
+/* Card with dynamic shadow */
 .card {
-    padding: 2rem;
     background: white;
+    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 calc(var(--elevation) * 1px) calc(var(--elevation) * 2px)
+    box-shadow: 0 calc(var(--shadow) * 1px) calc(var(--shadow) * 2px)
         rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s;
+    transition: box-shadow 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-}
-
-.card h3 {
-    margin-top: 0;
-    color: #2c3e50;
-}
-
-.card p {
-    color: #7f8c8d;
-    margin-bottom: 0;
-}
-
-/* Code Examples */
-.code-example,
-.code-block {
+/* Code example */
+.code-example {
     background: #2c3e50;
     color: #ecf0f1;
     padding: 1.5rem;
     border-radius: 8px;
-    overflow-x: auto;
-    font-family: "Fira Code", monospace;
-    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+.code-example h3 {
+    margin-top: 0;
+    color: #3498db;
+}
+
+pre {
+    margin: 0;
+    font-family: "Courier New", monospace;
     line-height: 1.5;
-    margin: 1rem 0;
-}
-
-.code-example code {
-    color: #ecf0f1;
-}
-
-/* Explanation Section */
-.explanation h3 {
-    color: #2c3e50;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.benefits-list,
-.takeaways-list {
-    list-style: none;
-    padding: 0;
-}
-
-.benefits-list li,
-.takeaways-list li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #e0e0e0;
-    color: #555;
-}
-
-.benefits-list li:last-child,
-.takeaways-list li:last-child {
-    border-bottom: none;
 }
