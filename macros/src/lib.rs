@@ -41,19 +41,130 @@ impl Parse for NodesWrapper {
 
 #[proc_macro]
 pub fn html(input: TokenStream) -> TokenStream {
-        Err(e) => return e.to_compile_error().into(),
+    let input = parse_macro_input!(input as token_parser::HtmlInput);
+    let nodes = input.nodes;
+
+    // 1. Generate HTML string construction code
+    let html_construction = generate_nodes(&nodes);
+
+    // 2. Generate bind validation checks
+    let mut validation_checks = Vec::new();
+    collect_bind_checks(&nodes, &mut validation_checks);
+
+    let expanded = quote! {
+        {
+            // Validation block (compile-time only)
+            const _: () = {
+                #(#validation_checks)*
+            };
+
+            // Runtime HTML generation
+            #html_construction
+        }
     };
 
-    let body = generate_body(&nodes);
+    TokenStream::from(expanded)
+}
 
-    let output = quote! {
+fn collect_bind_checks(nodes: &[token_parser::Node], checks: &mut Vec<proc_macro2::TokenStream>) {
+    for node in nodes {
+        match node {
+            token_parser::Node::Element(elem) => {
+                // If this element has bind={Struct}, generate a check function
+                if let Some(struct_path) = &elem.bind_struct {
+                    let mut field_accesses = Vec::new();
+                    collect_input_names(&elem.children, &mut field_accesses);
+
+                    if !field_accesses.is_empty() {
+                        let check_fn_name =
+                            quote::format_ident!("azumi_bind_check_{}", checks.len());
+
+                        let check_block = quote! {
+                            #[allow(unused_variables, non_snake_case)]
+                            fn #check_fn_name(data: &#struct_path) {
+                                #(#field_accesses)*
+                            }
+                        };
+                        checks.push(check_block);
+                    }
+                }
+                // Recurse
+                collect_bind_checks(&elem.children, checks);
+            }
+            token_parser::Node::Fragment(frag) => {
+                collect_bind_checks(&frag.children, checks);
+            }
+            token_parser::Node::Block(block) => {
+                // Handle blocks (if, for, match, etc.) by recursing into their bodies
+                match block {
+                    token_parser::Block::If(if_block) => {
+                        collect_bind_checks(&if_block.then_branch, checks);
+                        if let Some(else_branch) = &if_block.else_branch {
+                            collect_bind_checks(else_branch, checks);
+                        }
+                    }
+                    token_parser::Block::For(for_block) => {
+                        collect_bind_checks(&for_block.body, checks);
+                    }
+                    token_parser::Block::Match(match_block) => {
+                        for arm in &match_block.arms {
+                            collect_bind_checks(&arm.body, checks);
+                        }
+                    }
+                    token_parser::Block::Call(call_block) => {
+                        collect_bind_checks(&call_block.children, checks);
+                    }
+                    _ => {}
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_macro2::TokenStream>) {
+    for node in nodes {
+        match node {
+            token_parser::Node::Element(elem) => {
+                if elem.name == "input" || elem.name == "textarea" || elem.name == "select" {
+                    // Find "name" attribute
+                    for attr in &elem.attrs {
+                        if attr.name == "name" {
+                            if let token_parser::AttributeValue::Static(name_str) = &attr.value {
+                                // Generate: let _ = &data.field;
+                                // Handle nested paths: user.email -> &data.user.email
+                                let parts: Vec<&str> = name_str.split('.').collect();
+                                let fields: Vec<proc_macro2::Ident> = parts
+                                    .iter()
+                                    .map(|s| quote::format_ident!("{}", s))
+                                    .collect();
+
+                                accesses.push(quote! {
+                                    let _ = &data.#(#fields).*;
+                                });
+                            }
+                        }
+                    }
+                }
+                // Recurse (e.g. input inside label or div)
+                collect_input_names(&elem.children, accesses);
+            }
+            token_parser::Node::Fragment(frag) => {
+                collect_input_names(&frag.children, accesses);
+            }
+            _ => {}
+        }
+    }
+}
+
+fn generate_nodes(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
+    let body = generate_body(nodes);
+    quote! {
         azumi::from_fn(move |f| {
             #body
             Ok(())
         })
-    };
-
-    TokenStream::from(output)
+    }
 }
 
 /// Strip outer quotes from string literals for cleaner text rendering
