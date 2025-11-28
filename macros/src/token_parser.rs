@@ -48,10 +48,6 @@ pub enum AttributeValue {
     None,
 }
 
-    #[allow(dead_code)]
-    pub span: Span,
-}
-
 #[derive(Debug, Clone)]
 pub struct Comment {
     #[allow(dead_code)]
@@ -224,7 +220,7 @@ impl Parse for Element {
                 if key == "bind" {
                     input.parse::<Ident>()?; // consume "bind"
                     input.parse::<Token![=]>()?;
-                    
+
                     let content;
                     syn::braced!(content in input);
                     let path: syn::Path = content.parse()?;

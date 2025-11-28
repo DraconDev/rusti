@@ -41,22 +41,6 @@ impl Parse for NodesWrapper {
 
 #[proc_macro]
 pub fn html(input: TokenStream) -> TokenStream {
-    // Handle string literal input for emoji support
-    let input_tokens = if let Ok(lit) = syn::parse::<syn::LitStr>(input.clone()) {
-        match lit.value().parse::<proc_macro2::TokenStream>() {
-            Ok(ts) => ts,
-            Err(e) => {
-                return syn::Error::new(lit.span(), format!("Invalid tokens in string: {}", e))
-                    .to_compile_error()
-                    .into()
-            }
-        }
-    } else {
-        proc_macro2::TokenStream::from(input)
-    };
-
-    let nodes = match syn::parse2::<NodesWrapper>(input_tokens) {
-        Ok(wrapper) => wrapper.0,
         Err(e) => return e.to_compile_error().into(),
     };
 
