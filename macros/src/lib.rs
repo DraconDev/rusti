@@ -5,12 +5,20 @@ mod accessibility_validator;
 mod css;
 mod css_validator;
 mod html_structure_validator;
+#[cfg(feature = "schema")]
+mod schema;
 mod test_spacing;
 mod token_parser;
 
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse::{Parse, ParseStream};
+
+#[cfg(feature = "schema")]
+#[proc_macro_derive(Schema, attributes(schema))]
+pub fn derive_schema(input: TokenStream) -> TokenStream {
+    schema::derive_schema(input)
+}
 
 #[proc_macro_attribute]
 pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
