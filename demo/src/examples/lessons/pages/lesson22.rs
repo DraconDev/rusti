@@ -16,11 +16,29 @@ struct User {
 #[azumi::component]
 pub fn data_table_demo() -> impl azumi::Component {
     let users = vec![
-        User { id: 1, name: "Alice Johnson".to_string(), email: "alice@example.com".to_string(), role: "Admin".to_string(), active: true },
-        User { id: 2, name: "Bob Smith".to_string(), email: "bob@example.com".to_string(), role: "User".to_string(), active: true },
-        User { id: 3, name: "Carol White".to_string(), email: "carol@example.com".to_string(), role: "User".to_string(), active: false },
+        User {
+            id: 1,
+            name: "Alice Johnson".to_string(),
+            email: "alice@example.com".to_string(),
+            role: "Admin".to_string(),
+            active: true,
+        },
+        User {
+            id: 2,
+            name: "Bob Smith".to_string(),
+            email: "bob@example.com".to_string(),
+            role: "User".to_string(),
+            active: true,
+        },
+        User {
+            id: 3,
+            name: "Carol White".to_string(),
+            email: "carol@example.com".to_string(),
+            role: "User".to_string(),
+            active: false,
+        },
     ];
-    
+
     html! {
         <style src="/static/pages/lesson22.css" />
         <div class="container">
@@ -63,8 +81,7 @@ pub fn data_table_demo() -> impl azumi::Component {
             <div class="note">
                 <strong>"Note:"</strong>
                 " Azumi validates table structure at compile time. "
-                "<code>"<tr>"</code> " must be inside " <code>"<thead>"</code> ", "
-                <code>"<tbody>"</code> ", or " <code>"<tfoot>"</code> "!"
+                "<tr> must be inside <thead>, <tbody>, or <tfoot>!"
             </div>
         </div>
     }
