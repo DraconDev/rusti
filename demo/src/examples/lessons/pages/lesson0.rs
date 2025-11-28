@@ -6,6 +6,7 @@ use azumi::html;
 /// Azumi supports BOTH automatic and explicit fragments!
 
 /// Example 1: Automatic Fragment (No explicit <> needed)
+#[azumi::component]
 pub fn automatic_fragment_example() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson0.css" />
@@ -18,6 +19,7 @@ pub fn automatic_fragment_example() -> impl azumi::Component {
 }
 
 /// Example 2: Explicit Fragment with <>
+#[azumi::component]
 pub fn explicit_fragment_example() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson0.css" />
@@ -32,6 +34,7 @@ pub fn explicit_fragment_example() -> impl azumi::Component {
 }
 
 /// Example 3: Fragments in Control Flow
+#[azumi::component]
 pub fn control_flow_fragments() -> impl azumi::Component {
     let show_content = true;
     html! {
@@ -59,6 +62,7 @@ pub fn control_flow_fragments() -> impl azumi::Component {
 }
 
 /// Example 4: When Fragments Are Useful
+#[azumi::component]
 pub fn fragment_use_cases() -> impl azumi::Component {
     let items = ["Apple", "Banana", "Cherry"];
 
@@ -102,6 +106,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
 }
 
 /// Main demonstration component
+#[azumi::component]
 pub fn lesson0() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson0.css" />

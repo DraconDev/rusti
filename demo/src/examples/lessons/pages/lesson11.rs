@@ -16,6 +16,7 @@ pub struct ButtonProps {
 }
 
 /// Reusable button component
+// TODO: Refactor to use #[component] with individual args instead of struct
 pub fn button(props: ButtonProps) -> impl azumi::Component {
     let class = match props.variant {
         ButtonVariant::Primary => "btn btn-primary",
@@ -30,6 +31,7 @@ pub fn button(props: ButtonProps) -> impl azumi::Component {
 }
 
 /// Primary button example
+#[azumi::component]
 pub fn primary_button() -> impl azumi::Component {
     button(ButtonProps {
         text: "Primary Button".to_string(),
@@ -38,6 +40,7 @@ pub fn primary_button() -> impl azumi::Component {
 }
 
 /// Secondary button example
+#[azumi::component]
 pub fn secondary_button() -> impl azumi::Component {
     button(ButtonProps {
         text: "Secondary Button".to_string(),

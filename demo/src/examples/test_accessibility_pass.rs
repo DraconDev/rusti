@@ -1,6 +1,7 @@
 use azumi::html;
 
 // ✅ All valid - should compile successfully
+#[azumi::component]
 pub fn test_valid_accessibility() -> impl azumi::Component {
     html! {
         <div>
