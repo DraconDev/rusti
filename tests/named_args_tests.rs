@@ -7,7 +7,7 @@ fn test_named_arguments_work() {
     // The actual component call is tested in the demo project
 
     let simple = html! {
-        <div class="test">"Simple HTML test"</div>
+        <div>"Simple HTML test"</div>
     };
 
     let rendered = azumi::render_to_string(&simple);
