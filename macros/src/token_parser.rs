@@ -15,18 +15,9 @@ pub enum Node {
     Text(Text),
     Expression(Expression),
     Comment(Comment),
-    Element {
-        tag_name: String,
-        attributes: Vec<Attribute>,
-        children: Vec<Node>,
-        self_closing: bool,
-        bind_struct: Option<syn::Path>, // New field for bind={Struct}
-    },
-    Text(String),
-    Block(TokenStream),
-    Comment(String),
-    Doctype,
-    Fragment(Vec<Node>),
+    Doctype(Doctype),
+    Fragment(Fragment),
+    Block(Block),
 }
 
 #[derive(Debug, Clone)]
