@@ -217,7 +217,9 @@ pub fn validate_anchor_target_blank(elem: &Element) -> Option<TokenStream> {
 }
 
 /// Rule 6: <iframe> must have a title attribute
-pub fn validate_iframe_title(elem: &Element) -> Option<TokenStream> {
+pub fn validate_iframe_title(
+    elem: &crate::token_parser::Element,
+) -> Option<proc_macro2::TokenStream> {
     if elem.name != "iframe" {
         return None;
     }
@@ -226,7 +228,7 @@ pub fn validate_iframe_title(elem: &Element) -> Option<TokenStream> {
 
     if !has_title {
         Some(quote_spanned! { elem.span =>
-            compile_error!("<iframe> is missing 'title' attribute. Frames must have a unique title for accessibility.");
+            compile_error!("<iframe> tags must have a 'title' attribute for accessibility.");
         })
     } else {
         None

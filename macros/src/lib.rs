@@ -476,7 +476,7 @@ fn validate_nodes(
                     errors.extend(html_structure_validator::validate_heading_content(elem));
 
                     // Update context for recursion
-                    let new_is_inside_form = is_inside_form || elem.name == "form";
+                    let new_is_inside_form = is_inside_form || elem.name.as_str() == "form";
                     let new_is_inside_button = is_inside_button || elem.name == "button";
                     let new_is_inside_anchor = is_inside_anchor || elem.name == "a";
 

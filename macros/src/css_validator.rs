@@ -235,7 +235,7 @@ fn collect_css_files(nodes: &[Node], css_files: &mut Vec<String>) {
     for node in nodes {
         match node {
             Node::Element(elem) => {
-                if elem.name == "style" {
+                if elem.name.as_str() == "style" {
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         if let AttributeValue::Static(path) = &src_attr.value {
                             // Skip global.css files - they are opt-out of validation
