@@ -269,12 +269,12 @@ pub fn contact_form_demo() -> impl azumi::Component {
 
                     <div class="demo-column">
                         <h3 class="demo-heading">"Select Dropdown"</h3>
-                        {select_field(&SelectProps {
-                            label: "Country".to_string(),
-                            name: "country_demo".to_string(),
-                            options: countries.clone(),
-                            required: false,
-                        })}
+                    {select_field(&SelectProps {
+                        label: "Country".to_string(),
+                        name: "country_demo".to_string(),
+                        options: countries.clone(),
+                        required: false,
+                    })}
                     </div>
                 </div>
 
