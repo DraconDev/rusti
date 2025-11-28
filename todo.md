@@ -1,4 +1,4 @@
-make sure we have 
+make sure we have great error messages for all cases 
 
 
 <!-- wait before we proceed regarding lesson 14 we do have a possible bug that what you create the rust file write in it, then create teh css we are getting 
