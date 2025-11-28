@@ -44,4 +44,12 @@ pub fn secondary_button() -> impl azumi::Component {
         variant: ButtonVariant::Secondary,
     })
 }
-pub async fn lesson11_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 11") }
+pub async fn lesson11_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&html! {
+        <style src="/static/pages/lesson11.css" />
+        <div>
+            @primary_button()
+            @secondary_button()
+        </div>
+    }))
+}
