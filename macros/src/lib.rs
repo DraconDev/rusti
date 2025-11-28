@@ -903,6 +903,19 @@ fn generate_body_with_context(
                         {
                             // Positional arguments detected - generate clear compile error
                             let name_str = quote!(#name).to_string();
+
+                            // First, try to find the first positional argument to highlight
+                            // This helps users see exactly which argument is the problem
+                            let error_span = if let Some(first_positional) =
+                                exprs.iter().find(|e| !matches!(e, syn::Expr::Assign(_)))
+                            {
+                                // Use the span of the first positional argument for precision
+                                first_positional.span()
+                            } else {
+                                // Fallback to the entire call span
+                                call_block.span
+                            };
+
                             let error_msg = format!(
                                     "Component '{}' must be called with named arguments.\n\
                                      \n\
@@ -916,8 +929,7 @@ fn generate_body_with_context(
                                      and make code self-documenting.",
                                     name_str, name_str, name_str
                                 );
-                            return syn::Error::new_spanned(&call_block.name, error_msg)
-                                .to_compile_error();
+                            return syn::Error::new(error_span, error_msg).to_compile_error();
                         }
 
                         if !exprs.is_empty() {
