@@ -253,7 +253,6 @@ pub fn dashboard_demo() -> impl azumi::Component {
                 <h2 class="section-title">"Example 2: User Profile Composition"</h2>
                 <div class="profile-demo">
                     <div class="demo-item">
-                    <div class="demo-item">
                         <h3>"Compact Profile"</h3>
                         @user_profile_compact(user=&current_user)
                     </div>
@@ -269,7 +268,6 @@ pub fn dashboard_demo() -> impl azumi::Component {
                 <div class="dashboard-layout">
                     <div class="dashboard-sidebar">
                         <div class="sidebar-section">
-                            <h3>"Your Profile"</h3>
                             <h3>"Your Profile"</h3>
                             @user_profile_card(user=&current_user)
                         </div>
