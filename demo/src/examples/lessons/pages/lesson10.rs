@@ -39,4 +39,6 @@ pub fn success_data() -> impl azumi::Component {
 pub fn error_data() -> impl azumi::Component {
     data_view(false)
 }
-pub async fn lesson10_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 10") }
+pub async fn lesson10_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&success_data()))
+}
