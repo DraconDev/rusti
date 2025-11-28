@@ -917,7 +917,42 @@ fn generate_body_with_context(
                                 call_block.span
                             };
 
-                            let error_msg = format!(
+                            // Show the actual problematic call for better context
+                            let positional_values: Vec<String> = exprs
+                                .iter()
+                                .filter(|e| !matches!(e, syn::Expr::Assign(_)))
+                                .map(|e| {
+                                    let s = quote!(#e).to_string();
+                                    // Truncate long values
+                                    if s.len() > 20 {
+                                        format!("{}...", &s[..17])
+                                    } else {
+                                        s
+                                    }
+                                })
+                                .collect();
+
+                            let error_msg = if !positional_values.is_empty() {
+                                format!(
+                                    "Component '{}' must be called with named arguments.\n\
+                                     \n\
+                                     ❌ You wrote:\n\
+                                     @{}({})\n\
+                                     \n\
+                                     ✅ Use named arguments instead:\n\
+                                     @{}(param1={}, param2={}, ...)\n\
+                                     \n\
+                                     💡 Tip: Check the component definition to find the exact parameter names.\n\
+                                     Named arguments prevent bugs when signatures change and make code self-documenting.",
+                                    name_str,
+                                    name_str,
+                                    positional_values.join(", "),
+                                    name_str,
+                                    positional_values.get(0).unwrap_or(&"...".to_string()),
+                                    positional_values.get(1).unwrap_or(&"...".to_string())
+                                )
+                            } else {
+                                format!(
                                     "Component '{}' must be called with named arguments.\n\
                                      \n\
                                      ❌ Positional arguments are not allowed:\n\
@@ -929,7 +964,9 @@ fn generate_body_with_context(
                                      Why? Named arguments prevent bugs when component signatures change\n\
                                      and make code self-documenting.",
                                     name_str, name_str, name_str
-                                );
+                                )
+                            };
+
                             return syn::Error::new(error_span, error_msg).to_compile_error();
                         }
 
