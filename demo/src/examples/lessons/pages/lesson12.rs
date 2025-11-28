@@ -10,7 +10,7 @@ pub struct CardProps<'a> {
 }
 
 /// Card wrapper that accepts children content
-// TODO: Add #[component] when lifetime support is added
+#[azumi::component]
 pub fn card<'a>(
     title: &'a str,
     children: impl azumi::Component + 'a,
@@ -34,20 +34,23 @@ pub async fn lesson12_handler() -> impl axum::response::IntoResponse {
 /// Example card with content
 #[azumi::component]
 pub fn example_card() -> impl azumi::Component {
-    card(
-        "Example Card",
-        html! {
+    html! {
+        @card(title="Example Card") {
             <p>"This card has children content."</p>
             <ul>
                 <li>"Item 1"</li>
                 <li>"Item 2"</li>
             </ul>
-        },
-    )
+        }
+    }
 }
 
 /// Simple card
 #[azumi::component]
 pub fn simple_card() -> impl azumi::Component {
-    card("Simple Card", html! { <p>"Simple content."</p> })
+    html! {
+        @card(title="Simple Card") {
+            <p>"Simple content."</p>
+        }
+    }
 }
