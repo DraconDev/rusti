@@ -1,7 +1,7 @@
-/* Lesson 23: Component-scoped CSS */
+/* Lesson 23: CDN Libraries */
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 2rem auto;
     padding: 2rem;
     font-family: sans-serif;
@@ -12,52 +12,52 @@ h2 {
     color: #2c3e50;
 }
 
-.description {
-    color: #7f8c8d;
-    margin-bottom: 1rem;
+.demo-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
 }
 
-code {
-    background: #f4f4f4;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    font-family: "Courier New", monospace;
-    color: #e74c3c;
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.global-styled {
-    padding: 1rem;
-    margin: 1rem 0;
-    border: 2px dashed #95a5a6;
-}
-
-.component-styled {
-    background: #e3f2fd;
-    color: #1565c0;
-    padding: 1rem;
-    border-radius: 4px;
-    border-left: 4px solid #2196f3;
-    margin: 1rem 0;
-}
-
-.rules {
-    background: #fff3cd;
-    padding: 1.5rem;
-    border-radius: 4px;
-    border-left: 4px solid #ffc107;
-    margin-top: 2rem;
-}
-
-.rules h3 {
+.card h3 {
+    color: #3498db;
     margin-top: 0;
-    color: #856404;
 }
 
-.rules ul {
+.card p {
+    color: #7f8c8d;
     margin-bottom: 0;
 }
 
-.rules li {
+canvas {
+    max-width: 100%;
+    margin: 2rem 0;
+}
+
+.note {
+    background: #e8f5e9;
+    padding: 1.5rem;
+    border-radius: 4px;
+    border-left: 4px solid #4caf50;
+    margin-top: 2rem;
+}
+
+.note ul {
     margin: 0.5rem 0;
-    color: #856404;
+    line-height: 1.8;
+}
+
+.note code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: "Courier New", monospace;
 }

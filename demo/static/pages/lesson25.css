@@ -1,4 +1,4 @@
-/* Lesson 25: JSON-LD */
+/* Lesson 25: Schema */
 
 .container {
     max-width: 800px;
@@ -12,76 +12,66 @@ h2 {
     color: #2c3e50;
 }
 
-.description {
-    color: #7f8c8d;
-    margin-bottom: 2rem;
-}
-
-.schema-example {
+.product-card {
     background: white;
-    padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 1rem 0;
-}
-
-.schema-example h3 {
-    color: #2c3e50;
-    margin-top: 0;
-}
-
-.price {
-    font-size: 1.5rem;
-    color: #27ae60;
-    font-weight: 600;
-    margin: 1rem 0;
-}
-
-.meta {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-}
-
-.help-text {
-    color: #7f8c8d;
-    font-style: italic;
-    font-size: 0.9rem;
-}
-
-.code-example {
-    background: #2c3e50;
-    color: #ecf0f1;
-    padding: 1.5rem;
-    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 2rem 0;
 }
 
-.code-example h3 {
-    color: #3498db;
-    margin-top: 0;
+.product-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.product-name {
+    margin: 1rem 0;
+    color: #2c3e50;
+}
+
+.product-description {
+    color: #7f8c8d;
+    line-height: 1.6;
+}
+
+.product-price {
+    font-size: 2rem;
+    color: #27ae60;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.explanation {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.explanation ol {
+    line-height: 2;
+}
+
+.explanation code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: "Courier New", monospace;
+}
+
+.code-box {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-top: 1rem;
 }
 
 pre {
     margin: 0;
     font-family: "Courier New", monospace;
     line-height: 1.5;
-    overflow-x: auto;
-}
-
-.note {
-    background: #e8f5e9;
-    padding: 1.5rem;
-    border-radius: 4px;
-    border-left: 4px solid #4caf50;
-    margin-top: 2rem;
-}
-
-.note ul {
-    margin: 0.5rem 0 0 0;
-    padding-left: 1.5rem;
-}
-
-.note li {
-    margin: 0.5rem 0;
-    color: #2e7d32;
 }

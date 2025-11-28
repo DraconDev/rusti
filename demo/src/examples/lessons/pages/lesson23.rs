@@ -1,55 +1,63 @@
-//! Lesson 23: Global CSS & CDN Links
+//! Lesson 23: CDN Libraries
 //!
-//! Using global CSS and external CDN stylesheets
+//! Loading external CSS and JavaScript from CDNs
 
 use azumi::html;
 
 #[azumi::component]
-pub fn global_css_demo() -> impl azumi::Component {
+pub fn cdn_demo() -> impl azumi::Component {
     html! {
-        // Global CSS - no scoping, no validation
-        <style src="/static/global.css" />
-
-        // Component CSS - scoped automatically
         <style src="/static/pages/lesson23.css" />
 
-        // CDN link - allowed for external libraries
-        <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet" />
+        // Load animate.css from CDN
+        <link
+            href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"
+            rel="stylesheet"
+        />
 
         <div class="container">
-            <h1>"Lesson 23: Global CSS & CDN"</h1>
+            <h1>"Lesson 23: CDN Libraries"</h1>
 
-            <h2>"Global CSS"</h2>
-            <p class="description">
-                "Files named " <code>"global.css"</code> " bypass scoping and validation:"
-            </p>
-            <div class="global-styled">
-                "This uses global CSS (no data-s attribute)"
+            <h2>"Animated Elements"</h2>
+            <div class="demo-box">
+                <div class="animate__animated animate__bounce card">
+                    <h3>"Bouncing!"</h3>
+                    <p>"Using animate.css from CDN"</p>
+                </div>
+
+                <div class="animate__animated animate__fadeIn card">
+                    <h3>"Fading in!"</h3>
+                    <p>"Applied via CSS classes"</p>
+                </div>
+
+                <div class="animate__animated animate__slideInUp card">
+                    <h3>"Sliding up!"</h3>
+                    <p>"No JavaScript needed"</p>
+                </div>
             </div>
 
-            <h2>"Scoped Component CSS"</h2>
-            <div class="component-styled">
-                "This uses scoped CSS (has data-s attribute)"
-            </div>
+            <h2>"Chart.js from CDN"</h2>
+            <canvas id="myChart" width="400" height="200"></canvas>
 
-            <h2>"CDN Stylesheets"</h2>
-            <div class="animate__animated animate__bounce">
-                "Bouncing with animate.css from CDN!"
-            </div>
-
-            <div class="rules">
-                <h3>"Rules:"</h3>
+            <div class="note">
+                <strong>"CDN Rules:"</strong>
                 <ul>
-                    <li>"✅ " <code>"global.css"</code> " - no scoping, no validation"</li>
-                    <li>"✅ CDN links (https://) - allowed"</li>
-                    <li>"✅ Component CSS - scoped automatically"</li>
-                    <li>"❌ Local " <code>"<link>"</code> " to /static - use " <code>"<style src>"</code></li>
+                    <li>"✅ https:// links allowed"</li>
+                    <li>"✅ Both CSS and JS"</li>
+                    <li>"✅ External libraries"</li>
+                    <li>"❌ Local files - use " <code>"<style src>"</code></li>
                 </ul>
             </div>
         </div>
+
+        // Load Chart.js from CDN
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        // Initialize chart
+        <script src="/static/lesson23-chart.js"></script>
     }
 }
 
 pub async fn lesson23_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&html! { @global_css_demo() }))
+    axum::response::Html(azumi::render_to_string(&html! { @cdn_demo() }))
 }
