@@ -290,45 +290,45 @@ pub fn contact_form_demo() -> impl azumi::Component {
                 <div class="demo-grid">
                     <div class="demo-column">
                         <h3 class="demo-heading">"Text Input"</h3>
-                        {input_field(&InputProps {
-                            label: "Email Address".to_string(),
-                            name: "email_demo".to_string(),
-                            input_type: "email".to_string(),
-                            placeholder: "you@example.com".to_string(),
-                            required: true,
-                        })}
+                        @input_field(
+                            label="Email Address",
+                            name="email_demo",
+                            input_type="email",
+                            placeholder="you@example.com",
+                            required=true
+                        )
                     </div>
 
                     <div class="demo-column">
                         <h3 class="demo-heading">"Select Dropdown"</h3>
-                    {select_field(&SelectProps {
-                        label: "Country".to_string(),
-                        name: "country_demo".to_string(),
-                        options: countries.clone(),
-                        required: false,
-                    })}
+                        @select_field(
+                            label="Country",
+                            name="country_demo",
+                            options=&countries,
+                            required=false
+                        )
                     </div>
                 </div>
 
                 <div class="demo-grid">
                     <div class="demo-column">
                         <h3 class="demo-heading">"Checkbox"</h3>
-                        {checkbox_field(&CheckboxProps {
-                            label: "Subscribe to newsletter".to_string(),
-                            name: "newsletter_demo".to_string(),
-                            checked: false,
-                        })}
+                        @checkbox_field(
+                            label="Subscribe to newsletter",
+                            name="newsletter_demo",
+                            checked=false
+                        )
                     </div>
 
                     <div class="demo-column">
                         <h3 class="demo-heading">"Textarea"</h3>
-                        {textarea_field(&TextareaProps {
-                            label: "Additional Notes".to_string(),
-                            name: "notes_demo".to_string(),
-                            placeholder: "Enter any additional information...".to_string(),
-                            rows: 4,
-                            required: false,
-                        })}
+                        @textarea_field(
+                            label="Additional Notes",
+                            name="notes_demo",
+                            placeholder="Enter any additional information...",
+                            rows=4,
+                            required=false
+                        )
                     </div>
                 </div>
             </section>
@@ -340,57 +340,57 @@ pub fn contact_form_demo() -> impl azumi::Component {
                 </p>
 
                 <form class="contact-form">
-                    {input_field(&InputProps {
-                        label: "Full Name".to_string(),
-                        name: "full_name".to_string(),
-                        input_type: "text".to_string(),
-                        placeholder: "John Doe".to_string(),
-                        required: true,
-                    })}
+                    @input_field(
+                        label="Full Name",
+                        name="full_name",
+                        input_type="text",
+                        placeholder="John Doe",
+                        required=true
+                    )
 
-                    {input_field(&InputProps {
-                        label: "Email Address".to_string(),
-                        name: "email".to_string(),
-                        input_type: "email".to_string(),
-                        placeholder: "john@example.com".to_string(),
-                        required: true,
-                    })}
+                    @input_field(
+                        label="Email Address",
+                        name="email",
+                        input_type="email",
+                        placeholder="john@example.com",
+                        required=true
+                    )
 
-                    {input_field(&InputProps {
-                        label: "Phone Number".to_string(),
-                        name: "phone".to_string(),
-                        input_type: "tel".to_string(),
-                        placeholder: "+1 (555) 123-4567".to_string(),
-                        required: false,
-                    })}
+                    @input_field(
+                        label="Phone Number",
+                        name="phone",
+                        input_type="tel",
+                        placeholder="+1 (555) 123-4567",
+                        required=false
+                    )
 
-                    {select_field(&SelectProps {
-                        label: "Country".to_string(),
-                        name: "country".to_string(),
-                        options: countries.clone(),
-                        required: true,
-                    })}
+                    @select_field(
+                        label="Country",
+                        name="country",
+                        options=&countries,
+                        required=true
+                    )
 
-                    {radio_group(&RadioGroupProps {
-                        label: "Preferred Contact Method".to_string(),
-                        name: "contact_method".to_string(),
-                        options: contact_methods.clone(),
-                        required: true,
-                    })}
+                    @radio_group(
+                        label="Preferred Contact Method",
+                        name="contact_method",
+                        options=&contact_methods,
+                        required=true
+                    )
 
-                    {textarea_field(&TextareaProps {
-                        label: "Message".to_string(),
-                        name: "message".to_string(),
-                        placeholder: "Tell us more about your inquiry...".to_string(),
-                        rows: 6,
-                        required: true,
-                    })}
+                    @textarea_field(
+                        label="Message",
+                        name="message",
+                        placeholder="Tell us more about your inquiry...",
+                        rows=6,
+                        required=true
+                    )
 
-                    {checkbox_field(&CheckboxProps {
-                        label: "I agree to the privacy policy".to_string(),
-                        name: "privacy_agree".to_string(),
-                        checked: false,
-                    })}
+                    @checkbox_field(
+                        label="I agree to the privacy policy",
+                        name="privacy_agree",
+                        checked=false
+                    )
 
                     <div class="form-actions">
                         <button type="submit" class="btn-submit">"Submit Form"</button>
@@ -417,5 +417,6 @@ pub fn contact_form_demo() -> impl azumi::Component {
 
 /// Axum handler for Lesson 15
 pub async fn lesson15_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&contact_form_demo()))
+    axum::response::Html(azumi::render_to_string(&html! { @contact_form_demo() }))
+}
 }
