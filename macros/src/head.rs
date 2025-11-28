@@ -22,7 +22,13 @@ impl Parse for HeadArgs {
         };
 
         while !input.is_empty() {
-            let key: Ident = input.parse()?;
+            let key_str = if input.peek(Token![type]) {
+                input.parse::<Token![type]>()?;
+                "type".to_string()
+            } else {
+                input.parse::<Ident>()?.to_string()
+            };
+
             input.parse::<Token![:]>()?;
             let value: Expr = input.parse()?;
 
@@ -30,7 +36,7 @@ impl Parse for HeadArgs {
                 input.parse::<Token![,]>()?;
             }
 
-            match key.to_string().as_str() {
+            match key_str.as_str() {
                 "title" => args.title = Some(value),
                 "description" => args.description = Some(value),
                 "image" => args.image = Some(value),
@@ -38,7 +44,7 @@ impl Parse for HeadArgs {
                 "type" => args.type_ = Some(value),
                 _ => {
                     return Err(syn::Error::new(
-                        key.span(),
+                        input.span(),
                         "Unknown key. Supported keys: title, description, image, url, type",
                     ))
                 }
