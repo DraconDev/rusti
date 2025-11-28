@@ -1065,3 +1065,14 @@ impl Parse for Fragment {
         Ok(Fragment { children, span })
     }
 }
+
+pub struct HtmlInput {
+    pub nodes: Vec<Node>,
+}
+
+impl Parse for HtmlInput {
+    fn parse(input: ParseStream) -> Result<Self> {
+        let nodes = parse_nodes(input)?;
+        Ok(HtmlInput { nodes })
+    }
+}
