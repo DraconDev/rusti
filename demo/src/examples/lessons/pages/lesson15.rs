@@ -199,6 +199,7 @@ pub fn radio_group(props: &RadioGroupProps) -> impl azumi::Component + '_ {
 // SECTION 6: Complete Form Example
 // ============================================================================
 
+#[azumi::component]
 pub fn contact_form_demo() -> impl azumi::Component {
     let countries = vec![
         SelectOption {

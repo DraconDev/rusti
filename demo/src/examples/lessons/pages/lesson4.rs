@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Example: All classes defined - compiles successfully
+#[azumi::component]
 pub fn valid_classes() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson4.css" />
@@ -15,6 +16,7 @@ pub fn valid_classes() -> impl azumi::Component {
 }
 
 /// Example: Shows what valid CSS looks like
+#[azumi::component]
 pub fn another_valid() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson4.css" />
@@ -26,6 +28,7 @@ pub fn another_valid() -> impl azumi::Component {
 }
 
 /// Main lesson
+#[azumi::component]
 pub fn lesson4() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson4.css" />

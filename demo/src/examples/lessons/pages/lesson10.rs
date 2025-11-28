@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Data view handling Ok/Err states
+#[azumi::component]
 pub fn data_view(ok_data: bool) -> impl azumi::Component {
     let data = if ok_data {
         Ok(vec!["Item 1", "Item 2"])
@@ -31,13 +32,19 @@ pub fn data_view(ok_data: bool) -> impl azumi::Component {
 }
 
 /// Success state example
+#[azumi::component]
 pub fn success_data() -> impl azumi::Component {
-    data_view(true)
+    html! {
+        @data_view(ok_data=true)
+    }
 }
 
 /// Error state example
+#[azumi::component]
 pub fn error_data() -> impl azumi::Component {
-    data_view(false)
+    html! {
+        @data_view(ok_data=false)
+    }
 }
 pub async fn lesson10_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&success_data()))

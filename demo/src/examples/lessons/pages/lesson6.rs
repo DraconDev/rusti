@@ -11,6 +11,7 @@ enum Role {
 }
 
 /// User role display using @match
+#[azumi::component]
 pub fn user_role_display(role: Role) -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson6.css" />
@@ -25,18 +26,27 @@ pub fn user_role_display(role: Role) -> impl azumi::Component {
 }
 
 /// Admin example
+#[azumi::component]
 pub fn admin_example() -> impl azumi::Component {
-    user_role_display(Role::Admin)
+    html! {
+        @user_role_display(role=Role::Admin)
+    }
 }
 
 /// User example
+#[azumi::component]
 pub fn user_example() -> impl azumi::Component {
-    user_role_display(Role::User)
+    html! {
+        @user_role_display(role=Role::User)
+    }
 }
 
 /// Guest example
+#[azumi::component]
 pub fn guest_example() -> impl azumi::Component {
-    user_role_display(Role::Guest)
+    html! {
+        @user_role_display(role=Role::Guest)
+    }
 }
 
 /// Handler for Axum

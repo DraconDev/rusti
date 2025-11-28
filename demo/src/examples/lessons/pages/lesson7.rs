@@ -22,6 +22,7 @@ pub fn formatted_price(product: Product) -> impl azumi::Component {
 }
 
 /// Example product with 20% discount
+#[azumi::component]
 pub fn example_product() -> impl azumi::Component {
     formatted_price(Product {
         price: 100.0,
@@ -30,6 +31,7 @@ pub fn example_product() -> impl azumi::Component {
 }
 
 /// No discount example
+#[azumi::component]
 pub fn full_price_product() -> impl azumi::Component {
     formatted_price(Product {
         price: 50.0,
