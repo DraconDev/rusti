@@ -1,53 +1,63 @@
-//! Lesson 27: SEO Meta Tags
+//! Lesson 27: SEO with head! macro
 //!
-//! Building complete HTML documents with meta tags
+//! Building complete HTML documents with the head! macro
 
-use azumi::html;
+use azumi::{head, html};
 
 #[azumi::component]
-pub fn seo_page_demo<'a>(
+pub fn seo_demo<'a>(
     title: &'a str,
     description: &'a str,
-    image_url: &'a str
+    image_url: &'a str,
 ) -> impl azumi::Component + 'a {
     html! {
         <html lang="en">
-            <head>
+            {head! {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                
+
                 <title>{title}</title>
                 <meta name="description" content={description} />
-                
+
                 // Open Graph tags
                 <meta property="og:title" content={title} />
                 <meta property="og:description" content={description} />
                 <meta property="og:image" content={image_url} />
                 <meta property="og:type" content="article" />
-                
+
                 // Twitter Card
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content={title} />
                 <meta name="twitter:image" content={image_url} />
-                
+
                 <style src="/static/pages/lesson27.css" />
-            </head>
+            }}
+
             <body>
-                <div class="page-container">
-                    <h1>"Lesson 27: SEO Meta Tags"</h1>
-                    
-                    <div class="preview-card">
-                        <img src={image_url} alt="Preview" class="preview-image" />
+                <div class="page">
+                    <h1>"Lesson 27: head! Macro"</h1>
+                    <p class="intro">"Use " <code>"head!"</code> " for all meta tags and stylesheets"</p>
+
+                    <div class="preview">
+                        <img src={image_url} alt="Share preview" class="preview-img" />
                         <h2>{title}</h2>
                         <p>{description}</p>
                     </div>
 
-                    <div class="code-sample">
-                        <h3>"Generated meta tags:"</h3>
+                    <div class="example">
+                        <h3>"Code:"</h3>
                         <pre>
-"<title>" {title} "</title>\n"
-"<meta property=\"og:title\" content=\"" {title} "\" />\n"
-"<meta property=\"og:image\" content=\"" {image_url} "\" />"
+    "use azumi::{{html, head}};\n\n"
+    "html! {\n"
+    "  <html>\n"
+    "    {{head! {{\n"
+    "      <title>{{title}}</title>\n"
+    "      <meta property=\"og:title\" content={{title}} />\n"
+    "      <style src=\"/static/style.css\" />\n"
+    "    }}}}\n"
+    "    <body>...</body>\n"
+    "  </html>\n"
+    "}"
                         </pre>
                     </div>
                 </div>
@@ -56,15 +66,12 @@ pub fn seo_page_demo<'a>(
     }
 }
 
-#[azumi::component]
-pub fn meta_demo() -> impl azumi::Component {
-    @seo_page_demo(
-        title="Ultimate Rust Guide",
-        description="Learn Rust with type-safe templates",
-        image_url="https://example.com/rust-guide.jpg"
-    )
-}
-
 pub async fn lesson27_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&html! { @meta_demo() }))
+    axum::response::Html(azumi::render_to_string(&html! {
+        @seo_demo(
+            title="Azumi Guide",
+            description="Type-safe templates for Rust",
+            image_url="https://example.com/azumi.jpg"
+        )
+    }))
 }
