@@ -15,6 +15,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse::{Parse, ParseStream};
 use syn::parse_macro_input;
+use syn::spanned::Spanned;
 
 #[proc_macro]
 pub fn head(input: TokenStream) -> TokenStream {
