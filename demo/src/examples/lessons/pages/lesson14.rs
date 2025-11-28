@@ -146,7 +146,7 @@ pub fn list_item(item: &ListItem) -> impl azumi::Component + '_ {
                 <p class="list-item-description">{&item.description}</p>
             </div>
             <div class="list-item-meta">
-                {badge(&BadgeProps {
+                @badge( BadgeProps {
                     text: item.status.clone(),
                     color: match item.status.as_str() {
                         "Active" => "success",
@@ -154,7 +154,7 @@ pub fn list_item(item: &ListItem) -> impl azumi::Component + '_ {
                         "Completed" => "info",
                         _ => "secondary",
                     }.to_string(),
-                })}
+                })
             </div>
         </div>
     }
