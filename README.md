@@ -18,7 +18,7 @@ Azumi is a **compile-time HTML/CSS macro** that:
 -   ✅ **Strict quoted syntax** - no lexer ambiguity
 -   ✅ **Rust control flow** - `@if/@for/@match/@let`
 -   ✅ **Fragments** - `<></>` for multiple roots
--   ✅ **Components** - `#[azumi::component]` with props/defaults
+-   ✅ **Mandatory components** - `#[azumi::component]` with named args enforced
 -   ✅ **Axum/HTMX** seamless integration
 -   ✅ **Full IDE support** via `<style src>`
 -   ✅ **Zero runtime** - pure string generation
@@ -72,10 +72,11 @@ Azumi is a **compile-time HTML/CSS macro** that:
 1. **Quote text/attrs:** `<h1>\"Hello\" class=\"box\">`
 2. **External CSS:** `<style src=\"file.css\" />`
 3. **Define all classes** - or compile error @ exact spot
-4. **Images:** `<img alt=\"\" />`
-5. **Valid types:** input/button types checked w/ suggestions
-6. **ARIA roles:** Valid only
-7. **Buttons:** Text or `aria-label`/title
+4. **Components:** Use `#[azumi::component]` + named args (`@Comp(prop=val)`)
+5. **Images:** `<img alt=\"\" />`
+6. **Valid types:** input/button types checked w/ suggestions
+7. **ARIA roles:** Valid only
+8. **Buttons:** Text or `aria-label`/title
 
 ### ❌ Blocked
 
