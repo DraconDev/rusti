@@ -10,3 +10,6 @@ azumi_macros
 proc_macro html
 
 now i think it work but our rust analyzer shows it as an error  -->
+
+
+one but that if we make a css file rust analyzer doesn't realize we have it, and keeps showing it as an error, i think we need to add a custom rule to our rust analyzer to ignore this, or not sure what to do

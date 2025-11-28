@@ -7,7 +7,7 @@ pub mod lesson12;
 pub mod lesson13;
 pub mod lesson14;
 pub mod lesson15;
-/* Missing: pub mod lesson16; */
+pub mod lesson16;
 /* Missing: pub mod lesson17; */
 /* Missing: pub mod lesson18; */
 /* Missing: pub mod lesson19; */
