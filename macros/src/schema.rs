@@ -69,6 +69,27 @@ pub fn derive_schema(input: TokenStream) -> TokenStream {
             fn to_schema_json_value(&self) -> serde_json::Value {
                 use serde_json::Value;
 
+                // Autoref specialization machinery
+                struct Wrapper<'a, T: ?Sized>(&'a T);
+
+                // Priority 1: Schema types (inherent method)
+                impl<'a, T: azumi::Schema + ?Sized> Wrapper<'a, T> {
+                    fn convert(&self) -> Value {
+                        self.0.to_schema_json_value()
+                    }
+                }
+
+                // Priority 2: Serialize types (trait method)
+                trait Fallback {
+                    fn convert(&self) -> Value;
+                }
+
+                impl<'a, T: serde::Serialize + ?Sized> Fallback for Wrapper<'a, T> {
+                    fn convert(&self) -> Value {
+                        serde_json::to_value(self.0).unwrap_or(Value::Null)
+                    }
+                }
+
                 let mut map = serde_json::Map::new();
                 map.insert(
                     "@context".to_string(),
@@ -170,7 +191,7 @@ fn generate_field_serialization(
             if let Some(ref value) = self.#field_name {
                 map.insert(
                     #json_key.to_string(),
-                    azumi::schema_value_to_json(value)
+                    Wrapper(value).convert()
                 );
             }
         };
@@ -182,7 +203,7 @@ fn generate_field_serialization(
             {
                 let array: Vec<Value> = self.#field_name
                     .iter()
-                    .map(|item| azumi::schema_value_to_json(item))
+                    .map(|item| Wrapper(item).convert())
                     .collect();
                 map.insert(
                     #json_key.to_string(),
@@ -196,7 +217,7 @@ fn generate_field_serialization(
     quote! {
         map.insert(
             #json_key.to_string(),
-           azumi::schema_value_to_json(&self.#field_name)
+            Wrapper(&self.#field_name).convert()
         );
     }
 }
