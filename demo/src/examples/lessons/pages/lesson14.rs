@@ -8,7 +8,7 @@ use azumi::html;
 // SECTION 1: Button Component with Variants
 // ============================================================================
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum ButtonVariant {
     Primary,
     Secondary,
@@ -17,7 +17,7 @@ pub enum ButtonVariant {
     Outline,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum ButtonSize {
     Small,
     Medium,
@@ -33,8 +33,15 @@ pub struct ButtonProps {
 }
 
 /// Reusable button component with multiple variants and sizes
-pub fn button(props: &ButtonProps) -> impl azumi::Component + '_ {
-    let variant_class = match props.variant {
+/// Reusable button component with multiple variants and sizes
+#[azumi::component]
+pub fn button<'a>(
+    text: &'a str,
+    variant: ButtonVariant,
+    size: ButtonSize,
+    disabled: bool,
+) -> impl azumi::Component + 'a {
+    let variant_class = match variant {
         ButtonVariant::Primary => "btn-primary",
         ButtonVariant::Secondary => "btn-secondary",
         ButtonVariant::Success => "btn-success",
@@ -42,7 +49,7 @@ pub fn button(props: &ButtonProps) -> impl azumi::Component + '_ {
         ButtonVariant::Outline => "btn-outline",
     };
 
-    let size_class = match props.size {
+    let size_class = match size {
         ButtonSize::Small => "btn-sm",
         ButtonSize::Medium => "btn-md",
         ButtonSize::Large => "btn-lg",
@@ -52,9 +59,9 @@ pub fn button(props: &ButtonProps) -> impl azumi::Component + '_ {
         <style src="/static/pages/lesson14.css" />
         <button
             class={format!("btn {} {}", variant_class, size_class)}
-            disabled={props.disabled}
+            disabled={disabled}
         >
-            {&props.text}
+            {text}
         </button>
     }
 }
@@ -63,7 +70,7 @@ pub fn button(props: &ButtonProps) -> impl azumi::Component + '_ {
 // SECTION 2: Alert Component with Types
 // ============================================================================
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum AlertType {
     Info,
     Success,
@@ -79,15 +86,21 @@ pub struct AlertProps {
 }
 
 /// Alert component for showing notifications
-pub fn alert(props: &AlertProps) -> impl azumi::Component + '_ {
-    let type_class = match props.alert_type {
+/// Alert component for showing notifications
+#[azumi::component]
+pub fn alert<'a>(
+    message: &'a str,
+    alert_type: AlertType,
+    dismissible: bool,
+) -> impl azumi::Component + 'a {
+    let type_class = match alert_type {
         AlertType::Info => "alert-info",
         AlertType::Success => "alert-success",
         AlertType::Warning => "alert-warning",
         AlertType::Error => "alert-error",
     };
 
-    let icon = match props.alert_type {
+    let icon = match alert_type {
         AlertType::Info => "ℹ️",
         AlertType::Success => "✓",
         AlertType::Warning => "⚠️",
@@ -98,8 +111,8 @@ pub fn alert(props: &AlertProps) -> impl azumi::Component + '_ {
         <style src="/static/pages/lesson14.css" />
         <div class={format!("alert {}", type_class)}>
             <span class="alert-icon">{icon}</span>
-            <span class="alert-message">{&props.message}</span>
-            @if props.dismissible {
+            <span class="alert-message">{message}</span>
+            @if dismissible {
                 <button class="alert-close">"×"</button>
             }
         </div>
@@ -110,17 +123,19 @@ pub fn alert(props: &AlertProps) -> impl azumi::Component + '_ {
 // SECTION 3: Badge Component
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct BadgeProps {
     pub text: String,
     pub color: String,
 }
 
-pub fn badge(props: &BadgeProps) -> impl azumi::Component + '_ {
+/// Badge component
+#[azumi::component]
+pub fn badge<'a>(text: &'a str, color: &'a str) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson14.css" />
-        <span class={format!("badge badge-{}", props.color)}>
-            {&props.text}
+        <span class={format!("badge badge-{}", color)}>
+            {text}
         </span>
     }
 }
@@ -129,7 +144,7 @@ pub fn badge(props: &BadgeProps) -> impl azumi::Component + '_ {
 // SECTION 4: List Component with Custom Items
 // ============================================================================
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ListItem {
     pub id: u32,
     pub title: String,
@@ -137,7 +152,9 @@ pub struct ListItem {
     pub status: String,
 }
 
-pub fn list_item(item: &ListItem) -> impl azumi::Component + '_ {
+/// List item component
+#[azumi::component]
+pub fn list_item<'a>(item: &'a ListItem) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson14.css" />
         <div class="list-item">
@@ -146,26 +163,28 @@ pub fn list_item(item: &ListItem) -> impl azumi::Component + '_ {
                 <p class="list-item-description">{&item.description}</p>
             </div>
             <div class="list-item-meta">
-                @badge( BadgeProps {
-                    text: item.status.clone(),
-                    color: match item.status.as_str() {
+                @badge(
+                    text=&item.status,
+                    color=match item.status.as_str() {
                         "Active" => "success",
                         "Pending" => "warning",
                         "Completed" => "info",
                         _ => "secondary",
-                    }.to_string(),
-                })
+                    }
+                )
             </div>
         </div>
     }
 }
 
-pub fn item_list(items: &[ListItem]) -> impl azumi::Component + '_ {
+/// Item list component
+#[azumi::component]
+pub fn item_list<'a>(items: &'a [ListItem]) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson14.css" />
         <div class="item-list">
             @for item in items {
-                {list_item(item)}
+                @list_item(item=item)
             }
         </div>
     }
