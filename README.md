@@ -1,308 +1,230 @@
 # Azumi
 
-**Type-Safe, Compile-Time Validated HTML/CSS Templates for Rust & Axum – The Strict Templating Revolution**
+**Type-Safe, Compile-Time Validated HTML/CSS Templates for Rust & Axum.**
 
-[![Crates.io](https://img.shields.io/crates/v/azumi.svg)](https://crates.io/crates/azumi)
-[![Docs](https://docs.rs/azumi/badge.svg)](https://docs.rs/azumi)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-Azumi is a **strict, zero-runtime HTML/CSS templating system** for Rust that brings **compile-time validation** to your web development workflow. Unlike traditional templating engines, Azumi **validates CSS classes, accessibility (A11y), and HTML structure at compile time** with **exact line/column errors** in your IDE. It enforces **component-scoped styling** via automatic hash-based scoping (`[data-s{hash}]`), detects **dead/unused CSS**, and ensures **type safety** across your templates.
-
-**Every class must be defined. Every rule must be followed. Or it won't compile.**
-
-Built for **Axum + HTMX** stacks, Azumi delivers **production-grade SSR** with **no compromises** on performance or maintainability. Progressive 20-lesson demo included.
+Azumi is a **strict** HTML/CSS template system for Rust. It validates **CSS classes**, **accessibility**, and **HTML structure** at compile time with **location-specific errors**, enforces **component-scoped styling**, and ensures **type safety**. Every class must be defined; unused CSS is detected. Zero runtime overhead.
 
 ---
 
-## 🎯 Why Azumi?
+## 🎯 What is Azumi?
 
-In modern web development, **technical debt accumulates fast**:
+Azumi is a **compile-time HTML/CSS macro** that:
 
-- 🐛 **CSS typos** → broken UIs
-- 💥 **Missing alt texts** → accessibility failures
-- 🔒 **Global style leaks** → component breakage
-- 📦 **Dead CSS bloat** → larger bundles
-- ❌ **Invalid HTML** → browser quirks
-
-**Azumi fixes this at compile time:**
-
-```
-✅ CSS classes validated (missing → exact error)
-✅ Dead CSS detected & warned
-✅ A11y enforced (img alt, ARIA, buttons)
-✅ HTML semantics (tables, lists, no nested forms)
-✅ Auto CSS scoping (no leaks)
-✅ Zero runtime overhead (pure strings)
-✅ Full Rust types/props/control flow
-```
-
-**Results:** **Maintainable codebases that scale.**
+- ✅ **Validates CSS classes** at compile time - missing classes & dead CSS with **exact locations**
+- ✅ **Enforces accessibility** - `img` alt, valid inputs/buttons/ARIA, button labels
+- ✅ **Validates HTML structure** - tables/lists children, no nested forms, no interactive buttons
+- ✅ **Supports CSS variables** - `--var={rust_value}` syntax
+- ✅ **Automatic CSS scoping** - hash-based `[data-s{hash}]` isolation
+- ✅ **Strict quoted syntax** - no lexer ambiguity
+- ✅ **Rust control flow** - `@if/@for/@match/@let`
+- ✅ **Fragments** - `<></>` for multiple roots
+- ✅ **Components** - `#[azumi::component]` with props/defaults
+- ✅ **Axum/HTMX** seamless integration
+- ✅ **Full IDE support** via `<style src>`
+- ✅ **Zero runtime** - pure string generation
 
 ---
 
-## 🚀 Key Features
+## ❌ What Azumi is NOT
 
-### 1. **Compile-Time CSS Validation** ✨ *Unique*
-- **Missing classes** → compile error at **exact span**
-- **Dead CSS** → warnings for unused selectors
-- **CSS variables** → `--width={rust_expr}` dynamic support
-
-### 2. **Automatic CSS Scoping** 🔒
-```
-CSS: .btn { color: blue; }
-HTML: <button class="btn"> → <button class="btn" data-sabc123>
-Scoped: .btn[data-sabc123] { color: blue; }
-```
-
-### 3. **Full Accessibility & Semantics** ♿
-```
-✅ img alt="" required
-✅ Valid input/button types (+ suggestions)
-✅ ARIA roles validated
-✅ Buttons need text/aria-label
-✅ Tables: tr in tbody, thead/tfoot optional
-✅ Lists: li children only
-✅ No nested forms/buttons/anchors
-```
-
-### 4. **Ergonomic Syntax**
-```
-@let date = now.format("%Y");
-@if user.is_admin {
-    @for item in items {
-        @match item.status {
-            Ok => <span class="success">"✓"</span>,
-            _ => <span class="error">"✗"</span>,
-        }
-    }
-}
-```
-
-### 5. **Components with Named Props** 🧩
-```rust
-#[azumi::component]
-fn Button(text: &'static str, #[prop(default="primary")] variant: &'static str) {
-    html! { <button class={format!("btn-{}", variant)}>{text}</button> }
-}
-
-// Named args enforced @ compile-time
-@Button(text="Click me", variant="secondary")
-```
-
-### 6. **Zero Runtime – Pure Formatter**
-- No parsers, no allocations beyond `write!`
-- Benchmarks: **1.2M req/s** (Hello World)
-
-### 7. **Dev Experience**
-- **IDE jumps:** VSCode CSS Peek for `<style src>`
-- **Hot reload:** `include_bytes!` deps trigger rebuilds
-- **Exact errors:** Line/col in editor
-
----
-
-## ❌ What Azumi Rejects (Strict Mode)
-
-| ❌ Banned | ✅ Azumi Way |
-|----------|-------------|
-| Inline `<style>` | `<style src="file.css" />` |
-| Unquoted text | `<h1>"Hello"</h1>` |
-| Undefined classes | Define in CSS or error |
-| Nested `<form>` | Flat structure |
-| Interactive `<button>` | Text/aria-label only |
-
-**Exceptions:** Global `global.css`, CDN links, JSON scripts.
+- ❌ **No JS Framework** - Server-side + HTMX/Alpine
+- ❌ **No HTML-in-Rust** - Quoted macro, not parser
+- ❌ **No CSS Framework** - Validates **your** CSS (no Tailwind)
+- ❌ **No Inline Styles/Scripts** - External files only
+- ❌ **No Leniency** - Breaks rules? Won't compile
 
 ---
 
 ## 🧭 Design Philosophy
 
-**\"Strictness = Freedom from Bugs\"**
+**Strict = Maintainable.** Prevents technical debt:
 
-| Common Pitfall | Azumi Solution |
-|----------------|----------------|
-| CSS class typos | Compile-time check + spans |
-| Style leaks | Auto `[data-s{hash}]` scoping |
-| Inline chaos | External CSS + IDE |
-| A11y misses | Enforced rules |
-| Lexer hacks | Strict quoted syntax |
+| Problem | Azumi Fix |
+|---------|-----------|
+| CSS typos/dead code | Compile-time validation + locations |
+| Global style leaks | Auto-scoping |
+| Inline mess | External CSS/JS + IDE |
+| A11y/HTML bugs | Enforced rules |
+| Lexer issues | Strict quoting |
 
-**Syntax Legend:**
-- `@if/@for/@match/@let` → Rust control flow
-- `<></>` → Fragments (multi-root)
-- `{expr}` → Smart interpolation (Component or escaped)
+**Syntax:** `@` = Rust (`@if`), `<>` = HTML.
 
 ---
 
-## 📊 Ultimate Comparison (30+ Criteria)
+## 📊 Comparison
 
-**Azumi scores 98/100** – See [detailed table →](azumi_comparison.md)
+| Feature | Azumi | Maud | Askama | Leptos | React SSR |
+|---------|-------|------|--------|--------|-----------|
+| CSS Validation | ✅ Exact | ❌ | ❌ | ❌ | ❌ |
+| CSS Scoping | ✅ Auto | ❌ | ❌ | ❌ | CSS-in-JS |
+| A11y/HTML Checks | ✅ Full | ❌ | ❌ | ❌ | ❌ |
+| Zero Runtime | ✅ | ✅ | ✅ | Signals | VDOM |
+| Strictness | 🔒 | ⚠️ | ⚠️ | ✅ | ⚠️ |
 
-| Feature | Azumi | Maud | Askama | Leptos | Next.js |
-|---------|-------|------|--------|--------|---------|
-| **CSS Validation** | ✅ Exact | ❌ | ❌ | ❌ | ❌ |
-| **CSS Scoping** | ✅ Auto | ❌ | ❌ | ❌ | CSS-in-JS |
-| **A11y Checks** | ✅ Full | ❌ | ❌ | ❌ | ❌ |
-| **Zero Runtime** | ✅ | ✅ | ✅ | Signals | VDOM |
-| **Strictness** | 🔒 Ultra | ⚠️ | ⚠️ | ✅ | ⚠️ |
-
-**[Full Comparison](azumi_comparison.md)**: Azumi dominates in validation, strictness, DX.
+**Azumi unique:** Compile-time CSS/A11y/HTML validation + scoping.
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Rules (Strict - Follow or Fail)
 
-### Install
-```toml
-[dependencies]
-azumi = "1.7"
-```
+### ✅ Must
 
-### Basic Template
+1. **Quote text/attrs:** `<h1>\"Hello\" class=\"box\">`
+2. **External CSS:** `<style src=\"file.css\" />`
+3. **Define all classes** - or compile error @ exact spot
+4. **Images:** `<img alt=\"\" />`
+5. **Valid types:** input/button types checked w/ suggestions
+6. **ARIA roles:** Valid only
+7. **Buttons:** Text or `aria-label`/title
+
+### ❌ Blocked
+
+1. Inline `<style>`/`<script>`
+2. Local `<link href=\"/local.css\">` - use `<style src>`
+3. Unquoted text/attrs
+4. Undefined classes
+
+### ⚠️ Exceptions
+
+1. **Boolean attrs:** `<input disabled />`
+2. **Global CSS:** `global.css` - no scope/validate
+3. **CDN:** `<link href=\"https://cdn...\">`
+4. **JSON:** `<script type=\"application/json\">{data}</script>`
+
+---
+
+## 🚀 Features & Examples
+
+### 1. Templates
+
 ```rust
 use azumi::html;
 
 html! {
-    <style src="static/app.css" />
-    <div class="container">
-        <h1>"Hello " {user_name} "!"</h1>
-        @if items.len() > 0 {
-            @for item in items {
-                <li class="item">{item.name}</li>
-            }
-        } else {
-            <p>"No items"</p>
-        }
+    <div class=\"container\">
+        <h1>\"Hello \" {name} \"!\"</h1>
     </div>
 }
 ```
 
-### Axum Handler
+**Interpolation:** Auto-concat `{\"$\" price}`.
+
+### 2. Fragments
+
 ```rust
-async fn handler() -> impl IntoResponse {
-    Html(azumi::render_to_string(&Page { user_name: "World" }))
+<>
+    <h1>\"Title\"</h1>
+    <p>\"Para\"</p>
+</>
+```
+
+### 3. Control Flow
+
+**@if/@for/@match/@let:**
+
+```rust
+@let date = format_date(now);
+@if logged_in {
+    @for item in items {
+        @match item.status {
+            Active => <span class=\"green\">\"OK\"</span>,
+            _ => <span class=\"red\">\"Fail\"</span>,
+        }
+    }
+} else {
+    <p>\"Login\"</p>
 }
 ```
 
----
+**Match single expr:** No braces needed.
 
-## 🌟 Full Examples
+### 4. Components
 
-### Components
 ```rust
 #[azumi::component]
-fn Card(title: String, children: impl azumi::Component + 'static) {
+fn Button(text: &str, #[prop(default = \"primary\")] variant: &str) {
     html! {
-        <style src="static/card.css" />
-        <div class="card">
-            <h2 class="card-title">{title}</h2>
-            <div class="card-body">{children}</div>
-        </div>
+        <style src=\"/static/button.css\" />
+        <button class={format!(\"btn-{}\", variant)}>{text}</button>
     }
 }
 
-// Usage
-@Card(title="My Card".to_string(), <>
-    <p>"Content"</p>
-</>)
+// Use: @Button(text=\"Click\", variant=\"secondary\")
 ```
 
-### CSS Variables
-**HTML:** `<div class="progress" --value={progress}>`
-**CSS:** `.progress { width: var(--value); }`
+### 5. CSS Features
+
+**Scoping:** Auto `class[data-sabc123] {}`
+
+**Variables:**
+
+HTML: `<div class=\"bar\" --width={progress} --color={color}>`
+
+CSS: `.bar { width: var(--width); background: var(--color); }`
+
+**Validation:** Missing/dead CSS → errors.
+
+### 6. Validations (Compile-Time)
+
+- **CSS:** All classes used/defined, dead CSS
+- **A11y:**
+  - `img` alt req'd (empty OK for decor)
+  - Input/button types valid (+ suggestions: \"text\" → \"text\")
+  - ARIA roles valid
+  - Buttons: text/aria-label/title req'd
+- **HTML:**
+  - Table: proper children (tr in tbody etc.)
+  - Lists: li only
+  - No nested `<form>`
+  - No interactive in `<button>` (links/inputs)
+
+Errors: **Exact line/col** in editor.
+
+### 7. HTMX
+
+```rust
+<button hx-post=\"/api\" hx-swap=\"outerHTML\" class=\"btn\">\"Click\"</button>
+```
 
 ---
 
-## 🔍 Deep Dive: Validations
+## 📦 Install
 
-Errors show **exact line/col**:
-
-```
-error: Class 'btn-primry' not found in CSS
-  --> src/page.rs:5:20
-   |
-5  |     <button class="btn-primry">
-   |                      ^^^^^^^^
+```toml
+[dependencies]
+azumi = { path = \"./\" }  # or git/crates.io
+azumi-macros = { path = \"./macros\" }
 ```
 
-**CSS Dead Code:** Warnings for unused selectors.
+For Axum: See demo.
 
----
-
-## 🛠️ Demo App
+## 🛠️ Demo
 
 ```bash
-cd demo && cargo run
-# http://localhost:8081
+cd demo
+cargo run
+# http://localhost:8081 - lessons + tests
 ```
 
-**20 Progressive Lessons:**
-- L0: Fragments
-- L2: CSS Validation
-- L5: Components
-- L16: JS/HTMX
-- L20: Full App
-
-**[Live Demo Structure](demo/src/examples/lessons)**
+**20 Lessons:** Progressive examples (hello → full app).
 
 ---
 
-## ⚡ Benchmarks
+## 🔧 IDE
 
-```
-Hello World (req/s):
-Azumi:     1,200,000
-Sailfish:  1,400,000
-Maud:      1,100,000
-Next.js:     45,000
-
-Memory: Azumi 2MB | Next.js 200MB
-```
+VS Code **CSS Peek** ext for `<style src>` jump-to-def.
 
 ---
 
-## 🔧 IDE Setup
-
-1. **VS Code:** Install [CSS Peek](https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek)
-2. **Rust Analyzer:** Auto-detects `<style src>`
-3. **Spans:** Jump-to-def on classes/CSS
-
----
-
-## 🏗️ Project Structure
+## 🏗️ Structure
 
 ```
 azumi/
-├── src/          # Core runtime (rendering, scoping)
-├── macros/       # Proc macros + validators (CSS/A11y/HTML)
-├── demo/         # Axum app + 20 lessons + tests
-│   ├── static/   # CSS files
-│   └── src/examples/
-└── tests/        # Integration tests
+├── src/     # Core
+├── macros/  # html!/component macros + validators
+└── demo/    # Axum app + 20 lessons/tests/CSS
 ```
-
----
-
-## 🚀 Roadmap
-
-- ✅ CSS Dead Code Warnings
-- ✅ Schema.org JSON-LD
-- 🔄 Lessons 17-20 (HTMX App)
-- 🔄 Rust Analyzer CSS Fix
-- ⏳ Tailwind IntelliSense?
-- ⏳ Server Functions
-
-**See [todo.md](todo.md)**
-
----
-
-## 🤝 Contributing
-
-1. Fork & PR
-2. `cargo test`
-3. Follow strict rules 😎
 
 ## 📜 License
 
-MIT © DraconDev
-
-**[Full Comparison → azumi_comparison.md](azumi_comparison.md)**
+MIT
