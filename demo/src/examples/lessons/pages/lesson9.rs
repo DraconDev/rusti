@@ -48,4 +48,6 @@ pub fn no_match_search() -> impl azumi::Component {
     ];
     filtered_search(&items, "JavaScript")
 }
-pub async fn lesson9_handler() -> impl axum::response::IntoResponse { axum::response::Html("Lesson 9") }
+pub async fn lesson9_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&matching_search()))
+}
