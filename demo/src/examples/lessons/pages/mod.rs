@@ -8,11 +8,20 @@ pub mod lesson13;
 pub mod lesson14;
 pub mod lesson15;
 pub mod lesson16;
-/* Missing: pub mod lesson17; */
-/* Missing: pub mod lesson18; */
-/* Missing: pub mod lesson19; */
+pub mod lesson17;
+pub mod lesson18;
+pub mod lesson19;
 pub mod lesson2;
-/* Missing: pub mod lesson20; */
+pub mod lesson20;
+pub mod lesson21;   
+pub mod lesson22;
+pub mod lesson23;
+pub mod lesson24;
+pub mod lesson25;
+pub mod lesson26;
+pub mod lesson27;
+pub mod lesson28;
+pub mod lesson29;
 pub mod lesson3;
 pub mod lesson4;
 pub mod lesson5;

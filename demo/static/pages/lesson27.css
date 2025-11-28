@@ -1,4 +1,4 @@
-/* Lesson 27: SEO Meta Tags */
+/* Lesson 27: head! macro */
 
 body {
     margin: 0;
@@ -6,7 +6,7 @@ body {
     background: #f5f5f5;
 }
 
-.page-container {
+.page {
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
@@ -17,36 +17,50 @@ body {
 
 h1 {
     color: #2c3e50;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.preview-card {
+.intro {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+code {
+    background: rgba(52, 152, 219, 0.1);
+    color: #2c3e50;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-family: "Courier New", monospace;
+}
+
+.preview {
     background: #f8f9fa;
     padding: 2rem;
     border-radius: 8px;
     margin: 2rem 0;
+    border-left: 4px solid #3498db;
 }
 
-.preview-image {
+.preview-img {
     width: 100%;
     max-width: 600px;
-    height: auto;
+    height: 300px;
+    object-fit: cover;
     border-radius: 4px;
-    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.preview-card h2 {
+.preview h2 {
     color: #2c3e50;
     margin: 1rem 0;
 }
 
-.preview-card p {
+.preview p {
     color: #7f8c8d;
     line-height: 1.6;
 }
 
-.code-sample {
+.example {
     background: #2c3e50;
     color: #ecf0f1;
     padding: 1.5rem;
@@ -54,13 +68,13 @@ h1 {
     margin-top: 2rem;
 }
 
-.code-sample h3 {
+.example h3 {
     color: #3498db;
     margin-top: 0;
 }
 
 pre {
-    margin: 0;
+    margin: 0.5rem 0 0 0;
     font-family: "Courier New", monospace;
     line-height: 1.6;
     overflow-x: auto;
