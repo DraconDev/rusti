@@ -891,34 +891,56 @@ fn generate_body_with_context(
                         quote! {}
                     };
 
-                    // Check if args are named or positional
+                    // AZUMI 2.0: ENFORCE NAMED ARGUMENTS
+                    // All component calls must use named arguments for clarity and maintainability
                     let parser = syn::punctuated::Punctuated::<syn::Expr, syn::token::Comma>::parse_terminated;
-                    let named_args =
-                        if let Ok(exprs) = syn::parse::Parser::parse2(parser, args.clone()) {
-                            if !exprs.is_empty()
-                                && exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
+                    let named_args = if let Ok(exprs) =
+                        syn::parse::Parser::parse2(parser, args.clone())
+                    {
+                        // Check if we have positional arguments (not all are Assign expressions)
+                        if !exprs.is_empty()
+                            && !exprs.iter().all(|e| matches!(e, syn::Expr::Assign(_)))
+                        {
+                            // Positional arguments detected - generate clear compile error
+                            let name_str = quote!(#name).to_string();
+                            let error_msg = format!(
+                                    "Component '{}' must be called with named arguments.\n\
+                                     \n\
+                                     ❌ Positional arguments are not allowed:\n\
+                                     @{}(\"value1\", \"value2\")  // Error!\n\
+                                     \n\
+                                     ✅ Use named arguments instead:\n\
+                                     @{}(arg1=\"value1\", arg2=\"value2\")\n\
+                                     \n\
+                                     Why? Named arguments prevent bugs when component signatures change\n\
+                                     and make code self-documenting.",
+                                    name_str, name_str, name_str
+                                );
+                            return syn::Error::new_spanned(&call_block.name, error_msg)
+                                .to_compile_error();
+                        }
+
+                        if !exprs.is_empty() {
+                            // All are named arguments - good!
+                            Some(exprs)
+                        } else {
+                            // Empty args: check if name starts with Uppercase (Component convention)
+                            // If so, treat as named args (Builder pattern) to support defaults
+                            let name_str = quote!(#name).to_string();
+                            let last_segment = name_str.split("::").last().unwrap_or("");
+                            if last_segment
+                                .chars()
+                                .next()
+                                .is_some_and(|c| c.is_uppercase())
                             {
                                 Some(exprs)
-                            } else if exprs.is_empty() {
-                                // Empty args: check if name starts with Uppercase (Component convention)
-                                // If so, treat as named args (Builder pattern) to support defaults
-                                let name_str = quote!(#name).to_string();
-                                let last_segment = name_str.split("::").last().unwrap_or("");
-                                if last_segment
-                                    .chars()
-                                    .next()
-                                    .is_some_and(|c| c.is_uppercase())
-                                {
-                                    Some(exprs)
-                                } else {
-                                    None
-                                }
                             } else {
                                 None
                             }
-                        } else {
-                            None
-                        };
+                        }
+                    } else {
+                        None
+                    };
 
                     if let Some(exprs) = named_args {
                         let setters = exprs.iter().map(|e| {
