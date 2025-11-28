@@ -611,28 +611,33 @@ Red squiggles, hover tooltips, quick fixes—all work out of the box.
 
 ### Explore the Demo
 
-The `demo/` directory contains a complete Axum application with **18 progressive lessons**:
+The `demo/` directory contains a complete Axum application with **25+ progressive lessons**:
 
-| Lesson | Topic                  | Key Concepts                    |
-| ------ | ---------------------- | ------------------------------- |
-| 0      | HTML Fragments         | Multiple root elements, `<></>` |
-| 1      | Hello World            | Basic templates, interpolation  |
-| 2      | Unquoted Variables     | String interpolation            |
-| 3      | CSS Integration        | External stylesheets            |
-| 4      | CSS Validation         | Compile-time class checking     |
-| 5      | Inline Interpolation   | Complex expressions             |
-| 6      | Pattern Matching       | `@match` directive              |
-| 7      | @let Directive         | Computed values                 |
-| 8      | Nested Control Flow    | Combined `@if/@for/@match`      |
-| 9      | List Processing        | Filtered data                   |
-| 10     | Result Handling        | `@match` with `Ok/Err`          |
-| 11     | Simple Components      | Reusable button components      |
-| 12     | Component Children     | Passing content to components   |
-| 13     | Component Composition  | Building complex UIs            |
-| 14     | Advanced Patterns      | Enums, variants, sizes          |
-| 15     | Form Components        | Inputs, selects, checkboxes     |
-| 16     | JavaScript Integration | External libraries              |
-| 17     | HTMX Integration       | Interactive apps without JS     |
+| Lesson | Topic                          | Key Concepts                    |
+| ------ | ------------------------------ | ------------------------------- |
+| 0      | HTML Fragments                 | Multiple root elements, `<></>` |
+| 1      | Hello World                    | Basic templates, interpolation  |
+| 2      | Unquoted Variables             | String interpolation            |
+| 3      | CSS Integration                | External stylesheets            |
+| 4      | CSS Validation                 | Compile-time class checking     |
+| 5      | Inline Interpolation           | Complex expressions             |
+| 6      | Pattern Matching               | `@match` directive              |
+| 7      | @let Directive                 | Computed values                 |
+| 8      | Nested Control Flow            | Combined `@if/@for/@match`      |
+| 9      | List Processing                | Filtered data                   |
+| 10     | Result Handling                | `@match` with `Ok/Err`          |
+| 11     | Simple Components              | Reusable button components      |
+| 12     | Component Children             | Passing content to components   |
+| 13     | Component Composition          | Building complex UIs            |
+| 14     | Advanced Patterns              | Enums, variants, sizes          |
+| 15     | Form Components                | Inputs, selects, checkboxes     |
+| 16     | JavaScript Integration         | External libraries              |
+| 17     | HTMX Integration               | Interactive apps without JS     |
+| 18     | CSS Variables                  | Dynamic theming                 |
+| 19     | Accessibility Patterns         | ARIA, landmarks, skip links     |
+| 20     | Error Handling                 | Custom error pages              |
+| 21     | Component Composition Advanced | Slots, render props             |
+| 22     | Performance Patterns           | Efficient rendering             |
 
 **Start at Lesson 0 and work your way up.** Each builds on the previous.
 
