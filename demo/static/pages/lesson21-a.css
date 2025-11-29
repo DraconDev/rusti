@@ -1,19 +1,64 @@
-/* Component A - Blue theme */
+/* Component A - Blue theme - Modern Dark */
 
 .card {
-    background: #e3f2fd;
-    border-left: 4px solid #2196f3;
-    padding: 1.5rem;
-    border-radius: 4px;
-    margin: 1rem 0;
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border-left: 4px solid #3b82f6;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
+    background-size: 200% 100%;
+    animation: cardBorder 4s linear infinite;
+}
+
+@keyframes cardBorder {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-color: rgba(59, 130, 246, 0.5);
 }
 
 .title {
-    color: #1565c0;
-    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(147, 197, 253, 0.3);
 }
 
 .text {
-    color: #1976d2;
+    color: #cbd5e1;
+    line-height: 1.7;
     margin: 0;
+    font-size: 1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
