@@ -1,6 +1,6 @@
 - [ ] style lesson 0 
-- [ ] style lesson 1 
-- [ ] style lesson 2 
+- [x] style lesson 1 
+- [x] style lesson 2 
 - [x] style lesson 3 
 - [x] style lesson 4 
 - [x] style lesson 5 
@@ -15,7 +15,7 @@
 - [ ] style lesson 14 
 - [ ] style lesson 15
 - [x] style lesson 16
-- [ ] style lesson 17
+- [x] style lesson 17
 - [ ] style lesson 18
 - [x] style lesson 19
 - [ ] style lesson 20
