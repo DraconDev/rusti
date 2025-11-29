@@ -1,6 +1,6 @@
 /* Lesson 34: Modern Dark Mode */
 
-.container {
+.profile-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
@@ -8,9 +8,10 @@
     margin: 0 auto;
     position: relative;
     overflow-x: hidden;
+    --primary-color: #8b5cf6;
 }
 
-.container::before {
+.profile-container::before {
     content: "";
     position: absolute;
     top: 0;
@@ -51,13 +52,13 @@ h1 {
         135deg,
         #38bdf8 0%,
         #0ea5e9 50%,
-        #a855f7 25%,
+        var(--primary-color) 25%,
         #22c55e 75%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-weight: 700;
     text-align: center;
     text-shadow: 0 0 40px rgba(14, 165, 233, 0.4);
@@ -73,12 +74,360 @@ h1 {
     }
 }
 
+h3 {
+    font-size: 2rem;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        #a855f7 50%,
+        #22c55e 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.profile-header {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.cover-image {
+    height: 200px;
+    background: linear-gradient(
+        45deg,
+        var(--primary-color) 0%,
+        #0ea5e9 50%,
+        #22c55e 100%
+    );
+    border-radius: 0.5rem 0.5rem 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.cover-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    animation: coverShine 3s ease-in-out infinite;
+}
+
+@keyframes coverShine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    position: relative;
+    margin-top: -50px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-color);
+    object-fit: cover;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.user-details {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.name-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.handle {
+    color: #64748b;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.bio {
+    color: #cbd5e1;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.stat-item {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-shadow: 0 0 20px rgba(var(--primary-color), 0.5);
+}
+
+.stat-label {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+.edit-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.edit-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), #0ea5e9, #22c55e);
+    animation: editBorder 3s linear infinite;
+}
+
+@keyframes editBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: #f1f5f9;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group textarea {
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.8) 0%,
+        rgba(30, 41, 59, 0.8) 100%
+    );
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #e2e8f0;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.9) 0%,
+        rgba(30, 41, 59, 0.9) 100%
+    );
+    box-shadow: 0 0 20px rgba(var(--primary-color), 0.3);
+    transform: translateY(-1px);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #64748b;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(var(--primary-color), 0.2);
+    align-self: center;
+    margin-top: 1rem;
+}
+
+.save-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.save-btn:hover::before {
+    left: 100%;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color), 0.4);
+    background: linear-gradient(135deg, #a855f7, var(--primary-color));
+}
+
+.save-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(var(--primary-color), 0.3);
+}
+
 @media (max-width: 768px) {
-    .container {
+    .profile-container {
         padding: 1rem;
     }
 
     h1 {
         font-size: 2rem;
+    }
+
+    .cover-image {
+        height: 150px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .save-btn {
+        width: 100%;
     }
 }
