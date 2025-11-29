@@ -32,13 +32,12 @@ pub fn content_card<'a>(title: &'a str, body: &'a str) -> impl azumi::Component 
 #[azumi::component]
 pub fn loading_demo() -> impl azumi::Component {
     html! {
-        @let is_loading = true;
         <style src="/static/pages/lesson30.css" />
         <div class="container">
             <h1>"Lesson 30: Loading States"</h1>
 
             <div class="grid">
-                <div class="col">
+            <div class="col">
                     <h2>"Loading State (Skeleton)"</h2>
                     @skeleton_card()
                 </div>
@@ -50,12 +49,13 @@ pub fn loading_demo() -> impl azumi::Component {
                         body="This content has finished loading and is ready to view."
                     )
                 </div>
-            </div>
-
-            <div class="toggle-demo">
+                </div>
+                
+                <div class="toggle-demo">
                 <h2>"Dynamic Toggle"</h2>
                 <p>"Simulating state change:"</p>
-
+                
+                @let is_loading = true;
                 @if is_loading {
                     @skeleton_card()
                 } else {
