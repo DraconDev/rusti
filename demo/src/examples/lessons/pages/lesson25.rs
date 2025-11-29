@@ -40,7 +40,10 @@ pub fn schema_demo() -> impl azumi::Component {
         <style src="/static/pages/lesson25.css" />
 
         // Automatically inject JSON-LD schema!
-        {@product.to_schema_script()}
+        // Automatically inject JSON-LD schema!
+        <script type="application/ld+json">
+            {serde_json::to_string_pretty(&product.to_schema_json_value()).unwrap()}
+        </script>
 
         <div class="container">
             <h1>"Lesson 25: Schema.org JSON-LD"</h1>

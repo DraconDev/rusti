@@ -5,11 +5,7 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn error_page<'a>(
-    code: u16,
-    title: &'a str,
-    message: &'a str
-) -> impl azumi::Component + 'a {
+pub fn error_page<'a>(code: u16, title: &'a str, message: &'a str) -> impl azumi::Component + 'a {
     html! {
         <style src="/static/pages/lesson28.css" />
         <div class="error-container">
@@ -25,20 +21,24 @@ pub fn error_page<'a>(
 
 #[azumi::component]
 pub fn not_found_page() -> impl azumi::Component {
-    @error_page(
-        code=404,
-        title="Page Not Found",
-        message="The page you are looking for does not exist or has been moved."
-    )
+    html! {
+        @error_page(
+            code=404,
+            title="Page Not Found",
+            message="The page you are looking for does not exist or has been moved."
+        )
+    }
 }
 
 #[azumi::component]
 pub fn server_error_page() -> impl azumi::Component {
-    @error_page(
-        code=500,
-        title="Server Error",
-        message="Something went wrong on our end. Please try again later."
-    )
+    html! {
+        @error_page(
+            code=500,
+            title="Server Error",
+            message="Something went wrong on our end. Please try again later."
+        )
+    }
 }
 
 #[azumi::component]
@@ -47,7 +47,7 @@ pub fn error_demo() -> impl azumi::Component {
         <div class="demo-wrapper">
             <h1>"Lesson 28: Error Pages"</h1>
             <p>"Reusable error page component for consistent error handling"</p>
-            
+
             <div class="preview-box">
                 <h3>"404 Preview:"</h3>
                 @not_found_page()

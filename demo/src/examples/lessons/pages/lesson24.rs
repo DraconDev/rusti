@@ -58,19 +58,19 @@ pub fn form_states_demo() -> impl azumi::Component {
                     <textarea
                         id="bio"
                         rows="3"
-                        disabled=true  // Always disabled
+                        disabled="true"  // Always disabled
                     >"Read only content"</textarea>
                 </div>
 
                 <select>
                     <option>"Choose"</option>
-                    <option selected=true>"Default"</option>
-                    <option disabled=true>"Unavailable"</option>
+                    <option selected="true">"Default"</option>
+                    <option disabled="true">"Unavailable"</option>
                 </select>
 
                 <div class="buttons">
-                    <button type="submit" disabled=false>"Submit"</button>
-                    <button type="button" disabled=true>"Disabled"</button>
+                    <button type="submit" disabled="false">"Submit"</button>
+                    <button type="button" disabled="true">"Disabled"</button>
                 </div>
             </form>
 
