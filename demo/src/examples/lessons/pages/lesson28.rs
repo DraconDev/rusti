@@ -44,6 +44,7 @@ pub fn server_error_page() -> impl azumi::Component {
 #[azumi::component]
 pub fn error_demo() -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson28.css" />
         <div class="demo-wrapper">
             <h1>"Lesson 28: Error Pages"</h1>
             <p>"Reusable error page component for consistent error handling"</p>
