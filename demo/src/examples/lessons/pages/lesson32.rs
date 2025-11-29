@@ -7,8 +7,6 @@ use azumi::html;
 #[azumi::component]
 pub fn string_optimization_demo() -> impl azumi::Component {
     html! {
-        @let username = "Alice";
-        @let count = 42;
         <style src="/static/pages/lesson32.css" />
         <div class="container">
             <h1>"Lesson 32: String Optimization"</h1>
@@ -51,6 +49,8 @@ pub fn string_optimization_demo() -> impl azumi::Component {
 
                 <div class="result">
                     // Optimized: {"Prefix " expr}
+                    @let username = "Alice";
+                    @let count = 42;
                     <p>{"User: " username}</p>
 
                     // Optimized: {"Prefix " expr}
