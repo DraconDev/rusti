@@ -142,12 +142,16 @@ fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_mac
                                 // Generate: let _ = &data.field;
                                 // Handle nested paths: user.email -> &data.user.email
                                 let parts: Vec<&str> = name_str.split('.').collect();
+
+                                // Use the span of the attribute value for better error reporting
+                                let span = attr.value_span.unwrap_or(attr.span);
+
                                 let fields: Vec<proc_macro2::Ident> = parts
                                     .iter()
-                                    .map(|s| quote::format_ident!("{}", s))
+                                    .map(|s| proc_macro2::Ident::new(s, span))
                                     .collect();
 
-                                accesses.push(quote! {
+                                accesses.push(quote_spanned! {span=>
                                     let _ = &data.#(#fields).*;
                                 });
                             }
