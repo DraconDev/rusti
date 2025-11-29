@@ -1,17 +1,63 @@
 /* Lesson 9: Modern Dark Mode */
 
 .filtered-list {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    background: rgba(16, 185, 129, 0.1);
-    border-left: 3px solid #10b981;
-    border-radius: 0.375rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.15),
+        rgba(16, 185, 129, 0.08)
+    );
+    border-left: 4px solid #10b981;
+    border-radius: 0.5rem;
     color: #cbd5e1;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+}
+
+.filtered-list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #10b981, transparent);
+    animation: filterBorder 3s linear infinite;
+}
+
+@keyframes filterBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.filtered-list:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.8);
 }
 
 .no-results {
-    /* Auto-generated style */
     color: #cbd5e1;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(
+        135deg,
+        rgba(239, 68, 68, 0.1) 0%,
+        rgba(239, 68, 68, 0.05) 100%
+    );
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+    animation: noResultsPulse 4s ease-in-out infinite;
 }
 
 .search-container {
@@ -20,15 +66,92 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.search-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 30% 30%,
+            rgba(16, 185, 129, 0.08) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 70% 70%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 50%
+        );
+    pointer-events: none;
+    animation: searchFloat 25s ease-in-out infinite alternate;
+}
+
+@keyframes searchFloat {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        transform: scale(1.05) translateY(-10px);
+    }
+}
+
+@keyframes noResultsPulse {
+    0%,
+    100% {
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+    }
 }
 
 .search-item {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    background: rgba(16, 185, 129, 0.1);
-    border-left: 3px solid #10b981;
-    border-radius: 0.375rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.15),
+        rgba(16, 185, 129, 0.08)
+    );
+    border-left: 4px solid #10b981;
+    border-radius: 0.5rem;
     color: #cbd5e1;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+}
+
+.search-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #10b981, transparent);
+    animation: searchBorder 3s linear infinite;
+}
+
+@keyframes searchBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.search-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.8);
 }
 
 @media (max-width: 768px) {
@@ -36,7 +159,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;
