@@ -1,18 +1,91 @@
 /* Lesson 6: Modern Dark Mode */
 
-.badge admin {
-    /* Auto-generated style */
-    color: #cbd5e1;
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.badge guest {
-    /* Auto-generated style */
-    color: #cbd5e1;
+.badge::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
 }
 
-.badge user {
-    /* Auto-generated style */
-    color: #cbd5e1;
+.badge:hover::before {
+    left: 100%;
+}
+
+.badge.admin {
+    background: linear-gradient(
+        135deg,
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1)
+    );
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+.badge.admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.badge.guest {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.2),
+        rgba(59, 130, 246, 0.1)
+    );
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.badge.guest:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.badge.user {
+    background: linear-gradient(
+        135deg,
+        rgba(34, 197, 94, 0.2),
+        rgba(34, 197, 94, 0.1)
+    );
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+}
+
+.badge.user:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    border-color: rgba(34, 197, 94, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -20,7 +93,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;
