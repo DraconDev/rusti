@@ -24,7 +24,7 @@ pub fn card(title: String, content: String) -> impl azumi::Component {
 #[azumi::component]
 pub fn composition_demo() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson13.css" />
+        // <style src="/static/pages/lesson13.css" />
         <div class="container">
             <h1>"Lesson 13: Composition"</h1>
             <p>"Building complex UIs from simple blocks"</p>
