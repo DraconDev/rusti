@@ -147,27 +147,35 @@ fn collect_input_names(
                                 let span = attr.value_span.unwrap_or(attr.span);
                                 let parts: Vec<&str> = name_str.split('.').collect();
 
+                                // Validate each part is a valid Rust identifier
+                                let mut all_valid = true;
+                                for part in &parts {
+                                    if !is_valid_identifier(part) {
+                                        all_valid = false;
+                                        let error_msg = format!(
+                                            "Invalid field name '{}' in form binding. Field names must be valid Rust identifiers (no spaces or special characters).",
+                                            part
+                                        );
+                                        errors.push(quote_spanned! {span=>
+                                            compile_error!(#error_msg);
+                                        });
+                                        break;
+                                    }
+                                }
+
+                                if !all_valid {
+                                    continue;
+                                }
+
                                 // Generate identifiers for the field path
                                 let field_idents: Vec<proc_macro2::Ident> = parts
                                     .iter()
                                     .map(|s| proc_macro2::Ident::new(s, span))
                                     .collect();
 
-                                // Generate TWO checks:
-                                // 1. A compile_error! that will show in IDE with precise span
-                                // 2. A field access that rustc will validate
-
-                                // First, emit a const eval that tries to access the field
-                                // This will fail at the EXACT location of the attribute
-                                errors.push(quote_spanned! {span=>
-                                    const _: () = {
-                                        // Force evaluation at this exact span
-                                        trait __AzumiBindCheck {
-                                            fn __check(data: &#bind_struct) {
-                                                let _ = &data.#(#field_idents).*;
-                                            }
-                                        }
-                                    };
+                                // Generate validation that field exists on struct
+                                errors.push(quote! {
+                                    let _ = &data.#(#field_idents).*;
                                 });
                             }
                         }
@@ -182,6 +190,30 @@ fn collect_input_names(
             _ => {}
         }
     }
+}
+
+// Helper function to check if a string is a valid Rust identifier
+fn is_valid_identifier(s: &str) -> bool {
+    if s.is_empty() {
+        return false;
+    }
+
+    let mut chars = s.chars();
+    let first = chars.next().unwrap();
+
+    // First character must be alphabetic or underscore
+    if !first.is_alphabetic() && first != '_' {
+        return false;
+    }
+
+    // Remaining characters must be alphanumeric or underscore
+    for c in chars {
+        if !c.is_alphanumeric() && c != '_' {
+            return false;
+        }
+    }
+
+    true
 }
 
 /// Collect CSS dependencies for hot-reloading
