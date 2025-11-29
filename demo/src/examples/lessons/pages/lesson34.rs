@@ -41,13 +41,12 @@ fn stat_card(label: &'static str, value: u32) -> impl azumi::Component {
 
 #[azumi::component]
 pub fn social_profile() -> impl azumi::Component {
-    
     html! {
         <html lang="en">
-        <head>
+            <head>
         // 3. SEO & Meta Tags
         // Mock Data
-        @let user = UserProfile {
+                @let user = UserProfile {
                     full_name: "Alex Rivera".to_string(),
                     handle: "@arivera".to_string(),
                     bio: "Rust Developer & UI Enthusiast. Building the future of web apps with Azumi."
@@ -60,7 +59,7 @@ pub fn social_profile() -> impl azumi::Component {
                         posts: 89,
                     },
                     theme_color: "#8b5cf6".to_string(),
-    };      
+                };
                 {head! {
                     title: user.full_name.clone(),
                     description: user.bio.clone(),
