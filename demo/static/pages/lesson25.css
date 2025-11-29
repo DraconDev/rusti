@@ -1,14 +1,33 @@
 /* Lesson 25: Modern Dark Mode */
 
 .code-box {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin: 1rem 0;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
     overflow-x: auto;
     font-family: "JetBrains Mono", monospace;
     color: #e2e8f0;
+    position: relative;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.code-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #10b981, #059669);
+    border-radius: 2px;
+}
+
+.code-box:hover {
+    border-color: rgba(148, 163, 184, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .container {
@@ -17,11 +36,60 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 30% 30%,
+            rgba(16, 185, 129, 0.08) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 70% 70%,
+            rgba(5, 150, 105, 0.08) 0%,
+            transparent 50%
+        );
+    pointer-events: none;
+    animation: productFloat 25s ease-in-out infinite alternate;
+}
+
+@keyframes productFloat {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        transform: scale(1.03) translateY(-10px);
+    }
 }
 
 .explanation {
-    /* Auto-generated style */
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
     color: #cbd5e1;
+    line-height: 1.7;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.explanation:hover {
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .product-card {
@@ -35,27 +103,90 @@
     padding: 2rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.product-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #059669, #047857);
+    background-size: 200% 100%;
+    animation: productBorder 4s linear infinite;
+}
+
+@keyframes productBorder {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(148, 163, 184, 0.2);
 }
 
 .product-description {
     color: #cbd5e1;
     line-height: 1.8;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .product-image {
-    /* Auto-generated style */
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
     color: #cbd5e1;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image::before {
+    content: "🖼️";
+    font-size: 2rem;
+    opacity: 0.7;
 }
 
 .product-name {
-    /* Auto-generated style */
-    color: #cbd5e1;
+    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
 }
 
 .product-price {
-    /* Auto-generated style */
-    color: #cbd5e1;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -63,7 +194,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;
