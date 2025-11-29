@@ -1,160 +1,154 @@
 /* Lesson 27: Modern Dark Mode */
 
-.example {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
+.lesson27-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    color: #cbd5e1;
-    line-height: 1.7;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-.example::before {
+.lesson27-container::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
-    background-size: 200% 100%;
-    animation: exampleBorder 4s linear infinite;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 45% 55%,
+            rgba(236, 72, 153, 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 55% 45%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 40%
+        );
+    pointer-events: none;
+    animation: lesson27Float 36s ease-in-out infinite alternate;
 }
 
-@keyframes exampleBorder {
+@keyframes lesson27Float {
     0% {
-        background-position: 200% 0;
+        transform: scale(1) translateY(0);
     }
     100% {
-        background-position: -200% 0;
+        transform: scale(1.01) translateY(-20px);
     }
 }
 
-.example:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.intro {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    color: #cbd5e1;
-    line-height: 1.7;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.page {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    color: #cbd5e1;
-    line-height: 1.7;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.preview {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    color: #cbd5e1;
-    line-height: 1.7;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.preview::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #10b981, #059669, #047857);
-    background-size: 200% 100%;
-    animation: previewBorder 3s linear infinite;
-}
-
-@keyframes previewBorder {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
-}
-
-.preview:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.preview-img {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+.lesson27-header {
     text-align: center;
-    color: #cbd5e1;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(236, 72, 153, 0.15) 0%,
+        rgba(59, 130, 246, 0.15) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson27-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6);
+    background-size: 200% 100%;
+    animation: headerBorder 3s linear infinite;
+}
+
+@keyframes headerBorder {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.lesson27-title {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #f472b6 0%, #ec4899 50%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 0 40px rgba(236, 72, 153, 0.4);
+    animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 0 0 40px rgba(236, 72, 153, 0.4);
+    }
+    100% {
+        text-shadow: 0 0 60px rgba(236, 72, 153, 0.8);
+    }
+}
+
+.lesson27-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
     backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.preview-img::before {
-    content: "🖼️";
-    font-size: 3rem;
-    opacity: 0.5;
+.lesson27-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6);
+    animation: sectionBorder 3s linear infinite;
+}
+
+@keyframes sectionBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.lesson27-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+.lesson27-text {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
