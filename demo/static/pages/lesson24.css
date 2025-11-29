@@ -1,30 +1,106 @@
 /* Lesson 24: Modern Dark Mode */
 
-.buttons {
-    background: linear-gradient(135deg, #ec4899, #8b5cf6);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.buttons:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(236, 72, 153, 0.3);
-}
-
-.container {
+.lesson24-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
 }
 
-.demo-form {
+.lesson24-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 30% 70%,
+            rgba(168, 85, 247, 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 70% 30%,
+            rgba(34, 197, 94, 0.08) 0%,
+            transparent 40%
+        );
+    pointer-events: none;
+    animation: lesson24Float 39s ease-in-out infinite alternate;
+}
+
+@keyframes lesson24Float {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        transform: scale(1.03) translateY(-16px);
+    }
+}
+
+.lesson24-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(168, 85, 247, 0.15) 0%,
+        rgba(34, 197, 94, 0.15) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson24-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #a855f7, #22c55e, #3b82f6);
+    background-size: 200% 100%;
+    animation: headerBorder 3s linear infinite;
+}
+
+@keyframes headerBorder {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.lesson24-title {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #22c55e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+    animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+    }
+    100% {
+        text-shadow: 0 0 60px rgba(168, 85, 247, 0.8);
+    }
+}
+
+.lesson24-section {
     background: linear-gradient(
         135deg,
         rgba(30, 41, 59, 0.6) 0%,
@@ -35,16 +111,44 @@
     padding: 2rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.field {
-    /* Auto-generated style */
-    color: #cbd5e1;
+.lesson24-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #a855f7, #22c55e, #3b82f6);
+    animation: sectionBorder 3s linear infinite;
 }
 
-.state-display {
-    /* Auto-generated style */
+@keyframes sectionBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.lesson24-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+.lesson24-text {
     color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -52,7 +156,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;

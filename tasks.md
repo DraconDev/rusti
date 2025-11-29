@@ -25,8 +25,8 @@
   - [x] style lesson 19
   - [x] style lesson 20
   - [x] style lesson 21
-  - [ ] style lesson 22
-  - [ ] style lesson 23
+  - [x] style lesson 22
+  - [x] style lesson 23
   - [ ] style lesson 24
   - [x] style lesson 25 
   - [ ] style lesson 26 
