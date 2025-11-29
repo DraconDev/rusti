@@ -45,6 +45,9 @@ async fn main() {
         .route("/lesson-28", get(examples::lessons::pages::lesson28::lesson28_handler))
         .route("/lesson-29", get(examples::lessons::pages::lesson29::lesson29_handler))
         .route("/lesson-30", get(examples::lessons::pages::lesson30::lesson30_handler))
+        .route("/lesson-31", get(examples::lessons::pages::lesson31::lesson31_handler))
+        .route("/lesson-32", get(examples::lessons::pages::lesson32::lesson32_handler))
+        .route("/lesson-33", get(examples::lessons::pages::lesson33::lesson33_handler))
         
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
@@ -100,6 +103,9 @@ async fn main() {
     println!("  ⚠️  Lesson 28:     Error Handling");
     println!("  🧩 Lesson 29:     Advanced Composition (Slots)");
     println!("  ⏳ Lesson 30:     Loading States");
+    println!("  📝 Lesson 31:     Type-Safe Forms (Form Binding)");
+    println!("  ⚡ Lesson 32:     String Optimization");
+    println!("  🛡️  Lesson 33:     Strict Validation Rules");
     println!();
     println!("🎯 Learning Path: Fundamentals → Advanced → Production");
     println!();

@@ -1,0 +1,61 @@
+/* Lesson 33: Strict Validation Rules */
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: sans-serif;
+}
+
+.rule-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #e74c3c;
+}
+
+.rule-card.valid {
+    border-left-color: #27ae60;
+}
+
+h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.25rem;
+}
+
+.example {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.bad {
+    color: #c0392b;
+    font-family: monospace;
+    text-decoration: line-through;
+}
+
+.good {
+    color: #27ae60;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.reason {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+}
+
+.intro {
+    background: #e8f4f8;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
