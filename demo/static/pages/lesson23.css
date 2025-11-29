@@ -71,6 +71,9 @@ canvas {
 .animate__slideInUp {
 }
 
+#myChart {
+}
+
 .note code {
     background: rgba(0, 0, 0, 0.05);
     padding: 0.2rem 0.4rem;
