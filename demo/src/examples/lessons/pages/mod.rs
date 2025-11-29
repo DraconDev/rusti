@@ -27,6 +27,7 @@ pub mod lesson30;
 pub mod lesson31;
 pub mod lesson32;
 pub mod lesson33;
+pub mod lesson34;
 pub mod lesson4;
 pub mod lesson5;
 pub mod lesson6;

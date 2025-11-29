@@ -48,6 +48,7 @@ async fn main() {
         .route("/lesson-31", get(examples::lessons::pages::lesson31::lesson31_handler))
         .route("/lesson-32", get(examples::lessons::pages::lesson32::lesson32_handler))
         .route("/lesson-33", get(examples::lessons::pages::lesson33::lesson33_handler))
+        .route("/lesson-34", get(examples::lessons::pages::lesson34::lesson34_handler))
         
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
@@ -106,6 +107,7 @@ async fn main() {
     println!("  📝 Lesson 31:     Type-Safe Forms (Form Binding)");
     println!("  ⚡ Lesson 32:     String Optimization");
     println!("  🛡️  Lesson 33:     Strict Validation Rules");
+    println!("  🏆 Lesson 34:     Capstone - Social Profile");
     println!();
     println!("🎯 Learning Path: Fundamentals → Advanced → Production");
     println!();

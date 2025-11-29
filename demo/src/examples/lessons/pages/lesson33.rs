@@ -58,6 +58,26 @@ pub fn validation_rules_demo() -> impl azumi::Component {
                 // <p><div>"Block"</div></p>
             </div>
 
+            <div class="rule-card">
+                <h2>"Rule 5: No Inline Styles/Scripts"</h2>
+                <div class="example">
+                    <div class="bad">"&lt;style&gt;...&lt;/style&gt;"</div>
+                    <div class="reason">"Must use &lt;style src=\"...\" /&gt; for automatic scoping and hot-reloading."</div>
+                </div>
+                // Uncomment to see error:
+                // <style>.foo { color: red; }</style>
+            </div>
+
+            <div class="rule-card">
+                <h2>"Rule 6: No Local Link Tags"</h2>
+                <div class="example">
+                    <div class="bad">"&lt;link rel=\"stylesheet\" href=\"/local.css\" /&gt;"</div>
+                    <div class="reason">"Must use &lt;style src=\"...\" /&gt; to ensure component encapsulation."</div>
+                </div>
+                // Uncomment to see error:
+                // <link rel="stylesheet" href="/static/style.css" />
+            </div>
+
             <div class="rule-card valid">
                 <h2>"Valid Structure Example"</h2>
                 <div class="example">

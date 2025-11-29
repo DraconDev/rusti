@@ -670,6 +670,7 @@ The `demo/` directory contains a complete Axum application with **30+ progressiv
 | 31     | Type-Safe Forms        | Form binding validation           |
 | 32     | String Optimization    | `{"prefix" expr}` pattern         |
 | 33     | Strict Validation      | HTML structure rules              |
+| 34     | Capstone               | Social Profile (Heavier Use)      |
 
 **Start at Lesson 0 and work your way up.** Each builds on the previous.
 
