@@ -44,8 +44,8 @@ pub fn social_profile() -> impl azumi::Component {
     html! {
         <html lang="en">
             <head>
-        // 3. SEO & Meta Tags
-        // Mock Data
+                // 3. SEO & Meta Tags
+                // Mock Data
                 @let user = UserProfile {
                     full_name: "Alex Rivera".to_string(),
                     handle: "@arivera".to_string(),
