@@ -153,11 +153,21 @@ fn collect_input_names(
                                     .map(|s| proc_macro2::Ident::new(s, span))
                                     .collect();
 
-                                // Generate validation code with correct span
+                                // Generate TWO checks:
+                                // 1. A compile_error! that will show in IDE with precise span
+                                // 2. A field access that rustc will validate
+
+                                // First, emit a const eval that tries to access the field
+                                // This will fail at the EXACT location of the attribute
                                 errors.push(quote_spanned! {span=>
-                                    // This will compile only if the field exists
-                                    // The error will point exactly to the attribute value
-                                    let _ = &data.#(#field_idents).*;
+                                    const _: () = {
+                                        // Force evaluation at this exact span
+                                        trait __AzumiBindCheck {
+                                            fn __check(data: &#bind_struct) {
+                                                let _ = &data.#(#field_idents).*;
+                                            }
+                                        }
+                                    };
                                 });
                             }
                         }

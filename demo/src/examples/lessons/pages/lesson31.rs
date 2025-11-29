@@ -39,7 +39,7 @@ pub fn form_binding_demo() -> impl azumi::Component {
                 <form bind={UserRegistration} method="POST" action="/api/register">
                     <div class="form-group">
                         <label for="username">"Username"</label>
-                        <input type="text" id="username" name="username" required />
+                        <input type="text" id="username" name="us ername" required />
                         <span class="hint">"Must match field: username"</span>
                     </div>
 
