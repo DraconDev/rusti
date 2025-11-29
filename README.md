@@ -612,7 +612,7 @@ Red squiggles, hover tooltips, quick fixes—all work out of the box.
 
 ### Explore the Demo
 
-The `demo/` directory contains a complete Axum application with **27+ progressive lessons**:
+The `demo/` directory contains a complete Axum application with **30+ progressive lessons**:
 
 | Lesson | Topic                  | Key Concepts                      |
 | ------ | ---------------------- | --------------------------------- |
@@ -641,9 +641,12 @@ The `demo/` directory contains a complete Axum application with **27+ progressiv
 | 22     | Data Tables            | Type-safe table iteration         |
 | 23     | Global CSS & CDN       | `global.css`, external links      |
 | 24     | Boolean Attributes     | `disabled`, `required`, `checked` |
-| 25     | JSON-LD                | Structured data for SEO           |
+| 25     | Schema.org JSON-LD     | `#[derive(Schema)]` macro         |
 | 26     | Multiple CSS Files     | Loading multiple stylesheets      |
-| 27     | Meta Tags & SEO        | OG tags, Twitter cards            |
+| 27     | SEO Meta Tags          | `head!` macro usage               |
+| 28     | Error Handling         | 404/500 page components           |
+| 29     | Advanced Composition   | Slots/Render Props pattern        |
+| 30     | Loading States         | Skeleton screens                  |
 
 **Start at Lesson 0 and work your way up.** Each builds on the previous.
 
