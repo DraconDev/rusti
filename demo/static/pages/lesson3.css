@@ -1,63 +1,67 @@
-/* Lesson 3: CSS Integration - Modern Dark */
-
-.lesson-container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    padding: 3rem 2rem;
-}
-
-.lesson-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #6366f1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
-    margin-bottom: 3rem;
-}
+/* Lesson 3: Modern Dark Mode */
 
 .card {
-    max-width: 600px;
-    margin: 2rem auto;
     background: linear-gradient(
         135deg,
         rgba(30, 41, 59, 0.6) 0%,
         rgba(51, 65, 85, 0.6) 100%
     );
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
     border-radius: 1rem;
     padding: 2rem;
+    margin-bottom: 2rem;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.2);
+.card-text {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
 }
 
 .card-title {
     font-size: 1.75rem;
-    color: #f1f5f9;
-    margin: 0 0 1rem;
-    font-weight: 600;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
-.card-text {
-    color: #cbd5e1;
-    line-height: 1.8;
-    margin: 0;
-    font-size: 1.05rem;
+.lesson-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lesson-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {
-    .lesson-title {
-        font-size: 2rem;
+    [class*="-container"],
+    [class*="container"] {
+        padding: 1rem;
     }
-
-    .card {
-        padding: 1.5rem;
+    
+    [class*="-title"],
+    [class*="title"] {
+        font-size: 2rem;
     }
 }

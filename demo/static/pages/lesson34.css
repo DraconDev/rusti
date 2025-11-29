@@ -1,43 +1,21 @@
 /* Lesson 34: Modern Dark Mode */
 
-.lesson34-container,
-.lesson-container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    padding: 2rem;
+.avatar {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-.lesson34-header,
-.lesson-header,
-.header {
-    text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(
-        135deg,
-        rgba(236, 72, 153 0.1),
-        rgba(139, 92, 246, 0.1) 100%
-    );
-    border-radius: 1rem;
-    border: 1px solid rgba(236, 72, 153;
-    backdrop-filter: blur(10px);
+.bio {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-.lesson34-title,
-.lesson-title {
-    font-size: 2.5rem;
-    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 50%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-    font-weight: 700;
+.cover-image {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-.lesson34-section,
-.section,
-.example-box,
-.demo-card {
+.edit-section {
     background: linear-gradient(
         135deg,
         rgba(30, 41, 59, 0.6) 0%,
@@ -48,35 +26,65 @@
     padding: 2rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
+}
+
+.form-grid {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.form-group {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.handle {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.name-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.profile-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 2rem;
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
-.section-title,
-.example-title {
-    font-size: 1.75rem;
-    color: #f1f5f9;
-    margin: 0 0 1.5rem;
-    font-weight: 600;
+.profile-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(236, 72, 153, 0.1) 0%,
+        rgba(139, 92, 246, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    backdrop-filter: blur(10px);
 }
 
-.code-block,
-.code-box,
-.code-example {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin: 1rem 0;
-    overflow-x: auto;
-    font-family: "JetBrains Mono", monospace;
+.profile-info {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-/* Buttons */
-.btn,
-.button {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+.save-btn {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -86,21 +94,48 @@
     transition: all 0.3s ease;
 }
 
-.btn:hover,
-.button:hover {
+.save-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 16px rgba(236, 72, 153, 0.3);
 }
 
-/* Responsive */
+.stat-item {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(236, 72, 153, 0.1);
+    border-left: 3px solid #ec4899;
+    border-radius: 0.375rem;
+    color: #cbd5e1;
+}
+
+.stat-label {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.stat-value {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.stats-grid {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.user-details {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
 @media (max-width: 768px) {
-    .lesson34-container,
-    .lesson-container {
+    [class*="-container"],
+    [class*="container"] {
         padding: 1rem;
     }
     
-    .lesson34-title,
-    .lesson-title {
+    [class*="-title"],
+    [class*="title"] {
         font-size: 2rem;
     }
 }

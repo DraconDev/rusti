@@ -1,106 +1,47 @@
 /* Lesson 22: Modern Dark Mode */
 
-.lesson22-container,
-.lesson-container {
+.container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-}
-
-.lesson22-header,
-.lesson-header,
-.header {
-    text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(
-        135deg,
-        rgba(236, 72, 153 0.1),
-        rgba(139, 92, 246, 0.1) 100%
-    );
-    border-radius: 1rem;
-    border: 1px solid rgba(236, 72, 153;
-    backdrop-filter: blur(10px);
-}
-
-.lesson22-title,
-.lesson-title {
-    font-size: 2.5rem;
-    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 50%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-    font-weight: 700;
-}
-
-.lesson22-section,
-.section,
-.example-box,
-.demo-card {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
-.section-title,
-.example-title {
-    font-size: 1.75rem;
-    color: #f1f5f9;
-    margin: 0 0 1.5rem;
-    font-weight: 600;
+.data-table {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-.code-block,
-.code-box,
-.code-example {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin: 1rem 0;
-    overflow-x: auto;
-    font-family: "JetBrains Mono", monospace;
+.description {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1rem;
 }
 
-/* Buttons */
-.btn,
-.button {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.email {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-.btn:hover,
-.button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+.name {
+    /* Auto-generated style */
+    color: #cbd5e1;
 }
 
-/* Responsive */
+.note {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
 @media (max-width: 768px) {
-    .lesson22-container,
-    .lesson-container {
+    [class*="-container"],
+    [class*="container"] {
         padding: 1rem;
     }
     
-    .lesson22-title,
-    .lesson-title {
+    [class*="-title"],
+    [class*="title"] {
         font-size: 2rem;
     }
 }

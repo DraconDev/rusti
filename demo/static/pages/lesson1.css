@@ -1,80 +1,51 @@
-/* Lesson 1: Hello World - Modern Dark */
+/* Lesson 1: Modern Dark Mode */
+
+.basic-h1 {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.basic-h2 {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.basic-p {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
+
+.basic-template {
+    /* Auto-generated style */
+    color: #cbd5e1;
+}
 
 .hello-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .hello-title {
-    font-size: 4rem;
-    font-weight: 800;
+    font-size: 1.75rem;
     background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #6366f1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-align: center;
-    animation: fadeIn 0.8s ease-out;
-}
-
-.basic-template {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    gap: 1rem;
-}
-
-.basic-h1 {
-    font-size: 3rem;
+    margin-bottom: 1rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0;
-}
-
-.basic-h2 {
-    font-size: 2rem;
-    color: #cbd5e1;
-    margin: 0;
-    font-weight: 500;
-}
-
-.basic-p {
-    font-size: 1.125rem;
-    color: #94a3b8;
-    margin: 0;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 @media (max-width: 768px) {
-    .hello-title {
-        font-size: 2.5rem;
+    [class*="-container"],
+    [class*="container"] {
+        padding: 1rem;
     }
-
-    .basic-h1 {
+    
+    [class*="-title"],
+    [class*="title"] {
         font-size: 2rem;
-    }
-
-    .basic-h2 {
-        font-size: 1.5rem;
     }
 }
