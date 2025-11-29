@@ -143,23 +143,22 @@ fn collect_input_names(
                     for attr in &elem.attrs {
                         if attr.name == "name" {
                             if let token_parser::AttributeValue::Static(name_str) = &attr.value {
-                                // Generate compile_error! with the span of the attribute value
+                                // Use the span of the attribute value for better error reporting
                                 let span = attr.value_span.unwrap_or(attr.span);
                                 let parts: Vec<&str> = name_str.split('.').collect();
-                                let field_name = parts.join(".");
 
-                                // Generate a validation check that will fail at compile time with correct span
-                                let error_check = quote_spanned! {span=>
-                                    const _: () = {
-                                        // This will compile only if the field exists
-                                        // The error will point exactly to the attribute value
-                                        let _ = || {
-                                            let data: #bind_struct = unreachable!();
-                                            let _ = &data.#(#parts.iter().map(|s| proc_macro2::Ident::new(s, span)).collect::<Vec<_>>()).*;
-                                        };
-                                    };
-                                };
-                                errors.push(error_check);
+                                // Generate identifiers for the field path
+                                let field_idents: Vec<proc_macro2::Ident> = parts
+                                    .iter()
+                                    .map(|s| proc_macro2::Ident::new(s, span))
+                                    .collect();
+
+                                // Generate validation code with correct span
+                                errors.push(quote_spanned! {span=>
+                                    // This will compile only if the field exists
+                                    // The error will point exactly to the attribute value
+                                    let _ = &data.#(#field_idents).*;
+                                });
                             }
                         }
                     }
