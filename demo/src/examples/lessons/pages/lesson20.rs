@@ -6,10 +6,10 @@ use azumi::html;
 
 #[azumi::component]
 pub fn conditional_classes_demo() -> impl azumi::Component {
-    let is_active = true;
-    let is_loading = false;
-    let status = "success"; // "success", "warning", "error"
-    let count = 5;
+    
+    
+    
+    
 
     html! {
         <style src="/static/pages/lesson20.css" />
@@ -17,11 +17,13 @@ pub fn conditional_classes_demo() -> impl azumi::Component {
             <h1>"Lesson 20: Conditional CSS Classes"</h1>
 
             <h2>"Using format! for dynamic classes"</h2>
+            @let is_active = true;
             <button class={format!("btn {}", if is_active { "active" } else { "" })}>
                 "Toggle Button"
             </button>
 
             <button class={format!("btn {} {}",
+                @let is_loading = false;
                 if is_loading { "loading" } else { "" },
                 if is_active { "active" } else { "" }
             )}>
@@ -29,11 +31,13 @@ pub fn conditional_classes_demo() -> impl azumi::Component {
             </button>
 
             <h2>"Status-based styling"</h2>
+            @let status = "success"; // "success", "warning", "error"
             <div class={format!("alert alert-{}", status)}>
                 "Status: " {status}
             </div>
 
             <h2>"Count-based classes"</h2>
+            @let count = 5;
             <span class={format!("badge {}", if count > 10 { "badge-large" } else { "badge-small" })}>
                 {count}
             </span>
