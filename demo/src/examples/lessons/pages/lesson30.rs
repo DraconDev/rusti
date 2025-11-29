@@ -7,6 +7,7 @@ use azumi::html;
 #[azumi::component]
 pub fn skeleton_card() -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson30.css" />
         <div class="card skeleton">
             <div class="skeleton-img"></div>
             <div class="skeleton-text title"></div>
@@ -19,6 +20,7 @@ pub fn skeleton_card() -> impl azumi::Component {
 #[azumi::component]
 pub fn content_card<'a>(title: &'a str, body: &'a str) -> impl azumi::Component + 'a {
     html! {
+        <style src="/static/pages/lesson30.css" />
         <div class="card content">
             <div class="card-img-placeholder">"IMG"</div>
             <h3>{title}</h3>

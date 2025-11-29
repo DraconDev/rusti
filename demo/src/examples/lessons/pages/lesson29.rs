@@ -36,6 +36,7 @@ pub fn slots_demo() -> impl azumi::Component {
     let header_content = html! { <h3>"Confirmation Required"</h3> };
 
     let body_content = html! {
+        <style src="/static/pages/lesson29.css" />
         <p>"Are you sure you want to delete this item?"</p>
         <div class="actions">
             <button class="btn cancel">"Cancel"</button>
@@ -44,6 +45,7 @@ pub fn slots_demo() -> impl azumi::Component {
     };
 
     html! {
+        <style src="/static/pages/lesson29.css" />
         <div class="container">
             <h1>"Lesson 29: Slots Pattern"</h1>
             <p>"Pass components as props to create flexible layouts (like slots)"</p>
