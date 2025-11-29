@@ -12,26 +12,20 @@ pub fn seo_demo<'a>(
 ) -> impl azumi::Component + 'a {
     html! {
         <html lang="en">
-            {azumi::head! {
+        <html lang="en">
+            <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-                <title>{title}</title>
-                <meta name="description" content={description} />
-
-                // Open Graph tags
-                <meta property="og:title" content={title} />
-                <meta property="og:description" content={description} />
-                <meta property="og:image" content={image_url} />
-                <meta property="og:type" content="article" />
-
-                // Twitter Card
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={title} />
-                <meta name="twitter:image" content={image_url} />
+                // Use the head! macro for SEO tags
+                {azumi::head! {
+                    title: title,
+                    description: description,
+                    image: image_url
+                }}
 
                 <style src="/static/pages/lesson27.css" />
-            }}
+            </head>
 
             <body>
                 <style src="/static/pages/lesson27.css" />

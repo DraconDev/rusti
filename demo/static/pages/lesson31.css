@@ -18,6 +18,18 @@
     margin-bottom: 1.5rem;
 }
 
+/* ID selectors for validation */
+#username {
+}
+#email {
+}
+#password {
+}
+#age {
+}
+#role {
+}
+
 label {
     display: block;
     margin-bottom: 0.5rem;

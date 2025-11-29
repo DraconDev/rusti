@@ -459,7 +459,27 @@ Azumi enforces WCAG guidelines at compile time:
 <nav role="navigation">...</nav>
 ```
 
-### 8. HTML Structure Validation
+### 8. Type-Safe Forms (Form Binding)
+
+Azumi validates form input names against Rust structs at compile time:
+
+```rust
+#[derive(Deserialize)]
+struct UserForm {
+    username: String,
+    email: String,
+}
+
+html! {
+    // Validates that all inputs have names matching UserForm fields
+    <form bind={UserForm}>
+        <input name="username" /> // ✅ Valid
+        <input name="usrname" />  // ❌ Compile Error: Field not found
+    </form>
+}
+```
+
+### 9. HTML Structure Validation
 
 #### No Nested Forms
 
@@ -647,6 +667,9 @@ The `demo/` directory contains a complete Axum application with **30+ progressiv
 | 28     | Error Handling         | 404/500 page components           |
 | 29     | Advanced Composition   | Slots/Render Props pattern        |
 | 30     | Loading States         | Skeleton screens                  |
+| 31     | Type-Safe Forms        | Form binding validation           |
+| 32     | String Optimization    | `{"prefix" expr}` pattern         |
+| 33     | Strict Validation      | HTML structure rules              |
 
 **Start at Lesson 0 and work your way up.** Each builds on the previous.
 
