@@ -1,9 +1,10 @@
-pub use azumi_macros::{component, html, head};
+pub use azumi_macros::{component, head, html};
 
 pub trait Component {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
 }
 
+#[derive(Clone)]
 pub struct FnComponent<F>(F);
 
 impl<F> Component for FnComponent<F>
