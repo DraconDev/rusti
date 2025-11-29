@@ -2,7 +2,7 @@
 //!
 //! Building complete HTML documents with the head! macro
 
-use azumi::{head, html};
+use azumi::html;
 
 #[azumi::component]
 pub fn seo_demo<'a>(
