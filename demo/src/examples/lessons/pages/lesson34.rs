@@ -71,12 +71,9 @@ pub fn social_profile() -> impl azumi::Component {
                 <script type="application/ld+json">
                     {user.to_schema_script()}
                 </script>
-
                 <style src="/static/pages/lesson34.css" />
             </head>
             <body>
-                <style src="/static/pages/lesson34.css" />
-
                 // 5. CSS Variables for Theming
                 <div class="profile-container" --primary-color={&user.theme_color}>
 
