@@ -87,3 +87,18 @@
     line-height: 1.5;
     margin: 0;
 }
+
+.col {
+    padding: 1rem;
+}
+
+.toggle-demo {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.skeleton-text.body {
+    width: 100%;
+}
