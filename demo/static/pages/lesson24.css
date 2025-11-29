@@ -7,6 +7,14 @@
     font-family: sans-serif;
 }
 
+/* ID selectors */
+#username {
+}
+#email {
+}
+#bio {
+}
+
 h1,
 h2,
 h3 {
