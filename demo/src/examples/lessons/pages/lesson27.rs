@@ -12,7 +12,7 @@ pub fn seo_demo<'a>(
 ) -> impl azumi::Component + 'a {
     html! {
         <html lang="en">
-            {azumi::head! {
+            azumi::head! {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -31,7 +31,7 @@ pub fn seo_demo<'a>(
                 <meta name="twitter:image" content={image_url} />
 
                 <style src="/static/pages/lesson27.css" />
-            }}
+            }
 
             <body>
                 <style src="/static/pages/lesson27.css" />
