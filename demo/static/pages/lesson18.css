@@ -1,4 +1,4 @@
-/* Lesson 18: Modern Dark Mode */
+/* Lesson 18: Modern Dark Mode - Custom CSS Properties */
 
 .container {
     min-height: 100vh;
@@ -18,17 +18,17 @@
     right: 0;
     bottom: 0;
     background: radial-gradient(
-            circle at 35% 65%,
+            circle at 25% 75%,
             rgba(245, 158, 11, 0.08) 0%,
             transparent 40%
         ),
         radial-gradient(
-            circle at 65% 35%,
+            circle at 75% 25%,
             rgba(59, 130, 246, 0.08) 0%,
             transparent 40%
         );
     pointer-events: none;
-    animation: lesson18Float 26s ease-in-out infinite alternate;
+    animation: lesson18Float 30s ease-in-out infinite alternate;
 }
 
 @keyframes lesson18Float {
@@ -36,7 +36,7 @@
         transform: scale(1) translateY(0);
     }
     100% {
-        transform: scale(1.03) translateY(-14px);
+        transform: scale(1.02) translateY(-15px);
     }
 }
 
@@ -62,32 +62,6 @@ h1 {
     }
 }
 
-h2 {
-    font-size: 2rem;
-    background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-h3 {
-    font-size: 1.5rem;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-p {
-    color: #cbd5e1;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
 .description {
     background: linear-gradient(
         135deg,
@@ -96,15 +70,14 @@ p {
     );
     border: 1px solid rgba(245, 158, 11, 0.2);
     border-left: 4px solid #f59e0b;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
+    border-radius: 1rem;
+    padding: 2rem;
     margin: 2rem 0;
     color: #e2e8f0;
-    font-size: 1.1rem;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1);
 }
 
 .description::before {
@@ -113,7 +86,7 @@ p {
     top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(90deg, transparent, #f59e0b, transparent);
     animation: descBorder 3s linear infinite;
 }
@@ -127,22 +100,29 @@ p {
     }
 }
 
+.description p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin: 0;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 .theme-box {
     background: linear-gradient(
         135deg,
-        var(--primary, #3498db) 0%,
-        rgba(52, 152, 219, 0.1) 100%
+        rgba(59, 130, 246, 0.15) 0%,
+        rgba(59, 130, 246, 0.08) 100%
     );
-    border: 1px solid var(--primary, #3498db);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 1rem;
+    padding: 2rem;
     margin: 2rem 0;
     color: #e2e8f0;
-    font-weight: 600;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
     transition: all 0.3s ease;
 }
 
@@ -152,13 +132,8 @@ p {
     top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        var(--primary, #3498db),
-        transparent
-    );
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
     animation: themeBorder 3s linear infinite;
 }
 
@@ -171,40 +146,43 @@ p {
     }
 }
 
+.theme-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
 .progress {
     background: linear-gradient(
         135deg,
-        rgba(30, 41, 59, 0.8) 0%,
-        rgba(51, 65, 85, 0.8) 100%
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
     );
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 1rem;
-    padding: 1.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
     margin: 2rem 0;
+    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .progress-bar {
-    height: 20px;
-    background: linear-gradient(90deg, #3b82f6, #6366f1);
-    border-radius: 0.5rem;
-    width: calc(var(--width, 0) * 1%);
-    transition: width 0.3s ease;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    height: 8px;
+    border-radius: 0.25rem;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    transition: width 0.3s ease;
 }
 
-.progress-bar::after {
+.progress-bar::before {
     content: "";
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(
         90deg,
         transparent,
@@ -216,37 +194,37 @@ p {
 
 @keyframes progressShine {
     0% {
-        transform: translateX(-100%);
+        left: -100%;
     }
     100% {
-        transform: translateX(100%);
+        left: 100%;
     }
 }
 
 .progress-label {
-    display: block;
-    color: #93c5fd;
+    color: #cbd5e1;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-top: 0.5rem;
+    display: block;
     text-align: center;
 }
 
 .card {
     background: linear-gradient(
         135deg,
-        rgba(59, 130, 246, 0.15) 0%,
-        rgba(59, 130, 246, 0.08) 100%
+        rgba(139, 92, 246, 0.15) 0%,
+        rgba(139, 92, 246, 0.08) 100%
     );
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 1rem;
     padding: 2rem;
     margin: 2rem 0;
     color: #e2e8f0;
-    font-weight: 600;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 var(--shadow, 8px) 25px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
     transition: all 0.3s ease;
 }
 
@@ -255,9 +233,9 @@ p {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
     animation: cardBorder 3s linear infinite;
 }
 
@@ -270,22 +248,26 @@ p {
     }
 }
 
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
 .code-example {
     background: linear-gradient(
         135deg,
-        rgba(15, 23, 42, 0.9) 0%,
-        rgba(30, 41, 59, 0.9) 100%
+        rgba(15, 23, 42, 0.8) 0%,
+        rgba(30, 41, 59, 0.8) 100%
     );
     border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 0.75rem;
     padding: 1.5rem;
     margin: 2rem 0;
-    font-family: "Courier New", monospace;
-    color: #e2e8f0;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-family: "Courier New", monospace;
 }
 
 .code-example::before {
@@ -293,9 +275,9 @@ p {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
+    width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #64748b, transparent);
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
     animation: codeBorder 3s linear infinite;
 }
 
@@ -309,9 +291,9 @@ p {
 }
 
 pre {
+    color: #cbd5e1;
+    line-height: 1.6;
     margin: 0;
-    white-space: pre-wrap;
-    line-height: 1.5;
     font-size: 0.9rem;
 }
 
@@ -324,11 +306,8 @@ pre {
         font-size: 2rem;
     }
 
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .progress-bar {
-        height: 16px;
+    .theme-box,
+    .card {
+        padding: 1.5rem;
     }
 }
