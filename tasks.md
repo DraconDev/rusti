@@ -21,23 +21,23 @@
     -   [x] style lesson 15
     -   [x] style lesson 16
     -   [x] style lesson 17
-    -   [ ] style lesson 18
+    -   [x] style lesson 18
     -   [x] style lesson 19
-    -   [ ] style lesson 20
+    -   [x] style lesson 20
     -   [x] style lesson 21
-    -   [ ] style lesson 22
-    -   [ ] style lesson 23
-    -   [ ] style lesson 24
+    -   [x] style lesson 22
+    -   [x] style lesson 23
+    -   [x] style lesson 24
     -   [x] style lesson 25
-    -   [ ] style lesson 26
-    -   [ ] style lesson 27
-    -   [ ] style lesson 28
-    -   [ ] style lesson 29
-    -   [ ] style lesson 30
-    -   [ ] style lesson 31
-    -   [ ] style lesson 32
-    -   [ ] style lesson 33
-    -   [ ] style lesson 34
+    -   [x] style lesson 26
+    -   [x] style lesson 27
+    -   [x] style lesson 28
+    -   [x] style lesson 29
+    -   [x] style lesson 30
+    -   [x] style lesson 31
+    -   [x] style lesson 32
+    -   [x] style lesson 33
+    -   [x] style lesson 34
     -   [ ]
 
 ## Done
