@@ -50,7 +50,7 @@ pub fn form_binding_demo() -> impl azumi::Component {
 
                     <div class="form-group">
                         <label for="password">"Password"</label>
-                        <input type="password" id="password" name="p assword" required />
+                        <input type="password" id="password" name="password" required />
                     </div>
 
                     <div class="form-group">
