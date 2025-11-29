@@ -22,8 +22,8 @@ pub fn conditional_classes_demo() -> impl azumi::Component {
                 "Toggle Button"
             </button>
 
+            @let is_loading = false;
             <button class={format!("btn {} {}",
-                @let is_loading = false;
                 if is_loading { "loading" } else { "" },
                 if is_active { "active" } else { "" }
             )}>
