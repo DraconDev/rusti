@@ -38,6 +38,5 @@
     -   [x] style lesson 32
     -   [x] style lesson 33
     -   [x] style lesson 34
-    -   [ ]
 
 ## Done
