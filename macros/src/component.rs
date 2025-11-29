@@ -144,7 +144,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         #fn_vis mod #mod_name {
             use super::*;
 
-            #[derive(Debug)]
+            // #[derive(Debug)] // Removed to allow non-Debug props
             pub struct Props #fn_generics #where_clause {
                 #(#props_fields),*
             }
