@@ -20,14 +20,19 @@
 
 /* ID selectors for validation */
 #username {
+    display: block;
 }
 #email {
+    display: block;
 }
 #password {
+    display: block;
 }
 #age {
+    display: block;
 }
 #role {
+    display: block;
 }
 
 label {
