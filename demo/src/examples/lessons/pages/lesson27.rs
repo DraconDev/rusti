@@ -34,6 +34,7 @@ pub fn seo_demo<'a>(
             }}
 
             <body>
+                <style src="/static/pages/lesson27.css" />
                 <div class="page">
                     <h1>"Lesson 27: head! Macro"</h1>
                     <p class="intro">"Use " <code>"head!"</code> " for all meta tags and stylesheets"</p>
