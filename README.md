@@ -977,18 +977,6 @@ Every `class="..."` must exist in the referenced CSS file:
 <button class="btn-primery">"Click"</button>  // ❌ Compile error + suggestion
 ```
 
-**Unused classes trigger warnings:**
-
-```css
-/* button.css */
-.btn-primary {
-    ...;
-} /* Used */
-.btn-secondary {
-    ...;
-} /* ⚠️ Warning: defined but never used */
-```
-
 #### 4. **Components Must Use #[azumi::component]**
 
 ```rust
