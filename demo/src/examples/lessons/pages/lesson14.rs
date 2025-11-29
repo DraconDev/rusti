@@ -4,7 +4,7 @@
 
 use azumi::html;
 
-#[derive(Clone, PartialEq, Debug)]
+#[derive()]
 pub enum ButtonVariant {
     Primary,
     Secondary,
