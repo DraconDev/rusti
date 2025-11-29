@@ -26,6 +26,146 @@ fn greeting<'a>(name: &'a str) -> impl azumi::Component + 'a {
 
 ---
 
+## 🧠 Design Philosophy: Why Azumi Works This Way
+
+### The Problem with Traditional Template Engines
+
+Most template systems push errors to runtime:
+
+-   **Typo in a CSS class?** You'll find out when the page loads (if you're lucky).
+-   **Invalid HTML structure?** Silently renders broken markup.
+-   **Missing accessibility attributes?** Ships to production, fails WCAG audits.
+-   **Form field name doesn't match your struct?** Runtime deserialization error.
+
+**Azumi's answer**: Catch everything at compile time. Your IDE shows the error before you even save the file.
+
+### Why External CSS, Not Inline Styles?
+
+Azumi **requires** external CSS files (`<style src="..." />`) and **blocks** inline `<style>` tags. Here's why:
+
+#### 1. **Full IDE Support**
+
+External CSS files give you:
+
+-   ✅ Autocomplete for class names and properties
+-   ✅ Syntax highlighting and error checking
+-   ✅ CSS linting (Stylelint, etc.)
+-   ✅ Jump-to-definition with extensions like CSS Peek Pro
+-   ❌ None of this works with inline styles in Rust strings
+
+#### 2. **Compile-Time Validation**
+
+Azumi can only validate what it can read at compile time:
+
+-   ✅ External files are parsed during macro expansion
+-   ✅ Every class is checked, unused classes are warned
+-   ❌ String literals with CSS can't be validated without a CSS parser in the macro
+-   ❌ Dynamic inline styles bypass all safety checks
+
+#### 3. **Automatic CSS Scoping**
+
+Azumi's scoping system:
+
+-   ✅ Reads your CSS file
+-   ✅ Adds unique `data-*` attributes to your HTML
+-   ✅ Rewrites CSS selectors to include those attributes
+-   ❌ Can't scope inline styles (they're already in the HTML)
+
+#### 4. **Hot Reloading**
+
+With `include_bytes!()` tracking:
+
+-   ✅ Change your CSS file → `cargo` detects it → recompiles automatically
+-   ✅ Fast iteration on styles without touching Rust code
+-   ❌ Inline CSS requires recompiling the component
+
+#### 5. **Separation of Concerns**
+
+-   **Rust**: Handles data, logic, component structure
+-   **CSS**: Handles presentation, layout, theming
+-   Mixing them makes both harder to reason about
+
+### Why Quoted Text?
+
+Azumi requires `"Hello"` instead of `Hello`. Traditional template engines allow unquoted text because they have custom lexers. Azumi reuses Rust's lexer for speed and simplicity.
+
+**The alternative?** Build a full lexer that understands context:
+
+```rust
+<h1>Hello {name}</h1>  // Is "Hello 2e5" valid? What about "88user"?
+```
+
+These patterns confuse Rust's lexer. By requiring quotes, we get:
+
+-   ✅ Zero ambiguity
+-   ✅ Faster compile times (no custom parsing)
+-   ✅ Better IDE support (Rust syntax highlighting works)
+-   ✅ Clear distinction between text and expressions
+
+### Why Component-Scoped CSS Only?
+
+**Global CSS leads to:**
+
+-   Name collisions (`.button` affects everything)
+-   `!important` wars
+-   Fear of changing styles (will it break something else?)
+-   Massive single-file stylesheets (hard to split, hard to maintain)
+
+**Azumi's approach:**
+
+-   Each component gets its own CSS file
+-   Styles are automatically scoped to that component
+-   No conflicts, ever
+-   You can have `.button` in 10 different components safely
+
+**Exception:** `global.css` for truly global styles (resets, fonts, variables). This is intentionally limited to prevent misuse.
+
+### Why Named Arguments for Components?
+
+```rust
+// ❌ Positional (fragile)
+@user_badge("Alice", "Admin", true, "/avatar.jpg")
+
+// ✅ Named (self-documenting)
+@user_badge(
+    name="Alice",
+    role="Admin",
+    is_online=true,
+    avatar_url="/avatar.jpg"
+)
+```
+
+**Benefits:**
+
+-   Order doesn't matter
+-   Clear what each value represents
+-   Adding optional parameters doesn't break existing calls
+-   Refactoring is safer (rename detection works)
+
+### Why Type-Safe Form Binding?
+
+```rust
+#[derive(Deserialize)]
+struct UserForm {
+    username: String,
+    email: String,
+}
+
+<form bind={UserForm}>
+    <input name="usrname" />  // ❌ Compile error: no field 'usrname'
+</form>
+```
+
+**Catches:**
+
+-   Typos in field names
+-   Deleted fields still referenced in HTML
+-   Type mismatches (expecting `u32` but form sends `String`)
+
+**Alternative?** You'd find out when deserializing fails at runtime—after users submit the form.
+
+---
+
 ## 🎯 What Makes Azumi Different?
 
 ### Compile-Time Everything
@@ -537,6 +677,112 @@ html! {
 
 ## 🎨 Advanced Features
 
+### SEO with the head! Macro
+
+Azumi provides a `head!` macro for generating SEO-friendly meta tags:
+
+```rust
+use azumi::head;
+
+#[azumi::component]
+fn product_page<'a>(product: &'a Product) -> impl azumi::Component + 'a {
+    html! {
+        <html>
+            <head>
+                {head! {
+                    title: product.name.clone(),
+                    description: product.description.clone(),
+                    image: product.image_url.clone(),
+                    type: "product"
+                }}
+            </head>
+            <body>
+                // ... product content
+            </body>
+        </html>
+    }
+}
+```
+
+**Generated output:**
+
+```html
+<title>Product Name</title>
+<meta property="og:title" content="Product Name" />
+<meta property="og:description" content="Product description..." />
+<meta property="og:image" content="https://example.com/image.jpg" />
+<meta property="og:type" content="product" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Product Name" />
+<meta name="twitter:description" content="Product description..." />
+<meta name="twitter:image" content="https://example.com/image.jpg" />
+```
+
+**Why this way?** Consistent meta tags across pages, fewer bugs, better social media previews.
+
+### Schema.org Structured Data
+
+The `#[derive(Schema)]` macro generates JSON-LD structured data for search engines:
+
+```rust
+use azumi::Schema;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Schema)]
+#[schema(type = "Person")]
+struct Author {
+    #[schema(name = "name")]
+    full_name: String,
+
+    #[schema(name = "jobTitle")]
+    role: String,
+
+    #[schema(name = "url")]
+    website: String,
+
+    #[schema(skip)]
+    internal_id: u32,  // Not included in schema
+}
+
+#[azumi::component]
+fn author_page<'a>(author: &'a Author) -> impl azumi::Component + 'a {
+    html! {
+        <html>
+            <head>
+                // Automatically generates proper JSON-LD
+                <script type="application/ld+json">
+                    {author.to_schema_script()}
+                </script>
+            </head>
+            <body>
+                <h1>{&author.full_name}</h1>
+                <p>{&author.role}</p>
+            </body>
+        </html>
+    }
+}
+```
+
+**Generated JSON-LD:**
+
+```json
+{
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Alice Johnson",
+    "jobTitle": "Software Engineer",
+    "url": "https://alice.dev"
+}
+```
+
+**Attributes:**
+
+-   `#[schema(type = "...")]`: Sets the `@type` field (Person, Product, Organization, etc.)
+-   `#[schema(name = "...")]`: Maps Rust field name to Schema.org property
+-   `#[schema(skip)]`: Excludes field from schema output
+
+**Why this matters:** Better SEO, rich search results, knowledge graph inclusion.
+
 ### HTMX Integration
 
 Azumi works seamlessly with HTMX for interactive UIs without JavaScript:
@@ -684,66 +930,264 @@ cargo run
 
 ## ⚡ Rules Reference
 
-### Must Follow
+### Core Requirements
 
-1. **Quote all text and attributes**
+#### 1. **Quote All Text and Attributes**
 
-    ```rust
-    <h1 class="title">"Text"</h1>  // ✅
-    <h1 class=title>Text</h1>       // ❌
-    ```
+```rust
+<h1 class="title">"Text content"</h1>  // ✅ Correct
+<h1 class=title>Text content</h1>       // ❌ Won't compile
+```
 
-2. **Use external CSS files**
+**Why?** Eliminates lexer ambiguity. Rust's lexer treats unquoted text as identifiers, which causes conflicts with patterns like `Hello2e5` or `88user`.
 
-    ```rust
-    <style src="/static/file.css" />  // ✅
-    <style>.class {}</style>           // ❌
-    ```
+#### 2. **Use External CSS Files Only**
 
-3. **Define all CSS classes**
+```rust
+// ✅ Correct - External file
+<style src="/static/component.css" />
 
-    - Every class must exist in the referenced CSS
-    - Unused classes trigger warnings
+// ❌ Error - Inline styles blocked
+<style>.class { color: red; }</style>
 
-4. **Use `#[azumi::component]` for components**
+// ❌ Error - Local stylesheet link blocked
+<link rel="stylesheet" href="/local.css" />
+```
 
-    ```rust
-    #[azumi::component]            // ✅
-    fn my_component() { ... }
+**Why?**
 
-    fn my_component() { ... }      // ❌ Won't work with @ syntax
-    ```
+-   Enables compile-time validation
+-   Allows automatic scoping
+-   Provides IDE support (autocomplete, linting)
+-   Enables hot-reloading via `include_bytes!()`
 
-5. **Call components with named args**
+**Exception:** CDN stylesheets are allowed:
 
-    ```rust
-    @button(text="Click", variant="primary")  // ✅
-    button("Click", "primary")                 // ❌
-    ```
+```rust
+<link rel="stylesheet" href="https://cdn.example.com/styles.css" />  // ✅ OK
+```
 
-6. **Images need alt attributes**
+#### 3. **All CSS Classes Must Be Defined**
 
-    ```rust
-    <img src="..." alt="Description" />  // ✅
-    <img src="..." />                     // ❌
-    ```
+Every `class="..."` must exist in the referenced CSS file:
 
-7. **Use valid input/button types**
+```rust
+<style src="/static/button.css" />
+<button class="btn-primary">"Click"</button>  // ✅ If defined in button.css
+<button class="btn-primery">"Click"</button>  // ❌ Compile error + suggestion
+```
 
-    - Azumi validates against HTML spec
-    - Provides suggestions for typos
+**Unused classes trigger warnings:**
 
-8. **Buttons need accessible labels**
-    - Text content, or
-    - `aria-label` attribute, or
-    - `title` attribute
+```css
+/* button.css */
+.btn-primary {
+    ...;
+} /* Used */
+.btn-secondary {
+    ...;
+} /* ⚠️ Warning: defined but never used */
+```
 
-### Exceptions
+#### 4. **Components Must Use #[azumi::component]**
 
--   **Boolean attributes**: `<input disabled />` (no value needed)
--   **Global CSS**: `global.css` files bypass scoping/validation
--   **CDN links**: `<link href="https://..." />` allowed
--   **JSON scripts**: `<script type="application/ld+json">` allowed
+```rust
+// ✅ Correct
+#[azumi::component]
+fn button<'a>(text: &'a str) -> impl azumi::Component + 'a {
+    html! { <button>{text}</button> }
+}
+
+// ❌ Won't work with @ syntax
+fn button<'a>(text: &'a str) -> impl azumi::Component + 'a {
+    html! { <button>{text}</button> }
+}
+```
+
+**Why?** The macro generates:
+
+-   Proper `Component` trait implementation
+-   Named argument support for `@button(text="Click")`
+-   Display implementation for rendering
+
+#### 5. **Call Components with Named Arguments**
+
+```rust
+// ✅ Correct - Self-documenting
+@card(title="Welcome", content="Hello world")
+
+// ❌ Positional arguments not supported
+card("Welcome", "Hello world")
+```
+
+**Why?**
+
+-   Order-independent (add optional params without breaking calls)
+-   Self-documenting code
+-   Safer refactoring
+
+#### 6. **Images Require Alt Attributes**
+
+```rust
+// ✅ Descriptive alt text
+<img src="/logo.png" alt="Company Logo" />
+
+// ✅ Decorative image (empty alt)
+<img src="/divider.png" alt="" />
+
+// ❌ Compile error: Missing alt
+<img src="/photo.jpg" />
+```
+
+**Why?** WCAG 2.1 Level A compliance. Screen readers need descriptions.
+
+#### 7. **Valid Input/Button Types**
+
+```rust
+// ✅ Valid HTML input types
+<input type="text" />
+<input type="email" />
+<input type="password" />
+<input type="number" />
+
+// ❌ Compile error: Invalid type 'txt'
+// Help: Did you mean 'text'?
+<input type="txt" />
+```
+
+**Azumi validates against HTML spec** and provides helpful suggestions for typos.
+
+#### 8. **Buttons Need Accessible Labels**
+
+```rust
+// ✅ Text content provides label
+<button class="save-btn">"Save Changes"</button>
+
+// ✅ aria-label for icon buttons
+<button class="icon-btn" aria-label="Close dialog">
+    <span class="icon-x"></span>
+</button>
+
+// ✅ title attribute works too
+<button class="icon-btn" title="Delete item">
+    <span class="icon-trash"></span>
+</button>
+
+// ❌ Compile error: No accessible label
+<button class="icon-btn"><span class="icon"></span></button>
+```
+
+**Why?** Screen reader users need to know what buttons do.
+
+#### 9. **Strict HTML Structure Rules**
+
+Azumi enforces semantic HTML:
+
+```rust
+// ❌ Forms cannot be nested
+<form>
+    <form>...</form>  // Compile error
+</form>
+
+// ❌ Tables need proper structure
+<table>
+    <tr>...</tr>  // Error: <tr> must be in <thead>, <tbody>, or <tfoot>
+</table>
+
+// ✅ Correct table structure
+<table>
+    <tbody>
+        <tr><td>"Data"</td></tr>
+    </tbody>
+</table>
+
+// ❌ Lists can only contain list items
+<ul>
+    <div>...</div>  // Compile error
+</ul>
+
+// ✅ Correct list structure
+<ul>
+    <li>"Item 1"</li>
+    <li>"Item 2"</li>
+</ul>
+
+// ❌ Interactive elements can't be nested
+<button>
+    <a href="/link">"Click"</a>  // Compile error
+</button>
+
+// ❌ Paragraphs can't contain block elements
+<p>
+    <div>"Block"</div>  // Compile error: browsers auto-close <p>
+</p>
+```
+
+**Why?** Browsers have implicit rules that silently fix invalid HTML, causing unexpected rendering. Azumi catches these at compile time.
+
+### Special Cases & Exceptions
+
+#### Boolean Attributes
+
+No value needed for boolean attributes:
+
+```rust
+<input type="checkbox" disabled checked />  // ✅ Correct
+<input type="text" required autofocus />    // ✅ Correct
+
+<input disabled="true" />  // ⚠️ Works but unnecessary
+```
+
+#### Global CSS
+
+`global.css` bypasses scoping and validation:
+
+```rust
+<style src="/static/global.css" />  // ✅ Not scoped, not validated
+```
+
+Use for: CSS resets, global fonts, CSS custom properties. **Do not use for component styles.**
+
+#### CDN Resources
+
+External resources from CDN are allowed:
+
+```rust
+// ✅ CDN stylesheet
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+// ✅ CDN script
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+```
+
+#### JSON Scripts
+
+JSON-LD scripts are allowed:
+
+```rust
+<script type="application/ld+json">
+    {product_json}
+</script>
+```
+
+**Why?** Structured data for SEO, not executable JavaScript.
+
+#### External JavaScript
+
+Must be external files or CDN links:
+
+```rust
+// ✅ External script
+<script src="/static/app.js"></script>
+
+// ✅ CDN library
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+// ❌ Inline JavaScript blocked
+<script>const x = 42;</script>
+```
+
+**Why?** Same reasons as CSS—IDE support, security auditing, Content Security Policy compatibility.
 
 ---
 
