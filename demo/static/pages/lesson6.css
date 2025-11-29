@@ -195,6 +195,74 @@
     border-color: rgba(34, 197, 94, 0.4);
 }
 
+/* Badge styles for role display */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    margin: 0.25rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.badge.admin {
+    background: linear-gradient(
+        135deg,
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1)
+    );
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.badge.user {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.2),
+        rgba(59, 130, 246, 0.1)
+    );
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.badge.guest {
+    background: linear-gradient(
+        135deg,
+        rgba(156, 163, 175, 0.2),
+        rgba(156, 163, 175, 0.1)
+    );
+    border: 1px solid rgba(156, 163, 175, 0.3);
+    color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
+}
+
+.badge::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    animation: badgeBorder 3s linear infinite;
+}
+
+@keyframes badgeBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 @media (max-width: 768px) {
     [class*="-container"],
     [class*="container"] {
