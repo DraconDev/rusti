@@ -2,6 +2,9 @@
 
 ## TODO
 
+
+## Done
+
 -   Style all lessons in a modern dark theme
     -   [x] style lesson 0
     -   [x] style lesson 1
@@ -39,5 +42,3 @@
     -   [x] style lesson 33
     -   [x] style lesson 34
     -   [ ]
-
-## Done
