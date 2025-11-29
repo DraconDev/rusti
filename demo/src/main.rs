@@ -53,10 +53,13 @@ async fn main() {
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
         .route("/api/innerhtml", post(|| async { "Updated content!" }))
-        .route("/api/append", post(|| async { "<div>New item added! ✨</div>" }))
+        .route("/api/append", post(|| async { "<li class='todo-item'><span class='todo-text'>New task added! ✨</span><button hx-delete='/api/todos/delete' hx-target='closest .todo-item' hx-swap='outerHTML swap:0.3s' class='todo-delete'>Delete</button></li>" }))
         .route("/api/replace", post(|| async { 
             "<div style='background: #10b981; color: white; padding: 1rem; border-radius: 0.5rem; text-align: center;'>🔄 Replaced!</div>" 
         }))
+        
+        // HTMX Todo handlers
+        .route("/api/todos/delete", axum::routing::delete(|| async { "" }))
         
         // 📁 Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
