@@ -1,121 +1,70 @@
 /* Lesson 13: Modern Dark Mode */
 
-.card {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
+.lesson13-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow-x: hidden;
 }
 
-.card::before {
+.lesson13-container::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
-    background-size: 200% 100%;
-    animation: cardBorder 4s linear infinite;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 30% 70%,
+            rgba(239, 68, 68, 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 70% 30%,
+            rgba(245, 158, 11, 0.08) 0%,
+            transparent 40%
+        );
+    pointer-events: none;
+    animation: lesson13Float 40s ease-in-out infinite alternate;
 }
 
-@keyframes cardBorder {
+@keyframes lesson13Float {
     0% {
-        background-position: 200% 0;
+        transform: scale(1) translateY(0);
     }
     100% {
-        background-position: -200% 0;
+        transform: scale(1.01) translateY(-20px);
     }
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.card-body {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    color: #cbd5e1;
-    line-height: 1.7;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.card-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #3b82f6, #6366f1);
-    background-size: 200% 100%;
-    animation: bodyBorder 3s linear infinite;
-}
-
-@keyframes bodyBorder {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
-}
-
-.card-body:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.card-header {
+.lesson13-header {
     text-align: center;
     padding: 3rem 2rem;
     margin-bottom: 3rem;
     background: linear-gradient(
         135deg,
-        rgba(245, 158, 11, 0.15) 0%,
-        rgba(139, 92, 246, 0.15) 100%
+        rgba(239, 68, 68, 0.15) 0%,
+        rgba(245, 158, 11, 0.15) 100%
     );
     border-radius: 1rem;
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1);
+    box-shadow: 0 8px 32px rgba(239, 68, 68, 0.1);
     position: relative;
     overflow: hidden;
-    animation: headerPulse 4s ease-in-out infinite alternate;
 }
 
-.card-header::before {
+.lesson13-header::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #f59e0b, #d97706, #dc2626);
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #3b82f6);
     background-size: 200% 100%;
     animation: headerBorder 3s linear infinite;
 }
@@ -129,72 +78,115 @@
     }
 }
 
-@keyframes headerPulse {
+.lesson13-title {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
+    animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
     0% {
-        box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1);
+        text-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
     }
     100% {
-        box-shadow: 0 12px 40px rgba(245, 158, 11, 0.2);
+        text-shadow: 0 0 60px rgba(239, 68, 68, 0.8);
     }
 }
 
-.container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+.lesson13-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
     padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.container::before {
+.lesson13-section::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: radial-gradient(
-            circle at 25% 25%,
-            rgba(245, 158, 11, 0.08) 0%,
-            transparent 40%
-        ),
-        radial-gradient(
-            circle at 75% 75%,
-            rgba(139, 92, 246, 0.08) 0%,
-            transparent 40%
-        );
-    pointer-events: none;
-    animation: containerFloat 30s ease-in-out infinite alternate;
+    height: 2px;
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #3b82f6);
+    animation: sectionBorder 3s linear infinite;
 }
 
-@keyframes containerFloat {
+@keyframes sectionBorder {
     0% {
-        transform: scale(1) translateY(0);
+        transform: translateX(-100%);
     }
     100% {
-        transform: scale(1.05) translateY(-15px);
+        transform: translateX(100%);
     }
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-    padding: 2rem;
+.lesson13-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+.lesson13-text {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.lesson13-alert {
     background: linear-gradient(
         135deg,
-        rgba(15, 23, 42, 0.8) 0%,
-        rgba(30, 41, 59, 0.8) 100%
+        rgba(239, 68, 68, 0.15),
+        rgba(239, 68, 68, 0.08)
     );
-    border-radius: 1rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-left: 4px solid #ef4444;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    color: #e2e8f0;
+    position: relative;
+    overflow: hidden;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    color: #cbd5e1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
+}
+
+.lesson13-alert::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ef4444, transparent);
+    animation: alertBorder 3s linear infinite;
+}
+
+@keyframes alertBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 @media (max-width: 768px) {
