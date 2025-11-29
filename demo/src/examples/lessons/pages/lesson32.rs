@@ -48,11 +48,11 @@ pub fn string_optimization_demo() -> impl azumi::Component {
                 <h2>"Live Examples"</h2>
 
                 <div class="result">
-                    // Optimized: {"Prefix " expr}
                     @let username = "Alice";
-                    @let count = 42;
+                    // Optimized: {"Prefix " expr}
                     <p>{"User: " username}</p>
 
+                    @let count = 42;
                     // Optimized: {"Prefix " expr}
                     <p>{"Notification count: " count}</p>
 
