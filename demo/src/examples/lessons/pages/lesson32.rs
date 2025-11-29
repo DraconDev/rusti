@@ -6,10 +6,9 @@ use azumi::html;
 
 #[azumi::component]
 pub fn string_optimization_demo() -> impl azumi::Component {
-    let username = "Alice";
-    let count = 42;
-
     html! {
+        @let username = "Alice";
+        @let count = 42;
         <style src="/static/pages/lesson32.css" />
         <div class="container">
             <h1>"Lesson 32: String Optimization"</h1>

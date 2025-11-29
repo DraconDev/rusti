@@ -31,9 +31,8 @@ pub fn content_card<'a>(title: &'a str, body: &'a str) -> impl azumi::Component 
 
 #[azumi::component]
 pub fn loading_demo() -> impl azumi::Component {
-    let is_loading = true;
-
     html! {
+        @let is_loading = true;
         <style src="/static/pages/lesson30.css" />
         <div class="container">
             <h1>"Lesson 30: Loading States"</h1>
