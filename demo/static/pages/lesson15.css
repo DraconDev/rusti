@@ -1,4 +1,4 @@
-/* Lesson 15: Modern Dark Mode */
+/* Lesson 15: Modern Dark Mode - Forms */
 
 .container {
     min-height: 100vh;
@@ -62,20 +62,65 @@ h1 {
     }
 }
 
-.simple-form {
+.field {
     background: linear-gradient(
         135deg,
         rgba(30, 41, 59, 0.6) 0%,
         rgba(51, 65, 85, 0.6) 100%
     );
     border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #cbd5e1;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+}
+
+.field::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+    animation: fieldBorder 3s linear infinite;
+}
+
+@keyframes fieldBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.field:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.simple-form {
+    background: linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.15) 0%,
+        rgba(139, 92, 246, 0.08) 100%
+    );
+    border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 1rem;
     padding: 2rem;
     margin: 2rem 0;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    color: #e2e8f0;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
 }
 
 .simple-form::before {
@@ -83,9 +128,9 @@ h1 {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #8b5cf6, #22c55e, #3b82f6);
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
     animation: formBorder 3s linear infinite;
 }
 
@@ -98,21 +143,20 @@ h1 {
     }
 }
 
-.field {
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-
-.field label {
-    display: block;
+label {
     color: #f1f5f9;
     font-weight: 600;
-    margin-bottom: 0.5rem;
     font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
-.field input {
-    width: 100%;
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
     background: linear-gradient(
         135deg,
         rgba(15, 23, 42, 0.8) 0%,
@@ -125,9 +169,14 @@ h1 {
     font-size: 1rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.field input:focus {
+input:focus,
+select:focus,
+textarea:focus {
     outline: none;
     border-color: #8b5cf6;
     background: linear-gradient(
@@ -139,12 +188,8 @@ h1 {
     transform: translateY(-1px);
 }
 
-.field input::placeholder {
-    color: #64748b;
-}
-
-button[type="submit"] {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+button {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
     color: white;
     border: none;
     padding: 0.75rem 2rem;
@@ -154,13 +199,12 @@ button[type="submit"] {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-top: 1rem;
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
-button[type="submit"]::before {
+button::before {
     content: "";
     position: absolute;
     top: 0;
@@ -176,17 +220,17 @@ button[type="submit"]::before {
     transition: left 0.5s;
 }
 
-button[type="submit"]:hover::before {
+button:hover::before {
     left: 100%;
 }
 
-button[type="submit"]:hover {
+button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    background: linear-gradient(135deg, #a855f7, #c084fc);
 }
 
-button[type="submit"]:active {
+button:active {
     transform: translateY(-1px);
     box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
 }
@@ -202,10 +246,5 @@ button[type="submit"]:active {
 
     .simple-form {
         padding: 1.5rem;
-    }
-
-    button[type="submit"] {
-        width: 100%;
-        margin-top: 1rem;
     }
 }
