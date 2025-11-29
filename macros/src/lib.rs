@@ -130,7 +130,11 @@ fn collect_bind_checks(nodes: &[token_parser::Node], checks: &mut Vec<proc_macro
     }
 }
 
-fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_macro2::TokenStream>) {
+fn collect_input_names(
+    nodes: &[token_parser::Node],
+    bind_struct: &syn::Path,
+    errors: &mut Vec<proc_macro2::TokenStream>,
+) {
     for node in nodes {
         match node {
             token_parser::Node::Element(elem) => {
@@ -139,30 +143,32 @@ fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_mac
                     for attr in &elem.attrs {
                         if attr.name == "name" {
                             if let token_parser::AttributeValue::Static(name_str) = &attr.value {
-                                // Generate: let _ = &data.field;
-                                // Handle nested paths: user.email -> &data.user.email
-                                let parts: Vec<&str> = name_str.split('.').collect();
-
-                                // Use the span of the attribute value for better error reporting
+                                // Generate compile_error! with the span of the attribute value
                                 let span = attr.value_span.unwrap_or(attr.span);
+                                let parts: Vec<&str> = name_str.split('.').collect();
+                                let field_name = parts.join(".");
 
-                                let fields: Vec<proc_macro2::Ident> = parts
-                                    .iter()
-                                    .map(|s| proc_macro2::Ident::new(s, span))
-                                    .collect();
-
-                                accesses.push(quote! {
-                                    let _ = &data.#(#fields).*;
-                                });
+                                // Generate a validation check that will fail at compile time with correct span
+                                let error_check = quote_spanned! {span=>
+                                    const _: () = {
+                                        // This will compile only if the field exists
+                                        // The error will point exactly to the attribute value
+                                        let _ = || {
+                                            let data: #bind_struct = unreachable!();
+                                            let _ = &data.#(#parts.iter().map(|s| proc_macro2::Ident::new(s, span)).collect::<Vec<_>>()).*;
+                                        };
+                                    };
+                                };
+                                errors.push(error_check);
                             }
                         }
                     }
                 }
                 // Recurse (e.g. input inside label or div)
-                collect_input_names(&elem.children, accesses);
+                collect_input_names(&elem.children, bind_struct, errors);
             }
             token_parser::Node::Fragment(frag) => {
-                collect_input_names(&frag.children, accesses);
+                collect_input_names(&frag.children, bind_struct, errors);
             }
             _ => {}
         }
