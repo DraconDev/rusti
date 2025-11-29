@@ -632,45 +632,45 @@ Red squiggles, hover tooltips, quick fixes—all work out of the box.
 
 ### Explore the Demo
 
-The `demo/` directory contains a complete Axum application with **30+ progressive lessons**:
+The `demo/` directory contains a complete Axum application with **34 progressive lessons**:
 
-| Lesson | Topic                  | Key Concepts                      |
-| ------ | ---------------------- | --------------------------------- | ------------------------------- |
-| 0      | HTML Fragments         | Multiple root elements, `<></>`   |
-| 1      | Hello World            | Basic templates, interpolation    |
-| 2      | Unquoted Variables     | String interpolation              |
-| 3      | CSS Integration        | External stylesheets              |
-| 4      | CSS Validation         | Compile-time class checking       |
-| 5      | Inline Interpolation   | Complex expressions               |
-| 6      | Pattern Matching       | `@match` directive                |
-| 7      | @let Directive         | Computed values                   |
-| 8      | Nested Control Flow    | Combined `@if/@for/@match`        |
-| 9      | List Processing        | Filtered data                     |
-| 10     | Result Handling        | `@match` with `Ok/Err`            |
-| 11     | Simple Components      | Reusable button components        |
-| 12     | Component Children     | Passing content to components     |
-| 13     | 13                     | Composition                       | Building UIs from simple blocks |
-| 14     | Component Variants     | Using Enums for styles            |
-| 15     | Reusable Inputs        | Creating generic form fields      |                                 |
-| 16     | JavaScript Integration | External libraries                |
-| 17     | HTMX Integration       | Interactive apps without JS       |
-| 18     | CSS Variables          | Dynamic theming, `--custom-props` |
-| 19     | Accessibility          | Skip links, ARIA, landmarks       |
-| 20     | Conditional Classes    | Dynamic class names               |
-| 21     | CSS Scoping            | Automatic scoping demo            |
-| 22     | Data Tables            | Type-safe table iteration         |
-| 23     | Global CSS & CDN       | `global.css`, external links      |
-| 24     | Boolean Attributes     | `disabled`, `required`, `checked` |
-| 25     | Schema.org JSON-LD     | `#[derive(Schema)]` macro         |
-| 26     | Multiple CSS Files     | Loading multiple stylesheets      |
-| 27     | SEO Meta Tags          | `head!` macro usage               |
-| 28     | Error Handling         | 404/500 page components           |
-| 29     | Advanced Composition   | Slots/Render Props pattern        |
-| 30     | Loading States         | Skeleton screens                  |
-| 31     | Type-Safe Forms        | Form binding validation           |
-| 32     | String Optimization    | `{"prefix" expr}` pattern         |
-| 33     | Strict Validation      | HTML structure rules              |
-| 34     | Capstone               | Social Profile (Heavier Use)      |
+| Lesson | Topic                  | Key Concepts                         |
+| ------ | ---------------------- | ------------------------------------ |
+| 0      | HTML Fragments         | Multiple root elements, `<>child</>` |
+| 1      | Hello World            | Basic templates, interpolation       |
+| 2      | Unquoted Variables     | String interpolation                 |
+| 3      | CSS Integration        | External stylesheets                 |
+| 4      | CSS Validation         | Compile-time class checking          |
+| 5      | Inline Interpolation   | Complex expressions                  |
+| 6      | Pattern Matching       | `@match` directive                   |
+| 7      | @let Directive         | Computed values                      |
+| 8      | Nested Control Flow    | Combined `@if/@for/@match`           |
+| 9      | List Processing        | Filtered data                        |
+| 10     | Result Handling        | `@match` with `Ok/Err`               |
+| 11     | Simple Components      | Reusable button components           |
+| 12     | Component Children     | Passing content to components        |
+| 13     | Composition            | Building UIs from simple blocks      |
+| 14     | Component Variants     | Using Enums for styles               |
+| 15     | Reusable Inputs        | Creating generic form fields         |
+| 16     | JavaScript Integration | External libraries                   |
+| 17     | HTMX Integration       | Interactive apps without JS          |
+| 18     | CSS Variables          | Dynamic theming, `--custom-props`    |
+| 19     | Accessibility          | Skip links, ARIA, landmarks          |
+| 20     | Conditional Classes    | Dynamic class names                  |
+| 21     | CSS Scoping            | Automatic scoping demo               |
+| 22     | Data Tables            | Type-safe table iteration            |
+| 23     | Global CSS & CDN       | `global.css`, external links         |
+| 24     | Boolean Attributes     | `disabled`, `required`, `checked`    |
+| 25     | Schema.org JSON-LD     | `#[derive(Schema)]` macro            |
+| 26     | Multiple CSS Files     | Loading multiple stylesheets         |
+| 27     | SEO Meta Tags          | `head!` macro usage                  |
+| 28     | Error Handling         | 404/500 page components              |
+| 29     | Advanced Composition   | Slots/Render Props pattern           |
+| 30     | Loading States         | Skeleton screens                     |
+| 31     | Type-Safe Forms        | Form binding validation              |
+| 32     | String Optimization    | `{\"prefix\" expr}` pattern          |
+| 33     | Strict Validation      | HTML structure rules                 |
+| 34     | Capstone               | Social Profile (Heavier Use)         |
 
 **Start at Lesson 0 and work your way up.** Each builds on the previous.
 
