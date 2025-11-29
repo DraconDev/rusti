@@ -402,7 +402,8 @@ fn generate_body(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     let (valid_classes, valid_ids) = crate::css::extract_selectors(&scoped_css);
 
     // Validate nodes against strict rules - COMPILE ERRORS
-    let style_validation_errors = validate_nodes(nodes, &valid_classes, &valid_ids);
+    let style_validation_errors =
+        validate_nodes(nodes, &valid_classes, &valid_ids, !scoped_css.is_empty());
     if !style_validation_errors.is_empty() {
         return style_validation_errors;
     }
@@ -464,6 +465,7 @@ fn validate_nodes(
     nodes: &[token_parser::Node],
     valid_classes: &std::collections::HashSet<String>,
     valid_ids: &std::collections::HashSet<String>,
+    has_scoped_css: bool,
 ) -> proc_macro2::TokenStream {
     use quote::quote_spanned;
     let mut errors = vec![];
@@ -472,6 +474,7 @@ fn validate_nodes(
         nodes: &[token_parser::Node],
         valid_classes: &std::collections::HashSet<String>,
         valid_ids: &std::collections::HashSet<String>,
+        has_scoped_css: bool,
         errors: &mut Vec<proc_macro2::TokenStream>,
         is_inside_form: bool,
         is_inside_button: bool,
@@ -495,10 +498,17 @@ fn validate_nodes(
                             if let token_parser::AttributeValue::Static(val) = &attr.value {
                                 for class_name in val.split_whitespace() {
                                     if !valid_classes.contains(class_name) {
-                                        let msg = format!(
-                                            "Class '{}' is used in HTML but not defined in CSS.",
-                                            class_name
-                                        );
+                                        let msg = if has_scoped_css {
+                                            format!(
+                                                "Class '{}' is used in HTML but not defined in CSS.",
+                                                class_name
+                                            )
+                                        } else {
+                                            format!(
+                                                "Class '{}' is used but no CSS styles are defined for this component. Import a CSS file with <style src=\"...\" />.",
+                                                class_name
+                                            )
+                                        };
                                         errors.push(quote_spanned! { attr.span =>
                                             compile_error!(#msg);
                                         });
@@ -579,6 +589,7 @@ fn validate_nodes(
                         &elem.children,
                         valid_classes,
                         valid_ids,
+                        has_scoped_css,
                         errors,
                         new_is_inside_form,
                         new_is_inside_button,
@@ -590,6 +601,7 @@ fn validate_nodes(
                         &frag.children,
                         valid_classes,
                         valid_ids,
+                        has_scoped_css,
                         errors,
                         is_inside_form,
                         is_inside_button,
