@@ -1,0 +1,322 @@
+/* Lesson 20: Modern Dark Mode */
+
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+            circle at 40% 60%,
+            rgba(236, 72, 153, 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 60% 40%,
+            rgba(139, 92, 246, 0.08) 0%,
+            transparent 40%
+        );
+    pointer-events: none;
+    animation: lesson20Float 31s ease-in-out infinite alternate;
+}
+
+@keyframes lesson20Float {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        transform: scale(1.01) translateY(-17px);
+    }
+}
+
+h1 {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #f472b6 0%, #ec4899 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 0 40px rgba(236, 72, 153, 0.4);
+    animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 0 0 40px rgba(236, 72, 153, 0.4);
+    }
+    100% {
+        text-shadow: 0 0 60px rgba(236, 72, 153, 0.8);
+    }
+}
+
+h2 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.btn {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    margin: 0.5rem;
+    display: inline-block;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #60a5fa, #818cf8);
+}
+
+.btn.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+.btn.active:hover {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    box-shadow: 0 12px 35px rgba(34, 197, 94, 0.6);
+}
+
+.btn.loading {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    cursor: not-allowed;
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.alert {
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+}
+
+.alert::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    animation: alertBorder 3s linear infinite;
+}
+
+@keyframes alertBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.alert-success {
+    background: linear-gradient(
+        135deg,
+        rgba(34, 197, 94, 0.2),
+        rgba(34, 197, 94, 0.1)
+    );
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+}
+
+.alert-warning {
+    background: linear-gradient(
+        135deg,
+        rgba(245, 158, 11, 0.2),
+        rgba(245, 158, 11, 0.1)
+    );
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #fcd34d;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+}
+
+.alert-error {
+    background: linear-gradient(
+        135deg,
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1)
+    );
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+.badge {
+    display: inline-block;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0.25rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.badge-small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.badge-large {
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #a855f7, #c084fc);
+    color: white;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.badge::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: badgeBorder 2s linear infinite;
+}
+
+@keyframes badgeBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.code-example {
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.9) 0%,
+        rgba(30, 41, 59, 0.9) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-family: 'Courier New', monospace;
+    color: #e2e8f0;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.code-example::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #64748b, transparent);
+    animation: codeBorder 3s linear infinite;
+}
+
+@keyframes codeBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+pre {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    color: #a5b4fc;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
