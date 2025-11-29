@@ -1,25 +1,25 @@
 - [ ] style lesson 0 
 - [ ] style lesson 1 
 - [ ] style lesson 2 
-- [ ] style lesson 3 
-- [ ] style lesson 4 
-- [ ] style lesson 5 
+- [x] style lesson 3 
+- [x] style lesson 4 
+- [x] style lesson 5 
 - [ ] style lesson 6 
-- [ ] style lesson 7 
-- [ ] style lesson 8 
-- [ ] style lesson 9 
+- [x] style lesson 7 
+- [x] style lesson 8 
+- [x] style lesson 9 
 - [ ] style lesson 10 
-- [ ] style lesson 11
-- [ ] style lesson 12
+- [x] style lesson 11
+- [x] style lesson 12
 - [ ] style lesson 13
 - [ ] style lesson 14 
 - [ ] style lesson 15
-- [ ] style lesson 16
+- [x] style lesson 16
 - [ ] style lesson 17
 - [ ] style lesson 18
-- [ ] style lesson 19
+- [x] style lesson 19
 - [ ] style lesson 20
-- [ ] style lesson 21
+- [x] style lesson 21
 - [ ] style lesson 22
 - [ ] style lesson 23
 - [ ] style lesson 24
