@@ -370,3 +370,145 @@ button {
 .mb-4 {
     margin-bottom: var(--spacing-lg);
 }
+
+/* Additional utility classes used across lessons */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--azumi-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.chart {
+    background: var(--azumi-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.card {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.content {
+    color: var(--azumi-text);
+}
+
+.title {
+    color: var(--azumi-text);
+    font-weight: 600;
+}
+
+.body {
+    color: #cbd5e1;
+}
+
+.short {
+    max-width: 600px;
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--azumi-surface),
+        #2d3748,
+        var(--azumi-surface)
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius-sm);
+}
+
+/* Role badges */
+.admin {
+    background: #ef4444;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.user {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.guest {
+    background: #6b7280;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* State classes */
+.alternate {
+    background: rgba(148, 163, 184, 0.05);
+}
+
+.highlight {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.valid {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.cancel {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.confirm {
+    background: var(--azumi-primary);
+    color: white;
+}
+
+/* Animation utilities (for lessons using animate.css patterns) */
+.animate__bounce {
+    animation: bounce 1s infinite;
+}
+
+.animate__animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
