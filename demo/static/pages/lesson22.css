@@ -1,6 +1,6 @@
 /* Lesson 22: Modern Dark Mode */
 
-.lesson22-container {
+.container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
@@ -10,7 +10,7 @@
     overflow-x: hidden;
 }
 
-.lesson22-container::before {
+.container::before {
     content: "";
     position: absolute;
     top: 0;
@@ -40,51 +40,13 @@
     }
 }
 
-.lesson22-header {
-    text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(
-        135deg,
-        rgba(59, 130, 246, 0.15) 0%,
-        rgba(239, 68, 68, 0.15) 100%
-    );
-    border-radius: 1rem;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.lesson22-header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6, #ef4444, #8b5cf6);
-    background-size: 200% 100%;
-    animation: headerBorder 3s linear infinite;
-}
-
-@keyframes headerBorder {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
-}
-
-.lesson22-title {
+h1 {
     font-size: 3rem;
     background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #ef4444 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     font-weight: 700;
     text-align: center;
     text-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
@@ -100,35 +62,37 @@
     }
 }
 
-.lesson22-section {
+.description {
     background: linear-gradient(
         135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
+        rgba(59, 130, 246, 0.15) 0%,
+        rgba(59, 130, 246, 0.08) 100%
     );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-left: 4px solid #3b82f6;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    color: #e2e8f0;
+    font-size: 1.1rem;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 }
 
-.lesson22-section::before {
+.description::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
+    width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, #3b82f6, #ef4444, #8b5cf6);
-    animation: sectionBorder 3s linear infinite;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    animation: descBorder 3s linear infinite;
 }
 
-@keyframes sectionBorder {
+@keyframes descBorder {
     0% {
         transform: translateX(-100%);
     }
@@ -137,28 +101,275 @@
     }
 }
 
-.lesson22-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
-.lesson22-text {
+.data-table::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #ef4444, #8b5cf6);
+    animation: tableBorder 3s linear infinite;
+}
+
+@keyframes tableBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.data-table th {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.2) 0%,
+        rgba(59, 130, 246, 0.1) 100%
+    );
+    color: #f1f5f9;
+    font-weight: 700;
+    padding: 1rem;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+    position: relative;
+}
+
+.data-table th::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    animation: headerLine 3s ease-in-out infinite;
+}
+
+@keyframes headerLine {
+    0%,
+    100% {
+        width: 0%;
+    }
+    50% {
+        width: 100%;
+    }
+}
+
+.data-table td {
+    padding: 1rem;
     color: #cbd5e1;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.data-table tbody tr {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.data-table tbody tr::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.05),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.data-table tbody tr:hover::before {
+    opacity: 1;
+}
+
+.data-table tbody tr:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.1) 0%,
+        rgba(59, 130, 246, 0.05) 100%
+    );
+    transform: translateX(2px);
+}
+
+.data-table tbody tr.active {
+    border-left: 4px solid #22c55e;
+}
+
+.data-table tbody tr.inactive {
+    border-left: 4px solid #ef4444;
+    opacity: 0.8;
+}
+
+.data-table .name {
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.data-table .email {
+    color: #94a3b8;
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    margin: 0.25rem 0;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.badge-admin {
+    background: linear-gradient(
+        135deg,
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1)
+    );
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+
+.badge-user {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.2),
+        rgba(59, 130, 246, 0.1)
+    );
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+}
+
+.badge::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    animation: badgeBorder 3s linear infinite;
+}
+
+@keyframes badgeBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.status-active {
+    color: #22c55e;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.status-inactive {
+    color: #ef4444;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.note {
+    background: linear-gradient(
+        135deg,
+        rgba(245, 158, 11, 0.15) 0%,
+        rgba(245, 158, 11, 0.08) 100%
+    );
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-left: 4px solid #f59e0b;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    color: #e2e8f0;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+}
+
+.note::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+    animation: noteBorder 3s linear infinite;
+}
+
+@keyframes noteBorder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.note strong {
+    color: #fbbf24;
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {
-    [class*="-container"],
-    [class*="container"] {
+    .container {
         padding: 1rem;
     }
 
-    [class*="-title"],
-    [class*="title"] {
+    h1 {
         font-size: 2rem;
+    }
+
+    .data-table {
+        font-size: 0.8rem;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem;
+    }
+
+    .badge {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.5rem;
     }
 }
