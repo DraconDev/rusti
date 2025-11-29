@@ -1,6 +1,6 @@
 /* Lesson 34: Modern Dark Mode */
 
-.lesson34-container {
+.container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
@@ -10,7 +10,7 @@
     overflow-x: hidden;
 }
 
-.lesson34-container::before {
+.container::before {
     content: "";
     position: absolute;
     top: 0;
@@ -18,22 +18,22 @@
     right: 0;
     bottom: 0;
     background: radial-gradient(
+            circle at 50% 50%,
+            rgba(14, 165, 233, 0.08) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
             circle at 20% 80%,
-            rgba(59, 130, 246, 0.08) 0%,
+            rgba(168, 85, 247, 0.08) 0%,
             transparent 40%
         ),
         radial-gradient(
             circle at 80% 20%,
-            rgba(236, 72, 153, 0.08) 0%,
+            rgba(34, 197, 94, 0.08) 0%,
             transparent 40%
-        ),
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(168, 85, 247, 0.05) 0%,
-            transparent 60%
         );
     pointer-events: none;
-    animation: lesson34Float 47s ease-in-out infinite alternate;
+    animation: lesson34Float 42s ease-in-out infinite alternate;
 }
 
 @keyframes lesson34Float {
@@ -41,137 +41,44 @@
         transform: scale(1) translateY(0);
     }
     100% {
-        transform: scale(1.02) translateY(-23px);
+        transform: scale(1.01) translateY(-24px);
     }
 }
 
-.lesson34-header {
-    text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: linear-gradient(
-        135deg,
-        rgba(59, 130, 246, 0.15) 0%,
-        rgba(236, 72, 153, 0.15) 50%,
-        rgba(168, 85, 247, 0.15) 100%
-    );
-    border-radius: 1rem;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.lesson34-header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6, #ec4899, #a855f7, #8b5cf6);
-    background-size: 300% 100%;
-    animation: headerBorder 4s linear infinite;
-}
-
-@keyframes headerBorder {
-    0% {
-        background-position: 300% 0;
-    }
-    100% {
-        background-position: -300% 0;
-    }
-}
-
-.lesson34-title {
+h1 {
     font-size: 3rem;
     background: linear-gradient(
         135deg,
-        #60a5fa 0%,
-        #3b82f6 33%,
-        #ec4899 66%,
-        #a855f7 100%
+        #38bdf8 0%,
+        #0ea5e9 50%,
+        #a855f7 25%,
+        #22c55e 75%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     font-weight: 700;
     text-align: center;
-    text-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+    text-shadow: 0 0 40px rgba(14, 165, 233, 0.4);
     animation: titleGlow 4s ease-in-out infinite alternate;
 }
 
 @keyframes titleGlow {
     0% {
-        text-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+        text-shadow: 0 0 40px rgba(14, 165, 233, 0.4);
     }
     100% {
-        text-shadow: 0 0 60px rgba(168, 85, 247, 0.8);
+        text-shadow: 0 0 60px rgba(14, 165, 233, 0.8);
     }
-}
-
-.lesson34-section {
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.6) 0%,
-        rgba(51, 65, 85, 0.6) 100%
-    );
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.lesson34-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #3b82f6, #ec4899, #a855f7, #8b5cf6);
-    background-size: 300% 100%;
-    animation: sectionBorder 4s linear infinite;
-}
-
-@keyframes sectionBorder {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.lesson34-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.lesson34-text {
-    color: #cbd5e1;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
-    [class*="-container"],
-    [class*="container"] {
+    .container {
         padding: 1rem;
     }
 
-    [class*="-title"],
-    [class*="title"] {
+    h1 {
         font-size: 2rem;
     }
 }
