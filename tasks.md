@@ -18,12 +18,12 @@
   - [x] style lesson 12
   - [x] style lesson 13
   - [ ] style lesson 14 
-  - [ ] style lesson 15
+  - [x] style lesson 15
   - [x] style lesson 16
   - [x] style lesson 17
-  - [ ] style lesson 18
+  - [x] style lesson 18
   - [x] style lesson 19
-  - [ ] style lesson 20
+  - [x] style lesson 20
   - [x] style lesson 21
   - [ ] style lesson 22
   - [ ] style lesson 23
