@@ -6,9 +6,7 @@ use azumi::html;
 
 #[azumi::component]
 pub fn form_states_demo() -> impl azumi::Component {
-    let is_admin = true;
-    let email_verified = false;
-    let subscribe_checked = true;
+    
 
     html! {
         <style src="/static/pages/lesson24.css" />
@@ -21,6 +19,7 @@ pub fn form_states_demo() -> impl azumi::Component {
                 // Disabled based on Rust variable
                 <div class="field">
                     <label for="username">"Username"</label>
+                    @let is_admin = true;
                     <input
                         type="text"
                         id="username"
@@ -32,6 +31,7 @@ pub fn form_states_demo() -> impl azumi::Component {
                 // Readonly from variable
                 <div class="field">
                     <label for="email">"Email"</label>
+                    @let email_verified = false;
                     <input
                         type="email"
                         id="email"
@@ -43,6 +43,7 @@ pub fn form_states_demo() -> impl azumi::Component {
                 // Checked from variable
                 <div class="field">
                     <label>
+                        @let subscribe_checked = true;
                         <input
                             type="checkbox"
                             checked={subscribe_checked}  // Dynamic!
