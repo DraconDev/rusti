@@ -54,8 +54,8 @@ pub fn slots_demo() -> impl azumi::Component {
 
             // Pass content fragments as props!
             @modal(
-                header={header_content.clone()},
-                body={body_content.clone()},
+                header=header_content.clone(),
+                body=body_content.clone(),
                 is_open=show_modal
             )
 
