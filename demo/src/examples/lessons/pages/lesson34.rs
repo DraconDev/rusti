@@ -41,13 +41,13 @@ fn stat_card(label: &'static str, value: u32) -> impl azumi::Component {
 
 #[azumi::component]
 pub fn social_profile() -> impl azumi::Component {
-    // Mock Data
-
+    
     html! {
         <html lang="en">
-            <head>
-                // 3. SEO & Meta Tags
-                @let user = UserProfile {
+        <head>
+        // 3. SEO & Meta Tags
+        // Mock Data
+        @let user = UserProfile {
                     full_name: "Alex Rivera".to_string(),
                     handle: "@arivera".to_string(),
                     bio: "Rust Developer & UI Enthusiast. Building the future of web apps with Azumi."
