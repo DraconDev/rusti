@@ -151,7 +151,7 @@ fn collect_input_names(nodes: &[token_parser::Node], accesses: &mut Vec<proc_mac
                                     .map(|s| proc_macro2::Ident::new(s, span))
                                     .collect();
 
-                                accesses.push(quote_spanned! {span=>
+                                accesses.push(quote! {
                                     let _ = &data.#(#fields).*;
                                 });
                             }
