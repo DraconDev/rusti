@@ -9,14 +9,14 @@
   - [x] style lesson 3 
   - [x] style lesson 4 
   - [x] style lesson 5 
-  - [ ] style lesson 6 
+  - [x] style lesson 6 
   - [x] style lesson 7 
   - [x] style lesson 8 
   - [x] style lesson 9 
-  - [ ] style lesson 10 
+  - [x] style lesson 10 
   - [x] style lesson 11
   - [x] style lesson 12
-  - [ ] style lesson 13
+  - [x] style lesson 13
   - [ ] style lesson 14 
   - [ ] style lesson 15
   - [x] style lesson 16
