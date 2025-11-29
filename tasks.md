@@ -3,7 +3,7 @@
 ## TODO
 
 - Style all lessons in a modern dark theme
-  - [ ] style lesson 0 
+  - [x] style lesson 0 
   - [x] style lesson 1 
   - [x] style lesson 2 
   - [x] style lesson 3 
@@ -17,7 +17,7 @@
   - [x] style lesson 11
   - [x] style lesson 12
   - [x] style lesson 13
-  - [ ] style lesson 14 
+  - [x] style lesson 14 
   - [x] style lesson 15
   - [x] style lesson 16
   - [x] style lesson 17
