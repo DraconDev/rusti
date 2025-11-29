@@ -4,6 +4,7 @@
 
 use azumi::html;
 use serde::Serialize;
+use serde_json;
 
 // Derive Schema for automatic JSON-LD generation!
 #[derive(Serialize, azumi::Schema)]
