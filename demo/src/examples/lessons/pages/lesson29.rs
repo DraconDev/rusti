@@ -30,7 +30,7 @@ where
 
 #[azumi::component]
 pub fn slots_demo() -> impl azumi::Component {
-    @let show_modal = true;
+    let show_modal = true;
 
     // Define content for "slots"
     let header_content = html! { <h3>"Confirmation Required"</h3> };
