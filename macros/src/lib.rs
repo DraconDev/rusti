@@ -551,16 +551,18 @@ fn validate_nodes(
                                     if !valid_classes.contains(class_name) {
                                         let msg = if has_scoped_css {
                                             format!(
-                                                "Class '{}' is used in HTML but not defined in CSS.",
+                                                "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
                                                 class_name
                                             )
                                         } else {
                                             format!(
-                                                "Class '{}' is used but no CSS styles are defined for this component. Import a CSS file with <style src=\"...\" />.",
+                                                "CSS class '{}' is used but no CSS styles are defined for this component. Import a CSS file with <style src=\"...\" />.",
                                                 class_name
                                             )
                                         };
-                                        errors.push(quote_spanned! { attr.span =>
+                                        // Use value_span to point to the attribute value, fallback to attr.span
+                                        let error_span = attr.value_span.unwrap_or(attr.span);
+                                        errors.push(quote_spanned! { error_span =>
                                             compile_error!(#msg);
                                         });
                                     }
@@ -576,7 +578,9 @@ fn validate_nodes(
                                         "ID '{}' is used in HTML but not defined in CSS.",
                                         val
                                     );
-                                    errors.push(quote_spanned! { attr.span =>
+                                    // Use value_span to point to the attribute value, fallback to attr.span
+                                    let error_span = attr.value_span.unwrap_or(attr.span);
+                                    errors.push(quote_spanned! { error_span =>
                                         compile_error!(#msg);
                                     });
                                 }
