@@ -1,29 +1,143 @@
-/* Lesson 8: Dashboard Widgets - Nested control flow styling */
+/* Lesson 8: Modern Dark Mode */
 
-.widgets {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+.lesson8-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 2rem;
 }
 
-.widget {
-    padding: 1.5rem;
+.lesson8-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lesson8-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.1) 0%,
+        rgba(5, 150, 105, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson8-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10b981, #059669, #047857);
+}
+
+.lesson8-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #6ee7b7 0%, #10b981 50%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.lesson8-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.lesson8-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-size: 1.75rem;
+    color: #f1f5f9;
+    margin: 0 0 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+    padding-bottom: 0.75rem;
+}
+
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     border-radius: 0.75rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
 }
 
-.widget:hover {
-    transform: translateY(-4px);
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
 }
 
-.widget.chart {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.widget.table {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn.secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson8-container {
+        padding: 1rem;
+    }
+    
+    .lesson8-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .lesson8-title {
+        font-size: 2rem;
+    }
 }

@@ -1,102 +1,143 @@
-/* Lesson 22: Data Tables */
+/* Lesson 22: Modern Dark Mode */
 
-.container {
-    max-width: 1000px;
-    margin: 2rem auto;
+.lesson22-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-    font-family: sans-serif;
 }
 
-h1 {
-    color: #2c3e50;
+.lesson22-content {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.description {
-    color: #7f8c8d;
-    margin-bottom: 2rem;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.lesson22-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(236, 72, 153, 0.1) 0%,
+        rgba(139, 92, 246, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
     overflow: hidden;
 }
 
-.data-table thead {
-    background: #34495e;
-    color: white;
+.lesson22-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #6366f1);
 }
 
-.data-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
+.lesson22-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
-.data-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #ecf0f1;
-}
-
-.data-table tr:hover {
-    background: #f8f9fa;
-}
-
-.data-table tr.inactive {
-    opacity: 0.6;
-}
-
-.name {
-    font-weight: 600;
-    color: #2c3e50;
-}
-
-.email {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-}
-
-.badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.badge-admin {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.badge-user {
-    background: #f3e5f5;
-    color: #7b1fa2;
-}
-
-.status-active {
-    color: #27ae60;
-}
-
-.status-inactive {
-    color: #95a5a6;
-}
-
-.note {
-    margin-top: 2rem;
-    padding: 1rem;
-    background: #fff3cd;
-    border-left: 4px solid #ffc107;
-    border-radius: 4px;
+.lesson22-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    margin: 0;
     line-height: 1.6;
 }
 
-.note code {
-    background: rgba(0, 0, 0, 0.1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: "Courier New", monospace;
+.lesson22-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-size: 1.75rem;
+    color: #f1f5f9;
+    margin: 0 0 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(236, 72, 153, 0.3);
+    padding-bottom: 0.75rem;
+}
+
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn.secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson22-container {
+        padding: 1rem;
+    }
+    
+    .lesson22-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .lesson22-title {
+        font-size: 2rem;
+    }
 }

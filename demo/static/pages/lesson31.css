@@ -1,98 +1,143 @@
-/* Lesson 31: Type-Safe Forms */
+/* Lesson 31: Modern Dark Mode */
 
-.container {
-    max-width: 600px;
-    margin: 2rem auto;
+.lesson31-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-    font-family: sans-serif;
 }
 
-.form-card {
-    background: white;
+.lesson31-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lesson31-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(236, 72, 153, 0.1) 0%,
+        rgba(139, 92, 246, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson31-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #6366f1);
+}
+
+.lesson31-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.lesson31-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.lesson31-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
     padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-/* ID selectors for validation */
-#username {
-    display: block;
-}
-#email {
-    display: block;
-}
-#password {
-    display: block;
-}
-#age {
-    display: block;
-}
-#role {
-    display: block;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.5rem;
+.section-title {
+    font-size: 1.75rem;
+    color: #f1f5f9;
+    margin: 0 0 1.5rem;
     font-weight: 600;
-    color: #333;
+    border-bottom: 2px solid rgba(236, 72, 153, 0.3);
+    padding-bottom: 0.75rem;
 }
 
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
 }
 
-.hint {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: #666;
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
 }
 
-button {
-    background: #3498db;
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
     cursor: pointer;
-    width: 100%;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-button:hover {
-    background: #2980b9;
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
 }
 
-.info-box {
-    background: #e8f4f8;
-    border-left: 4px solid #3498db;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    color: #2c3e50;
+.nav-btn.secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
 }
 
-code {
-    background: #eee;
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: monospace;
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson31-container {
+        padding: 1rem;
+    }
+    
+    .lesson31-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .lesson31-title {
+        font-size: 2rem;
+    }
 }

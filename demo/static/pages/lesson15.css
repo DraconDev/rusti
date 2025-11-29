@@ -1,56 +1,143 @@
-/* Lesson 15: Inputs */
+/* Lesson 15: Modern Dark Mode */
 
-.container {
-    max-width: 400px;
-    margin: 2rem auto;
+.lesson15-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
-    font-family: sans-serif;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.simple-form {
+.lesson15-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lesson15-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(245, 158, 11, 0.1) 0%,
+        rgba(217, 119, 6, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson15-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+}
+
+.lesson15-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.lesson15-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.lesson15-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-size: 1.75rem;
+    color: #f1f5f9;
+    margin: 0 0 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    padding-bottom: 0.75rem;
+}
+
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+/* Navigation */
+.nav-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
 }
 
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-label {
-    font-weight: 500;
-    color: #334155;
-    font-size: 0.9rem;
-}
-
-input {
-    padding: 0.75rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-input:focus {
-    outline: 2px solid #3b82f6;
-    border-color: transparent;
-}
-
-button {
-    background: #0f172a;
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
-    padding: 0.75rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-button:hover {
-    background: #1e293b;
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn.secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson15-container {
+        padding: 1rem;
+    }
+    
+    .lesson15-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .lesson15-title {
+        font-size: 2rem;
+    }
 }

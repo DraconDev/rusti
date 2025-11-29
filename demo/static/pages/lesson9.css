@@ -1,41 +1,143 @@
-/* Fancy styling for Lesson 9: Advanced List Processing */
-.search-container {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  border-radius: 12px;
-  border: 1px solid rgba(79, 70, 229, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+/* Lesson 9: Modern Dark Mode */
+
+.lesson9-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 2rem;
 }
 
-.no-results {
-  color: #94a3b8;
-  text-align: center;
-  font-style: italic;
-  font-size: 1.1rem;
-  padding: 2rem;
-  background: rgba(148, 163, 184, 0.1);
-  border-radius: 8px;
-  border: 1px dashed rgba(148, 163, 184, 0.3);
+.lesson9-content {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.filtered-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.lesson9-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.1) 0%,
+        rgba(5, 150, 105, 0.1) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
 }
 
-.search-item {
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background: linear-gradient(135deg, #334155, #475569);
-  border-radius: 8px;
-  border-left: 4px solid #4f46e5;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.lesson9-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10b981, #059669, #047857);
 }
 
-.search-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
-  border-left-color: #6366f1;
+.lesson9-title {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #6ee7b7 0%, #10b981 50%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.lesson9-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.lesson9-section {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-size: 1.75rem;
+    color: #f1f5f9;
+    margin: 0 0 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+    padding-bottom: 0.75rem;
+}
+
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+.nav-btn.secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lesson9-container {
+        padding: 1rem;
+    }
+    
+    .lesson9-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .lesson9-title {
+        font-size: 2rem;
+    }
 }

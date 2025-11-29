@@ -1,9 +1,14 @@
-/* Lesson 17: HTMX Integration - Modern Dark Mode */
+/* Lesson 17: Modern Dark Mode */
 
 .lesson17-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     padding: 2rem;
+}
+
+.lesson17-content {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .lesson17-header {
@@ -60,9 +65,6 @@
     padding: 2rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .section-title {
@@ -74,37 +76,32 @@
     padding-bottom: 0.75rem;
 }
 
-.section-text {
-    color: #cbd5e1;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
+/* Example Boxes */
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
 }
 
-/* Info Boxes */
-.info-box {
-    padding: 1rem 1.5rem;
+.code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 0.5rem;
+    padding: 1rem;
     margin: 1rem 0;
-    border-left: 4px solid;
-}
-
-.info-box.note {
-    background: rgba(99, 102, 241, 0.1);
-    border-color: #6366f1;
-    color: #a5b4fc;
+    overflow-x: auto;
 }
 
 /* Navigation */
-.lesson-nav {
+.nav-buttons {
     display: flex;
     gap: 1rem;
     justify-content: space-between;
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(148, 163, 184, 0.1);
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .nav-btn {
@@ -123,7 +120,6 @@
 .nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
-    text-decoration: none;
 }
 
 .nav-btn.secondary {
@@ -131,131 +127,17 @@
     color: #cbd5e1;
 }
 
-.nav-btn.secondary:hover {
-    background: rgba(148, 163, 184, 0.15);
-}
-
-/* Todo Demo Specific */
-.todo-container {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(236, 72, 153, 0.2);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-}
-
-.todo-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    transition: all 0.2s ease;
-}
-
-.todo-item:hover {
-    background: rgba(30, 41, 59, 0.7);
-    border-color: rgba(236, 72, 153, 0.3);
-}
-
-.todo-checkbox {
-    width: 1.25rem;
-    height: 1.25rem;
-    cursor: pointer;
-}
-
-.todo-text {
-    flex: 1;
-    color: #cbd5e1;
-    font-size: 1rem;
-}
-
-.todo-delete {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.todo-delete:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-.todo-add {
-    width: 100%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
-}
-
-.todo-add:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
-}
-
-.lesson17-list {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0;
-}
-
-.lesson17-list li {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    background: rgba(236, 72, 153, 0.1);
-    border-left: 3px solid #ec4899;
-    border-radius: 0.375rem;
-    color: #cbd5e1;
-    transition: all 0.2s ease;
-}
-
-.lesson17-list li:hover {
-    background: rgba(236, 72, 153, 0.15);
-    transform: translateX(4px);
-}
-
-.lesson17-list li code {
-    background: rgba(99, 102, 241, 0.2);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    color: #a5b4fc;
-    font-weight: 600;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .lesson17-container {
         padding: 1rem;
     }
-
+    
     .lesson17-header {
         padding: 2rem 1.5rem;
     }
-
+    
     .lesson17-title {
         font-size: 2rem;
-    }
-
-    .lesson17-section {
-        padding: 1.5rem;
-    }
-
-    .lesson-nav {
-        flex-direction: column;
     }
 }
