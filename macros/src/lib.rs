@@ -81,7 +81,7 @@ fn collect_bind_checks(nodes: &[token_parser::Node], checks: &mut Vec<proc_macro
                 // If this element has bind={Struct}, generate a check function
                 if let Some(struct_path) = &elem.bind_struct {
                     let mut field_accesses = Vec::new();
-                    collect_input_names(&elem.children, &mut field_accesses);
+                    collect_input_names(&elem.children, struct_path, &mut field_accesses);
 
                     if !field_accesses.is_empty() {
                         let check_fn_name =
