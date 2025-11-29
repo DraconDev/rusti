@@ -31,6 +31,7 @@ pub struct UserStats {
 #[azumi::component]
 fn stat_card(label: &'static str, value: u32) -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson34.css" />
         <div class="stat-item">
             <span class="stat-value">{value}</span>
             <span class="stat-label">{label}</span>
@@ -61,8 +62,8 @@ pub fn social_profile() -> impl azumi::Component {
             <head>
                 // 3. SEO & Meta Tags
                 {head! {
-                    title: user.full_name,
-                    description: user.bio,
+                    title: user.full_name.clone(),
+                    description: user.bio.clone(),
                     image: "/static/images/default-avatar.png",
                     type: "profile"
                 }}
