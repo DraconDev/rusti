@@ -1,311 +1,48 @@
-//! Lesson 14: Advanced Component Patterns
+//! Lesson 14: Advanced Patterns (Enums)
 //!
-//! Demonstrating various component design patterns and best practices
+//! Using Enums for component variants
 
 use azumi::html;
 
-// ============================================================================
-// SECTION 1: Button Component with Variants
-// ============================================================================
-
-#[derive(Clone, PartialEq, Debug)]
+#[derive(Clone, PartialEq)]
 pub enum ButtonVariant {
     Primary,
     Secondary,
-    Success,
     Danger,
-    Outline,
 }
 
-#[derive(Clone, PartialEq, Debug)]
-pub enum ButtonSize {
-    Small,
-    Medium,
-    Large,
-}
-
-#[derive(Clone)]
-pub struct ButtonProps {
-    pub text: String,
-    pub variant: ButtonVariant,
-    pub size: ButtonSize,
-    pub disabled: bool,
-}
-
-/// Reusable button component with multiple variants and sizes
-/// Reusable button component with multiple variants and sizes
 #[azumi::component]
-pub fn button<'a>(
-    text: &'a str,
-    variant: ButtonVariant,
-    size: ButtonSize,
-    disabled: bool,
-) -> impl azumi::Component + 'a {
-    let variant_class = match variant {
+pub fn button(text: String, variant: ButtonVariant) -> impl azumi::Component {
+    let class_name = match variant {
         ButtonVariant::Primary => "btn-primary",
         ButtonVariant::Secondary => "btn-secondary",
-        ButtonVariant::Success => "btn-success",
         ButtonVariant::Danger => "btn-danger",
-        ButtonVariant::Outline => "btn-outline",
-    };
-
-    let size_class = match size {
-        ButtonSize::Small => "btn-sm",
-        ButtonSize::Medium => "btn-md",
-        ButtonSize::Large => "btn-lg",
     };
 
     html! {
         <style src="/static/pages/lesson14.css" />
-        <button
-            class={format!("btn {} {}", variant_class, size_class)}
-            disabled={disabled}
-        >
+        <button class={format!("btn {}", class_name)}>
             {text}
         </button>
     }
 }
 
-// ============================================================================
-// SECTION 2: Alert Component with Types
-// ============================================================================
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum AlertType {
-    Info,
-    Success,
-    Warning,
-    Error,
-}
-
-#[derive(Clone)]
-pub struct AlertProps {
-    pub message: String,
-    pub alert_type: AlertType,
-    pub dismissible: bool,
-}
-
-/// Alert component for showing notifications
-/// Alert component for showing notifications
 #[azumi::component]
-pub fn alert<'a>(
-    message: &'a str,
-    alert_type: AlertType,
-    dismissible: bool,
-) -> impl azumi::Component + 'a {
-    let type_class = match alert_type {
-        AlertType::Info => "alert-info",
-        AlertType::Success => "alert-success",
-        AlertType::Warning => "alert-warning",
-        AlertType::Error => "alert-error",
-    };
-
-    let icon = match alert_type {
-        AlertType::Info => "ℹ️",
-        AlertType::Success => "✓",
-        AlertType::Warning => "⚠️",
-        AlertType::Error => "✕",
-    };
-
+pub fn variants_demo() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson14.css" />
-        <div class={format!("alert {}", type_class)}>
-            <span class="alert-icon">{icon}</span>
-            <span class="alert-message">{message}</span>
-            @if dismissible {
-                <button class="alert-close">"×"</button>
-            }
-        </div>
-    }
-}
+        <div class="container">
+            <h1>"Lesson 14: Component Variants"</h1>
+            <p>"Using Enums to control component styles"</p>
 
-// ============================================================================
-// SECTION 3: Badge Component
-// ============================================================================
-
-#[derive(Clone, Debug)]
-pub struct BadgeProps {
-    pub text: String,
-    pub color: String,
-}
-
-/// Badge component
-#[azumi::component]
-pub fn badge<'a>(text: &'a str, color: &'a str) -> impl azumi::Component + 'a {
-    html! {
-        <style src="/static/pages/lesson14.css" />
-        <span class={format!("badge badge-{}", color)}>
-            {text}
-        </span>
-    }
-}
-
-// ============================================================================
-// SECTION 4: List Component with Custom Items
-// ============================================================================
-
-#[derive(Clone, Debug)]
-pub struct ListItem {
-    pub id: u32,
-    pub title: String,
-    pub description: String,
-    pub status: String,
-}
-
-/// List item component
-#[azumi::component]
-pub fn list_item<'a>(item: &'a ListItem) -> impl azumi::Component + 'a {
-    html! {
-        <style src="/static/pages/lesson14.css" />
-        <div class="list-item">
-            <div class="list-item-content">
-                <h4 class="list-item-title">{&item.title}</h4>
-                <p class="list-item-description">{&item.description}</p>
-            </div>
-            <div class="list-item-meta">
-                @badge(
-                    text=&item.status,
-                    color=match item.status.as_str() {
-                        "Active" => "success",
-                        "Pending" => "warning",
-                        "Completed" => "info",
-                        _ => "secondary",
-                    }
-                )
+            <div class="btn-group">
+                @button(text="Save Changes".to_string(), variant=ButtonVariant::Primary)
+                @button(text="Cancel".to_string(), variant=ButtonVariant::Secondary)
+                @button(text="Delete".to_string(), variant=ButtonVariant::Danger)
             </div>
         </div>
     }
 }
 
-/// Item list component
-#[azumi::component]
-pub fn item_list<'a>(items: &'a [ListItem]) -> impl azumi::Component + 'a {
-    html! {
-        <style src="/static/pages/lesson14.css" />
-        <div class="item-list">
-            @for item in items {
-                @list_item(item=item)
-            }
-        </div>
-    }
-}
-
-// ============================================================================
-// SECTION 5: Complex Example - Feature Showcase
-// ============================================================================
-
-#[azumi::component]
-pub fn advanced_patterns_demo() -> impl azumi::Component {
-    let sample_items = vec![
-        ListItem {
-            id: 1,
-            title: "Implement Authentication".to_string(),
-            description: "Add user login and registration functionality".to_string(),
-            status: "Active".to_string(),
-        },
-        ListItem {
-            id: 2,
-            title: "Design Database Schema".to_string(),
-            description: "Create optimized database structure".to_string(),
-            status: "Completed".to_string(),
-        },
-        ListItem {
-            id: 3,
-            title: "API Documentation".to_string(),
-            description: "Document all API endpoints".to_string(),
-            status: "Pending".to_string(),
-        },
-        ListItem {
-            id: 4,
-            title: "Performance Optimization".to_string(),
-            description: "Improve page load times".to_string(),
-            status: "Active".to_string(),
-        },
-    ];
-
-    html! {
-        <style src="/static/pages/lesson14.css" />
-        <div class="lesson-container">
-            <header class="lesson-header">
-                <h1 class="lesson-title">"Lesson 14: Advanced Component Patterns"</h1>
-                <p class="lesson-subtitle">
-                    "Master component design with variants, compositions, and best practices"
-                </p>
-            </header>
-
-            <section class="lesson-section">
-                <h2 class="section-title">"Introduction"</h2>
-                <p class="section-text">
-                    "Advanced component patterns help you build flexible, reusable UI elements. "
-                    "This lesson covers enums for variants, composition strategies, and real-world examples."
-                </p>
-            </section>
-
-            <section class="lesson-section">
-                <h2 class="section-title">"Pattern 1: Button Variants"</h2>
-                <p class="section-text">"Using enums to create flexible button components with different styles and sizes."</p>
-
-                <div class="demo-grid">
-                    <div class="demo-column">
-                        <h3 class="demo-heading">"Variants"</h3>
-                        @button(text="Primary", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Secondary", variant=ButtonVariant::Secondary, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Success", variant=ButtonVariant::Success, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Danger", variant=ButtonVariant::Danger, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Outline", variant=ButtonVariant::Outline, size=ButtonSize::Medium, disabled=false)
-                    </div>
-
-                    <div class="demo-column">
-                        <h3 class="demo-heading">"Sizes"</h3>
-                        @button(text="Small", variant=ButtonVariant::Primary, size=ButtonSize::Small, disabled=false)
-                        @button(text="Medium", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Large", variant=ButtonVariant::Primary, size=ButtonSize::Large, disabled=false)
-                    </div>
-
-                    <div class="demo-column">
-                        <h3 class="demo-heading">"States"</h3>
-                        @button(text="Enabled", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=false)
-                        @button(text="Disabled", variant=ButtonVariant::Primary, size=ButtonSize::Medium, disabled=true)
-                    </div>
-                </div>
-            </section>
-
-            <section class="lesson-section">
-                <h2 class="section-title">"Pattern 2: Alert Components"</h2>
-                <p class="section-text">"Contextual alerts with different types and dismissible options."</p>
-
-                <div class="alert-demo">
-                    @alert(message="This is an informational message.", alert_type=AlertType::Info, dismissible=true)
-                    @alert(message="Operation completed successfully!", alert_type=AlertType::Success, dismissible=true)
-                    @alert(message="Warning: Please review your input.", alert_type=AlertType::Warning, dismissible=false)
-                    @alert(message="Error: Something went wrong.", alert_type=AlertType::Error, dismissible=true)
-                </div>
-            </section>
-
-            <section class="lesson-section">
-                <h2 class="section-title">"Pattern 3: List Components"</h2>
-                <p class="section-text">"Composing lists with custom item components and dynamic badges."</p>
-
-                @item_list(items=&sample_items)
-            </section>
-
-            <section class="lesson-section">
-                <h2 class="section-title">"Key Takeaways"</h2>
-                <ul class="takeaways-list">
-                    <li>"✓ Use enums to define component variants and types"</li>
-                    <li>"✓ Create Props structs with clear, semantic fields"</li>
-                    <li>"✓ Compose small components to build complex UIs"</li>
-                    <li>"✓ Use pattern matching to generate variant-specific classes"</li>
-                    <li>"✓ Keep components focused on a single responsibility"</li>
-                    <li>"✓ Always add lifetime bounds (`+ '_`) when borrowing data"</li>
-                    <li>"✓ Import CSS in every component for validation"</li>
-                </ul>
-            </section>
-        </div>
-    }
-}
-
-/// Axum handler for Lesson 14
 pub async fn lesson14_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&advanced_patterns_demo()))
+    axum::response::Html(azumi::render_to_string(&html! { @variants_demo() }))
 }
