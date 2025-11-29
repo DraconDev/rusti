@@ -15,15 +15,15 @@ pub fn todo_with_htmx() -> impl azumi::Component {
 
             <section class="lesson17-section">
                 <h2 class="section-title">"HTMX Todo Demo"</h2>
-                <p class="section-text">"This demonstrates HTMX attributes working with server-side rendering. Click the buttons to see interactivity without writing JavaScript!"</p>
+                <p class="section-text">"Click the buttons to see HTMX in action!"</p>
 
-                <div class="todo-container">
+                <div class="todo-container" id="todo-list">
                     <div class="todo-item">
                         <input type="checkbox" class="todo-checkbox" />
                         <span class="todo-text">"Learn Azumi basics"</span>
                         <button
                             class="todo-delete"
-                            hx-delete="/api/todos/1"
+                            hx-delete="/api/todos/delete"
                             hx-target="closest .todo-item"
                             hx-swap="outerHTML swap:0.3s"
                         >"Delete"</button>
@@ -34,15 +34,18 @@ pub fn todo_with_htmx() -> impl azumi::Component {
                         <span class="todo-text">"Build HTMX app"</span>
                         <button
                             class="todo-delete"
-                            hx-delete="/api/todos/2"
+                            hx-delete="/api/todos/delete"
                             hx-target="closest .todo-item"
                             hx-swap="outerHTML swap:0.3s"
                         >"Delete"</button>
                     </div>
-                </div>
 
-                <div class="info-box note">
-                    <strong>"Note:"</strong>" These HTMX attributes work when connected to a backend. The demo shows the markup structure."
+                    <button
+                        class="todo-add"
+                        hx-post="/api/append"
+                        hx-target="#todo-list"
+                        hx-swap="beforeend"
+                    >"+ Add Todo"</button>
                 </div>
             </section>
 

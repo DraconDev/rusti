@@ -128,6 +128,25 @@
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
+.todo-add {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.todo-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
+}
+
 .lesson17-list {
     list-style: none;
     padding: 0;
