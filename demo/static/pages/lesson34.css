@@ -1,5 +1,57 @@
 /* Lesson 34: Modern Dark Mode */
 
+/* ID selectors for form inputs */
+#full_name,
+#location,
+#website,
+#bio,
+#username,
+#email,
+#password,
+#age,
+#role {
+    width: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.8) 0%,
+        rgba(30, 41, 59, 0.8) 100%
+    );
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #e2e8f0;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+#full_name:focus,
+#location:focus,
+#website:focus,
+#bio:focus,
+#username:focus,
+#email:focus,
+#password:focus,
+#age:focus,
+#role:focus {
+    outline: none;
+    border-color: var(--primary-color, #8b5cf6);
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.9) 0%,
+        rgba(30, 41, 59, 0.9) 100%
+    );
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    transform: translateY(-1px);
+}
+
+#bio {
+    resize: vertical;
+    min-height: 100px;
+}
+
 .profile-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
