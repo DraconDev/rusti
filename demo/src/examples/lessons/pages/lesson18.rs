@@ -6,8 +6,8 @@ use azumi::html;
 
 #[azumi::component]
 pub fn css_variables_demo() -> impl azumi::Component {
-    let primary_color = "#3498db";
-    let card_shadow = 8;
+    
+    
     
     html! {
         <style src="/static/pages/lesson18.css" />
@@ -16,6 +16,7 @@ pub fn css_variables_demo() -> impl azumi::Component {
         <p class="description">"Pass Rust values directly to CSS with --custom-properties"</p>
 
         <h2>"Color Theming"</h2>
+        @let primary_color = "#3498db";
         <div class="theme-box" --primary={primary_color}>
         "Primary: " {primary_color}
         </div>
@@ -28,6 +29,7 @@ pub fn css_variables_demo() -> impl azumi::Component {
             </div>
 
             <h2>"Dynamic Shadows"</h2>
+            @let card_shadow = 8;
             <div class="card" --shadow={card_shadow}>
                 "Shadow depth: " {card_shadow} "px"
             </div>
