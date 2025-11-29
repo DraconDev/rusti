@@ -615,7 +615,7 @@ Red squiggles, hover tooltips, quick fixes—all work out of the box.
 The `demo/` directory contains a complete Axum application with **30+ progressive lessons**:
 
 | Lesson | Topic                  | Key Concepts                      |
-| ------ | ---------------------- | --------------------------------- |
+| ------ | ---------------------- | --------------------------------- | ------------------------------- |
 | 0      | HTML Fragments         | Multiple root elements, `<></>`   |
 | 1      | Hello World            | Basic templates, interpolation    |
 | 2      | Unquoted Variables     | String interpolation              |
@@ -629,9 +629,9 @@ The `demo/` directory contains a complete Axum application with **30+ progressiv
 | 10     | Result Handling        | `@match` with `Ok/Err`            |
 | 11     | Simple Components      | Reusable button components        |
 | 12     | Component Children     | Passing content to components     |
-| 13     | Component Composition  | Building complex UIs              |
-| 14     | Advanced Patterns      | Enums, variants, sizes            |
-| 15     | Form Components        | Inputs, selects, checkboxes       |
+| 13     | 13                     | Composition                       | Building UIs from simple blocks |
+| 14     | Component Variants     | Using Enums for styles            |
+| 15     | Reusable Inputs        | Creating generic form fields      |                                 |
 | 16     | JavaScript Integration | External libraries                |
 | 17     | HTMX Integration       | Interactive apps without JS       |
 | 18     | CSS Variables          | Dynamic theming, `--custom-props` |
