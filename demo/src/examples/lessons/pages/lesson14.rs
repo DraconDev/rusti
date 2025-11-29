@@ -30,6 +30,7 @@ pub fn button(text: String, variant: ButtonVariant) -> impl azumi::Component {
 #[azumi::component]
 pub fn variants_demo() -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson14.css" />
         <div class="container">
             <h1>"Lesson 14: Component Variants"</h1>
             <p>"Using Enums to control component styles"</p>

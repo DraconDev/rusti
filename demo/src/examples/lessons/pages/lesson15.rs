@@ -27,6 +27,7 @@ pub fn input_field<'a>(
 #[azumi::component]
 pub fn form_demo() -> impl azumi::Component {
     html! {
+        <style src="/static/pages/lesson15.css" />
         <div class="container">
             <h1>"Lesson 15: Reusable Inputs"</h1>
 
