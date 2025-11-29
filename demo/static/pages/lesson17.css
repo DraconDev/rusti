@@ -91,7 +91,7 @@
     box-shadow: 0 8px 16px rgba(236, 72, 153, 0.3);
 }
 
-.nav-btn secondary {
+.nav-btn.secondary {
     background: linear-gradient(135deg, #ec4899, #8b5cf6);
     color: white;
     border: none;
@@ -100,11 +100,43 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
 }
 
-.nav-btn secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(236, 72, 153, 0.3);
+.nav-btn.secondary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.nav-btn.secondary:hover::before {
+    left: 100%;
+}
+
+.nav-btn.secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+    background: linear-gradient(135deg, #f472b6, #a855f7);
+}
+
+.nav-btn.secondary:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(236, 72, 153, 0.3);
 }
 
 .section-text {
@@ -173,7 +205,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;

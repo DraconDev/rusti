@@ -1,5 +1,38 @@
 /* Lesson 4: Modern Dark Mode */
 
+.highlight {
+    background: linear-gradient(
+        135deg,
+        rgba(34, 197, 94, 0.2) 0%,
+        rgba(34, 197, 94, 0.1) 100%
+    );
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.highlight::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #22c55e, #16a34a);
+    border-radius: 2px;
+}
+
+.highlight:hover {
+    transform: translateX(5px);
+    border-color: rgba(34, 197, 94, 0.5);
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+}
+
 .lesson-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
@@ -55,7 +88,7 @@
     [class*="container"] {
         padding: 1rem;
     }
-    
+
     [class*="-title"],
     [class*="title"] {
         font-size: 2rem;
