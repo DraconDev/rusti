@@ -2,6 +2,11 @@
 
 ## TODO
 
+-   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both
+-   this does raise question about the 
+
+##
+
 -   Style all lessons in a modern dark theme
     -   [x] style lesson 0
     -   [x] style lesson 1
@@ -38,6 +43,6 @@
     -   [x] style lesson 32
     -   [x] style lesson 33
     -   [x] style lesson 34
--   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style 
+
 
 ## Done
