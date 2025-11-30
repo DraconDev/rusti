@@ -16,7 +16,7 @@ pub fn interactive_chart() -> impl azumi::Component {
 
             <div class="lesson16-section">
                 <h2 class="section-title">"The Power of Composition"</h2>
-                <div class="description">
+                // <div class="description">
                     <p>"Component composition is about building complex interfaces from simple, reusable pieces."</p>
                     <div id="test_missing_id_value" class="typo_test_class_value">"This should show error on value, not attribute name"</div>
                 </div>

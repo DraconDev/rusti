@@ -10,10 +10,6 @@
     overflow-x: hidden;
 }
 
-.lesson0-box {
-    
-}
-
 .lesson0-container::before {
     content: "";
     position: absolute;
