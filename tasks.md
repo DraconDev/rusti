@@ -2,7 +2,8 @@
 
 ## TODO
 
--   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both
+-   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both. 
+  -   what other options are there? We can try to have named 
 -   this does raise question about the script inclusion too, 
 
 ##
