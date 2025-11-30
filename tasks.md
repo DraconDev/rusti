@@ -22,9 +22,10 @@
     overflow-x: hid den;
 }
 ```
-- if i do this then i guess we can still keep the scoped css feature but we are not forcing it to be used
 
-##
+-   if i do this then i guess we can still keep the scoped css feature but we are not forcing it to be used
+
+## Later
 
 -   Style all lessons in a modern dark theme
     -   [x] style lesson 0
