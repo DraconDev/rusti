@@ -2,9 +2,10 @@
 
 ## TODO
 
+-   bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the server to make it work, evne when i change others sections it doesn't change again, cause it assumes it to be correct 
 -   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both.
 -   what other options are there? We can try to have classnames where the css is a variable like let section-header = style! { .section-header { color: "#fff" } }
--   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has 
+-   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has
 -   this does raise question about the script inclusion too,
 
 ##
