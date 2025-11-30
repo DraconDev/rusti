@@ -3,7 +3,7 @@
 ## TODO
 
 -   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both
--   this does raise question about the 
+-   this does raise question about the script inclusion too, 
 
 ##
 
