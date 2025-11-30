@@ -9,7 +9,7 @@
 -   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has
 -   this does raise question about the script inclusion too,
 -   i wonder if i should ease up and allow all kinds of css, but it hurts our value prop, albeit one can argue that people suppose to make components , also i want to cut down on the checking to not hurt compile times
--   css is not that safe i can change it to all kinds of nonsense like
+-   css is not that safe i can change it to all kinds of nonsense like, only the names are checked, the values are not checked
 
 ```css
 .lesson0-container {
