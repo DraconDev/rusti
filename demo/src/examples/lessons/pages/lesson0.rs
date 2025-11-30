@@ -76,11 +76,12 @@ pub fn fragment_use_cases() -> impl azumi::Component {
         <style src="/static/pages/lesson0.css" />
 
         <style>
-            {style! {
-                body {
-                    background-color: "#f5f5f5";
-                }
-            }}
+            body {
+                background-color: "#f5f5f5";
+            }
+            .lesson0-container {
+                background-color: "#fff";
+            }
         </style>
         <div class="lesson0-container">
             <h1 class="lesson0-title">"When to Use Fragments"</h1>
