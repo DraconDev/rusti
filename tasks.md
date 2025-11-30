@@ -2,9 +2,9 @@
 
 ## TODO
 
--   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both. 
-  -   what other options are there? We can try to have classnames where the css is a variable like let = 
--   this does raise question about the script inclusion too, 
+-   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both.
+-   what other options are there? We can try to have classnames where the css is a variable like let section-header = style! { .section-header { color: "#fff" } }
+-   this does raise question about the script inclusion too,
 
 ##
 
@@ -44,6 +44,5 @@
     -   [x] style lesson 32
     -   [x] style lesson 33
     -   [x] style lesson 34
-
 
 ## Done
