@@ -39,6 +39,13 @@
     animation: sectionBorder 3s linear infinite;
 }
 
+.lesson0-comparison {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
 .lesson0-container::before {
     content: "";
     position: absolute;
