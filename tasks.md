@@ -38,5 +38,6 @@
     -   [x] style lesson 32
     -   [x] style lesson 33
     -   [x] style lesson 34
+-   ??? The css interop is a persisting problem 
 
 ## Done
