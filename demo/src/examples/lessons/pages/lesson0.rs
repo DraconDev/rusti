@@ -66,12 +66,6 @@ pub fn control_flow_fragments() -> impl azumi::Component {
 pub fn fragment_use_cases() -> impl azumi::Component {
     let items = ["Apple", "Banana", "Cherry"];
 
-    let style = style! {
-        .body {
-            background-color: "#f5f5f5";
-        }
-    };
-
     html! {
         <style src="/static/pages/lesson0.css" />
 
