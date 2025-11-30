@@ -31,6 +31,11 @@ This style could be encouraged a bit, so people can tailwind but can also name t
 @let section-header = "mb-4 text-2xl font-bold"
 <div class={section-header}>Section Header</div>
 ```
+albeit they can comment it so less cool 
+```
+// section-header
+<div class=mb-4 text-2xl font-bold>Section Header</div>
+```
 
 ## Later
 
