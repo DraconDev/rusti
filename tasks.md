@@ -8,6 +8,7 @@
 -   what other options are there? We can try to have classnames where the css is a variable like let section-header = style! { .section-header { color: "#fff" } }
 -   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has
 -   this does raise question about the script inclusion too,
+-   i wonder if i should ease up and allow all kinds of css, 
 
 ##
 
