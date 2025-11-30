@@ -25,6 +25,20 @@
     box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
 }
 
+.lesson0-section {
+    padding: 2rem;
+}
+.lesson0-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
+    animation: sectionBorder 3s linear infinite;
+}
+
 .lesson0-container::before {
     content: "";
     position: absolute;
