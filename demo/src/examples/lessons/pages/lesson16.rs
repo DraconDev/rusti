@@ -9,16 +9,18 @@ pub fn interactive_chart() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson16.css" />
         <div class="lesson16-container">
-            <header class="lesson16-header">
-                <h1 class="lesson16-title">"Lesson 16: JavaScript Integration"</h1>
-                <p class="lesson16-subtitle">"External libraries + inline scripts with Azumi"</p>
-            </header>
+            <div class="lesson16-header">
+                <h1 class="lesson16-title">"Lesson 16: Component Composition"</h1>
+                <p class="lesson16-subtitle">"Build complex UIs by combining simple, reusable components"</p>
+            </div>
 
-            <section class="lesson16-section">
-                <h2 class="section-title">"Chart.js Example"</h2>
-                <canvas id="myChart" width="400" height="200" class="chart-canvas"></canvas>
-            </section>
-
+            <div class="lesson16-section">
+                <h2 class="section-title">"The Power of Composition"</h2>
+                <div class="description">
+                    <p>"Component composition is about building complex interfaces from simple, reusable pieces."</p>
+                    <div id="test_missing_id_value" class="typo_test_class_value">"This should show error on value, not attribute name"</div>
+                </div>
+            </div>
             <section class="lesson16-section">
                 <h2 class="section-title">"Key Points"</h2>
                 <ul class="lesson16-list">
