@@ -9,6 +9,21 @@
     position: relative;
     overflow-x: hidden;
 }
+.lesson0-box {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.15) 0%,
+        rgba(139, 92, 246, 0.15) 100%
+    );
+    border-radius: 1rem;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+}
 
 .lesson0-container::before {
     content: "";
