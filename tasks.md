@@ -4,6 +4,7 @@
 
 -   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both.
 -   what other options are there? We can try to have classnames where the css is a variable like let section-header = style! { .section-header { color: "#fff" } }
+-   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has 
 -   this does raise question about the script inclusion too,
 
 ##
