@@ -47,18 +47,24 @@ pub fn html(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as token_parser::HtmlInput);
     let nodes = input.nodes;
 
-    // 1. CSS dependencies are no longer collected for external files
+    // 1. Process styles (hoist <style> tags)
+    let (style_bindings, scoped_css) = process_styles(&nodes);
+
+    // 2. CSS dependencies are no longer collected for external files
     let css_deps: Vec<proc_macro2::TokenStream> = Vec::new();
 
-    // 2. Generate HTML string construction code
+    // 3. Generate HTML string construction code
     let html_construction = generate_nodes(&nodes);
 
-    // 3. Generate bind validation checks
+    // 4. Generate bind validation checks
     let mut validation_checks = Vec::new();
     collect_bind_checks(&nodes, &mut validation_checks);
 
     let expanded = quote! {
         {
+            // Inject style bindings (hoisted)
+            #style_bindings
+
             // CSS dependency tracking (forces recompile when CSS changes)
             #(#css_deps)*
 
@@ -68,11 +74,70 @@ pub fn html(input: TokenStream) -> TokenStream {
             };
 
             // Runtime HTML generation
-            #html_construction
+            azumi::from_fn(move |f| {
+                // Inject scoped CSS if present
+                if !#scoped_css.is_empty() {
+                     write!(f, "<style data-azumi-internal=\"true\">{}</style>", #scoped_css)?;
+                }
+                #html_construction.render(f)
+            })
         }
     };
 
     TokenStream::from(expanded)
+}
+
+fn process_styles(nodes: &[token_parser::Node]) -> (proc_macro2::TokenStream, String) {
+    let mut bindings = proc_macro2::TokenStream::new();
+    let mut css_output = String::new();
+
+    for node in nodes {
+        match node {
+            token_parser::Node::Block(token_parser::Block::Style(style_block)) => {
+                let output = style::process_style_macro(style_block.content.clone());
+                bindings.extend(output.bindings);
+                css_output.push_str(&output.css);
+            }
+            token_parser::Node::Element(elem) => {
+                let (child_bindings, child_css) = process_styles(&elem.children);
+                bindings.extend(child_bindings);
+                css_output.push_str(&child_css);
+            }
+            token_parser::Node::Fragment(frag) => {
+                let (child_bindings, child_css) = process_styles(&frag.children);
+                bindings.extend(child_bindings);
+                css_output.push_str(&child_css);
+            }
+            token_parser::Node::Block(block) => match block {
+                token_parser::Block::If(if_block) => {
+                    let (b, c) = process_styles(&if_block.then_branch);
+                    bindings.extend(b);
+                    css_output.push_str(&c);
+                    if let Some(else_branch) = &if_block.else_branch {
+                        let (b, c) = process_styles(else_branch);
+                        bindings.extend(b);
+                        css_output.push_str(&c);
+                    }
+                }
+                token_parser::Block::For(for_block) => {
+                    let (b, c) = process_styles(&for_block.body);
+                    bindings.extend(b);
+                    css_output.push_str(&c);
+                }
+                token_parser::Block::Match(match_block) => {
+                    for arm in &match_block.arms {
+                        let (b, c) = process_styles(&arm.body);
+                        bindings.extend(b);
+                        css_output.push_str(&c);
+                    }
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+
+    (bindings, css_output)
 }
 
 fn collect_bind_checks(nodes: &[token_parser::Node], checks: &mut Vec<proc_macro2::TokenStream>) {
