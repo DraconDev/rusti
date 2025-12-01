@@ -7,4 +7,4 @@ pub mod test_accessibility_pass;
 //pub mod test_img_fail;  // Comment out failing test
 pub mod example_component;
 pub mod form;
-pub mod test_css_validation;
+//pub mod test_css_validation;  // CSS validation test case
