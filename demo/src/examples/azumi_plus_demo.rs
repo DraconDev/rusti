@@ -41,29 +41,29 @@ async fn toggle_like(state: LikeState) -> impl Component {
 
 pub fn azumi_plus_demo() -> impl Component {
     html! {
-        <div class="demo-container">
+        <style>
+            .demo_container {
+                padding: "2rem";
+                border: "1px solid #ccc";
+                border-radius: "8px";
+                max-width: "600px";
+                margin: "0 auto";
+            }
+            .btn {
+                padding: "0.5rem 1rem";
+                border: "none";
+                border-radius: "4px";
+                cursor: "pointer";
+                background: "#eee";
+            }
+            .btn.liked {
+                background: "#ff4081";
+                color: "white";
+            }
+        </style>
+        <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
 
-            <style>
-                .demo-container {
-                    padding: 2rem;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    max_width: 600px;
-                    margin: 0 auto;
-                }
-                .btn {
-                    padding: 0.5rem 1rem;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    background: #eee;
-                }
-                .btn.liked {
-                    background: #ff4081;
-                    color: white;
-                }
-            </style>
 
             // Local State (Client-side only)
             <div az-scope="{ \"count\": 0 }">
