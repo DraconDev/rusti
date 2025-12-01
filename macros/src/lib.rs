@@ -781,6 +781,28 @@ fn generate_body_with_context(
                         continue;
                     }
 
+                    // Handle az-on DSL: az-on={click call foo} -> az-on="click call foo"
+                    if attr_name == "az-on" {
+                        match &attr.value {
+                            token_parser::AttributeValue::Dynamic(tokens) => {
+                                // Convert tokens to string literal
+                                let dsl_string = tokens.to_string();
+                                // We might want to validate the DSL here later
+                                attr_code.extend(quote! {
+                                    write!(f, " az-on=\"{}\"", #dsl_string)?;
+                                });
+                                continue;
+                            }
+                            token_parser::AttributeValue::Static(val) => {
+                                attr_code.extend(quote! {
+                                    write!(f, " az-on=\"{}\"", #val)?;
+                                });
+                                continue;
+                            }
+                            _ => {}
+                        }
+                    }
+
                     match &attr.value {
                         token_parser::AttributeValue::Static(val) => {
                             attr_code.extend(quote! {
