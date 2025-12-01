@@ -246,13 +246,16 @@ impl Parse for Element {
         // Azumi 2.0: Block inline <style> and <script> tags
         if name == "style" || name == "script" {
             let has_src = attrs.iter().any(|attr: &Attribute| attr.name == "src");
+            let is_internal = attrs
+                .iter()
+                .any(|attr: &Attribute| attr.name == "data-azumi-internal");
             let is_json_script = name == "script"
                 && attrs.iter().any(|attr: &Attribute| {
                     attr.name == "type"
                         && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
                 });
 
-            if !(has_src || (name == "script" && is_json_script)) {
+            if !(has_src || is_internal || (name == "script" && is_json_script)) {
                 let tag_help = if name == "script" {
                     "JavaScript must be external or JSON data:
   ✅ <script src=\"/static/app.js\" />
