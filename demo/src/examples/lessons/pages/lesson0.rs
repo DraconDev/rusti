@@ -169,7 +169,7 @@ pub fn lesson0() -> impl azumi::Component {
         .subtitle { font-size: "18px"; color: "#666"; }
         .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
         .section_title { font-size: "20px"; margin-bottom: "15px"; }
-        .points_list { list_style: "none"; padding: "0"; }
+        .points_list { list-style: "none"; padding: "0"; }
         .point { margin-bottom: "10px"; }
         .examples { display: "grid"; gap: "20px"; }
         .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
