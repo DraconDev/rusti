@@ -89,6 +89,7 @@ pub fn component_b() -> impl azumi::Component {
 
 - this would mean we ban external css files, inline css, and classes with spaces, but also we don't support tailwind at all, 
 - we would also need a global tag for the style 
+- this is the best solution if we can do it, cause external css only guarantees names to be correct not values, while tailwind is trash, and i guess we can do inline styles and check them but that is not descriptive so that fails there 
 
 
 ## Later
