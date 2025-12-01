@@ -463,6 +463,7 @@ impl Parse for Attribute {
             "reversed",
         ];
 
+        println!("Parsing attribute: {}", name);
         let (value, value_span) = if input.peek(Token![=]) {
             input.parse::<Token![=]>()?;
             if input.peek(Brace) {
