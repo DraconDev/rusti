@@ -173,15 +173,7 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     
     if !css_files.is_empty() {
         return quote! {
-            compile_error!(r#"Inline <style> tags not allowed in Azumi
-
-CSS must be external:
-  ✅ <style src="components/card.css" />  (auto-scoped)
-  ❌ <style>.card { padding: 2em; }</style>
-
-For dynamic styles: use style attribute with expressions
-
-Why? External files get full IDE support (linting, autocomplete, error checking)."#);
+            compile_error!("External CSS files are banned in Azumi. Use the style! macro instead.");
         };
     }
 
