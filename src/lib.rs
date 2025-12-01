@@ -22,6 +22,12 @@ impl<T: Component + ?Sized> Component for &T {
     }
 }
 
+impl Component for Box<dyn Component> {
+    fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        (**self).render(f)
+    }
+}
+
 pub fn from_fn<F>(f: F) -> FnComponent<F>
 where
     F: Fn(&mut std::fmt::Formatter<'_>) -> std::fmt::Result,
