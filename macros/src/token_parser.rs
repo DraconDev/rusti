@@ -158,6 +158,59 @@ pub struct StyleBlock {
 
 // Parsing logic
 
+fn parse_style_tag(input: ParseStream) -> Result<Node> {
+    let start_span = input.span();
+    input.parse::<Token![<]>()?;
+    let (name, _) = parse_html_name(input, false)?;
+
+    if name != "style" {
+        return Err(Error::new(start_span, "Expected style tag"));
+    }
+
+    // Parse attributes
+    let mut attrs = Vec::new();
+    while !input.peek(Token![>]) && !input.peek(Token![/]) {
+        attrs.push(input.parse::<Attribute>()?);
+    }
+
+    if input.peek(Token![/]) {
+        // Self-closing <style /> -> empty
+        input.parse::<Token![/]>()?;
+        input.parse::<Token![>]>()?;
+        return Ok(Node::Block(Block::Style(StyleBlock {
+            content: TokenStream::new(),
+            span: start_span,
+        })));
+    }
+
+    input.parse::<Token![>]>()?;
+
+    // Parse content until </style>
+    let mut content = TokenStream::new();
+    while !input.is_empty() {
+        // Check for </style>
+        let fork = input.fork();
+        if fork.parse::<Token![<]>().is_ok() && fork.parse::<Token![/]>().is_ok() {
+            if let Ok((end_name, _)) = parse_html_name(&fork, false) {
+                if end_name == "style" && fork.parse::<Token![>]>().is_ok() {
+                    // Found </style>
+                    input.parse::<Token![<]>()?;
+                    input.parse::<Token![/]>()?;
+                    parse_html_name(input, false)?;
+                    input.parse::<Token![>]>()?;
+                    break;
+                }
+            }
+        }
+        content.extend(std::iter::once(input.parse::<TokenTree>()?));
+    }
+
+    Ok(Node::Block(Block::Style(StyleBlock {
+        content,
+        span: start_span,
+    })))
+}
+
 pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
     let mut nodes = Vec::new();
     while !input.is_empty() {
@@ -188,7 +241,15 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 // Fragment < >
                 nodes.push(Node::Fragment(input.parse()?));
             } else {
-                // Element
+                // Element or Style
+                let fork = input.fork();
+                fork.parse::<Token![<]>()?;
+                if let Ok((name, _)) = parse_html_name(&fork, false) {
+                    if name == "style" {
+                        nodes.push(parse_style_tag(input)?);
+                        continue;
+                    }
+                }
                 nodes.push(Node::Element(input.parse()?));
             }
         } else if input.peek(Token![@]) {
@@ -206,29 +267,6 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
         } else if input.peek(syn::Lit) {
             // Text content (must be string literal)
             nodes.push(Node::Text(input.parse()?));
-        } else if input.peek(Ident) {
-            // Check if it's a macro invocation (e.g., style!)
-            let fork = input.fork();
-            if let Ok(ident) = fork.parse::<Ident>() {
-                if fork.peek(Token![!]) {
-                    // Unknown macro
-                    return Err(Error::new(
-                        ident.span(),
-                        format!(
-                            "Unknown macro '{}!'. Only <style> tags are supported for CSS.",
-                            ident
-                        ),
-                    ));
-                } else {
-                    // Just an identifier, error
-                    return Err(Error::new(
-                        input.span(),
-                        "Unexpected identifier. Expected HTML element, expression, or control flow.",
-                    ));
-                }
-            } else {
-                return Err(Error::new(input.span(), "Failed to parse identifier"));
-            }
         } else {
             // Unexpected token
             return Err(Error::new(
