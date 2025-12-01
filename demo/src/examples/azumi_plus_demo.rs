@@ -61,13 +61,13 @@ pub fn azumi_plus_demo() -> impl Component {
                 // In the plan: "Server sends only necessary HTML fragments, client uses morphing"
                 // So the action should return HTML.
 
-                <button
-                    class={btn}
-                    az-bind:class.liked="liked"
-                    az-on={click call toggle_like -> #like-section}
-                >
-                    <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
-                </button>
+                // <button
+                //     class={btn}
+                //     az-bind:class.liked="liked"
+                //     az-on={click call toggle_like -> #like-section}
+                // >
+                //     <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
+                // </button>
             </div>
         </div>
     }
