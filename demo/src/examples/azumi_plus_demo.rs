@@ -54,6 +54,8 @@ async fn toggle_like(state: LikeState) -> impl Component {
                 <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
             </button>
         </div>
+            }
+        }
     }
 }
 
