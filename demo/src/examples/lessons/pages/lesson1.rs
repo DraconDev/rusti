@@ -19,7 +19,7 @@ pub fn hello_world() -> impl azumi::Component {
     }
     html! {
         <div class={hello_container}>
-            // <h1 class={hello_title}>"Hello Azumi!"</h1>
+            <h1 class={hello_title}>"Hello Azumi!"</h1>
             @basic_template()
         </div>
     }
