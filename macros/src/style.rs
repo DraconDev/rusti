@@ -157,6 +157,9 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     // 4. Extract classes for bindings
     let (classes, _ids) = extract_selectors(&raw_css);
 
+    eprintln!("DEBUG: raw_css: '{}'", raw_css);
+    eprintln!("DEBUG: extracted classes: {:?}", classes);
+
     // 5. Scope the CSS (rename classes)
     let scoped_css = rename_css_selectors(&raw_css, &scope_id);
 
