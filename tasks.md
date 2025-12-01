@@ -2,11 +2,12 @@
 
 ## TODO
 
-- if we could add hot reload to the css then it would be a game changer
-- bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the rust analyzer to make it work, even when i change other sections it doesn't change again, cause it assumes it to be correct
-- even changing the very exact rust code then changing it back doesn't show that it's wrong
-- even if can't validate the css, it still does make sense to have ourside css files cause it leads to better code organization
-- what if instead of this string checkined we just passed variables as classes,so 
+-   if we could add hot reload to the css then it would be a game changer
+-   bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the rust analyzer to make it work, even when i change other sections it doesn't change again, cause it assumes it to be correct
+-   even changing the very exact rust code then changing it back doesn't show that it's wrong
+-   even if can't validate the css, it still does make sense to have ourside css files cause it leads to better code organization
+-   what if instead of this string checkined we just passed variables as classes,so
+
 ```
 <div class="scoped-demo">
     <h2 class="demo-title">"Component A"</h2>
@@ -15,12 +16,15 @@
 ```
 
 then we can just pass variables as classes
+
 ```
 <div class={scoped-demo}>
     <h2 class={demo-title}>"Component A"</h2>
     <p class={primary-text}>"This uses scoped CSS."</p>
 </div>
 ```
+
+if we do this then we can just have to figure out what is the best way to generate the css classes
 
 ## Later
 
