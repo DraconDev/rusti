@@ -3,10 +3,6 @@ use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
     // Define reusable class and ID names (following lessons pattern)
-    let demo_container = "demo_container";
-    let btn = "btn";
-    let like_section = "like_section";
-
     html! {
         <style>
         .demo_container {
