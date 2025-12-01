@@ -85,21 +85,21 @@ pub fn control_flow_fragments() -> impl azumi::Component {
             .lesson0_subtitle { font-weight: "bold"; }
             .lesson0_text { color: "#333"; }
         </style>
-        <div class={lesson0_container} style="padding: 20px;">
-            <h1 class={lesson0_title}>"Fragments in Control Flow"</h1>
-            <div class={lesson0_box}>
-                <h3 class={lesson0_subtitle}>"Automatic (No &lt;&gt;):"</h3>
+        <div lesson0_container>
+            <h1 lesson0_title>"Fragments in Control Flow"</h1>
+            <div lesson0_box>
+                <h3 lesson0_subtitle>"Automatic (No &lt;&gt;):"</h3>
                 @if show_content {
-                    <p class={lesson0_text}>"First element"</p>
-                    <p class={lesson0_text}>"Second element"</p>
+                    <p lesson0_text>"First element"</p>
+                    <p lesson0_text>"Second element"</p>
                 }
             </div>
-            <div class={lesson0_box}>
-                <h3 class={lesson0_subtitle}>"Explicit (With &lt;&gt;):"</h3>
+            <div lesson0_box>
+                <h3 lesson0_subtitle>"Explicit (With &lt;&gt;):"</h3>
                 @if show_content {
                     <>
-                        <p class={lesson0_text}>"First element"</p>
-                        <p class={lesson0_text}>"Second element"</p>
+                        <p lesson0_text>"First element"</p>
+                        <p lesson0_text>"Second element"</p>
                     </>
                 }
             </div>
