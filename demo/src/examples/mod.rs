@@ -1,4 +1,4 @@
-pub mod css_variables;
+//pub mod css_variables;
 pub mod lessons;
 pub mod test_accessibility_pass;
 //pub mod test_html_structure;  // Demonstrates HTML structure validation
