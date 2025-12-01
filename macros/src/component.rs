@@ -1,13 +1,41 @@
+use crate::style::process_style_macro;
 use quote::quote;
-use syn::{parse_macro_input, FnArg, ItemFn, Pat, PatType};
+use syn::{parse_macro_input, FnArg, Item, ItemFn, Pat, PatType, Stmt};
 
 pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(item as ItemFn);
 
     let fn_name = &input.sig.ident;
     let fn_vis = &input.vis;
-    let fn_block = &input.block;
+    let mut fn_block = input.block; // Mutable to modify statements
     let fn_output = &input.sig.output;
+
+    // Process style! macro invocations
+    let mut component_css = String::new();
+    let mut new_stmts = Vec::new();
+
+    for stmt in fn_block.stmts {
+        if let Stmt::Macro(stmt_macro) = &stmt {
+            if stmt_macro.mac.path.is_ident("style") {
+                // Found style! macro
+                let output = process_style_macro(stmt_macro.mac.tokens.clone());
+                component_css.push_str(&output.css);
+
+                // Replace with bindings
+                // We need to parse the bindings TokenStream back into Stmts
+                // This is a bit tricky, but we can wrap it in a block or just parse it
+                let bindings: syn::Block = syn::parse2(quote! { { #output.bindings } })
+                    .expect("Failed to parse style bindings");
+                // Extract statements from the block
+                new_stmts.extend(bindings.stmts);
+                continue;
+            }
+        }
+        new_stmts.push(stmt);
+    }
+    fn_block.stmts = new_stmts;
+
+    // Parse arguments into props
 
     // Parse arguments into props
     let mut props_fields = Vec::new();
@@ -109,7 +137,30 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         quote! {
             pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
-                #fn_block
+
+                // Inject styles if any
+                let __azumi_styles = if !#component_css.is_empty() {
+                    azumi::html! {
+                        <style>
+                            #component_css
+                        </style>
+                    }
+                } else {
+                    azumi::html! {}
+                };
+
+                // We need to inject the styles into the output
+                // Assuming the block returns an html! macro result or similar
+                // We can wrap the result in a fragment with the styles
+
+                let __azumi_content = { #fn_block };
+
+                azumi::html! {
+                    <>
+                        {__azumi_styles}
+                        {__azumi_content}
+                    </>
+                }
             }
         }
     };
