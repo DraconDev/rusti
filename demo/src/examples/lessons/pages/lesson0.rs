@@ -118,7 +118,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
             .title { font-size: "24px"; }
             .section { margin-bottom: "20px"; }
             .subtitle { font-size: "18px"; }
-            .comparison { disp lay: "flex"; gap: "20px"; }
+            .comparison { display: "flex"; gap: "20px"; }
             .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
             .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
             .code { background: "#eee"; padding: "5px"; display: "block"; }
