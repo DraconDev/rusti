@@ -138,11 +138,12 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             }
         }
     } else {
+        quote! {
             pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
 
                 // Inject styles if any - wrap in fragment to combine styles + content
-                // Use Box<dyn Component> to ensure both branches have the same type
+                // Use from_fn to ensure both branches have the same type
                 azumi::from_fn(move |f| {
                     if !#component_css.is_empty() {
                         // Inject CSS directly without going through html! macro to avoid double scoping
@@ -152,6 +153,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                     __azumi_content.render(f)
                 })
             }
+        }
     };
 
     // Check if function name is snake_case
