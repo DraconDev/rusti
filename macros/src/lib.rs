@@ -79,7 +79,7 @@ pub fn html(input: TokenStream) -> TokenStream {
                 if !#scoped_css.is_empty() {
                      write!(f, "<style data-azumi-internal=\"true\">{}</style>", #scoped_css)?;
                 }
-                #html_construction.render(f)
+                azumi::Component::render(&#html_construction, f)
             })
         }
     };

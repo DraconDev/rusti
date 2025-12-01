@@ -38,7 +38,7 @@ pub fn basic_template() -> impl azumi::Component {
             .basic_h2 { color: "#666"; }
             .basic_p { font-size: "14px"; }
         </style>
-        <div class=basic_template>
+        <div class={basic_template}>
             <h1 class={basic_h1}>"Hello, World!"</h1>
             <h2 class={basic_h2}>"Welcome to Azumi"</h2>
             <p class={basic_p}>"This is a simple styled template"</p>

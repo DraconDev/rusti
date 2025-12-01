@@ -157,7 +157,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
                 </ul>
             </section>
 
-            <section class={section}>``
+            <section class={section}>
                 <h3 class={subtitle}>"3. Component Returns"</h3>
                 <p class={text}>"Components can return multiple elements without wrappers using fragments!"</p>
             </section>
