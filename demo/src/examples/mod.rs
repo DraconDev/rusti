@@ -8,3 +8,4 @@ pub mod test_accessibility_pass;
 pub mod example_component;
 pub mod form;
 pub mod test_css_validation; // CSS validation test case
+pub mod test_global_styles; // Global style tag test
