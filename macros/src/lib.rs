@@ -583,7 +583,6 @@ fn validate_nodes(
                         if let Some(err) = html_structure_validator::validate_attribute_name(attr) {
                             errors.push(err);
                         }
-                    }
 
                         // Rule 5: Validate az-on target IDs
                         if name == "az-on" {
@@ -602,7 +601,8 @@ fn validate_nodes(
                                                     id_name
                                                 );
                                                 // Use value_span to point to the attribute value
-                                                let error_span = attr.value_span.unwrap_or(attr.span);
+                                                let error_span =
+                                                    attr.value_span.unwrap_or(attr.span);
                                                 errors.push(quote_spanned! { error_span =>
                                                     compile_error!(#msg);
                                                 });
