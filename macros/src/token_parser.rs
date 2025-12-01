@@ -705,8 +705,8 @@ fn parse_html_name(input: ParseStream, allow_double_dash: bool) -> Result<(Strin
         }
     }
 
-    // Continue parsing rest of the name (e.g. -foo:bar)
-    while input.peek(Token![-]) || input.peek(Token![:]) {
+    // Continue parsing rest of the name (e.g. -foo:bar or .modifier)
+    while input.peek(Token![-]) || input.peek(Token![:]) || input.peek(Token![.]) {
         // Check for double dash - stop if not allowed
         if input.peek(Token![-]) && input.peek2(Token![-]) {
             if !allow_double_dash {
@@ -718,9 +718,12 @@ fn parse_html_name(input: ParseStream, allow_double_dash: bool) -> Result<(Strin
         if input.peek(Token![-]) {
             input.parse::<Token![-]>()?;
             name.push('-');
-        } else {
+        } else if input.peek(Token![:]) {
             input.parse::<Token![:]>()?;
             name.push(':');
+        } else {
+            input.parse::<Token![.]>()?;
+            name.push('.');
         }
         if let Some(joined) = full_span.join(punct_span) {
             full_span = joined;
