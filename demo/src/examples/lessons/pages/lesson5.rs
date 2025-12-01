@@ -3,6 +3,10 @@
 //! Shows automatic component-scoped CSS
 use azumi::html;
 
+<style>
+
+</style>
+
 /// Component A with scoped styles
 #[azumi::component]
 pub fn component_a() -> impl azumi::Component {
