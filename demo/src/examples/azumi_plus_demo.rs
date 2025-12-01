@@ -3,7 +3,6 @@ use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
     html! {
-        <div class={demo_container}>
         <style>.demo_container {
             padding: "2rem";
             border: "1px solid #ccc";
@@ -26,6 +25,7 @@ pub fn azumi_plus_demo() -> impl Component {
             margin-top: "2rem";
         }
         </style>
+        <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
 
 
