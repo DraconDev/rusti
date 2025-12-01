@@ -28,7 +28,6 @@ pub fn css_variables_demo() -> impl azumi::Component {
         <div --static-var="100px">
             "Static Var"
         </div>
-        <div>"Empty"</div>
     }
 }
 
