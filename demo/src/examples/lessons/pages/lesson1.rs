@@ -6,10 +6,19 @@ use azumi::html;
 /// Simple hello world with fancy styling
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
+    style! {
+        .hello_container {
+            text-align: "center";
+            margin-top: "50px";
+        }
+        .hello_title {
+            color: "purple";
+            font-size: "3em";
+        }
+    }
     html! {
-        <style src="/static/pages/lesson1.css" />
-        <div class="hello-container">
-            <h1 class="hello-title">"Hello Azumi!"</h1>
+        <div class={hello_container}>
+            <h1 class={hello_title}>"Hello Azumi!"</h1>
         </div>
     }
 }
@@ -17,12 +26,20 @@ pub fn hello_world() -> impl azumi::Component {
 /// Basic template with styling
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
+    style! {
+        .basic_template {
+            padding: "20px";
+            background-color: "#f0f0f0";
+        }
+        .basic_h1 { color: "#333"; }
+        .basic_h2 { color: "#666"; }
+        .basic_p { font-size: "14px"; }
+    }
     html! {
-        <style src="/static/pages/lesson1.css" />
-        <div class="basic-template" >
-            <h1 class="basic-h1">"Hello, World!"</h1>
-            <h2 class="basic-h2">"Welcome to Azumi"</h2>
-            <p class="basic-p">"This is a simple styled template"</p>
+        <div class={basic_template} >
+            <h1 class={basic_h1}>"Hello, World!"</h1>
+            <h2 class={basic_h2}>"Welcome to Azumi"</h2>
+            <p class={basic_p}>"This is a simple styled template"</p>
         </div>
     }
 }

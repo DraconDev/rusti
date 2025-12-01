@@ -6,13 +6,13 @@ pub fn css_variables_demo() -> impl azumi::Component {
     let color = "yellow";
 
     style! {
-        .progress-bar {
+        .progress_bar {
             background-color: "#e0e0e0";
             border-radius: "4px";
             height: "20px";
             width: "100%";
         }
-        .progress-value {
+        .progress_value {
             background-color: "#76c7c0";
             border-radius: "4px";
             height: "100%";
