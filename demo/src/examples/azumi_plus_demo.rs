@@ -37,7 +37,7 @@ async fn toggle_like(state: LikeState) -> impl Component {
                 background: "#ff4081";
                 color: "white";
             }
-            #like_section {}
+            #like-section {}
         </style>
         <div id="like-section" az-scope={scope_json}>
             <h2>"Server-Side Action"</h2>
