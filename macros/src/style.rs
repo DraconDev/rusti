@@ -1,7 +1,6 @@
 use crate::css::{extract_selectors, rename_css_selectors};
 use heck::ToSnakeCase;
 use lightningcss::stylesheet::{ParserOptions, StyleSheet};
-use lightningcss::traits::ToCss;
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{format_ident, quote};
 use std::collections::hash_map::DefaultHasher;
