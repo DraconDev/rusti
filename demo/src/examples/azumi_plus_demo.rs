@@ -108,3 +108,7 @@ pub fn azumi_plus_demo() -> impl Component {
         </div>
     }
 }
+
+pub async fn azumi_plus_demo_handler() -> impl axum::response::IntoResponse {
+    azumi::render_to_string(&azumi_plus_demo())
+}
