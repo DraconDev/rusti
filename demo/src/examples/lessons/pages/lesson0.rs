@@ -86,21 +86,21 @@ pub fn control_flow_fragments() -> impl azumi::Component {
         .lesson0_text { color: "#333"; }
     }
     html! {
-        <div class={container}>
-            <h1 class={title}>"Fragments in Control Flow"</h1>
-            <div class={box}>
-                <h3 class={subtitle}>"Automatic (No &lt;&gt;):"</h3>
+        <div class={lesson0_container}>
+            <h1 class={lesson0_title}>"Fragments in Control Flow"</h1>
+            <div class={lesson0_box}>
+                <h3 class={lesson0_subtitle}>"Automatic (No &lt;&gt;):"</h3>
                 @if show_content {
-                    <p class={text}>"First element"</p>
-                    <p class={text}>"Second element"</p>
+                    <p class={lesson0_text}>"First element"</p>
+                    <p class={lesson0_text}>"Second element"</p>
                 }
             </div>
-            <div class={box}>
-                <h3 class={subtitle}>"Explicit (With &lt;&gt;):"</h3>
+            <div class={lesson0_box}>
+                <h3 class={lesson0_subtitle}>"Explicit (With &lt;&gt;):"</h3>
                 @if show_content {
                     <>
-                        <p class={text}>"First element"</p>
-                        <p class={text}>"Second element"</p>
+                        <p class={lesson0_text}>"First element"</p>
+                        <p class={lesson0_text}>"Second element"</p>
                     </>
                 }
             </div>
@@ -189,14 +189,14 @@ pub fn lesson0() -> impl azumi::Component {
                 <p class={subtitle}>"Multiple Elements Without Wrapper Divs"</p>
             </header>
 
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Points"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ Automatic: Multiple elements work without explicit &lt;&gt;"</li>
-                    <li class={point}>"✅ Explicit: Use &lt;&gt; &lt;/&gt; for semantic clarity"</li>
-                    <li class={point}>"✅ Both generate identical output"</li>
-                    <li class={point}>"✅ Works in control flow (@if, @for, @match)"</li>
-                    <li class={point}>"✅ Avoids unnecessary DOM nesting"</li>
+            <section class={lesson0_key_points}>
+                <h2 class={lesson0_section_title}>"Key Points"</h2>
+                <ul class={lesson0_points_list}>
+                    <li class={lesson0_point}>"✅ Automatic: Multiple elements work without explicit &lt;&gt;"</li>
+                    <li class={lesson0_point}>"✅ Explicit: Use &lt;&gt; &lt;/&gt; for semantic clarity"</li>
+                    <li class={lesson0_point}>"✅ Both generate identical output"</li>
+                    <li class={lesson0_point}>"✅ Works in control flow (@if, @for, @match)"</li>
+                    <li class={lesson0_point}>"✅ Avoids unnecessary DOM nesting"</li>
                 </ul>
             </section>
 
@@ -219,6 +219,6 @@ pub fn lesson0() -> impl azumi::Component {
 }
 
 // Handler for Axum
-pub async fn handler() -> impl axum::response::IntoResponse {
+pub async fn lesson0_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&lesson0()))
 }
