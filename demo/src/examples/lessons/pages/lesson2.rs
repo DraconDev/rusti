@@ -29,7 +29,7 @@ pub fn quoted_attributes() -> impl azumi::Component {
             .demo p { font-size: "16px"; }
         </style>
         <div class={demo}>
-            <button type="button" class="btn">"Attributes are quoted"</button>
+            <button type="button">"Attributes are quoted"</button>
             <input type="text" placeholder="Always use quotes" />
         </div>
     }
