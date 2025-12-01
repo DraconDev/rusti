@@ -1,5 +1,3 @@
-/* Test CSS for hot-reload verification */
 .test-class {
     color: red;
-    padding: 10px;
 }
