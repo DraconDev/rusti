@@ -152,6 +152,7 @@ pub struct LetBlock {
 #[derive(Debug, Clone)]
 pub struct StyleBlock {
     pub content: TokenStream, // The CSS content inside style! { ... }
+    pub is_global: bool,
     #[allow(dead_code)]
     pub span: Span,
 }
@@ -161,24 +162,30 @@ pub struct StyleBlock {
 fn parse_style_tag(input: ParseStream) -> Result<Node> {
     let start_span = input.span();
     input.parse::<Token![<]>()?;
-    let (name, _) = parse_html_name(input, false)?;
+    parse_html_name(input, false)?; // "style"
 
-    if name != "style" {
-        return Err(Error::new(start_span, "Expected style tag"));
-    }
-
-    // Parse attributes
-    let mut attrs = Vec::new();
+    // Check for 'global' attribute
+    let mut is_global = false;
     while !input.peek(Token![>]) && !input.peek(Token![/]) {
-        attrs.push(input.parse::<Attribute>()?);
+        let fork = input.fork();
+        if let Ok(ident) = fork.parse::<Ident>() {
+            if ident == "global" {
+                input.parse::<Ident>()?; // Consume 'global'
+                is_global = true;
+                continue;
+            }
+        }
+        // Skip other attributes
+        input.parse::<TokenTree>()?;
     }
 
     if input.peek(Token![/]) {
-        // Self-closing <style /> -> empty
+        // Self-closing <style /> or <style global /> -> empty
         input.parse::<Token![/]>()?;
         input.parse::<Token![>]>()?;
         return Ok(Node::Block(Block::Style(StyleBlock {
             content: TokenStream::new(),
+            is_global,
             span: start_span,
         })));
     }
@@ -207,6 +214,7 @@ fn parse_style_tag(input: ParseStream) -> Result<Node> {
 
     Ok(Node::Block(Block::Style(StyleBlock {
         content,
+        is_global,
         span: start_span,
     })))
 }
