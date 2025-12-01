@@ -149,6 +149,13 @@ pub struct LetBlock {
     pub span: Span,
 }
 
+#[derive(Debug, Clone)]
+pub struct StyleBlock {
+    pub content: TokenStream, // The CSS content inside style! { ... }
+    #[allow(dead_code)]
+    pub span: Span,
+}
+
 // Parsing logic
 
 pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
