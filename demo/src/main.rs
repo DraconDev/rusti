@@ -13,6 +13,7 @@ async fn main() {
         // 🏠 Homepage - Learning Portal
         .route("/", get(examples::lessons::pages::homepage::homepage_handler))
         
+        
         // 📚 Interactive Lessons (0-20)
         .route("/lesson-0", get(examples::lessons::pages::lesson0::lesson0_handler))
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
