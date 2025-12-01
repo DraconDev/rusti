@@ -1,4 +1,4 @@
-use azumi::{html, style};
+use azumi::{html};
 
 pub fn homepage() -> impl azumi::Component {
     style! {

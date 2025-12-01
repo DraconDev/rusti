@@ -13,7 +13,7 @@ pub fn hello_world() -> impl azumi::Component {
         }
         .hello_title {
             color: "purple";
-            font-size: "3em";
+            font-size: "3em";   
         }
     }
     html! {
