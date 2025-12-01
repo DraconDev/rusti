@@ -36,7 +36,7 @@ pub fn hello_world() -> impl azumi::Component {
                 color: "#666";
                 font-size: "1em";
             };
-            <h2 class={subtitle}>
+            <h2 class={subtitle} style={color: "#666"; font-size: "1em"}>
                 "Hello World!"
             </h2>
         </div>
