@@ -114,9 +114,9 @@ pub fn fragment_use_cases() -> impl azumi::Component {
         .comparison { display: "flex"; gap: "20px"; }
         .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
         .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
-        .code { background: "#eee"; padding: "5px"; display: "block"; }
-        .list { list-style: "none"; }
-        .item { font-weight: "bold"; }
+        .lesson0_code { background: "#eee"; padding: "5px"; display: "block"; }
+        .lesson0_list { list-style: "none"; }
+        .lesson0_item { font-weight: "bold"; }
         .item_note { font-style: "italic"; color: "#666"; }
         .text { margin-top: "5px"; }
     }
@@ -130,21 +130,21 @@ pub fn fragment_use_cases() -> impl azumi::Component {
                 <div class={comparison}>
                     <div class={before}>
                         <h4>"❌ Without Fragment (Extra div)"</h4>
-                        <code class={code}>"&lt;div&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/div&gt;"</code>
+                        <code class={lesson0_code}>"&lt;div&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/div&gt;"</code>
                     </div>
                     <div class={after}>
                         <h4>"✅ With Fragment (Clean)"</h4>
-                        <code class={code}>"&lt;&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/&gt;"</code>
+                        <code class={lesson0_code}>"&lt;&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/&gt;"</code>
                     </div>
                 </div>
             </section>
 
             <section class={section}>
                 <h3 class={subtitle}>"2. In Loops"</h3>
-                <ul class={list}>
+                <ul class={lesson0_list}>
                     @for item in &items {
                         <>
-                            <li class={item}>{item}</li>
+                            <li class={lesson0_item}>{item}</li>
                             <li class={item_note}>"(Note: " {item} ")"</li>
                         </>
                     }
@@ -167,10 +167,10 @@ pub fn lesson0() -> impl azumi::Component {
         .header { text-align: "center"; margin-bottom: "30px"; }
         .main_title { font-size: "32px"; color: "#333"; }
         .subtitle { font-size: "18px"; color: "#666"; }
-        .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-        .section_title { font-size: "20px"; margin-bottom: "15px"; }
-        .points_list { list-style: "none"; padding: "0"; }
-        .point { margin-bottom: "10px"; }
+        .lesson0_key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+        .lesson0_section_title { font-size: "20px"; margin-bottom: "15px"; }
+        .lesson0_points_list { list-style: "none"; padding: "0"; }
+        .lesson0_point { margin-bottom: "10px"; }
         .examples { display: "grid"; gap: "20px"; }
         .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
     }

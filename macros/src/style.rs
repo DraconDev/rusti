@@ -50,6 +50,9 @@ impl Parse for StyleRule {
             selector_tokens.extend(std::iter::once(input.parse::<TokenTree>()?));
         }
 
+        // Validate selectors for kebab-case classes
+        validate_selectors(&selector_tokens)?;
+
         if input.is_empty() {
             return Err(input.error("Expected block after selectors"));
         }
@@ -63,6 +66,49 @@ impl Parse for StyleRule {
             block,
         })
     }
+}
+
+fn validate_selectors(tokens: &TokenStream) -> syn::Result<()> {
+    let mut iter = tokens.clone().into_iter();
+    while let Some(tt) = iter.next() {
+        if let TokenTree::Punct(p) = &tt {
+            if p.as_char() == '.' {
+                // Class start. Next should be an Ident.
+                if let Some(TokenTree::Ident(ident)) = iter.next() {
+                    // Check if the *next* token is a hyphen.
+                    // We need to peek, but into_iter() gives us an iterator that might not be peekable easily unless we make it so.
+                    // But we can just clone the iterator before advancing? No.
+                    // Let's collect to Vec? Or use peekable.
+                    // But TokenStream iterator is not peekable by default?
+                    // actually `into_iter()` on TokenStream returns `proc_macro2::token_stream::IntoIter`.
+                    // We can make it peekable.
+                }
+            }
+        }
+    }
+    // Re-implementing with peekable
+    let mut iter = tokens.clone().into_iter().peekable();
+    while let Some(tt) = iter.next() {
+        if let TokenTree::Punct(p) = &tt {
+            if p.as_char() == '.' {
+                // Class start
+                if let Some(TokenTree::Ident(ident)) = iter.peek() {
+                    let ident_span = ident.span();
+                    let _ = iter.next(); // consume ident
+
+                    if let Some(TokenTree::Punct(next_p)) = iter.peek() {
+                        if next_p.as_char() == '-' {
+                            return Err(syn::Error::new(
+                                ident_span,
+                                "Class names in style! macro must be snake_case (no dashes allowed). Use underscores instead."
+                            ));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 impl Parse for StyleBlock {
