@@ -47,7 +47,7 @@ pub fn hello_world() -> impl azumi::Component {
 
 
     html! {
-        // or this style 
+        // or this style perhaps with underscores
         <style>
             .hello-container {
                 background-color: "#f5f5f5";
