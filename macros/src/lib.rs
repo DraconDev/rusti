@@ -35,6 +35,11 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     component::expand_component(item)
 }
 
+#[proc_macro_attribute]
+pub fn action(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    action::expand_action(item)
+}
+
 struct NodesWrapper(Vec<token_parser::Node>);
 
 impl Parse for NodesWrapper {
