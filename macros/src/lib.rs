@@ -87,48 +87,62 @@ pub fn html(input: TokenStream) -> TokenStream {
     TokenStream::from(expanded)
 }
 
-fn process_styles(nodes: &[token_parser::Node]) -> (proc_macro2::TokenStream, String) {
+fn process_styles(nodes: &[token_parser::Node]) -> (proc_macro2::TokenStream, String, String) {
     let mut bindings = proc_macro2::TokenStream::new();
-    let mut css_output = String::new();
+    let mut scoped_css = String::new();
+    let mut global_css = String::new();
 
     for node in nodes {
         match node {
             token_parser::Node::Block(token_parser::Block::Style(style_block)) => {
-                let output = style::process_style_macro(style_block.content.clone());
-                bindings.extend(output.bindings);
-                css_output.push_str(&output.css);
+                if style_block.is_global {
+                    // Global styles: validate but don't scope or generate bindings
+                    let output = style::process_global_style_macro(style_block.content.clone());
+                    global_css.push_str(&output.css);
+                } else {
+                    // Scoped styles: normal processing
+                    let output = style::process_style_macro(style_block.content.clone());
+                    bindings.extend(output.bindings);
+                    scoped_css.push_str(&output.css);
+                }
             }
             token_parser::Node::Element(elem) => {
-                let (child_bindings, child_css) = process_styles(&elem.children);
+                let (child_bindings, child_scoped, child_global) = process_styles(&elem.children);
                 bindings.extend(child_bindings);
-                css_output.push_str(&child_css);
+                scoped_css.push_str(&child_scoped);
+                global_css.push_str(&child_global);
             }
             token_parser::Node::Fragment(frag) => {
-                let (child_bindings, child_css) = process_styles(&frag.children);
+                let (child_bindings, child_scoped, child_global) = process_styles(&frag.children);
                 bindings.extend(child_bindings);
-                css_output.push_str(&child_css);
+                scoped_css.push_str(&child_scoped);
+                global_css.push_str(&child_global);
             }
             token_parser::Node::Block(block) => match block {
                 token_parser::Block::If(if_block) => {
-                    let (b, c) = process_styles(&if_block.then_branch);
+                    let (b, s, g) = process_styles(&if_block.then_branch);
                     bindings.extend(b);
-                    css_output.push_str(&c);
+                    scoped_css.push_str(&s);
+                    global_css.push_str(&g);
                     if let Some(else_branch) = &if_block.else_branch {
-                        let (b, c) = process_styles(else_branch);
+                        let (b, s, g) = process_styles(else_branch);
                         bindings.extend(b);
-                        css_output.push_str(&c);
+                        scoped_css.push_str(&s);
+                        global_css.push_str(&g);
                     }
                 }
                 token_parser::Block::For(for_block) => {
-                    let (b, c) = process_styles(&for_block.body);
+                    let (b, s, g) = process_styles(&for_block.body);
                     bindings.extend(b);
-                    css_output.push_str(&c);
+                    scoped_css.push_str(&s);
+                    global_css.push_str(&g);
                 }
                 token_parser::Block::Match(match_block) => {
                     for arm in &match_block.arms {
-                        let (b, c) = process_styles(&arm.body);
+                        let (b, s, g) = process_styles(&arm.body);
                         bindings.extend(b);
-                        css_output.push_str(&c);
+                        scoped_css.push_str(&s);
+                        global_css.push_str(&g);
                     }
                 }
                 _ => {}
@@ -137,7 +151,7 @@ fn process_styles(nodes: &[token_parser::Node]) -> (proc_macro2::TokenStream, St
         }
     }
 
-    (bindings, css_output)
+    (bindings, scoped_css, global_css)
 }
 
 fn collect_bind_checks(nodes: &[token_parser::Node], checks: &mut Vec<proc_macro2::TokenStream>) {
