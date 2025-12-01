@@ -7,8 +7,12 @@ use azumi::html;
 #[azumi::component]
 pub fn quoted_text() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson2.css" />
-        <div class="demo">
+        <style>
+            .demo { padding: "20px"; }
+            .demo h1 { font-size: "24px"; }
+            .demo p { font-size: "16px"; }
+        </style>
+        <div class={demo}>
             <h1>"Text must always be quoted"</h1>
             <p>"This is correct syntax."</p>
         </div>
@@ -19,8 +23,12 @@ pub fn quoted_text() -> impl azumi::Component {
 #[azumi::component]
 pub fn quoted_attributes() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson2.css" />
-        <div class="demo">
+        <style>
+            .demo { padding: "20px"; }
+            .demo h1 { font-size: "24px"; }
+            .demo p { font-size: "16px"; }
+        </style>
+        <div class={demo}>
             <button type="button" class="btn">"Attributes are quoted"</button>
             <input type="text" placeholder="Always use quotes" />
         </div>
@@ -31,8 +39,12 @@ pub fn quoted_attributes() -> impl azumi::Component {
 #[azumi::component]
 pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Component + 'a {
     html! {
-        <style src="/static/pages/lesson2.css" />
-        <div class="demo">
+        <style>
+            .demo { padding: "20px"; }
+            .demo h1 { font-size: "24px"; }
+            .demo p { font-size: "16px"; }
+        </style>
+        <div class={demo}>
             <p>"Hello, " {name} "!"</p>
             <p>"Count: " {count}</p>
         </div>
@@ -43,9 +55,14 @@ pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Componen
 #[azumi::component]
 pub fn lesson2() -> impl azumi::Component {
     html! {
-        <style src="/static/pages/lesson2.css" />
-        <div class="lesson-container">
-            <h1 class="lesson-title">"Lesson 2: The Quoting Rule"</h1>
+        <style>
+            .lesson-container { padding: "20px"; }
+            .lesson-title { font-size: "24px"; }
+        </style>
+        <div class={lesson-container}>
+            <h1 class={lesson-title}>
+                "Lesson 2: The Quoting Rule"
+            </h1>
 
             @quoted_text()
             @quoted_attributes()
