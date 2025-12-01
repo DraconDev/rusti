@@ -22,6 +22,7 @@ async fn toggle_like(state: LikeState) -> impl Component {
     // We need to re-render the div with the new state
     // Note: In a real app, we'd extract this into a reusable component function
     html! {
+        <style src="./azumi_plus_demo.css" />
         <div id="like-section" az-scope={ new_state }>
             <h2>"Server-Side Action"</h2>
             <p>
@@ -41,27 +42,8 @@ async fn toggle_like(state: LikeState) -> impl Component {
 
 pub fn azumi_plus_demo() -> impl Component {
     html! {
-        <style>
-            .demo_container {
-                padding: "2rem";
-                border: "1px solid #ccc";
-                border-radius: "8px";
-                max-width: "600px";
-                margin: "0 auto";
-            }
-            .btn {
-                padding: "0.5rem 1rem";
-                border: "none";
-                border-radius: "4px";
-                cursor: "pointer";
-                background: "#eee";
-            }
-            .btn.liked {
-                background: "#ff4081";
-                color: "white";
-            }
-            #like-section {}
-        </style>
+    html! {
+        <style src="./azumi_plus_demo.css" />
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
 
@@ -99,7 +81,7 @@ pub fn azumi_plus_demo() -> impl Component {
                 // So the action should return HTML.
 
                 <button
-                    class="btn"
+                    class={btn}
                     az-bind:class.liked="liked"
                     az-on={click call toggle_like -> #like-section}
                 >
