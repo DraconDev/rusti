@@ -85,7 +85,7 @@ pub fn control_flow_fragments() -> impl azumi::Component {
             .lesson0_subtitle { font-weight: "bold"; }
             .lesson0_text { color: "#333"; }
         </style>
-        <div class={lesson0_container}>
+        <div class={lesson0_container} style={lesson0_container_style}>
             <h1 class={lesson0_title}>"Fragments in Control Flow"</h1>
             <div class={lesson0_box}>
                 <h3 class={lesson0_subtitle}>"Automatic (No &lt;&gt;):"</h3>
