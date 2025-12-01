@@ -1,0 +1,1191 @@
+warning: unused import: `Item`
+ --> macros/src/component.rs:3:37
+  |
+3 | ...o_input, FnArg, Item, ItemFn, Pat, P...
+  |                    ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `ident`
+  --> macros/src/style.rs:77:46
+   |
+77 | ...ree::Ident(ident)) = iter.next() {
+   |               ^^^^^ help: if this is intentional, prefix it with an underscore: `_ident`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `NodesWrapper` is never constructed
+  --> macros/src/lib.rs:37:8
+   |
+37 | struct NodesWrapper(Vec<token_parser::...
+   |        ^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `parse_css_classes` is never used
+  --> macros/src/css_validator.rs:16:8
+   |
+16 | pub fn parse_css_classes(css_content: ...
+   |        ^^^^^^^^^^^^^^^^^
+
+warning: function `create_class_span` is never used
+  --> macros/src/css_validator.rs:36:4
+   |
+36 | fn create_class_span(class_attr: &crat...
+   |    ^^^^^^^^^^^^^^^^^
+
+warning: function `extract_html_classes` is never used
+  --> macros/src/css_validator.rs:47:8
+   |
+47 | pub fn extract_html_classes(nodes: &[N...
+   |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: function `extract_html_classes_recursive` is never used
+  --> macros/src/css_validator.rs:53:4
+   |
+53 | fn extract_html_classes_recursive(node...
+   |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `validate_css_classes` is never used
+   --> macros/src/css_validator.rs:113:8
+    |
+113 | pub fn validate_css_classes(
+    |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: enum `ValidationError` is never used
+   --> macros/src/css_validator.rs:138:10
+    |
+138 | pub enum ValidationError {
+    |          ^^^^^^^^^^^^^^^
+
+warning: field `span` is never read
+  --> macros/src/style.rs:32:5
+   |
+29 | struct StyleProperty {
+   |        ------------- field in this struct
+...
+32 |     span: proc_macro2::Span,
+   |     ^^^^
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:35:9
+   |
+33 | pub struct Text {
+   |            ---- field in this struct
+34 |     pub content: String,
+35 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Text` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: field `span` is never read
+  --> macros/src/token_parser.rs:41:9
+   |
+39 | pub struct Expression {
+   |            ---------- field in this struct
+40 |     pub content: TokenStream,
+41 |     pub span: Span,
+   |         ^^^^
+   |
+   = note: `Expression` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: `azumi-macros` (lib) generated 12 warnings (run `cargo fix --lib -p azumi-macros` to apply 1 suggestion)
+    Checking azumi-demo v0.1.0 (/home/dracon/_Dev/_Active/azumi-feature/demo)
+DEBUG: raw_css: '.progress_bar { background-color: #e0e0e0; border-radius: 4px; height: 20px; width: 100%; } .progress_value { background-color: #76c7c0; border-radius: 4px; height: 100%; width: var(--width); transition: width 0.5s ease-in-out; } '
+DEBUG: extracted classes: {"progress_value", "progress_bar"}
+DEBUG: bindings tokens: let progress_value = "progress_value-sd2e334a8f061087c"; let progress_bar =
+"progress_bar-sd2e334a8f061087c";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+ --> demo/src/examples/css_variables.rs:3:1
+  |
+3 | #[azumi::component]
+  | ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Parsing element: html
+Parsing element: head
+Parsing element: meta
+Parsing element: meta
+Parsing element: title
+Element::parse: Found closing tag sequence
+Found closing tag: </title>  (expected </title>)
+Parsing element: style
+Parsing element: style
+Element::parse: Found closing tag sequence
+Found closing tag: </head>  (expected </head>)
+Parsing element: body
+Parsing element: div
+Parsing element: header
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </header>  (expected </header>)
+Parsing element: section
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Parsing element: a
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </a>  (expected </a>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: div
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: div
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: div
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </body>  (expected </body>)
+Element::parse: Found closing tag sequence
+Found closing tag: </html>  (expected </html>)
+🔍 Resolving CSS path: '/static/pages/homepage.css' from '/home/dracon/_Dev/_Active/azumi-feature/demo'
+⚠️  CSS file not found. Checked 7 locations.
+error: External CSS files are banned in Azumi. Use the style! macro instead.
+   --> demo/src/examples/lessons/pages/homepage.rs:4:5
+    |
+  4 | /     html! {
+  5 | |         <!DOCTYPE html>
+  6 | |         <html>
+  7 | |             <head>
+...   |
+286 | |         </html>
+287 | |     }
+    | |_____^
+    |
+    = note: this error originates in the macro `html` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.container { padding: 20px; border: 1px solid #ccc; } .title { color: blue; font-size: 24px; } .content { margin-top: 10px; } .footer { margin-top: 15px; font-size: 12px; color: #666; } '
+DEBUG: extracted classes: {"container", "content", "title", "footer"}
+DEBUG: bindings tokens: let container = "container-s7f48a76ffe402818"; let content =
+"content-s7f48a76ffe402818"; let title = "title-s7f48a76ffe402818"; let footer
+= "footer-s7f48a76ffe402818";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+ --> demo/src/examples/lessons/pages/lesson0.rs:9:1
+  |
+9 | #[azumi::component]
+  | ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+  --> demo/src/examples/lessons/pages/lesson0.rs:43:1
+   |
+43 | #[azumi::component]
+   | ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.container { padding: 20px; border: 1px solid #ccc; } .title { color: blue; font-size: 24px; } .text { font-size: 16px; } '
+DEBUG: extracted classes: {"title", "text", "container"}
+DEBUG: bindings tokens: let title = "title-s48bcc29e9fc36a28"; let text = "text-s48bcc29e9fc36a28";
+let container = "container-s48bcc29e9fc36a28";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+  --> demo/src/examples/lessons/pages/lesson0.rs:51:1
+   |
+51 | #[azumi::component]
+   | ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.lesson0_container { padding: 20px; } .lesson0_title { color: blue; } .lesson0_box { margin: 10px; border: 1px solid #eee; padding: 10px; } .lesson0_subtitle { font-weight: bold; } .lesson0_text { color: #333; } '
+DEBUG: extracted classes: {"lesson0_box", "lesson0_container", "lesson0_text", "lesson0_title", "lesson0_subtitle"}
+DEBUG: bindings tokens: let lesson0_box = "lesson0_box-s969a72362accf463"; let lesson0_container =
+"lesson0_container-s969a72362accf463"; let lesson0_text =
+"lesson0_text-s969a72362accf463"; let lesson0_title =
+"lesson0_title-s969a72362accf463"; let lesson0_subtitle =
+"lesson0_subtitle-s969a72362accf463";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+  --> demo/src/examples/lessons/pages/lesson0.rs:78:1
+   |
+78 | #[azumi::component]
+   | ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.container { padding: 20px; } .title { font-size: 24px; } .section { margin-bottom: 20px; } .subtitle { font-size: 18px; } .comparison { display: flex; gap: 20px; } .before { flex: 1; border: 1px solid red; padding: 10px; } .after { flex: 1; border: 1px solid green; padding: 10px; } .lesson0_code { background: #eee; padding: 5px; display: block; } .lesson0_list { list-style: none; } .lesson0_item { font-weight: bold; } .item_note { font-style: italic; color: #666; } .text { margin-top: 5px; } '
+DEBUG: extracted classes: {"text", "subtitle", "after", "before", "lesson0_code", "comparison", "lesson0_item", "section", "container", "title", "item_note", "lesson0_list"}
+DEBUG: bindings tokens: let text = "text-s35ff0528514fdf65"; let subtitle =
+"subtitle-s35ff0528514fdf65"; let after = "after-s35ff0528514fdf65"; let
+before = "before-s35ff0528514fdf65"; let lesson0_code =
+"lesson0_code-s35ff0528514fdf65"; let comparison =
+"comparison-s35ff0528514fdf65"; let lesson0_item =
+"lesson0_item-s35ff0528514fdf65"; let section = "section-s35ff0528514fdf65";
+let container = "container-s35ff0528514fdf65"; let title =
+"title-s35ff0528514fdf65"; let item_note = "item_note-s35ff0528514fdf65"; let
+lesson0_list = "lesson0_list-s35ff0528514fdf65";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+   --> demo/src/examples/lessons/pages/lesson0.rs:112:1
+    |
+112 | #[azumi::component]
+    | ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.container { padding: 20px; } .header { text-align: center; margin-bottom: 30px; } .main_title { font-size: 32px; color: #333; } .subtitle { font-size: 18px; color: #666; } .lesson0_key_points { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; } .lesson0_section_title { font-size: 20px; margin-bottom: 15px; } .lesson0_points_list { list-style: none; padding: 0; } .lesson0_point { margin-bottom: 10px; } .examples { display: grid; gap: 20px; } .example_card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; } '
+DEBUG: extracted classes: {"lesson0_section_title", "header", "container", "lesson0_key_points", "example_card", "lesson0_points_list", "main_title", "examples", "lesson0_point", "subtitle"}
+DEBUG: bindings tokens: let lesson0_section_title = "lesson0_section_title-s5e720587a06e524"; let
+header = "header-s5e720587a06e524"; let container =
+"container-s5e720587a06e524"; let lesson0_key_points =
+"lesson0_key_points-s5e720587a06e524"; let example_card =
+"example_card-s5e720587a06e524"; let lesson0_points_list =
+"lesson0_points_list-s5e720587a06e524"; let main_title =
+"main_title-s5e720587a06e524"; let examples = "examples-s5e720587a06e524"; let
+lesson0_point = "lesson0_point-s5e720587a06e524"; let subtitle =
+"subtitle-s5e720587a06e524";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+   --> demo/src/examples/lessons/pages/lesson0.rs:170:1
+    |
+170 | #[azumi::component]
+    | ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.hello_container { text-align: center; margin-top: 50px; } .hello_title { color: purple; font-size: 3em; } '
+DEBUG: extracted classes: {"hello_container", "hello_title"}
+DEBUG: bindings tokens: let hello_container = "hello_container-s5c805ab2a77a70cd"; let hello_title =
+"hello_title-s5c805ab2a77a70cd";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+ --> demo/src/examples/lessons/pages/lesson1.rs:7:1
+  |
+7 | #[azumi::component]
+  | ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.basic_template { padding: 20px; background-color: #f0f0f0; } .basic_h1 { color: #333; } .basic_h2 { color: #666; } .basic_p { font-size: 14px; } '
+DEBUG: extracted classes: {"basic_p", "basic_h1", "basic_h2", "basic_template"}
+DEBUG: bindings tokens: let basic_p = "basic_p-s32bb75f40c63c03b"; let basic_h1 =
+"basic_h1-s32bb75f40c63c03b"; let basic_h2 = "basic_h2-s32bb75f40c63c03b"; let
+basic_template = "basic_template-s32bb75f40c63c03b";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+  --> demo/src/examples/lessons/pages/lesson1.rs:27:1
+   |
+27 | #[azumi::component]
+   | ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+ --> demo/src/examples/test_accessibility_pass.rs:4:1
+  |
+4 | #[azumi::component]
+  | ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.hello_container { background-color: #f5f5f5; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); } .hello_title { color: #333; font-size: 1.5em; font-weight: bold; } '
+DEBUG: extracted classes: {"hello_title", "hello_container"}
+DEBUG: bindings tokens: let hello_title = "hello_title-s25c9e2da54598fdc"; let hello_container =
+"hello_container-s25c9e2da54598fdc";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+ --> demo/src/examples/example_component.rs:8:1
+  |
+8 | #[azumi::component]
+  | ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+DEBUG: raw_css: '.basic_container { background-color: #f5f5f5; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); } .basic_h1 { color: #333; font-size: 1.5em; font-weight: bold; } .basic_h2 { color: #666; font-size: 1.2em; } .basic_p { color: #999; font-size: 1em; } '
+DEBUG: extracted classes: {"basic_container", "basic_h1", "basic_h2", "basic_p"}
+DEBUG: bindings tokens: let basic_container = "basic_container-s43b13c3ec185bfb4"; let basic_h1 =
+"basic_h1-s43b13c3ec185bfb4"; let basic_h2 = "basic_h2-s43b13c3ec185bfb4"; let
+basic_p = "basic_p-s43b13c3ec185bfb4";
+Parsing element: style
+error: Inline <style> tags not allowed in Azumi 2.0
+       
+       CSS must be external:
+         ✅ <style src="components/card.css" />  (auto-scoped)
+         ❌ <style>.card { padding: 2em; }</style>
+       
+       For dynamic styles: use style attribute with expressions
+       
+       Why? External files get full IDE support (linting, autocomplete, error checking).
+  --> demo/src/examples/example_component.rs:37:1
+   |
+37 | #[azumi::component]
+   | ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the attribute macro `azumi::component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Parsing element: form
+Parsing element: input
+Parsing element: input
+Parsing element: button
+Element::parse: Found closing tag sequence
+Found closing tag: </button>  (expected </button>)
+Element::parse: Found closing tag sequence
+Found closing tag: </form>  (expected </form>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: img
+Parsing element: img
+Parsing element: input
+Parsing element: input
+Parsing element: button
+Element::parse: Found closing tag sequence
+Found closing tag: </button>  (expected </button>)
+Parsing element: button
+Element::parse: Found closing tag sequence
+Found closing tag: </button>  (expected </button>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: header
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </header>  (expected </header>)
+Parsing element: section
+Parsing element: h2
+Element::parse: Found closing tag sequence
+Found closing tag: </h2>  (expected </h2>)
+Parsing element: ul
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Element::parse: Found closing tag sequence
+Found closing tag: </ul>  (expected </ul>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: section
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: div
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: code
+Element::parse: Found closing tag sequence
+Found closing tag: </code>  (expected </code>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h4
+Element::parse: Found closing tag sequence
+Found closing tag: </h4>  (expected </h4>)
+Parsing element: code
+Element::parse: Found closing tag sequence
+Found closing tag: </code>  (expected </code>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: ul
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Parsing element: li
+Element::parse: Found closing tag sequence
+Found closing tag: </li>  (expected </li>)
+Element::parse: Found closing tag sequence
+Found closing tag: </ul>  (expected </ul>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Parsing element: section
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </section>  (expected </section>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h3
+Element::parse: Found closing tag sequence
+Found closing tag: </h3>  (expected </h3>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Parsing element: p
+Element::parse: Found closing tag sequence
+Found closing tag: </p>  (expected </p>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: h1
+Element::parse: Found closing tag sequence
+Found closing tag: </h1>  (expected </h1>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+Parsing element: div
+Element::parse: Found closing tag sequence
+Found closing tag: </div>  (expected </div>)
+error: could not compile `azumi-demo` (bin "azumi-demo") due to 13 previous errors
