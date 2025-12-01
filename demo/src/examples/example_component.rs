@@ -25,6 +25,15 @@ pub fn hello_world() -> impl azumi::Component {
             <h1 class={hello-title}>
                 "Hello Azumi!"
             </h1>
+            @let subtitle = style! {
+                .subtitle {
+                    color: "#666";
+                    font-size: "1em";
+                }
+            };
+            <h2 class={subtitle}>
+                "Hello World!"
+            </h2>
         </div>
     }
 }
@@ -44,7 +53,6 @@ pub fn hello_world() -> impl azumi::Component {
     //         font-weight: "bold";
     //     }
     // }
-
 
     html! {
         // or this style perhaps with underscores
