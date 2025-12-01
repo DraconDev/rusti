@@ -28,7 +28,7 @@ pub fn automatic_fragment_example() -> impl azumi::Component {
     }
 
     html! {
-        <div class={lesson0_contai er}>
+        <div class={lesson0_container}>
             <h1 class={lesson0_title}>"Automatic Fragments"</h1>
             <div class={content}>
                 "This is some content."
