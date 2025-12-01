@@ -35,6 +35,10 @@ pub fn hello_world() -> impl azumi::Component {
             @let subtitle = style! {
                 color: "#666";
                 font-size: "1em";
+                font-weight: "normal";
+                text-decoration: "none";
+                text-transform: "none";
+                text-align: "left";
             };
             <h2 class={subtitle} style={color: "#666"; font-size: "1em"}>
                 "Hello World!"
