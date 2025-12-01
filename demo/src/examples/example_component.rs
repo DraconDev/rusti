@@ -8,20 +8,20 @@ use azumi::html;
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
     // styles should be defined at the top of the file
-    style! {
-        .hello_container {
-            background-color: "#f5f5f5";
-            padding: "20px";
-            border-radius: "8px";
-            box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
-        }
-        .hello_title {
-            color: "#333";
-            font-size: "1.5em";
-            font-weight: "bold";
-        }
-    }
     html! {
+        <style>
+            .hello_container {
+                background-color: "#f5f5f5";
+                padding: "20px";
+                border-radius: "8px";
+                box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
+            }
+            .hello_title {
+                color: "#333";
+                font-size: "1.5em";
+                font-weight: "bold";
+            }
+        </style>
         <div class={hello_container}>
             <h1 class={hello_title}>
                 "Hello Azumi!"
@@ -36,28 +36,28 @@ pub fn hello_world() -> impl azumi::Component {
 /// Basic template with styling
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
-    style! {
-        .basic_container {
-            background-color: "#f5f5f5";
-            padding: "20px";
-            border-radius: "8px";
-            box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
-        }
-        .basic_h1 {
-            color: "#333";
-            font-size: "1.5em";
-            font-weight: "bold";
-        }
-        .basic_h2 {
-            color: "#666";
-            font-size: "1.2em";
-        }
-        .basic_p {
-            color: "#999";
-            font-size: "1em";
-        }
-    }
     html! {
+        <style>
+            .basic_container {
+                background-color: "#f5f5f5";
+                padding: "20px";
+                border-radius: "8px";
+                box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
+            }
+            .basic_h1 {
+                color: "#333";
+                font-size: "1.5em";
+                font-weight: "bold";
+            }
+            .basic_h2 {
+                color: "#666";
+                font-size: "1.2em";
+            }
+            .basic_p {
+                color: "#999";
+                font-size: "1em";
+            }
+        </style>
         <div class={basic_container} >
             <h1 class={basic_h1}>
                 "Hello, World!"
