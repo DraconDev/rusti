@@ -1,4 +1,5 @@
-pub use azumi_macros::{component, head, html};
+pub use azumi_macros::{action, component, head, html};
+pub mod action;
 
 pub trait Component {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;

@@ -2,6 +2,7 @@
 mod component;
 
 mod accessibility_validator;
+mod action;
 mod css;
 mod css_validator;
 mod head;
