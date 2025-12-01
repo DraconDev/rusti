@@ -8,7 +8,7 @@ use azumi::html;
 pub fn hello_world() -> impl azumi::Component {
     html! {
         <style>
-            .hello_container {
+            .hello_co ntainer {
                 text-align: "center";
                 margin-top: "50px";
                 background-color: "#f00";
