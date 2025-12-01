@@ -8,12 +8,34 @@ use azumi::html;
 /// Example 1: Automatic Fragment (No explicit <> needed)
 #[azumi::component]
 pub fn automatic_fragment_example() -> impl azumi::Component {
+    style! {
+        .lesson0-container {
+            padding: "20px";
+            border: "1px solid #ccc";
+        }
+        .lesson0-title {
+            color: "blue";
+            font-size: "24px";
+        }
+        .content {
+            margin-top: "10px";
+        }
+        .footer {
+            margin-top: "15px";
+            font-size: "12px";
+            color: "#666";
+        }
+    }
+
     html! {
-        <style src="/static/pages/lesson0.css" />
-        <div class="lesson0-container">
-            <h1 class="lesson0-title">"Automatic Fragments"</h1>
-            <p class="lesson0-text">"Multiple elements work automatically!"</p>
-            <p class="lesson0-text">"No wrapper needed at the top level."</p>
+        <div class={lesson0_container}>
+            <h1 class={lesson0_title}>"Automatic Fragments"</h1>
+            <div class={content}>
+                "This is some content."
+            </div>
+            <div class={footer}>
+                "Footer content"
+            </div>
         </div>
     }
 }
