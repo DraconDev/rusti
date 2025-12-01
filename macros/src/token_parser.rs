@@ -90,6 +90,7 @@ pub enum Block {
     Call(CallBlock),
     Component(ComponentBlock),
     Let(LetBlock),
+    Style(StyleBlock),
 }
 
 #[derive(Debug, Clone)]
