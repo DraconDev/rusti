@@ -138,28 +138,20 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             }
         }
     } else {
-        quote! {
             pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
 
-                let __azumi_content = { #fn_block };
-
                 // Inject styles if any - wrap in fragment to combine styles + content
                 // Use Box<dyn Component> to ensure both branches have the same type
-                if #component_css.is_empty() {
-                    std::boxed::Box::new(__azumi_content) as std::boxed::Box<dyn azumi::Component>
-                } else {
-                    std::boxed::Box::new(azumi::html! {
-                        <>
-                            <style data-azumi-internal="true">
-                                #component_css
-                            </style>
-                            {__azumi_content}
-                        </>
-                    }) as std::boxed::Box<dyn azumi::Component>
-                }
+                azumi::from_fn(move |f| {
+                    if !#component_css.is_empty() {
+                        // Inject CSS directly without going through html! macro to avoid double scoping
+                        write!(f, "<style data-azumi-internal=\"true\">{}</style>", #component_css)?;
+                    }
+                    let __azumi_content = { #fn_block };
+                    __azumi_content.render(f)
+                })
             }
-        }
     };
 
     // Check if function name is snake_case
