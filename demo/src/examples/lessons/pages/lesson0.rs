@@ -8,26 +8,25 @@ use azumi::html;
 /// Example 1: Automatic Fragment (No explicit <> needed)
 #[azumi::component]
 pub fn automatic_fragment_example() -> impl azumi::Component {
-    style! {
-        .container {
-            padding: "20px";
-            border: "1px solid #ccc";
-        }
-        .title {
-            color: "blue";
-            font-size: "24px";
-        }
-        .content {
-            margin-top: "10px";
-        }
-        .footer {
-            margin-top: "15px";
-            font-size: "12px";
-            color: "#666";
-        }
-    }
-
     html! {
+        <style>
+            .container {
+                padding: "20px";
+                border: "1px solid #ccc";
+            }
+            .title {
+                color: "blue";
+                font-size: "24px";
+            }
+            .content {
+                margin-top: "10px";
+            }
+            .footer {
+                margin-top: "15px";
+                font-size: "12px";
+                color: "#666";
+            }
+        </style>
         <div class={container}>
             <h1 class={title}>"Automatic Fragments"</h1>
             <div class={content}>
@@ -50,20 +49,20 @@ fn ControlFlowFragments() -> impl azumi::Component {
 /// Example 2: Explicit Fragment with <>
 #[azumi::component]
 pub fn explicit_fragment_example() -> impl azumi::Component {
-    style! {
-        .container {
-            padding: "20px";
-            border: "1px solid #ccc";
-        }
-        .title {
-            color: "blue";
-            font-size: "24px";
-        }
-        .text {
-            font-size: "16px";
-        }
-    }
     html! {
+        <style>
+            .container {
+                padding: "20px";
+                border: "1px solid #ccc";
+            }
+            .title {
+                color: "blue";
+                font-size: "24px";
+            }
+            .text {
+                font-size: "16px";
+            }
+        </style>
         <div class={container}>
             <h1 class={title}>"Explicit Fragments"</h1>
             <>
@@ -78,14 +77,14 @@ pub fn explicit_fragment_example() -> impl azumi::Component {
 #[azumi::component]
 pub fn control_flow_fragments() -> impl azumi::Component {
     let show_content = true;
-    style! {
-        .lesson0_container { padding: "20px"; }
-        .lesson0_title { color: "blue"; }
-        .lesson0_box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
-        .lesson0_subtitle { font-weight: "bold"; }
-        .lesson0_text { color: "#333"; }
-    }
     html! {
+        <style>
+            .lesson0_container { padding: "20px"; }
+            .lesson0_title { color: "blue"; }
+            .lesson0_box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
+            .lesson0_subtitle { font-weight: "bold"; }
+            .lesson0_text { color: "#333"; }
+        </style>
         <div class={lesson0_container}>
             <h1 class={lesson0_title}>"Fragments in Control Flow"</h1>
             <div class={lesson0_box}>
@@ -111,24 +110,23 @@ pub fn control_flow_fragments() -> impl azumi::Component {
 /// Example 4: When Fragments Are Useful
 #[azumi::component]
 pub fn fragment_use_cases() -> impl azumi::Component {
-    let items = ["Apple", "Banana", "Cherry"];
-
-    style! {
-        .container { padding: "20px"; }
-        .title { font-size: "24px"; }
-        .section { margin-bottom: "20px"; }
-        .subtitle { font-size: "18px"; }
-        .comparison { display: "flex"; gap: "20px"; }
-        .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
-        .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
-        .lesson0_code { background: "#eee"; padding: "5px"; display: "block"; }
-        .lesson0_list { list-style: "none"; }
-        .lesson0_item { font-weight: "bold"; }
-        .item_note { font-style: "italic"; color: "#666"; }
-        .text { margin-top: "5px"; }
-    }
+    
 
     html! {
+        <style>
+            .container { padding: "20px"; }
+            .title { font-size: "24px"; }
+            .section { margin-bottom: "20px"; }
+            .subtitle { font-size: "18px"; }
+            .comparison { display: "flex"; gap: "20px"; }
+            .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
+            .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
+            .lesson0_code { background: "#eee"; padding: "5px"; display: "block"; }
+            .lesson0_list { list-style: "none"; }
+            .lesson0_item { font-weight: "bold"; }
+            .item_note { font-style: "italic"; color: "#666"; }
+            .text { margin-top: "5px"; }
+        </style>
         <div class={container}>
             <h1 class={title}>"When to Use Fragments"</h1>
 
@@ -149,6 +147,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
             <section class={section}>
                 <h3 class={subtitle}>"2. In Loops"</h3>
                 <ul class={lesson0_list}>
+                    @let items = ["Apple", "Banana", "Cherry"];
                     @for item in &items {
                         <>
                             <li class={lesson0_item}>{item}</li>
@@ -158,7 +157,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
                 </ul>
             </section>
 
-            <section class={section}>
+            <section class={section}>``
                 <h3 class={subtitle}>"3. Component Returns"</h3>
                 <p class={text}>"Components can return multiple elements without wrappers using fragments!"</p>
             </section>
@@ -169,20 +168,20 @@ pub fn fragment_use_cases() -> impl azumi::Component {
 /// Main demonstration component
 #[azumi::component]
 pub fn lesson0() -> impl azumi::Component {
-    style! {
-        .container { padding: "20px"; }
-        .header { text-align: "center"; margin-bottom: "30px"; }
-        .main_title { font-size: "32px"; color: "#333"; }
-        .subtitle { font-size: "18px"; color: "#666"; }
-        .lesson0_key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-        .lesson0_section_title { font-size: "20px"; margin-bottom: "15px"; }
-        .lesson0_points_list { list-style: "none"; padding: "0"; }
-        .lesson0_point { margin-bottom: "10px"; }
-        .examples { display: "grid"; gap: "20px"; }
-        .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
-    }
-
+    
     html! {
+        <style>
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .lesson0_key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .lesson0_section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .lesson0_points_list { list-style: "none"; padding: "0"; }
+            .lesson0_point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+        </style>
         <div class={container}>
             <header class={header}>
                 <h1 class={main_title}>"Lesson 0: Fragments"</h1>
