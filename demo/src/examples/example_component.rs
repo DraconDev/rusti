@@ -7,7 +7,6 @@ use azumi::html;
 /// Maybe use underscores?
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
-    // styles should be defined at the top of the file
     html! {
         <style>
             .hello_container {
