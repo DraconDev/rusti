@@ -81,20 +81,20 @@ pub fn control_flow_fragments() -> impl azumi::Component {
         <style>
             .container { padding: "20px"; }
             .title { color: "blue"; }
-            .box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
+            .content_block { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
             .subtitle { font-weight: "bold"; }
             .text { color: "#333"; }
         </style>
         <div class={container}>
             <h1 class={title}>"Fragments in Control Flow"</h1>
-            <div class={box}>
+            <div class={content_block}>
                 <h3 class={subtitle}>"Automatic (No):"</h3>
                 @if show_content {
                     <p class={text}>"First element"</p>
                     <p class={text}>"Second element"</p>
                 }
             </div>
-            <div class={box}>
+            <div class={content_block}>
                 <h3 class={subtitle}>"Explicit (With):"</h3>
                 @if show_content {
                     <>
