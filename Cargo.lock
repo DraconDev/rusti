@@ -130,7 +130,7 @@ dependencies = [
 
 [[package]]
 name = "azumi"
-version = "0.7.499"
+version = "0.7.500"
 dependencies = [
  "axum",
  "azumi-macros",

@@ -585,6 +585,35 @@ fn validate_nodes(
                         }
                     }
 
+                        // Rule 5: Validate az-on target IDs
+                        if name == "az-on" {
+                            if let token_parser::AttributeValue::Dynamic(tokens) = &attr.value {
+                                let dsl = tokens.to_string();
+                                // Parse "-> #target"
+                                if let Some(idx) = dsl.find("->") {
+                                    let rest = &dsl[idx + 2..];
+                                    let parts: Vec<&str> = rest.split_whitespace().collect();
+                                    if let Some(target) = parts.first() {
+                                        if target.starts_with('#') {
+                                            let id_name = &target[1..];
+                                            if !valid_ids.contains(id_name) {
+                                                let msg = format!(
+                                                    "az-on target ID '{}' not found in this component. Targets must be defined in the same component for compile-time validation.",
+                                                    id_name
+                                                );
+                                                // Use value_span to point to the attribute value
+                                                let error_span = attr.value_span.unwrap_or(attr.span);
+                                                errors.push(quote_spanned! { error_span =>
+                                                    compile_error!(#msg);
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Accessibility validation
                     if let Some(err) = accessibility_validator::validate_img_alt(elem) {
                         errors.push(err);
