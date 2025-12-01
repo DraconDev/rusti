@@ -9,7 +9,7 @@ use azumi::html;
 #[azumi::component]
 pub fn automatic_fragment_example() -> impl azumi::Component {
     style! {
-        .lesson0_container {
+        .lesso n0_container {
             padding: "20px";
             border: "1px solid #ccc";
         }
