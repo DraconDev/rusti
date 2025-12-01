@@ -469,6 +469,7 @@ impl Parse for Attribute {
             "novalidate",
             "open",
             "reversed",
+            "global", // Azumi: global style tag attribute
         ];
 
         let (value, value_span) = if input.peek(Token![=]) {
