@@ -74,6 +74,10 @@ pub fn expand_action(item: TokenStream) -> TokenStream {
         quote! { #pat }
     });
 
+    // Helper to return MethodRouter
+    // We need a unique name for this too
+    let router_helper_name = quote::format_ident!("{}_router", fn_name);
+
     let expanded = quote! {
         // Original function (modified to be called by wrapper if needed, or just keep it)
         // Actually, we want to replace it or generate a wrapper alongside it.
