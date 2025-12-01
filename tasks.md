@@ -87,6 +87,8 @@ pub fn component_b() -> impl azumi::Component {
 }
 ```
 
+- this would mean we ban external css files, inline css, and classes with spaces, but also 
+
 
 ## Later
 
