@@ -40,6 +40,7 @@ pub fn hello_world() -> impl azumi::Component {
                 text-transform: "none";
                 text-align: "left";
             };
+            // albeit this seems stuffy hard to read the code
             <h2 class={subtitle} style={color: "#666"; font-size: "1em"}>
                 "Hello World!"
             </h2>
