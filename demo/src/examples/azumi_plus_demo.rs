@@ -27,15 +27,15 @@ async fn toggle_like(state: LikeState) -> impl Component {
     html! {
         <style>
             .btn {
-                padding: 0.5rem 1rem;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                background: #eee;
+                padding: "0.5rem 1rem";
+                border: "none";
+                border-radius: "4px";
+                cursor: "pointer";
+                background: "#eee";
             }
             .btn.liked {
-                background: #ff4081;
-                color: white;
+                background: "#ff4081";
+                color: "white";
             }
             #like_section {}
         </style>
