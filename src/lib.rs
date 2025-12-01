@@ -172,3 +172,17 @@ pub trait Schema {
 
 #[cfg(test)]
 mod tests;
+
+// ============================================================================
+// Embedded Client Runtime
+// ============================================================================
+
+/// The Azumi client library (embedded at compile time)
+/// This includes Idiomorph (DOM morphing) and the Azumi coordinator
+pub const AZUMI_JS: &str = include_str!("client.min.js");
+
+/// Helper to generate the <script> tag for the client runtime
+/// Usage: html! { <head> { azumi::azumi_script() } ... </head> }
+pub fn azumi_script() -> String {
+    format!(r#"<script>{}</script>"#, AZUMI_JS)
+}
