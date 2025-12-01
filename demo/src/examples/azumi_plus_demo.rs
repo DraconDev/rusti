@@ -60,6 +60,7 @@ pub fn azumi_plus_demo() -> impl Component {
                 background: "#ff4081";
                 color: "white";
             }
+            #like-section {}
         </style>
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
