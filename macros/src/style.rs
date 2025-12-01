@@ -1,5 +1,7 @@
 use crate::css::{extract_selectors, rename_css_selectors};
 use heck::ToSnakeCase;
+use lightningcss::stylesheet::{ParserOptions, StyleSheet};
+use lightningcss::traits::ToCss;
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{format_ident, quote};
 use std::collections::hash_map::DefaultHasher;
@@ -158,14 +160,50 @@ impl Parse for StyleProperty {
             )
         })?;
         let value = value_lit.value();
+        let value_span = value_lit.span();
 
         input.parse::<Token![;]>()?;
+
+        // Validate the CSS value using lightningcss
+        if let Err(err_msg) = validate_css_value(&name, &value) {
+            return Err(syn::Error::new(
+                value_span,
+                format!("Invalid CSS value for property '{}': {}", name, err_msg),
+            ));
+        }
 
         Ok(StyleProperty {
             name,
             value,
             span: start_span,
         })
+    }
+}
+
+/// Validate CSS property value using lightningcss parser
+fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
+    // Construct a minimal CSS rule to parse
+    let css = format!(".test {{ {}: {}; }}", property, value);
+
+    // Try to parse with lightningcss
+    let parse_options = ParserOptions {
+        ..ParserOptions::default()
+    };
+
+    match StyleSheet::parse(&css, parse_options) {
+        Ok(_) => Ok(()),
+        Err(e) => {
+            // Extract useful error message
+            let error_msg = format!("{:?}", e);
+            // Simplify common errors
+            if error_msg.contains("Unexpected token") || error_msg.contains("UnexpectedToken") {
+                Err(format!("Unexpected token in value '{}'", value))
+            } else if error_msg.contains("InvalidValue") {
+                Err(format!("'{}' is not a valid value", value))
+            } else {
+                Err(format!("Parse error: {}", error_msg))
+            }
+        }
     }
 }
 
