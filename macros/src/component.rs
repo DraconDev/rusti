@@ -185,6 +185,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         #[allow(non_snake_case)]
         #fn_vis mod #mod_name {
             use super::*;
+            use azumi::Component;
 
             // #[derive(Debug)] // Removed to allow non-Debug props
             pub struct Props #fn_generics #where_clause {
