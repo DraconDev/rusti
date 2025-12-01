@@ -8,6 +8,7 @@ mod head;
 mod html_structure_validator;
 #[cfg(feature = "schema")]
 mod schema;
+mod style;
 mod test_spacing;
 mod token_parser;
 

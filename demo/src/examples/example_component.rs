@@ -7,7 +7,7 @@ use azumi::html;
 /// Maybe use underscores?
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
-    // styles should be defined at the top of the file 
+    // styles should be defined at the top of the file
     style! {
         .hello-container {
             background-color: "#f5f5f5";
@@ -22,52 +22,13 @@ pub fn hello_world() -> impl azumi::Component {
         }
     }
     html! {
-        <div class={hello-container}>
-            <h1 class={hello-title}>
+        <div class={hello_container}>
+            <h1 class={hello_title}>
                 "Hello Azumi!"
             </h1>
-            <h2 class={subtitle}>
+            <h2 class="subtitle">
                 "Hello World!"
             </h2>
-        </div>
-    }
-}
-
-#[azumi::component]
-pub fn hello_world() -> impl azumi::Component {
-    // style! {
-    //     .hello-container {
-    //         background-color: "#f5f5f5";
-    //         padding: "20px";
-    //         border-radius: "8px";
-    //         box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
-    //     }
-    //     .hello-title {
-    //         color: "#333";
-    //         font-size: "1.5em";
-    //         font-weight: "bold";
-    //     }
-    // }
-
-    html! {
-        // or this style perhaps with underscores
-        <style>
-            .hello-container {
-                background-color: "#f5f5f5";
-                padding: "20px";
-                border-radius: "8px";
-                box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
-            }
-            .hello-title {
-                color: "#333";
-                font-size: "1.5em";
-                font-weight: "bold";
-            }
-        </style>
-        <div class={hello-container}>
-            <h1 class={hello-title}>
-                "Hello Azumi!"
-            </h1>
         </div>
     }
 }
@@ -97,14 +58,14 @@ pub fn basic_template() -> impl azumi::Component {
         }
     }
     html! {
-        <div class={basic-template} >
-            <h1 class={basic-h1}>
+        <div class={basic_template} >
+            <h1 class={basic_h1}>
                 "Hello, World!"
             </h1>
-            <h2 class={basic-h2}>
+            <h2 class={basic_h2}>
                 "Welcome to Azumi"
             </h2>
-            <p class={basic-p}>
+            <p class={basic_p}>
                 "This is a simple styled template"
             </p>
         </div>

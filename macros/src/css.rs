@@ -52,10 +52,10 @@ pub fn rename_css_selectors(css: &str, suffix: &str) -> String {
     let mut in_rule = false;
     let mut selector_buffer = String::new();
 
-    // Simple tokenizer to handle strings and comments would be better, 
+    // Simple tokenizer to handle strings and comments would be better,
     // but for now we reuse the char loop approach
     let mut chars = css.chars().peekable();
-    
+
     while let Some(ch) = chars.next() {
         match ch {
             '{' if !in_rule => {
@@ -77,23 +77,23 @@ pub fn rename_css_selectors(css: &str, suffix: &str) -> String {
                 in_rule = false;
             }
             '/' if !in_rule => {
-                 // Check for comment
-                 if let Some(&'*') = chars.peek() {
-                     result.push('/');
-                     result.push(chars.next().unwrap()); // *
-                     // Skip until */
-                     while let Some(c) = chars.next() {
-                         result.push(c);
-                         if c == '*' {
-                             if let Some(&'/') = chars.peek() {
-                                 result.push(chars.next().unwrap());
-                                 break;
-                             }
-                         }
-                     }
-                 } else {
-                     selector_buffer.push(ch);
-                 }
+                // Check for comment
+                if let Some(&'*') = chars.peek() {
+                    result.push('/');
+                    result.push(chars.next().unwrap()); // *
+                                                        // Skip until */
+                    while let Some(c) = chars.next() {
+                        result.push(c);
+                        if c == '*' {
+                            if let Some(&'/') = chars.peek() {
+                                result.push(chars.next().unwrap());
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    selector_buffer.push(ch);
+                }
             }
             _ => {
                 if in_rule {
@@ -121,15 +121,15 @@ fn rename_selector(selector: &str, suffix: &str) -> String {
 
     // We need to find all class names in the selector and append the suffix
     // e.g. "div.container > .item:hover" -> "div.container-suffix > .item-suffix:hover"
-    
+
     let mut result = String::new();
     let mut chars = selector.chars().peekable();
-    
+
     while let Some(ch) = chars.next() {
         if ch == '.' {
             // Potential class start
             result.push('.');
-            
+
             // Read class name
             let mut class_name = String::new();
             while let Some(&c) = chars.peek() {
@@ -140,7 +140,7 @@ fn rename_selector(selector: &str, suffix: &str) -> String {
                     break;
                 }
             }
-            
+
             if !class_name.is_empty() {
                 result.push_str(&class_name);
                 result.push('-');
@@ -150,29 +150,8 @@ fn rename_selector(selector: &str, suffix: &str) -> String {
             result.push(ch);
         }
     }
-    
+
     result
-    // Skip @-rules and comments
-    if selector.starts_with('@') || selector.starts_with("/*") {
-        return selector.to_string();
-    }
-
-    // Handle pseudo-elements (::before, ::after, etc.)
-    if let Some(pseudo_pos) = selector.find("::") {
-        let base = &selector[..pseudo_pos];
-        let pseudo = &selector[pseudo_pos..];
-        return format!("{}{}{}", base, scope_attr, pseudo);
-    }
-
-    // Handle pseudo-classes (:hover, :focus, etc.)
-    if let Some(pseudo_pos) = selector.find(':') {
-        let base = &selector[..pseudo_pos];
-        let pseudo = &selector[pseudo_pos..];
-        return format!("{}{}{}", base, scope_attr, pseudo);
-    }
-
-    // Default: append scope attribute
-    format!("{}{}", selector, scope_attr)
 }
 
 /// Extract all defined class names and IDs from CSS content
