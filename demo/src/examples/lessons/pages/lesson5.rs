@@ -3,14 +3,15 @@
 //! Shows automatic component-scoped CSS
 use azumi::html;
 
-<style>
-
-</style>
 
 /// Component A with scoped styles
 #[azumi::component]
 pub fn component_a() -> impl azumi::Component {
+    
     html! {
+        <style>
+    
+       </style>
         <style src="/static/pages/lesson5.css" />
         <div class="scoped-demo">
             <h2 class="demo-title">"Component A"</h2>
