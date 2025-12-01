@@ -3,10 +3,9 @@ use heck::ToSnakeCase;
 use proc_macro2::{TokenStream, TokenTree};
 use quote::{format_ident, quote};
 use std::collections::hash_map::DefaultHasher;
-use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
 use syn::parse::{Parse, ParseStream};
-use syn::{braced, parse2, token, Ident, LitStr, Token};
+use syn::{braced, parse2, token, LitStr, Token};
 
 pub struct StyleOutput {
     pub bindings: TokenStream,

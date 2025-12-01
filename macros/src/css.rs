@@ -154,6 +154,30 @@ fn rename_selector(selector: &str, suffix: &str) -> String {
     result
 }
 
+fn scope_selector(selector: &str, scope_attr: &str) -> String {
+    // Skip @-rules and comments
+    if selector.starts_with('@') || selector.starts_with("/*") {
+        return selector.to_string();
+    }
+
+    // Handle pseudo-elements (::before, ::after, etc.)
+    if let Some(pseudo_pos) = selector.find("::") {
+        let base = &selector[..pseudo_pos];
+        let pseudo = &selector[pseudo_pos..];
+        return format!("{}{}{}", base, scope_attr, pseudo);
+    }
+
+    // Handle pseudo-classes (:hover, :focus, etc.)
+    if let Some(pseudo_pos) = selector.find(':') {
+        let base = &selector[..pseudo_pos];
+        let pseudo = &selector[pseudo_pos..];
+        return format!("{}{}{}", base, scope_attr, pseudo);
+    }
+
+    // Default: append scope attribute
+    format!("{}{}", selector, scope_attr)
+}
+
 /// Extract all defined class names and IDs from CSS content
 pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
     let mut classes = HashSet::new();

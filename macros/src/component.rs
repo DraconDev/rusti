@@ -24,7 +24,8 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 // Replace with bindings
                 // We need to parse the bindings TokenStream back into Stmts
                 // This is a bit tricky, but we can wrap it in a block or just parse it
-                let bindings: syn::Block = syn::parse2(quote! { { #output.bindings } })
+                let bindings_tokens = output.bindings;
+                let bindings: syn::Block = syn::parse2(quote! { { #bindings_tokens } })
                     .expect("Failed to parse style bindings");
                 // Extract statements from the block
                 new_stmts.extend(bindings.stmts);
