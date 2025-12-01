@@ -7,17 +7,16 @@ use azumi::html;
 /// Component A with scoped styles
 #[azumi::component]
 pub fn component_a() -> impl azumi::Component {
-    
+    style! {
+        .primary-text {
+            color: "#cbd5e1";
+            line-height: "1.8";
+            margin-bottom: "1.5em";
+            font-size: "1.1em";
+            text-shadow: "0 1px 2px rgba(0, 0, 0, 0.3)";
+        }
+    }
     html! {
-        <style>
-            .primary-text {
-                color: "#cbd5e1";
-                line-height: "1.8";
-                margin-bottom: "1.5em";
-                font-size: "1.1em";
-                text-shadow: "0 1px 2px rgba(0, 0, 0, 0.3)";
-            }
-        </style>
         <div class="scoped-demo">
             <h2 class="demo-title">"Component A"</h2>
             <p class="primary-text">"This uses scoped CSS."</p>
