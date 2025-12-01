@@ -9,7 +9,7 @@ pub fn hello_world() -> impl azumi::Component {
     html! {
         <style>
             .hello_container {
-                text-a lign: "cent er";
+                text-align: "center";
                 margin-top: "50px";
                 background-color: "#f00";
             }
