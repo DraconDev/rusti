@@ -56,11 +56,11 @@ pub fn unquoted_variables<'a>(name: &'a str, count: i32) -> impl azumi::Componen
 pub fn lesson2() -> impl azumi::Component {
     html! {
         <style>
-            .lesson_container { padding: "20px"; }
-            .lesson_title { font-size: "24px"; }
+            .container { padding: "20px"; }
+            .title { font-size: "24px"; }
         </style>
-        <div class={lesson_container}>
-            <h1 class={lesson_title}>
+        <div class={container}>
+            <h1 class={title}>
                 "Lesson 2: The Quoting Rule"
             </h1>
             @quoted_text()
