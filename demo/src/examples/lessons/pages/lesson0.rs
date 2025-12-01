@@ -40,6 +40,13 @@ pub fn automatic_fragment_example() -> impl azumi::Component {
     }
 }
 
+#[azumi::component]
+fn ControlFlowFragments() -> impl azumi::Component {
+    html! {
+        <div>"Control Flow Fragments Placeholder"</div>
+    }
+}
+
 /// Example 2: Explicit Fragment with <>
 #[azumi::component]
 pub fn explicit_fragment_example() -> impl azumi::Component {
@@ -72,11 +79,11 @@ pub fn explicit_fragment_example() -> impl azumi::Component {
 pub fn control_flow_fragments() -> impl azumi::Component {
     let show_content = true;
     style! {
-        .container { padding: "20px"; }
-        .title { color: "blue"; }
-        .box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
-        .subtitle { font-weight: "bold"; }
-        .text { color: "#333"; }
+        .lesson0_container { padding: "20px"; }
+        .lesson0_title { color: "blue"; }
+        .lesson0_box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
+        .lesson0_subtitle { font-weight: "bold"; }
+        .lesson0_text { color: "#333"; }
     }
     html! {
         <div class={container}>
