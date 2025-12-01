@@ -6,6 +6,7 @@
 
 - how to handle global?
   - we would also need a global tag for the style 
+- i think we allow <div style="..."> 
 
 - make the lessons 
 
