@@ -9,13 +9,13 @@ use azumi::html;
 pub fn hello_world() -> impl azumi::Component {
     // styles should be defined at the top of the file
     style! {
-        .hello-container {
+        .hello_container {
             background-color: "#f5f5f5";
             padding: "20px";
             border-radius: "8px";
             box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
         }
-        .hello-title {
+        .hello_title {
             color: "#333";
             font-size: "1.5em";
             font-weight: "bold";
@@ -37,22 +37,22 @@ pub fn hello_world() -> impl azumi::Component {
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
     style! {
-        .basic-container {
+        .basic_container {
             background-color: "#f5f5f5";
             padding: "20px";
             border-radius: "8px";
             box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
         }
-        .basic-h1 {
+        .basic_h1 {
             color: "#333";
             font-size: "1.5em";
             font-weight: "bold";
         }
-        .basic-h2 {
+        .basic_h2 {
             color: "#666";
             font-size: "1.2em";
         }
-        .basic-p {
+        .basic_p {
             color: "#999";
             font-size: "1em";
         }
