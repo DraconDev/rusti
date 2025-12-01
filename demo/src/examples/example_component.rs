@@ -21,7 +21,6 @@ pub fn hello_world() -> impl azumi::Component {
         }
     }
     html! {
-
         <div class={hello-container}>
             <h1 class={hello-title}>
                 "Hello Azumi!"
