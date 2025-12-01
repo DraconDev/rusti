@@ -403,18 +403,21 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     let hash = hasher.finish();
     let scope_id = format!("s{:x}", hash);
 
-    // 4. Extract classes for bindings
-    let (classes, _ids) = extract_selectors(&raw_css);
+    // 4. Extract classes and IDs for bindings
+    let (classes, ids) = extract_selectors(&raw_css);
 
     eprintln!("DEBUG: raw_css: '{}'", raw_css);
     eprintln!("DEBUG: extracted classes: {:?}", classes);
+    eprintln!("DEBUG: extracted ids: {:?}", ids);
 
     // 5. Scope the CSS (rename classes)
     let scoped_css = rename_css_selectors(&raw_css, &scope_id);
     eprintln!("DEBUG: scoped_css: '{}'", scoped_css);
 
-    // 6. Generate Bindings
+    // 6. Generate Bindings for both classes and IDs
     let mut bindings = TokenStream::new();
+
+    // Generate class bindings
     for class in classes {
         let snake_name = class.to_snake_case();
         let ident = format_ident!("{}", snake_name);
@@ -422,6 +425,15 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
 
         bindings.extend(quote! {
             let #ident = #scoped_class;
+        });
+    }
+
+    // Generate ID bindings (IDs are NOT scoped, they remain as-is)
+    for id in ids {
+        let ident = format_ident!("{}", id);
+
+        bindings.extend(quote! {
+            let #ident = #id;
         });
     }
 
