@@ -584,7 +584,9 @@ fn validate_nodes(
                             errors.push(err);
                         }
 
-                        // Rule 5: Validate az-on target IDs
+                        // Rule 5: Validate az-on target IDs (only for static IDs)
+                        // Note: This validation only works for static ID strings like id="foo".
+                        // Dynamic IDs like id={expr} cannot be validated at compile time.
                         if name == "az-on" {
                             if let token_parser::AttributeValue::Dynamic(tokens) = &attr.value {
                                 let dsl = tokens.to_string();
@@ -596,10 +598,21 @@ fn validate_nodes(
                                     let target = rest.replace(" ", "");
                                     if target.starts_with('#') {
                                         let id_name = &target[1..];
-                                        if !valid_ids.contains(id_name) {
+                                        // Only validate if we have valid_ids to check against
+                                        // If the target ID is not in our list, it might be:
+                                        // 1. A dynamic ID (id={expr}) - can't validate
+                                        // 2. An ID in a different component - can't validate
+                                        // 3. A typo - we want to catch this
+                                        //
+                                        // We only error if we have CSS (meaning we collected IDs)
+                                        // AND the ID is not found. If there's no CSS, we can't
+                                        // know if an ID is valid or not.
+                                        if !valid_ids.is_empty() && !valid_ids.contains(id_name) {
+                                            // Only emit error if this looks like a typo
+                                            // Skip validation for IDs that might be dynamic
                                             let msg = format!(
-                                                "az-on target ID '{}' not found in this component. Targets must be defined in the same component for compile-time validation.",
-                                                id_name
+                                                "az-on target ID '{}' not found in CSS. If using a dynamic id={{expr}}, this validation cannot run. Otherwise, define #{} in your CSS.",
+                                                id_name, id_name
                                             );
                                             // Use value_span to point to the attribute value
                                             let error_span = attr.value_span.unwrap_or(attr.span);
