@@ -30,6 +30,12 @@ rules for style tag
 - values must be double quoted
 - we also check the validity of names
 - can we check the validity of all values?
+- so in the css i can write and this is valid, only breaking the name is not valid 
+
+```
+border: 1p x solid rgba(148, 163, 184, 0.1);
+```
+
 
 ## Later
 
