@@ -14,6 +14,7 @@ pub fn homepage() -> impl azumi::Component {
                 "Homepage"
             </h1>
             @lesson0()
+            @lesson1()
         </div>
     }
 }
