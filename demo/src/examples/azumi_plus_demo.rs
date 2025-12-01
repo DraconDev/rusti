@@ -62,7 +62,7 @@ pub fn azumi_plus_demo() -> impl Component {
     }
     #like-section {
     }
-    </div>
+    </style>
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
 
