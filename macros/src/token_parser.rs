@@ -206,6 +206,45 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
         } else if input.peek(syn::Lit) {
             // Text content (must be string literal)
             nodes.push(Node::Text(input.parse()?));
+        } else if input.peek(Ident) {
+            // Check if it's a macro invocation (e.g., style!)
+            let fork = input.fork();
+            if let Ok(ident) = fork.parse::<Ident>() {
+                if fork.peek(Token![!]) {
+                    // It's a macro invocation
+                    if ident == "style" {
+                        // Parse style! macro
+                        input.parse::<Ident>()?; // consume "style"
+                        input.parse::<Token![!]>()?; // consume "!"
+
+                        let content;
+                        syn::braced!(content in input);
+                        let style_tokens: TokenStream = content.parse()?;
+
+                        nodes.push(Node::Block(Block::Style(StyleBlock {
+                            content: style_tokens,
+                            span: ident.span(),
+                        })));
+                    } else {
+                        // Unknown macro
+                        return Err(Error::new(
+                            ident.span(),
+                            format!(
+                                "Unknown macro '{}!'. Only 'style!' is supported inside html!",
+                                ident
+                            ),
+                        ));
+                    }
+                } else {
+                    // Just an identifier, error
+                    return Err(Error::new(
+                        input.span(),
+                        "Unexpected identifier. Expected HTML element, expression, or control flow.",
+                    ));
+                }
+            } else {
+                return Err(Error::new(input.span(), "Failed to parse identifier"));
+            }
         } else {
             // Unexpected token
             return Err(Error::new(
@@ -215,7 +254,8 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 - Expression: {expr} or @{expr}\n\
                 - Control flow: @if, @for, @match, @let\n\
                 - Text content (must be quoted): \"text\"\n\
-                - Component call: @ComponentName(...) or @function(...)",
+                - Component call: @ComponentName(...) or @function(...)\n\
+                - Macro: style! { ... }",
             ));
         }
     }
