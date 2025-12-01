@@ -9,11 +9,11 @@ use azumi::html;
 #[azumi::component]
 pub fn automatic_fragment_example() -> impl azumi::Component {
     style! {
-        .lesson0-container {
+        .lesson0_container {
             padding: "20px";
             border: "1px solid #ccc";
         }
-        .lesson0-title {
+        .lesson0_title {
             color: "blue";
             font-size: "24px";
         }
@@ -44,15 +44,15 @@ pub fn automatic_fragment_example() -> impl azumi::Component {
 #[azumi::component]
 pub fn explicit_fragment_example() -> impl azumi::Component {
     style! {
-        .lesson0-container {
+        .lesson0_container {
             padding: "20px";
             border: "1px solid #ccc";
         }
-        .lesson0-title {
+        .lesson0_title {
             color: "blue";
             font-size: "24px";
         }
-        .lesson0-text {
+        .lesson0_text {
             font-size: "16px";
         }
     }
@@ -72,11 +72,11 @@ pub fn explicit_fragment_example() -> impl azumi::Component {
 pub fn control_flow_fragments() -> impl azumi::Component {
     let show_content = true;
     style! {
-        .lesson0-container { padding: "20px"; }
-        .lesson0-title { color: "blue"; }
-        .lesson0-box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
-        .lesson0-subtitle { font-weight: "bold"; }
-        .lesson0-text { color: "#333"; }
+        .lesson0_container { padding: "20px"; }
+        .lesson0_title { color: "blue"; }
+        .lesson0_box { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
+        .lesson0_subtitle { font-weight: "bold"; }
+        .lesson0_text { color: "#333"; }
     }
     html! {
         <div class={lesson0_container}>
@@ -107,18 +107,18 @@ pub fn fragment_use_cases() -> impl azumi::Component {
     let items = ["Apple", "Banana", "Cherry"];
 
     style! {
-        .lesson0-container { padding: "20px"; }
-        .lesson0-title { font-size: "24px"; }
-        .lesson0-section { margin-bottom: "20px"; }
-        .lesson0-subtitle { font-size: "18px"; }
-        .lesson0-comparison { display: "flex"; gap: "20px"; }
-        .lesson0-before { flex: "1"; border: "1px solid red"; padding: "10px"; }
-        .lesson0-after { flex: "1"; border: "1px solid green"; padding: "10px"; }
-        .lesson0-code { background: "#eee"; padding: "5px"; display: "block"; }
-        .lesson0-list { list_style: "none"; }
-        .lesson0-item { font-weight: "bold"; }
-        .lesson0-item-note { font-style: "italic"; color: "#666"; }
-        .lesson0-text { margin-top: "5px"; }
+        .lesson0_container { padding: "20px"; }
+        .lesson0_title { font-size: "24px"; }
+        .lesson0_section { margin-bottom: "20px"; }
+        .lesson0_subtitle { font-size: "18px"; }
+        .lesson0_comparison { display: "flex"; gap: "20px"; }
+        .lesson0_before { flex: "1"; border: "1px solid red"; padding: "10px"; }
+        .lesson0_after { flex: "1"; border: "1px solid green"; padding: "10px"; }
+        .lesson0_code { background: "#eee"; padding: "5px"; display: "block"; }
+        .lesson0_list { list_style: "none"; }
+        .lesson0_item { font-weight: "bold"; }
+        .lesson0_item_note { font-style: "italic"; color: "#666"; }
+        .lesson0_text { margin-top: "5px"; }
     }
 
     html! {
@@ -163,16 +163,16 @@ pub fn fragment_use_cases() -> impl azumi::Component {
 #[azumi::component]
 pub fn lesson0() -> impl azumi::Component {
     style! {
-        .lesson0-container { padding: "20px"; }
-        .lesson0-header { text-align: "center"; margin-bottom: "30px"; }
-        .lesson0-main-title { font-size: "32px"; color: "#333"; }
-        .lesson0-subtitle { font-size: "18px"; color: "#666"; }
-        .lesson0-key-points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-        .lesson0-section-title { font-size: "20px"; margin-bottom: "15px"; }
-        .lesson0-points-list { list_style: "none"; padding: "0"; }
-        .lesson0-point { margin-bottom: "10px"; }
-        .lesson0-examples { display: "grid"; gap: "20px"; }
-        .lesson0-example-card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+        .lesson0_container { padding: "20px"; }
+        .lesson0_header { text-align: "center"; margin-bottom: "30px"; }
+        .lesson0_main_title { font-size: "32px"; color: "#333"; }
+        .lesson0_subtitle { font-size: "18px"; color: "#666"; }
+        .lesson0_key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+        .lesson0_section_title { font-size: "20px"; margin-bottom: "15px"; }
+        .lesson0_points_list { list_style: "none"; padding: "0"; }
+        .lesson0_point { margin-bottom: "10px"; }
+        .lesson0_examples { display: "grid"; gap: "20px"; }
+        .lesson0_example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
     }
 
     html! {
