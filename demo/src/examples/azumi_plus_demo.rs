@@ -8,16 +8,34 @@ struct LikeState {
 }
 
 #[azumi::action]
-async fn toggle_like(state: LikeState) -> LikeState {
-    // Simulate server delay
-    // tokio::time::sleep(std::time::Duration::from_millis(500)).await;
-    LikeState {
+async fn toggle_like(state: LikeState) -> impl Component {
+    let new_state = LikeState {
         liked: !state.liked,
         count: if !state.liked {
             state.count + 1
         } else {
             state.count - 1
         },
+    };
+
+    // Return the updated HTML fragment
+    // We need to re-render the div with the new state
+    // Note: In a real app, we'd extract this into a reusable component function
+    html! {
+        <div id="like-section" az-scope={ new_state }>
+            <h2>"Server-Side Action"</h2>
+            <p>
+                "Likes: " <span az-bind:text="count">"10"</span>
+            </p>
+
+            <button
+                class="btn"
+                az-bind:class.liked="liked"
+                az-on={click call toggle_like -> #like-section}
+            >
+                <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
+            </button>
+        </div>
     }
 }
 

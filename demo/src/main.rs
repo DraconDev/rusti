@@ -16,6 +16,9 @@ async fn main() {
         
         // 📚 Interactive Lessons (0-20)
         // .route("/lesson-0", get(examples::lessons::pages::lesson0::lesson0_handler))
+        .route("/test-global-styles", get(examples::test_global_styles::handler))
+        .route("/azumi-plus", get(examples::azumi_plus_demo::azumi_plus_demo_handler))
+        .merge(azumi::action::register_actions(axum::Router::new()))
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
 
         // 🎮 Interactive Demo Endpoints
