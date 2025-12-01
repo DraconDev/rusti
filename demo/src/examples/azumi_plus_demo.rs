@@ -95,7 +95,7 @@ pub fn azumi_plus_demo() -> impl Component {
             <hr />
 
             // Server Action
-            <div id={like-section} az-scope="{ \"liked\": false, \"count\": 10 }">
+            <div id={like_section} az-scope="{ \"liked\": false, \"count\": 10 }">
                 <h2>"Server-Side Action"</h2>
                 <p>
                     "Likes: " <span az-bind:text="count">"10"</span>
