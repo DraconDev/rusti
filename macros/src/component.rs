@@ -142,7 +142,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 // Inject styles if any
                 let __azumi_styles = if !#component_css.is_empty() {
                     azumi::html! {
-                        <style>
+                        <style data-azumi-internal="true">
                             #component_css
                         </style>
                     }
