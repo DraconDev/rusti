@@ -7,6 +7,7 @@ use azumi::html;
 /// Maybe use underscores?
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
+    // styles should be defined at the top of the file 
     style! {
         .hello-container {
             background-color: "#f5f5f5";
@@ -25,23 +26,7 @@ pub fn hello_world() -> impl azumi::Component {
             <h1 class={hello-title}>
                 "Hello Azumi!"
             </h1>
-            @let subtitle = style! {
-                .subtitle {
-                    color: "#666";
-                    font-size: "1em";
-                }
-            };
-            // or shorthand class if we have one element
-            @let subtitle = style! {
-                color: "#666";
-                font-size: "1em";
-                font-weight: "normal";
-                text-decoration: "none";
-                text-transform: "none";
-                text-align: "left";
-            };
-            // albeit this seems stuffy hard to read the code
-            <h2 class={subtitle} style={color: "#666"; font-size: "1em"}>
+            <h2 class={subtitle}>
                 "Hello World!"
             </h2>
         </div>
