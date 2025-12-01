@@ -68,7 +68,7 @@ pub fn rename_css_selectors(css: &str, suffix: &str) -> String {
                     .collect();
 
                 result.push_str(&scoped.join(", "));
-                result.push('{');
+                result.push_str(" {"); // Add space before opening brace
                 selector_buffer.clear();
                 in_rule = true;
             }
