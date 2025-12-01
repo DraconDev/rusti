@@ -32,12 +32,38 @@ pub fn hello_world() -> impl azumi::Component {
 /// Basic template with styling
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
+    style! {
+        .basic-template {
+            background-color: "#f5f5f5";
+            padding: "20px";
+            border-radius: "8px";
+            box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
+        }
+        .basic-h1 {
+            color: "#333";
+            font-size: "1.5em";
+            font-weight: "bold";
+        }
+        .basic-h2 {
+            color: "#666";
+            font-size: "1.2em";
+        }
+        .basic-p {
+            color: "#999";
+            font-size: "1em";
+        }
+    }
     html! {
-        <style src="/static/pages/lesson1.css" />
-        <div class="basic-template" >
-            <h1 class="basic-h1">"Hello, World!"</h1>
-            <h2 class="basic-h2">"Welcome to Azumi"</h2>
-            <p class="basic-p">"This is a simple styled template"</p>
+        <div class={basic-template} >
+            <h1 class={basic-h1}>
+                "Hello, World!"
+            </h1>
+            <h2 class={basic-h2}>
+                "Welcome to Azumi"
+            </h2>
+            <p class={basic-p}>
+                "This is a simple styled template"
+            </p>
         </div>
     }
 }
