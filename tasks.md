@@ -26,6 +26,10 @@ then we can just pass variables as classes
 
 if we do this then we can just have to figure out what is the best way to generate the css classes
 
+rules for style tag 
+- values must be double quoted
+- we also check the validity of names
+
 ## Later
 
 -   Style all lessons in a modern dark theme
