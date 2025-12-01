@@ -6,18 +6,18 @@ use azumi::html;
 /// Simple hello world with fancy styling
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
-    style! {
-        .hello_container {
-            text-align: "center";
-            margin-top: "50px";
-            background-color: "#f00";
-        }
-        .hello_title {
-            color: "green";
-            font-size: "3em";
-        }
-    }
     html! {
+        style! {
+            .hello_container {
+                text-align: "center";
+                margin-top: "50px";
+                background-color: "#f00";
+            }
+            .hello_title {
+                color: "green";
+                font-size: "3em";
+            }
+        }
         <div class={hello_container}>
             <h1 class={hello_title}>"Hello Azumi!"</h1>
             @basic_template()
