@@ -43,7 +43,7 @@ async fn toggle_like(state: LikeState) -> impl Component {
             }
             #like_section {}
         </style>
-        <div id={like_section} az-scope={scope_json}>
+        <div id={like_section} az-scope={scope_json.clone()}>
             <h2>"Server-Side Action"</h2>
             <p>
                 "Likes: " <span az-bind:text="count">"10"</span>
