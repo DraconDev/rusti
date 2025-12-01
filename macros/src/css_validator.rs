@@ -165,7 +165,7 @@ impl std::error::Error for ValidationError {}
 /// Parse all CSS files referenced in the component and validate classes
 /// Returns a TokenStream of compile errors if validation fails
 pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
-    use quote::{quote, quote_spanned};
+    use quote::quote;
     
     // First, collect all CSS files referenced in the component
     let mut css_files = Vec::new();

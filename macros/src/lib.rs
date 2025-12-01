@@ -48,7 +48,7 @@ pub fn html(input: TokenStream) -> TokenStream {
     let nodes = input.nodes;
 
     // 1. CSS dependencies are no longer collected for external files
-    let css_deps = quote! {};
+    let css_deps: Vec<proc_macro2::TokenStream> = Vec::new();
 
     // 2. Generate HTML string construction code
     let html_construction = generate_nodes(&nodes);
@@ -294,7 +294,7 @@ fn collect_styles_recursive(
             token_parser::Node::Element(elem) => {
                 if elem.name == "style" {
                     // Extract CSS from this style tag
-                    if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
+                    if let Some(_src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
                         // External CSS is banned, do nothing here.
                         // Validation will catch it.
                     } else {
