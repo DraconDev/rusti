@@ -4,6 +4,7 @@
 use azumi::html;
 
 /// Simple hello world with fancy styling
+/// Maybe use underscores?
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
     style! {
