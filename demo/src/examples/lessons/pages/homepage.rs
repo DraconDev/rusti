@@ -2,13 +2,13 @@ use azumi::html;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
-    style! {
-        .homepage_title {
-            color: "purple";
-            font-size: "3em";
-        }
-    }
     html! {
+        <style>
+            .homepage_title {
+                color: "purple";
+                font-size: "3em";
+            }
+        </style>
         <div>
             <h1 class={homepage_title}>
                 "Homepage"
