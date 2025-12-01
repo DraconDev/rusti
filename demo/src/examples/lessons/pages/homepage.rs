@@ -1,4 +1,4 @@
-use azumi::{html};
+use azumi::html;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
@@ -13,10 +13,11 @@ pub fn homepage() -> impl azumi::Component {
             <h1 class={homepage_title}>
                 "Homepage"
             </h1>
+            @
         </div>
     }
 }
 
-pub fn homepage_handler() -> impl axum::response::IntoResponse {
+pub async fn homepage_handler() -> impl axum::response::IntoResponse {
     axum::response::Html(azumi::render_to_string(&homepage()))
 }
