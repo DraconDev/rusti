@@ -70,27 +70,15 @@ impl Parse for StyleRule {
 }
 
 fn validate_selectors(tokens: &TokenStream) -> syn::Result<()> {
-    let mut iter = tokens.clone().into_iter();
-    while let Some(tt) = iter.next() {
-        if let TokenTree::Punct(p) = &tt {
-            if p.as_char() == '.' {
-                // Class start. Next should be an Ident.
-                if let Some(TokenTree::Ident(ident)) = iter.next() {
-                    // Check if the *next* token is a hyphen.
-                    // We need to peek, but into_iter() gives us an iterator that might not be peekable easily unless we make it so.
-                    // But we can just clone the iterator before advancing? No.
-                    // Let's collect to Vec? Or use peekable.
-                    // But TokenStream iterator is not peekable by default?
-                    // actually `into_iter()` on TokenStream returns `proc_macro2::token_stream::IntoIter`.
-                    // We can make it peekable.
-                }
-            }
-        }
-    }
+    use std::collections::HashSet;
+
+    let mut seen_ids = HashSet::new();
+
     // Re-implementing with peekable
     let mut iter = tokens.clone().into_iter().peekable();
     while let Some(tt) = iter.next() {
         if let TokenTree::Punct(p) = &tt {
+            // Check for class selectors
             if p.as_char() == '.' {
                 // Class start
                 if let Some(TokenTree::Ident(ident)) = iter.peek() {
@@ -102,6 +90,37 @@ fn validate_selectors(tokens: &TokenStream) -> syn::Result<()> {
                             return Err(syn::Error::new(
                                 ident_span,
                                 "Class names in style! macro must be snake_case (no dashes allowed). Use underscores instead."
+                            ));
+                        }
+                    }
+                }
+            }
+            // Check for ID selectors
+            else if p.as_char() == '#' {
+                // ID start
+                if let Some(TokenTree::Ident(ident)) = iter.peek() {
+                    let ident_span = ident.span();
+                    let id_name = ident.to_string();
+                    let _ = iter.next(); // consume ident
+
+                    // Check for duplicate IDs
+                    if seen_ids.contains(&id_name) {
+                        return Err(syn::Error::new(
+                            ident_span,
+                            format!(
+                                "Duplicate ID '{}' in CSS. IDs must be unique within a component.",
+                                id_name
+                            ),
+                        ));
+                    }
+                    seen_ids.insert(id_name);
+
+                    // Check for dashes (enforce snake_case like classes)
+                    if let Some(TokenTree::Punct(next_p)) = iter.peek() {
+                        if next_p.as_char() == '-' {
+                            return Err(syn::Error::new(
+                                ident_span,
+                                "ID names in style! macro must be snake_case (no dashes allowed). Use underscores instead."
                             ));
                         }
                     }
