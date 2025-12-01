@@ -10,6 +10,7 @@ pub fn hello_world() -> impl azumi::Component {
         .hello_container {
             text-align: "center";
             margin-top: "50px";
+            background-color: "#f00";
         }
         .hello_title {
             color: "red";
