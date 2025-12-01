@@ -13,7 +13,7 @@ pub fn homepage() -> impl azumi::Component {
             <h1 class={homepage_title}>
                 "Homepage"
             </h1>
-            @
+            @lesson0()
         </div>
     }
 }
