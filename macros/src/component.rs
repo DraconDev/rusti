@@ -147,16 +147,16 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
                 // Inject styles if any - wrap in fragment to combine styles + content
                 // Use Box<dyn Component> to ensure both branches have the same type
                 if #component_css.is_empty() {
-                    azumi::Box::new(__azumi_content) as azumi::Box<dyn azumi::Component>
+                    std::boxed::Box::new(__azumi_content) as std::boxed::Box<dyn azumi::Component>
                 } else {
-                    azumi::Box::new(azumi::html! {
+                    std::boxed::Box::new(azumi::html! {
                         <>
                             <style data-azumi-internal="true">
                                 #component_css
                             </style>
                             {__azumi_content}
                         </>
-                    }) as azumi::Box<dyn azumi::Component>
+                    }) as std::boxed::Box<dyn azumi::Component>
                 }
             }
         }

@@ -137,11 +137,11 @@ pub fn fragment_use_cases() -> impl azumi::Component {
                 <div class={comparison}>
                     <div class={before}>
                         <h4>"❌ Without Fragment (Extra div)"</h4>
-                        <code class={lesson0_code}>"&lt;div&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/div&gt;"</code>
+                        <code class={lesson0_code}>"Title"</code>
                     </div>
                     <div class={after}>
                         <h4>"✅ With Fragment (Clean)"</h4>
-                        <code class={lesson0_code}>"&lt;&gt;\n  &lt;h2&gt;Title&lt;/h2&gt;\n  &lt;p&gt;Text&lt;/p&gt;\n&lt;/&gt;"</code>
+                        <code class={lesson0_code}>"Title"</code>
                     </div>
                 </div>
             </section>
