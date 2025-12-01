@@ -2,7 +2,6 @@ use crate::actions::{toggle_like, LikeState};
 use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
-    // Define reusable class and ID names (following lessons pattern)
     html! {
         <style>
         .demo_container {
