@@ -63,7 +63,6 @@ pub fn lesson2() -> impl azumi::Component {
             <h1 class={lesson-title}>
                 "Lesson 2: The Quoting Rule"
             </h1>
-
             @quoted_text()
             @quoted_attributes()
             @unquoted_variables(name="Alice", count=42)
