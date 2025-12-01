@@ -37,7 +37,10 @@ async fn toggle_like(state: LikeState) -> impl Component {
             #like-section {
             }
         </style>
-        <div id={like_section} az-scope={ new_state }>
+        {
+            let scope_json = serde_json::to_string(&new_state).unwrap_or_default();
+            html! {
+                <div id={like_section} az-scope={scope_json}>
             <h2>"Server-Side Action"</h2>
             <p>
                 "Likes: " <span az-bind:text="count">"10"</span>
