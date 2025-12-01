@@ -1,5 +1,6 @@
 use azumi::{html};
 
+#[azumi::component]
 pub fn homepage() -> impl azumi::Component {
     style! {
         .homepage_title {
