@@ -142,28 +142,20 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
 
-                // Inject styles if any
-                let __azumi_styles = if !#component_css.is_empty() {
-                    azumi::html! {
-                        <style data-azumi-internal="true">
-                            #component_css
-                        </style>
-                    }
-                } else {
-                    azumi::html! {}
-                };
-
-                // We need to inject the styles into the output
-                // Assuming the block returns an html! macro result or similar
-                // We can wrap the result in a fragment with the styles
-
                 let __azumi_content = { #fn_block };
 
-                azumi::html! {
-                    <>
-                        {__azumi_styles}
-                        {__azumi_content}
-                    </>
+                // Inject styles if any - wrap in fragment to combine styles + content
+                if #component_css.is_empty() {
+                    __azumi_content
+                } else {
+                    azumi::html! {
+                        <>
+                            <style data-azumi-internal="true">
+                                #component_css
+                            </style>
+                            {__azumi_content}
+                        </>
+                    }
                 }
             }
         }
