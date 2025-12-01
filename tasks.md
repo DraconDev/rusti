@@ -1,5 +1,3 @@
-
-
 # TODO
 
 - what about --var that we added before? do we still need it?
@@ -13,5 +11,5 @@
 - snake case for css?
 - list-style should be list_style
 
-#
+# ? Much later 
 - make the lessons
