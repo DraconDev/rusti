@@ -36,6 +36,57 @@ rules for style tag
 border: 1p x solid rgba(148, 163, 184, 0.1);
 ```
 
+but also most importantly our variables wouldn't be usable as 
+
+```
+.scoped-demo {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 41, 59, 0.6) 0%,
+        rgba(51, 65, 85, 0.6) 100%
+    );
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+```
+scoped-demo alternate just like here
+```
+#[azumi::component]
+pub fn component_b() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson5.css" />
+        <div class="scoped-demo alternate">
+            <h2 class="demo-title">"Component B"</h2>
+            <p class="primary-text">"Same CSS, no conflicts!"</p>
+        </div>
+    }
+}
+```
+but 
+```
+#[azumi::component]
+pub fn component_b() -> impl azumi::Component {
+    html! {
+        <style src="/static/pages/lesson5.css" />
+        <div class={scoped-demo alternate}>
+            <h2 class={demo-title}>
+                "Component B"
+            </h2>
+            <p class={primary-text}>
+                "Same CSS, no conflicts!"
+            </p>
+        </div>
+    }
+}
+```
+
 
 ## Later
 
