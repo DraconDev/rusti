@@ -42,7 +42,7 @@ async fn toggle_like(state: LikeState) -> impl Component {
 
 pub fn azumi_plus_demo() -> impl Component {
     html! {
-    html! {
+
         <style src="./azumi_plus_demo.css" />
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
