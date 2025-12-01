@@ -130,9 +130,11 @@ dependencies = [
 
 [[package]]
 name = "azumi"
-version = "0.7.493"
+version = "0.7.494"
 dependencies = [
+ "axum",
  "azumi-macros",
+ "inventory",
  "serde",
  "serde_json",
 ]
@@ -659,6 +661,15 @@ dependencies = [
  "hashbrown 0.16.1",
  "serde",
  "serde_core",
+]
+
+[[package]]
+name = "inventory"
+version = "0.3.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc61209c082fbeb19919bee74b176221b27223e27b65d781eb91af24eb1fb46e"
+dependencies = [
+ "rustversion",
 ]
 
 [[package]]
