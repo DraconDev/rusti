@@ -2,8 +2,14 @@ use crate::actions::{toggle_like, LikeState};
 use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
+    // Define reusable class and ID names (following lessons pattern)
+    let demo_container = "demo_container";
+    let btn = "btn";
+    let like_section = "like_section";
+
     html! {
-        <style>.demo_container {
+        <style>
+        .demo_container {
             padding: "2rem";
             border: "1px solid #ccc";
             border-radius: "8px";
