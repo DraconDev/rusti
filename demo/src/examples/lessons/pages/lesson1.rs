@@ -13,12 +13,13 @@ pub fn hello_world() -> impl azumi::Component {
         }
         .hello_title {
             color: "purple";
-            font-size: "3em";   
+            font-size: "3em";
         }
     }
     html! {
         <div class={hello_container}>
             <h1 class={hello_title}>"Hello Azumi!"</h1>
+            @basic_template()
         </div>
     }
 }
