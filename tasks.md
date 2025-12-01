@@ -6,41 +6,7 @@
 -   bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the server to make it work, evne when i change others sections it doesn't change again, cause it assumes it to be correct
 -   even changing the very exact rust code then changing it back doesn't show that it's wrong,
 -   ??? The css interop is a persisting problem that needs to be fixed, i dont want tailwind or inline styles cause that leads to hard to read code, so either we have css or style tags, but not both.
--   what other options are there? We can try to have classnames where the css is a variable like let section-header = style! { .section-header { color: "#fff" } }
--   one for sure inline styles and tailwind doesn't tell you what it supposed to be, only what styles it has
--   this does raise question about the script inclusion too,
--   i wonder if i should ease up and allow all kinds of css, but it hurts our value prop, albeit one can argue that people suppose to make components , also i want to cut down on the checking to not hurt compile times
--   css is not that safe i can change it to all kinds of nonsense like, only the names are checked, the values are not checked
 
-```css
-.lesson0-container {
-    min-height: 1 00vh;
-    background: linear-gra dient(135deg, #0f172a 0%, #1e1b4b 100%);
-    padding: 2rem;
-    max-width: 120 0px;
-    margin: 0 au to;
-    position: relati ve;
-    overflow-x: hid den;
-}
-```
-
--   this hurts are value cause we are making sure css exist, assuming everything works, but it could be empty or complete nonsense
--   if i do this then i guess we can still keep the scoped css feature but we are not forcing it to be used
--   albeit if we allow in file style tag then we need to enforce double quotes around the values
-
-This style could be encouraged a bit, so people can tailwind but can also name things, in place, or they can just do scoped css
-
-```
-@let section-header = "mb-4 text-2xl font-bold"
-<div class={section-header}>Section Header</div>
-```
-
-albeit they can comment it so less cool
-
-```
-// section-header
-<div class="mb-4 text-2xl font-bold">Section Header</div>
-```
 
 ## Later
 
