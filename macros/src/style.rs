@@ -208,6 +208,7 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
 
     // 5. Scope the CSS (rename classes)
     let scoped_css = rename_css_selectors(&raw_css, &scope_id);
+    eprintln!("DEBUG: scoped_css: '{}'", scoped_css);
 
     // 6. Generate Bindings
     let mut bindings = TokenStream::new();
@@ -220,6 +221,8 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
             let #ident = #scoped_class;
         });
     }
+
+    eprintln!("DEBUG: bindings tokens: {}", bindings);
 
     StyleOutput {
         bindings,
