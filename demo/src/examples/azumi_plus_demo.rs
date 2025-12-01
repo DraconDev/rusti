@@ -22,6 +22,7 @@ pub fn azumi_plus_demo() -> impl Component {
         color: "white";
     }
     #like_section {
+        margin-top: "2rem";
     }
     </style>
         <div class={demo_container}>
