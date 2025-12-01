@@ -29,6 +29,46 @@ pub fn hello_world() -> impl azumi::Component {
     }
 }
 
+#[azumi::component]
+pub fn hello_world() -> impl azumi::Component {
+    // style! {
+    //     .hello-container {
+    //         background-color: "#f5f5f5";
+    //         padding: "20px";
+    //         border-radius: "8px";
+    //         box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
+    //     }
+    //     .hello-title {
+    //         color: "#333";
+    //         font-size: "1.5em";
+    //         font-weight: "bold";
+    //     }
+    // }
+
+
+    html! {
+        // or this style 
+        <style>
+            .hello-container {
+                background-color: "#f5f5f5";
+                padding: "20px";
+                border-radius: "8px";
+                box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
+            }
+            .hello-title {
+                color: "#333";
+                font-size: "1.5em";
+                font-weight: "bold";
+            }
+        </style>
+        <div class={hello-container}>
+            <h1 class={hello-title}>
+                "Hello Azumi!"
+            </h1>
+        </div>
+    }
+}
+
 /// Basic template with styling
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
