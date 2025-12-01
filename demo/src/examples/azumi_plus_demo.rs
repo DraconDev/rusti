@@ -23,6 +23,7 @@ async fn toggle_like(state: LikeState) -> impl Component {
     // Note: In a real app, we'd extract this into a reusable component function
     html! {
         <style src="./azumi_plus_demo.css" />
+        <style>#like-section {}</style>
         <div id="like-section" az-scope={ new_state }>
             <h2>"Server-Side Action"</h2>
             <p>
