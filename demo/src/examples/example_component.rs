@@ -31,6 +31,11 @@ pub fn hello_world() -> impl azumi::Component {
                     font-size: "1em";
                 }
             };
+            // or shorthand if we have one element
+            @let subtitle = style! {
+                color: "#666";
+                font-size: "1em";
+            };
             <h2 class={subtitle}>
                 "Hello World!"
             </h2>
