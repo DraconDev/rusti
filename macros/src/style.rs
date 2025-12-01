@@ -320,6 +320,39 @@ fn validate_hex_color(value: &str) -> Option<String> {
     None
 }
 
+/// Process global style macro - validates but doesn't scope or generate bindings
+pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
+    // 1. Parse the input
+    let style_input: StyleInput = match parse2(input) {
+        Ok(input) => input,
+        Err(err) => {
+            return StyleOutput {
+                bindings: err.to_compile_error(),
+                css: String::new(),
+            };
+        }
+    };
+
+    // 2. Generate raw CSS (validation happens during parsing above)
+    let mut raw_css = String::new();
+    for rule in &style_input.rules {
+        let selector_str = tokens_to_css_string(&rule.selectors);
+
+        raw_css.push_str(&selector_str);
+        raw_css.push_str(" { ");
+        for prop in &rule.block.properties {
+            raw_css.push_str(&format!("{}: {}; ", prop.name, prop.value));
+        }
+        raw_css.push_str("} ");
+    }
+
+    // 3. Return raw CSS, no bindings
+    StyleOutput {
+        bindings: quote! {}, // No bindings for global styles
+        css: raw_css,        // Unscoped CSS
+    }
+}
+
 pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     // 1. Parse the input
     let style_input: StyleInput = match parse2(input) {
