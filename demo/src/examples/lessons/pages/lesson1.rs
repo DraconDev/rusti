@@ -18,7 +18,7 @@ pub fn hello_world() -> impl azumi::Component {
                 font-size: "3em";
             }
         </style>
-        <div class={hello_container}>
+        <div class={hello_con tainer}>
             <h1 class={hello_title}>"Hello Azumi!"</h1>
             @basic_template()
         </div>

@@ -179,21 +179,43 @@ impl Parse for StyleProperty {
     }
 }
 
-/// Validate CSS property value using lightningcss parser
+/// Validate CSS property value using custom rules + lightningcss parser
 fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
-    // Construct a minimal CSS rule to parse
-    // Use Box::leak to give it a 'static lifetime (acceptable for compile-time macro)
-    let css = Box::leak(format!(".test {{ {}: {}; }}", property, value).into_boxed_str());
+    // Step 1: Strict custom validation for common errors
 
-    // Try to parse with lightningcss
+    // Check for spaces in single-word values (common typo)
+    let trimmed = value.trim();
+    if !is_multi_word_property(property) {
+        // Properties that should be single tokens (no spaces)
+        if trimmed.contains(' ') && !is_valid_space_in_value(property, trimmed) {
+            return Err(format!(
+                "Unexpected space in value '{}'. Did you mean '{}'?",
+                value,
+                trimmed.replace(' ', "")
+            ));
+        }
+    }
+
+    // Check for invalid units
+    if let Some(err) = validate_units(trimmed) {
+        return Err(err);
+    }
+
+    // Check for malformed hex colors
+    if trimmed.starts_with('#') {
+        if let Some(err) = validate_hex_color(trimmed) {
+            return Err(err);
+        }
+    }
+
+    // Step 2: Use lightningcss for full syntax validation
+    let css = Box::leak(format!(".test {{ {}: {}; }}", property, value).into_boxed_str());
     let parse_options = ParserOptions::default();
 
     match StyleSheet::parse(css, parse_options) {
         Ok(_) => Ok(()),
         Err(e) => {
-            // Extract useful error message
             let error_msg = format!("{:?}", e);
-            // Simplify common errors
             if error_msg.contains("Unexpected token") || error_msg.contains("UnexpectedToken") {
                 Err(format!("Unexpected token in value '{}'", value))
             } else if error_msg.contains("InvalidValue") {
@@ -203,6 +225,99 @@ fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
             }
         }
     }
+}
+
+/// Check if property allows multiple words (e.g., font-family, content)
+fn is_multi_word_property(property: &str) -> bool {
+    matches!(
+        property,
+        "font-family" | "content" | "animation-name" | "grid-template-areas"
+    )
+}
+
+/// Check if spaces are valid in this specific value context
+fn is_valid_space_in_value(property: &str, value: &str) -> bool {
+    // Allow spaces in certain contexts:
+    // - Multiple values: "10px 20px"
+    // - Functions: "rgb(255, 0, 0)", "calc(100% - 20px)"
+    // - Keywords with spaces: "ease-in-out"
+
+    value.contains('(') || // Function call
+    value.split_whitespace().count() > 1 && is_multi_value_property(property)
+}
+
+/// Properties that accept multiple space-separated values
+fn is_multi_value_property(property: &str) -> bool {
+    matches!(
+        property,
+        "margin"
+            | "padding"
+            | "border"
+            | "border-radius"
+            | "background"
+            | "box-shadow"
+            | "text-shadow"
+            | "transform"
+            | "transition"
+            | "animation"
+    )
+}
+
+/// Validate unit suffixes
+fn validate_units(value: &str) -> Option<String> {
+    // Extract potential unit from value like "10px", "2em", etc.
+    let value_lower = value.to_lowercase();
+
+    // Common typos in units
+    let typo_map = [
+        ("pz", "px"),
+        ("pxs", "px"),
+        ("p x", "px"),
+        ("e m", "em"),
+        ("r em", "rem"),
+        ("p t", "pt"),
+        ("p c", "pc"),
+    ];
+
+    for (typo, correct) in &typo_map {
+        if value_lower.contains(typo) {
+            return Some(format!(
+                "Invalid unit '{}'. Did you mean '{}'?",
+                typo, correct
+            ));
+        }
+    }
+
+    None
+}
+
+/// Validate hex color format
+fn validate_hex_color(value: &str) -> Option<String> {
+    if !value.starts_with('#') {
+        return None;
+    }
+
+    let hex_part = &value[1..];
+
+    // Valid lengths: 3, 4, 6, 8
+    if !matches!(hex_part.len(), 3 | 4 | 6 | 8) {
+        return Some(format!(
+            "Invalid hex color length: '{}'. Expected 3, 4, 6, or 8 characters after #",
+            value
+        ));
+    }
+
+    // Check for non-hex characters
+    for ch in hex_part.chars() {
+        if !ch.is_ascii_hexdigit() {
+            return Some(format!(
+                "Invalid hex color: '{}' contains non-hex character '{}'",
+                value, ch
+            ));
+        }
+    }
+
+    None
 }
 
 pub fn process_style_macro(input: TokenStream) -> StyleOutput {
