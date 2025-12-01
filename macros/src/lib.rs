@@ -48,7 +48,7 @@ pub fn html(input: TokenStream) -> TokenStream {
     let nodes = input.nodes;
 
     // 1. Process styles (hoist <style> tags)
-    let (style_bindings, scoped_css) = process_styles(&nodes);
+    let (style_bindings, scoped_css, global_css) = process_styles(&nodes);
 
     // 2. CSS dependencies are no longer collected for external files
     let css_deps: Vec<proc_macro2::TokenStream> = Vec::new();
@@ -75,7 +75,11 @@ pub fn html(input: TokenStream) -> TokenStream {
 
             // Runtime HTML generation
             azumi::from_fn(move |f| {
-                // Inject scoped CSS if present
+                // Inject global CSS first (unscoped)
+                if !#global_css.is_empty() {
+                    write!(f, "<style>{}</style>", #global_css)?;
+                }
+                // Inject scoped CSS
                 if !#scoped_css.is_empty() {
                      write!(f, "<style data-azumi-internal=\"true\">{}</style>", #scoped_css)?;
                 }
