@@ -173,7 +173,7 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     
     if !css_files.is_empty() {
         return quote! {
-            compile_error!("External CSS files are banned in Azumi 2.0. Use the style! macro instead.");
+            compile_error!("External CSS files are banned in Azumi. Use the style! macro instead.");
         };
     }
 
