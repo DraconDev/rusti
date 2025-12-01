@@ -1,4 +1,3 @@
-use crate::style::process_style_macro;
 use quote::quote;
 use syn::{parse_macro_input, FnArg, Item, ItemFn, Pat, PatType, Stmt};
 
@@ -7,39 +6,8 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
     let fn_name = &input.sig.ident;
     let fn_vis = &input.vis;
-    let mut fn_block = input.block; // Mutable to modify statements
+    let fn_block = input.block;
     let fn_output = &input.sig.output;
-
-    // Process style! macro invocations
-    let mut component_css = String::new();
-    let mut new_stmts = Vec::new();
-
-    for stmt in fn_block.stmts {
-        if let Stmt::Macro(stmt_macro) = &stmt {
-            if stmt_macro.mac.path.is_ident("style") {
-                // Found style! macro
-                let output = process_style_macro(stmt_macro.mac.tokens.clone());
-                component_css.push_str(&output.css);
-
-                // Replace with bindings
-                // We need to parse the bindings TokenStream back into Stmts
-                // This is a bit tricky, but we can wrap it in a block or just parse it
-                let bindings_tokens = output.bindings;
-                // DEBUG: Print bindings tokens
-                eprintln!("DEBUG: bindings tokens: {}", bindings_tokens);
-
-                let bindings: syn::Block = syn::parse2(quote! { { #bindings_tokens } })
-                    .expect("Failed to parse style bindings");
-                // Extract statements from the block
-                new_stmts.extend(bindings.stmts);
-                continue;
-            }
-        }
-        new_stmts.push(stmt);
-    }
-    fn_block.stmts = new_stmts;
-
-    // Parse arguments into props
 
     // Parse arguments into props
     let mut props_fields = Vec::new();
@@ -141,17 +109,7 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
         quote! {
             pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
-
-                // Inject styles if any - wrap in fragment to combine styles + content
-                // Use from_fn to ensure both branches have the same type
-                azumi::from_fn(move |f| {
-                    if !#component_css.is_empty() {
-                        // Inject CSS directly without going through html! macro to avoid double scoping
-                        write!(f, "<style data-azumi-internal=\"true\">{}</style>", #component_css)?;
-                    }
-                    let __azumi_content = { #fn_block };
-                    __azumi_content.render(f)
-                })
+                #fn_block
             }
         }
     };
