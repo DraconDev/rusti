@@ -7,7 +7,7 @@ use azumi::html;
 #[azumi::component]
 pub fn hello_world() -> impl azumi::Component {
     html! {
-        <style> 
+        <style>
             .hello_container {
                 text-align: "center";
                 margin-top: "50px";
@@ -29,7 +29,7 @@ pub fn hello_world() -> impl azumi::Component {
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
     html! {
-        <style> 
+        <style>
             .basic_template {
                 padding: "20px";
                 background-color: "#f0f0f0";
@@ -39,9 +39,9 @@ pub fn basic_template() -> impl azumi::Component {
             .basic_p { font-size: "14px"; }
         </style>
         <div class=basic_template>
-            <h1 class=basic_h1>"Hello, World!"</h1>
-            <h2 class=basic_h2>"Welcome to Azumi"</h2>
-            <p class=basic_p>"This is a simple styled template"</p>
+            <h1 class={basic_h1}>"Hello, World!"</h1>
+            <h2 class={basic_h2}>"Welcome to Azumi"</h2>
+            <p class={basic_p}>"This is a simple styled template"</p>
         </div>
     }
 }
