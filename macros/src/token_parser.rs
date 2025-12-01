@@ -211,30 +211,14 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
             let fork = input.fork();
             if let Ok(ident) = fork.parse::<Ident>() {
                 if fork.peek(Token![!]) {
-                    // It's a macro invocation
-                    if ident == "style" {
-                        // Parse style! macro
-                        input.parse::<Ident>()?; // consume "style"
-                        input.parse::<Token![!]>()?; // consume "!"
-
-                        let content;
-                        syn::braced!(content in input);
-                        let style_tokens: TokenStream = content.parse()?;
-
-                        nodes.push(Node::Block(Block::Style(StyleBlock {
-                            content: style_tokens,
-                            span: ident.span(),
-                        })));
-                    } else {
-                        // Unknown macro
-                        return Err(Error::new(
-                            ident.span(),
-                            format!(
-                                "Unknown macro '{}!'. Only 'style!' is supported inside html!",
-                                ident
-                            ),
-                        ));
-                    }
+                    // Unknown macro
+                    return Err(Error::new(
+                        ident.span(),
+                        format!(
+                            "Unknown macro '{}!'. Only <style> tags are supported for CSS.",
+                            ident
+                        ),
+                    ));
                 } else {
                     // Just an identifier, error
                     return Err(Error::new(
@@ -255,7 +239,7 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 - Control flow: @if, @for, @match, @let\n\
                 - Text content (must be quoted): \"text\"\n\
                 - Component call: @ComponentName(...) or @function(...)\n\
-                - Macro: style! { ... }",
+                - Style: <style>.class { ... }</style>",
             ));
         }
     }
