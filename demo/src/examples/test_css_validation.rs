@@ -5,9 +5,9 @@ pub fn test_css_validation() -> impl azumi::Component {
     html! {
         <style>
             .test_class {
-                color: "cent er";
-                width: "10pz";
-                background: "#gggggg";
+                color: "this is not a color at all";
+                width: "!!!invalid!!!";
+                background: "()()()";
             }
         </style>
         <div class={test_class}>"Test"</div>
