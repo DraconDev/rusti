@@ -138,15 +138,9 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     // 2. Reconstruct CSS string (with quotes removed from values)
     let mut raw_css = String::new();
     for rule in &style_input.rules {
-        let selector_str = rule.selectors.to_string();
-        // Clean up spaces in selector string (TokenStream to_string adds spaces)
-        // This is a simple cleanup, might need more robustness
-        let clean_selector = selector_str
-            .replace(" . ", ".")
-            .replace(" # ", "#")
-            .replace(" : ", ":");
+        let selector_str = tokens_to_css_string(&rule.selectors);
 
-        raw_css.push_str(&clean_selector);
+        raw_css.push_str(&selector_str);
         raw_css.push_str(" { ");
         for prop in &rule.block.properties {
             raw_css.push_str(&format!("{}: {}; ", prop.name, prop.value));
@@ -182,6 +176,76 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
         bindings,
         css: scoped_css,
     }
+}
+
+fn tokens_to_css_string(tokens: &TokenStream) -> String {
+    let mut css = String::new();
+    let mut last_char_was_hyphen = false;
+    let mut last_char_was_dot_or_hash = false;
+
+    for tt in tokens.clone() {
+        match tt {
+            TokenTree::Ident(ident) => {
+                // Add space if previous wasn't a special char that expects attachment
+                if !css.is_empty() && !last_char_was_hyphen && !last_char_was_dot_or_hash {
+                    css.push(' ');
+                }
+                css.push_str(&ident.to_string());
+                last_char_was_hyphen = false;
+                last_char_was_dot_or_hash = false;
+            }
+            TokenTree::Punct(punct) => {
+                let ch = punct.as_char();
+                if ch == '-' {
+                    // No space before hyphen (handled by loop logic: if previous was ident, we didn't add space? Wait.
+                    // If previous was ident, we are here.
+                    // We just append '-'.
+                    css.push(ch);
+                    last_char_was_hyphen = true;
+                    last_char_was_dot_or_hash = false;
+                } else if ch == '.' || ch == '#' || ch == ':' {
+                    // Add space before dot/hash if it's not the start?
+                    // Actually, for `.class`, we want space before dot if it's `div .class`.
+                    // But we decided to collapse spaces to fix `.class`.
+                    // So we just append.
+                    if !css.is_empty() && !last_char_was_hyphen && !last_char_was_dot_or_hash {
+                        // For now, let's NOT add space before dot/hash to ensure .class works.
+                        // This breaks `div .class` but fixes `.class`.
+                        // css.push(' ');
+                    }
+                    css.push(ch);
+                    last_char_was_hyphen = false;
+                    last_char_was_dot_or_hash = true;
+                } else {
+                    // Other puncts (>, +, etc)
+                    css.push(ch);
+                    last_char_was_hyphen = false;
+                    last_char_was_dot_or_hash = false;
+                }
+            }
+            TokenTree::Literal(lit) => {
+                if !css.is_empty() {
+                    css.push(' ');
+                }
+                css.push_str(&lit.to_string());
+                last_char_was_hyphen = false;
+                last_char_was_dot_or_hash = false;
+            }
+            TokenTree::Group(group) => {
+                if !css.is_empty() {
+                    css.push(' ');
+                }
+                // Recurse? Or just to_string?
+                // Selectors usually don't have groups (parens maybe for :not()?)
+                // For :not(), we want :not(...).
+                // Let's just use to_string for groups for now.
+                css.push_str(&group.to_string());
+                last_char_was_hyphen = false;
+                last_char_was_dot_or_hash = false;
+            }
+        }
+    }
+    css
 }
 
 fn is_valid_css_property(name: &str) -> bool {

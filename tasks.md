@@ -3,7 +3,7 @@
 ## TODO
 
 - snake case for css?
-- 
+- what about --var that we added before? do we still need it?
 
 -   if we could add hot reload to the css then it would be a game changer
 -   bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the rust analyzer to make it work, even when i change other sections it doesn't change again, cause it assumes it to be correct
