@@ -115,7 +115,7 @@ pub fn fragment_use_cases() -> impl azumi::Component {
         .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
         .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
         .code { background: "#eee"; padding: "5px"; display: "block"; }
-        .list { list_style: "none"; }
+        .list { list-style: "none"; }
         .item { font-weight: "bold"; }
         .item_note { font-style: "italic"; color: "#666"; }
         .text { margin-top: "5px"; }
