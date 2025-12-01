@@ -183,14 +183,13 @@ impl Parse for StyleProperty {
 /// Validate CSS property value using lightningcss parser
 fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
     // Construct a minimal CSS rule to parse
-    let css = format!(".test {{ {}: {}; }}", property, value);
+    // Use Box::leak to give it a 'static lifetime (acceptable for compile-time macro)
+    let css = Box::leak(format!(".test {{ {}: {}; }}", property, value).into_boxed_str());
 
     // Try to parse with lightningcss
-    let parse_options = ParserOptions {
-        ..ParserOptions::default()
-    };
+    let parse_options = ParserOptions::default();
 
-    match StyleSheet::parse(&css, parse_options) {
+    match StyleSheet::parse(css, parse_options) {
         Ok(_) => Ok(()),
         Err(e) => {
             // Extract useful error message
