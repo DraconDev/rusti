@@ -591,22 +591,21 @@ fn validate_nodes(
                                 // Parse "-> #target"
                                 if let Some(idx) = dsl.find("->") {
                                     let rest = &dsl[idx + 2..];
-                                    let parts: Vec<&str> = rest.split_whitespace().collect();
-                                    if let Some(target) = parts.first() {
-                                        if target.starts_with('#') {
-                                            let id_name = &target[1..];
-                                            if !valid_ids.contains(id_name) {
-                                                let msg = format!(
-                                                    "az-on target ID '{}' not found in this component. Targets must be defined in the same component for compile-time validation.",
-                                                    id_name
-                                                );
-                                                // Use value_span to point to the attribute value
-                                                let error_span =
-                                                    attr.value_span.unwrap_or(attr.span);
-                                                errors.push(quote_spanned! { error_span =>
-                                                    compile_error!(#msg);
-                                                });
-                                            }
+                                    // TokenStream::to_string() adds spaces around punctuation (e.g. "# target")
+                                    // We need to strip them to get the ID
+                                    let target = rest.replace(" ", "");
+                                    if target.starts_with('#') {
+                                        let id_name = &target[1..];
+                                        if !valid_ids.contains(id_name) {
+                                            let msg = format!(
+                                                "az-on target ID '{}' not found in this component. Targets must be defined in the same component for compile-time validation.",
+                                                id_name
+                                            );
+                                            // Use value_span to point to the attribute value
+                                            let error_span = attr.value_span.unwrap_or(attr.span);
+                                            errors.push(quote_spanned! { error_span =>
+                                                compile_error!(#msg);
+                                            });
                                         }
                                     }
                                 }
