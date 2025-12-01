@@ -29,6 +29,7 @@ if we do this then we can just have to figure out what is the best way to genera
 rules for style tag 
 - values must be double quoted
 - we also check the validity of names
+- can we check the validity of all values?
 
 ## Later
 
