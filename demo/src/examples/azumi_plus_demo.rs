@@ -71,7 +71,7 @@ pub fn azumi_plus_demo() -> impl Component {
                 <p>
                     "Count: " <span az-bind:text="count">"0"</span>
                 </p>
-                <button class="btn" az-on="click set count = count + 1">
+                <button class={btn} az-on="click set count = count + 1">
                     "Increment"
                 </button>
             </div>
@@ -79,7 +79,7 @@ pub fn azumi_plus_demo() -> impl Component {
             <hr />
 
             // Server Action
-            <div id="like-section" az-scope="{ \"liked\": false, \"count\": 10 }">
+            <div id={like-section} az-scope="{ \"liked\": false, \"count\": 10 }">
                 <h2>"Server-Side Action"</h2>
                 <p>
                     "Likes: " <span az-bind:text="count">"10"</span>
