@@ -1086,6 +1086,10 @@ fn generate_body_with_context(
                         let #pattern = #value;
                     }
                 }
+                token_parser::Block::Style(_) => {
+                    // Styles are hoisted and handled separately, so we ignore them here
+                    quote! {}
+                }
             },
         };
         stream.extend(chunk);
