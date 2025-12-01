@@ -192,7 +192,7 @@ pub fn lesson0() -> impl azumi::Component {
                 <h2 class={lesson0_section_title}>"Key Points"</h2>
                 <ul class={lesson0_points_list}>
                     <li class={lesson0_point}>"✅ Automatic: Multiple elements work without explicit &lt;&gt;"</li>
-                    <li class={lesson0_point}>"✅ Explicit: Use &lt;&gt; &lt;/&gt; for semantic clarity"</li>
+                    <li class={lesson0_point}>"✅ Explicit: Use for semantic clarity"</li>
                     <li class={lesson0_point}>"✅ Both generate identical output"</li>
                     <li class={lesson0_point}>"✅ Works in control flow (@if, @for, @match)"</li>
                     <li class={lesson0_point}>"✅ Avoids unnecessary DOM nesting"</li>
