@@ -108,9 +108,20 @@ pub fn expand_action(item: TokenStream) -> TokenStream {
             azumi::render_to_string(&result)
         }
 
-        // We also need to register this action.
-        // We can generate a static struct or something to help registration.
-        // For now, the user manually registers `wrapper_name`.
+        // Helper to return MethodRouter
+        #[allow(non_snake_case)]
+        pub fn #router_helper_name() -> axum::routing::MethodRouter<()> {
+            axum::routing::post(#wrapper_name)
+        }
+
+        // Auto-registration using inventory
+        // We need to ensure this runs.
+        azumi::inventory::submit! {
+            azumi::action::ActionEntry {
+                path: concat!("/_azumi/action/", stringify!(#fn_name)),
+                handler: #router_helper_name,
+            }
+        }
     };
 
     TokenStream::from(expanded)
