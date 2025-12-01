@@ -5,7 +5,7 @@
 - if we could add hot reload to the css then it would be a game changer
 - bug is that if we update the rust code then it correctly shows that that we have an error and the css is not found, but when we update the css file, the rust code is uneffected and we have to restart the rust analyzer to make it work, even when i change other sections it doesn't change again, cause it assumes it to be correct
 - even changing the very exact rust code then changing it back doesn't show that it's wrong
-- even if can't validate the css, 
+- even if can't validate the css, it still does make sense to have ourside css files cause it leads to better code organization
 
 ## Later
 
