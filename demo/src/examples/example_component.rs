@@ -37,7 +37,7 @@ pub fn hello_world() -> impl azumi::Component {
 #[azumi::component]
 pub fn basic_template() -> impl azumi::Component {
     style! {
-        .basic-template {
+        .basic-container {
             background-color: "#f5f5f5";
             padding: "20px";
             border-radius: "8px";
@@ -58,7 +58,7 @@ pub fn basic_template() -> impl azumi::Component {
         }
     }
     html! {
-        <div class={basic_template} >
+        <div class={basic_container} >
             <h1 class={basic_h1}>
                 "Hello, World!"
             </h1>

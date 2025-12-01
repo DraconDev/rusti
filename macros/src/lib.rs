@@ -295,20 +295,8 @@ fn collect_styles_recursive(
                 if elem.name == "style" {
                     // Extract CSS from this style tag
                     if let Some(src_attr) = elem.attrs.iter().find(|a| a.name == "src") {
-                        if let token_parser::AttributeValue::Static(path) = &src_attr.value {
-                            // Use enhanced path resolution from validator
-                            let file_path = crate::css_validator::resolve_css_file_path(path);
-                            if let Ok(content) = std::fs::read_to_string(&file_path) {
-                                // Check if this is a global.css file
-                                if path.ends_with("global.css") {
-                                    global_css.push_str(&content);
-                                    global_css.push('\n');
-                                } else {
-                                    scoped_css.push_str(&content);
-                                    scoped_css.push('\n');
-                                }
-                            }
-                        }
+                        // External CSS is banned, do nothing here.
+                        // Validation will catch it.
                     } else {
                         // Inline content - treat as scoped
                         for child in &elem.children {

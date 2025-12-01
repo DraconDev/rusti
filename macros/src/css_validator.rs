@@ -171,63 +171,13 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     let mut css_files = Vec::new();
     collect_css_files(nodes, &mut css_files);
     
-    if css_files.is_empty() {
-        return quote! {}; // No CSS files to validate
+    if !css_files.is_empty() {
+        return quote! {
+            compile_error!("External CSS files are banned in Azumi 2.0. Use the style! macro instead.");
+        };
     }
-    
-    // Read and parse all CSS files
-    let mut all_defined_classes = HashSet::new();
-    for css_file in &css_files {
-        match std::fs::read_to_string(css_file) {
-            Ok(content) => {
-                let file_classes = parse_css_classes(&content, css_file);
-                all_defined_classes.extend(file_classes);
-            }
-            Err(e) => {
-                let error_msg = format!("Failed to read CSS file '{}': {}", css_file, e);
-                return quote! {
-                    compile_error!(#error_msg);
-                };
-            }
-        }
-    }
-    
-    // Extract all classes used in HTML
-    let used_classes = extract_html_classes(nodes);
-    
-    // Validate (one-sided: HTML -> CSS only)
-    match validate_css_classes(&used_classes, &all_defined_classes) {
-        Ok(()) => {
-            quote! {}
-        }
-        Err(errors) => {
-            // Generate compile errors for each validation error
-            let error_tokens: Vec<_> = errors.iter().filter_map(|error| {
-                match error {
-                    ValidationError::UndefinedClass { class_name, spans } => {
-                        // Create a compile error for each span where this class is used
-                        let error_msg = format!(
-                            "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
-                            class_name
-                        );
-                        
-                        // Emit an error at each location where this undefined class is used
-                        let span_errors: Vec<_> = spans.iter().map(|span| {
-                            quote_spanned! { *span =>
-                                compile_error!(#error_msg);
-                            }
-                        }).collect();
-                        
-                        Some(quote! { #(#span_errors)* })
-                    }
-                }
-            }).collect();
-            
-            quote! {
-                #(#error_tokens)*
-            }
-        }
-    }
+
+    quote! {}
 }
 
 /// Collect all CSS file paths from <style src="..."> tags
