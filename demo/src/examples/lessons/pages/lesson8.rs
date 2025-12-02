@@ -1,4 +1,4 @@
-use azumi::html;
+thuse azumi::html;
 
 /// Lesson 8: Action System Deep Dive
 ///

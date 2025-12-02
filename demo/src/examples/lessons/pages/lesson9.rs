@@ -63,24 +63,6 @@ pub fn complex_feature_integration() -> impl azumi::Component {
     }
 }
 
-/// Example: Feature composition with children
-#[azumi::component]
-pub fn feature_with_children(children: impl azumi::Component) -> impl azumi::Component {
-    html! {
-        <style>
-            .feature_wrapper { padding: "1.5rem"; border: "2px solid #2196f3"; border-radius: "8px"; }
-            .feature_header { background: "#2196f3"; color: "white"; padding: "0.5rem 1rem"; font-weight: "bold"; }
-            .feature_content { padding: "1rem"; }
-        </style>
-        <div class={feature_wrapper}>
-            <div class={feature_header}>"Feature Container"</div>
-            <div class={feature_content}>
-                {children}
-            </div>
-        </div>
-    }
-}
-
 /// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson9() -> impl azumi::Component {
@@ -106,11 +88,11 @@ pub fn lesson9() -> impl azumi::Component {
             <section class={key_points}>
                 <h2 class={section_title}>"Key Concepts"</h2>
                 <ul class={points_list}>
-                    <li class={point}>"✅ Combine multiple Azumi features"</li>
-                    <li class={point}>"✅ Composition over inheritance"</li>
-                    <li class={point}>"✅ Reusable feature patterns"</li>
-                    <li class={point}>"✅ Type-safe feature integration"</li>
-                    <li class={point}>"✅ Clean separation of concerns"</li>
+                    <li class={point}>"Combine multiple Azumi features"</li>
+                    <li class={point}>"Composition over inheritance"</li>
+                    <li class={point}>"Reusable feature patterns"</li>
+                    <li class={point}>"Type-safe feature integration"</li>
+                    <li class={point}>"Clean separation of concerns"</li>
                 </ul>
             </section>
 
@@ -120,12 +102,6 @@ pub fn lesson9() -> impl azumi::Component {
                 </div>
                 <div class={example_card}>
                     @complex_feature_integration()
-                </div>
-                <div class={example_card}>
-                    @feature_with_children {
-                        <p>"This content is composed within a feature container"</p>
-                        <p>"Features can wrap other components"</p>
-                    }
                 </div>
             </section>
         </div>
