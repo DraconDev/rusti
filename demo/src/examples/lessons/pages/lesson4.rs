@@ -105,39 +105,37 @@ pub fn lesson4() -> impl azumi::Component {
             .examples { display: "grid"; gap: "20px"; }
             .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        @layout::dark_modern_layout_component(
-            children=html! {
-                <div>
-                    <header class={header}>
-                        <h1 class={main_title}>"Lesson 5: Children Pattern"</h1>
-                        <p class={subtitle}>"Components with children parameter"</p>
-                    </header>
+        @layout::dark_modern_layout() {
+            <div>
+                <header class={header}>
+                    <h1 class={main_title}>"Lesson 5: Children Pattern"</h1>
+                    <p class={subtitle}>"Components with children parameter"</p>
+                </header>
 
-                    <section class={key_points}>
-                        <h2 class={section_title}>"Key Concepts"</h2>
-                        <ul class={points_list}>
-                            <li class={point}>"✅ Children parameter allows component composition"</li>
-                            <li class={point}>"✅ Pass any Azumi component as children"</li>
-                            <li class={point}>"✅ Children can contain multiple elements"</li>
-                            <li class={point}>"✅ Enables flexible layout patterns"</li>
-                            <li class={point}>"✅ Maintains clean component boundaries"</li>
-                        </ul>
-                    </section>
+                <section class={key_points}>
+                    <h2 class={section_title}>"Key Concepts"</h2>
+                    <ul class={points_list}>
+                        <li class={point}>"✅ Children parameter allows component composition"</li>
+                        <li class={point}>"✅ Pass any Azumi component as children"</li>
+                        <li class={point}>"✅ Children can contain multiple elements"</li>
+                        <li class={point}>"✅ Enables flexible layout patterns"</li>
+                        <li class={point}>"✅ Maintains clean component boundaries"</li>
+                    </ul>
+                </section>
 
-                    <section class={examples}>
-                        <div class={example_card}>
-                            @layout_example()
-                        </div>
-                        <div class={example_card}>
-                            @nested_children()
-                        </div>
-                        <div class={example_card}>
-                            @multiple_children_example()
-                        </div>
-                    </section>
-                </div>
-            }
-        )
+                <section class={examples}>
+                    <div class={example_card}>
+                        @layout_example()
+                    </div>
+                    <div class={example_card}>
+                        @nested_children()
+                    </div>
+                    <div class={example_card}>
+                        @multiple_children_example()
+                    </div>
+                </section>
+            </div>
+        }
     }
 }
 
