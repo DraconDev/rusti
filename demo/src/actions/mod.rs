@@ -1,3 +1,4 @@
 pub mod like;
 
-pub use like::{toggle_like, LikeState};
+// Re-export main components and types
+pub use like::{like_button, toggle_like, LikeState};
