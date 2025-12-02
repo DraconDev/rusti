@@ -16,7 +16,11 @@ async fn main() {
         
         
         // 📚 Interactive Lessons (0-20)
-        // .route("/lesson-0", get(examples::lessons::pages::lesson0::lesson0_handler))
+        .route("/lesson-0", get(examples::lessons::pages::lesson0::handler))
+        .route("/lesson-2", get(examples::lessons::pages::lesson2::lesson2_handler))
+        .route("/lesson-3", get(examples::lessons::pages::lesson3::lesson3_handler))
+        .route("/lesson-4", get(examples::lessons::pages::lesson4::lesson4_handler))
+        .route("/lesson-5", get(examples::lessons::pages::lesson5::lesson5_handler))
         .route("/test-global-styles", get(examples::test_global_styles::handler))
         .route("/azumi-plus", get(examples::azumi_plus_demo::azumi_plus_demo_handler))
         .merge(azumi::action::register_actions(axum::Router::new()))
