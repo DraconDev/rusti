@@ -1,4 +1,4 @@
-use crate::examples::lessons::components::layout as layout_mod;
+pub use crate::examples::lessons::components::layout as layout_mod;
 /// Lesson 5: Children Pattern
 ///
 /// Components with children parameter
