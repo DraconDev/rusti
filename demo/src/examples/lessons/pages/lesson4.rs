@@ -4,15 +4,14 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn content_wrapper(children: String) -> impl azumi::Component {
-    html! {
-        <style>
-            .wrapper_style { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
-        </style>
-        <div class={wrapper_style}>
-            {children}
-        </div>
-    }
+pub fn content_wrapper(children: impl azumi::Component) -> impl azumi::Component {
+    use azumi::{Component, FallbackRender, RenderWrapper};
+    azumi::from_fn(move |f| {
+        write!(f, "<style>.wrapper_style {{ padding: \"2rem\"; border: \"1px solid #ddd\"; border-radius: \"8px\"; }}</style>")?;
+        write!(f, "<div class=\"wrapper_style\">")?;
+        RenderWrapper(&children).render_azumi(f)?;
+        write!(f, "</div>")
+    })
 }
 
 /// Example: Layout with children
