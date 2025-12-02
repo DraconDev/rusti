@@ -41,12 +41,17 @@ pub fn homepage() -> impl azumi::Component {
             .lesson_link:hover {
                 text-decoration: "underline";
             }
+            .subtitle {
+                text-align: "center";
+                color: "#666";
+                margin-bottom: "30px";
+            }
         </style>
         <div>
             <h1 class={homepage_title}>
                 "Azumi Learning Platform"
             </h1>
-            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            <p class={subtitle}>
                 "Explore interactive lessons to learn Azumi framework"
             </p>
 
