@@ -1,17 +1,17 @@
-use crate::examples::lessons::components::layout::dark_modern_layout_component;
+use crate::examples::lessons::components::layout::DarkModernLayout;
 use azumi::html;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
     html! {
-        @dark_modern_layout() {
-            @lessons()
+        @DarkModernLayout() {
+            @Lessons()
         }
     }
 }
 
 #[azumi::component]
-pub fn lessons() -> impl azumi::Component {
+pub fn Lessons() -> impl azumi::Component {
     html! {
         <style>
             .homepage_title {
