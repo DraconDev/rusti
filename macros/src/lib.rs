@@ -1166,7 +1166,7 @@ fn generate_body_with_context(
 
                         // Check if name is snake_case (starts with lowercase)
                         let name_str = quote!(#name).to_string();
-                        let last_segment = name_str.split("::").last().unwrap_or("");
+                        let last_segment = name_str.split("::").last().unwrap_or("").trim();
                         let is_snake_case = last_segment
                             .chars()
                             .next()
