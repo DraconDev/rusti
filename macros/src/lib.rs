@@ -106,8 +106,9 @@ fn process_styles(nodes: &[token_parser::Node]) -> (proc_macro2::TokenStream, St
         match node {
             token_parser::Node::Block(token_parser::Block::Style(style_block)) => {
                 if style_block.is_global {
-                    // Global styles: validate but don't scope or generate bindings
+                    // Global styles: validate but don't scope, but DO generate bindings
                     let output = style::process_global_style_macro(style_block.content.clone());
+                    bindings.extend(output.bindings);
                     global_css.push_str(&output.css);
                 } else {
                     // Scoped styles: normal processing
