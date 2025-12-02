@@ -1,99 +1,134 @@
 use azumi::html;
 
-/// Lesson 9: Lists and Iteration
+/// Lesson 9: Feature Composition
 ///
-/// Demonstrates @for loops and list rendering
+/// Combining multiple Azumi features
 #[azumi::component]
-pub fn simple_list() -> impl azumi::Component {
-    html! {
-        <style>
-            .list_container { padding: "20px"; }
-            .item { padding: "8px"; margin: "4px 0"; background: "#f0f0f0"; }
-        </style>
-        <div class={list_container}>
-            <h3>"Simple List"</h3>
-            <ul>
-                <li class={item}>"Apple"</li>
-                <li class={item}>"Banana"</li>
-                <li class={item}>"Cherry"</li>
-                <li class={item}>"Date"</li>
-            </ul>
-        </div>
-    }
-}
+pub fn feature_showcase() -> impl azumi::Component {
+    let items = vec!["Feature 1", "Feature 2", "Feature 3"];
+    let active = true;
 
-/// Example: List with index
-#[azumi::component]
-pub fn indexed_list() -> impl azumi::Component {
     html! {
         <style>
-            .indexed_container { padding: "20px"; }
-            .fruit_item { padding: "8px"; margin: "4px 0"; }
-            .index { font-weight: "bold"; color: "blue"; }
+            .showcase { display: "grid"; gap: "2rem"; }
+            .section { padding: "1rem"; border: "1px solid #eee"; }
+            .feature_list { display: "grid"; gap: "0.5rem"; }
+            .feature_item { padding: "0.5rem"; background: "#f0f0f0"; }
+            .active_badge { background: "#4caf50"; color: "white"; padding: "0.25rem 0.5rem"; border-radius: "4px"; }
         </style>
-        <div class={indexed_container}>
-            <h3>"Indexed List"</h3>
-            <ol>
-                <li class={fruit_item}>
-                    <span class={index}>"1. "</span>
-                    "Apple"
-                </li>
-                <li class={fruit_item}>
-                    <span class={index}>"2. "</span>
-                    "Banana"
-                </li>
-                <li class={fruit_item}>
-                    <span class={index}>"3. "</span>
-                    "Cherry"
-                </li>
-            </ol>
-        </div>
-    }
-}
-
-/// Example: Complex data iteration
-#[azumi::component]
-pub fn complex_data_list() -> impl azumi::Component {
-    html! {
-        <style>
-            .users_container { padding: "20px"; }
-            .user_card { padding: "15px"; margin: "10px 0"; border: "1px solid #ddd"; }
-            .active { background: "#e8f5e9"; }
-            .inactive { background: "#ffebee"; }
-        </style>
-        <div class={users_container}>
-            <h3>"User List"</h3>
-            <div class={user_card} class={active}>
-                <p><strong>"Alice"</strong> " - Age: 25 - Status: active"</p>
-            </div>
-            <div class={user_card} class={inactive}>
-                <p><strong>"Bob"</strong> " - Age: 30 - Status: inactive"</p>
-            </div>
-            <div class={user_card} class={active}>
-                <p><strong>"Charlie"</strong> " - Age: 22 - Status: active"</p>
+        <div class={showcase}>
+            <div class={section}>
+                <h2>"Feature Composition"</h2>
+                @if active {
+                    <span class={active_badge}>"ACTIVE"</span>
+                }
+                <div class={feature_list}>
+                    @for item in &items {
+                        <div class={feature_item}>{item}</div>
+                    }
+                </div>
             </div>
         </div>
     }
 }
 
-/// Main lesson component
+/// Example: Complex feature integration
+#[azumi::component]
+pub fn complex_feature_integration() -> impl azumi::Component {
+    let features = vec![
+        ("CSS Scoping", "Automatic component scoping"),
+        ("Type Safety", "Compile-time type checking"),
+        ("Validation", "Strict HTML/CSS validation"),
+        ("Performance", "Optimized rendering")
+    ];
+
+    html! {
+        <style>
+            .integration_container { padding: "1.5rem"; background: "#f9f9f9"; }
+            .feature_grid { display: "grid"; grid-template-columns: "repeat(auto-fit, minmax(200px, 1fr))"; gap: "1rem"; }
+            .feature_card { padding: "1rem"; background: "white"; border: "1px solid #eee"; }
+            .feature_name { font-weight: "bold"; color: "#2196f3"; }
+            .feature_desc { font-size: "0.9rem"; color: "#666"; }
+        </style>
+        <div class={integration_container}>
+            <h3>"Complex Feature Integration"</h3>
+
+            <div class={feature_grid}>
+                @for (name, desc) in &features {
+                    <div class={feature_card}>
+                        <div class={feature_name}>{name}</div>
+                        <div class={feature_desc}>{desc}</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+
+/// Example: Feature composition with children
+#[azumi::component]
+pub fn feature_with_children(children: impl azumi::Component) -> impl azumi::Component {
+    html! {
+        <style>
+            .feature_wrapper { padding: "1.5rem"; border: "2px solid #2196f3"; border-radius: "8px"; }
+            .feature_header { background: "#2196f3"; color: "white"; padding: "0.5rem 1rem"; font-weight: "bold"; }
+        </style>
+        <div class={feature_wrapper}>
+            <div class={feature_header}>"Feature Container"</div>
+            <div style="padding: 1rem;">
+                {children}
+            </div>
+        </div>
+    }
+}
+
+/// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson9() -> impl azumi::Component {
     html! {
         <style>
-            .lesson_container { padding: "20px"; }
-            .lesson_title { font-size: "24px"; color: "#333"; }
-            .examples { display: "grid"; gap: "20px"; margin-top: "20px"; }
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .points_list { list-style: "none"; padding: "0"; }
+            .point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        <div class={lesson_container}>
-            <h1 class={lesson_title}>"Lesson 9: Lists and Iteration"</h1>
-            <p>"Learn how to render lists and iterate over data"</p>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 9: Feature Composition"</h1>
+                <p class={subtitle}>"Combining multiple Azumi features"</p>
+            </header>
 
-            <div class={examples}>
-                @simple_list()
-                @indexed_list()
-                @complex_data_list()
-            </div>
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Combine multiple Azumi features"</li>
+                    <li class={point}>"✅ Composition over inheritance"</li>
+                    <li class={point}>"✅ Reusable feature patterns"</li>
+                    <li class={point}>"✅ Type-safe feature integration"</li>
+                    <li class={point}>"✅ Clean separation of concerns"</li>
+                </ul>
+            </section>
+
+            <section class={examples}>
+                <div class={example_card}>
+                    @feature_showcase()
+                </div>
+                <div class={example_card}>
+                    @complex_feature_integration()
+                </div>
+                <div class={example_card}>
+                    @feature_with_children {
+                        <p>"This content is composed within a feature container"</p>
+                        <p>"Features can wrap other components"</p>
+                    }
+                </div>
+            </section>
         </div>
     }
 }
