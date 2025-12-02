@@ -1,5 +1,5 @@
 use azumi::html;
-use crate::examples::lessons::components::dark_modern_layout;
+use crate::examples::lessons::components::layout;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
