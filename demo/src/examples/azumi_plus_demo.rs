@@ -11,6 +11,13 @@ pub fn azumi_plus_demo() -> impl Component {
             max-width: "600px";
             margin: "0 auto";
         }
+        .btn {
+            padding: "0.5rem 1rem";
+            border: "none";
+            border-radius: "4px";
+            cursor: "pointer";
+            background: "#eee";
+        }
         </style>
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
