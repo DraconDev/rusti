@@ -1,4 +1,3 @@
-use azumi::html;
 
 /// Lesson 11: Advanced CSS Features
 ///
@@ -14,13 +13,13 @@ pub fn advanced_css_example() -> impl azumi::Component {
             .advanced { padding: "2rem"; }
             .button {
                 padding: "0.75rem 1.5rem";
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                cursor: pointer;
-                transition: background 0.3s;
+                background: "var(--primary-color)";
+                color: "white";
+                border: "none";
+                cursor: "pointer";
+                transition: "background 0.3s";
             }
-            .button:hover { background: var(--secondary-color); }
+            .button:hover { background: "var(--secondary-color)"; }
             .responsive { color: "blue"; }
             @media (max-width: 600px) {
                 .responsive { color: "red"; }
@@ -52,8 +51,8 @@ pub fn css_variables_example() -> impl azumi::Component {
                 --border-color: #666;
             }
             .theme_content {
-                background: var(--bg-color);
-                color: var(--text-color);
+                background: "var(--bg-color)";
+                color: "var(--text-color)";
                 border: "1px solid var(--border-color)";
                 padding: "1rem";
             }
