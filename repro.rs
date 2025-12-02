@@ -28,7 +28,7 @@ where
     f();
 }
 
-fn container(children: impl Component) {
+fn container(children: String) {
     // This mimics the macro expansion
     from_fn(move || {
         // This mimics {children} expansion
@@ -37,5 +37,5 @@ fn container(children: impl Component) {
 }
 
 fn main() {
-    container(MyComponent);
+    container(String::from("hello"));
 }
