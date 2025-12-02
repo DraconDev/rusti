@@ -4,7 +4,7 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn container<C: azumi::Component>(content: C) -> impl azumi::Component {
+pub fn container<'a, C: azumi::Component + 'a>(content: &'a C) -> impl azumi::Component + 'a {
     html! {
         <style>
             .content_box { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
@@ -25,8 +25,10 @@ pub fn layout_example() -> impl azumi::Component {
         <div>
             <h2 class={layout_title}>"Container with Children"</h2>
             @container {
-                <p>"This content is passed as children"</p>
-                <p>"Children can be any valid Azumi components"</p>
+                &html! {
+                    <p>"This content is passed as children"</p>
+                    <p>"Children can be any valid Azumi components"</p>
+                }
             }
         </div>
     }
@@ -43,13 +45,17 @@ pub fn nested_children() -> impl azumi::Component {
         <div>
             <h3>"Nested Children Example"</h3>
             @container {
-                <p>"Outer content"</p>
-                <div class={outer_container}>
-                    <p>"Inner nested content"</p>
-                    @container {
-                        <p>"Deeply nested content"</p>
-                    }
-                </div>
+                &html! {
+                    <p>"Outer content"</p>
+                    <div class={outer_container}>
+                        <p>"Inner nested content"</p>
+                        @container {
+                            &html! {
+                                <p>"Deeply nested content"</p>
+                            }
+                        }
+                    </div>
+                }
             }
         </div>
     }
@@ -65,11 +71,13 @@ pub fn multiple_children_example() -> impl azumi::Component {
         </style>
         <div>
             @container {
-                <div class={children_demo}>
-                    <div class={child_item}>"Child 1"</div>
-                    <div class={child_item}>"Child 2"</div>
-                    <div class={child_item}>"Child 3"</div>
-                </div>
+                &html! {
+                    <div class={children_demo}>
+                        <div class={child_item}>"Child 1"</div>
+                        <div class={child_item}>"Child 2"</div>
+                        <div class={child_item}>"Child 3"</div>
+                    </div>
+                }
             }
         </div>
     }
