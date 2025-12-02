@@ -22,7 +22,7 @@ pub fn like_section(state: LikeState) -> impl Component {
                 background: "#ff4081";
                 color: "white";
             }
-            #like_section {}
+            #like_box {}
         </style>
 
         // Render the dynamic core
@@ -35,7 +35,7 @@ pub fn like_button(state: LikeState) -> impl Component {
     html! {
         <style>
             .btn {}
-            #like_section {}
+            #like_box {}
         </style>
         <div id={like_box} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h2>"Server-Side Action"</h2>
