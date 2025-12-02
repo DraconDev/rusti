@@ -37,7 +37,7 @@ pub fn like_button(state: LikeState) -> impl Component {
             .btn {}
             #like_section {}
         </style>
-        <div id={like_section} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
+        <div id={like_box} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h2>"Server-Side Action"</h2>
             <p>
                 "Likes: " <span az-bind:text="count">{state.count}</span>
@@ -46,7 +46,7 @@ pub fn like_button(state: LikeState) -> impl Component {
             <button
                 class={btn}
                 az-bind:class.liked="liked"
-                az-on={click call toggle_like -> #like_section}
+                az-on={click call toggle_like -> #like_box}
             >
                 <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">
                     {if state.liked { "Unlike" } else { "Like" }}
