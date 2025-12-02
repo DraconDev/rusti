@@ -1,95 +1,134 @@
 use azumi::html;
 
-/// Lesson 10: Event Handling
+/// Lesson 10: Accessibility Patterns
 ///
-/// Demonstrates basic event handling patterns
+/// Accessibility-validated components
 #[azumi::component]
-pub fn click_counter() -> impl azumi::Component {
+pub fn accessible_card(title: &str, description: &str, image_url: &str, alt_text: &str) -> impl azumi::Component {
     html! {
         <style>
-            .counter_container { padding: "20px"; text-align: "center"; }
-            .counter_display { font-size: "24px"; margin: "10px 0"; }
-            .counter_button { padding: "10px 20px"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
-            #counter {}
+            .card { max-width: "300px"; border: "1px solid #ddd"; border-radius: "8px"; overflow: "hidden"; }
+            .card_image { width: "100%"; height: "200px"; object-fit: "cover"; }
+            .card_content { padding: "1rem"; }
+            .card_title { font-size: "1.2rem"; margin-bottom: "0.5rem"; }
+            .card_description { color: "#666"; }
         </style>
-        <div class={counter_container}>
-            <h3>"Click Counter"</h3>
-            <div class={counter_display} id={counter}>"0"</div>
-            <button
-                class={counter_button}
-                onclick="document.getElementById('counter').textContent = parseInt(document.getElementById('counter').textContent) + 1"
-            >
-                "Click Me"
-            </button>
-        </div>
-    }
-}
-
-/// Example: Form input handling
-#[azumi::component]
-pub fn input_handler() -> impl azumi::Component {
-    html! {
-        <style>
-            .input_container { padding: "20px"; }
-            .input_field { padding: "10px"; width: "100%"; margin: "10px 0"; }
-            .input_display { padding: "10px"; background: "#f0f0f0"; margin-top: "10px"; }
-        </style>
-        <div class={input_container}>
-            <h3>"Input Handler"</h3>
-            <input
-                class={input_field}
-                type="text"
-                placeholder="Type something..."
-                oninput="document.getElementById('input-display').textContent = this.value"
-            />
-            <div class={input_display} id={input_display}>"Your input will appear here"</div>
-        </div>
-    }
-}
-
-/// Example: Toggle functionality
-#[azumi::component]
-pub fn toggle_example() -> impl azumi::Component {
-    html! {
-        <style>
-            .toggle_container { padding: "20px"; }
-            .toggle_button { padding: "10px 20px"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
-            .toggle_content { margin-top: "10px"; padding: "15px"; background: "#f5f5f5"; display: "none"; }
-            .visible { display: "block"; }
-        </style>
-        <div class={toggle_container}>
-            <h3>"Toggle Example"</h3>
-            <button
-                class={toggle_button}
-                onclick="document.getElementById('toggle-content').classList.toggle('visible')"
-            >
-                "Toggle Content"
-            </button>
-            <div class={toggle_content} id={toggle_content}>
-                <p>"This content can be toggled on and off!"</p>
+        <article class={card} aria-labelledby="card_title" aria-describedby="card_desc">
+            <img class={card_image} src={image_url} alt={alt_text} />
+            <div class={card_content}>
+                <h3 id="card_title" class={card_title}>{title}</h3>
+                <p id="card_desc" class={card_description}>{description}</p>
             </div>
-        </div>
+        </article>
     }
 }
 
-/// Main lesson component
+/// Example: Accessible form with proper labels
+#[azumi::component]
+pub fn accessible_form() -> impl azumi::Component {
+    html! {
+        <style>
+            .accessible_form { display: "grid"; gap: "1rem"; max-width: "400px"; }
+            .form_group { display: "grid"; gap: "0.5rem"; }
+            .form_label { font-weight: "bold"; }
+            .form_input { padding: "0.5rem"; border: "1px solid #ddd"; }
+            .form_button { padding: "0.75rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
+        </style>
+        <form class={accessible_form} aria-labelledby="form_title">
+            <h2 id="form_title">"Accessible Form"</h2>
+
+            <div class={form_group}>
+                <label class={form_label} for="username">"Username"</label>
+                <input class={form_input} type="text" id="username" name="username" required aria-required="true" />
+            </div>
+
+            <div class={form_group}>
+                <label class={form_label} for="password">"Password"</label>
+                <input class={form_input} type="password" id="password" name="password" required aria-required="true" />
+            </div>
+
+            <button class={form_button} type="submit">"Submit"</button>
+        </form>
+    }
+}
+
+/// Example: Accessible navigation
+#[azumi::component]
+pub fn accessible_navigation() -> impl azumi::Component {
+    html! {
+        <style>
+            .nav_container { padding: "1rem"; }
+            .nav_list { list-style: "none"; padding: "0"; display: "grid"; gap: "0.5rem"; }
+            .nav_item { padding: "0.5rem"; }
+            .nav_link { color: "#2196f3"; text-decoration: "none"; }
+            .nav_link:hover { text-decoration: "underline"; }
+        </style>
+        <nav class={nav_container} aria-label="Main navigation">
+            <h3 id="nav_heading">"Site Navigation"</h3>
+            <ul class={nav_list} aria-labelledby="nav_heading">
+                <li class={nav_item}>
+                    <a class={nav_link} href="#home" aria-current="page">"Home"</a>
+                </li>
+                <li class={nav_item}>
+                    <a class={nav_link} href="#about">"About"</a>
+                </li>
+                <li class={nav_item}>
+                    <a class={nav_link} href="#contact">"Contact"</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+
+/// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson10() -> impl azumi::Component {
     html! {
         <style>
-            .lesson_container { padding: "20px"; }
-            .lesson_title { font-size: "24px"; color: "#333"; }
-            .examples { display: "grid"; gap: "20px"; margin-top: "20px"; }
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .points_list { list-style: "none"; padding: "0"; }
+            .point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        <div class={lesson_container}>
-            <h1 class={lesson_title}>"Lesson 10: Event Handling"</h1>
-            <p>"Learn basic event handling patterns in Azumi"</p>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 10: Accessibility Patterns"</h1>
+                <p class={subtitle}>"Accessibility-validated components"</p>
+            </header>
 
-            <div class={examples}>
-                @click_counter()
-                @input_handler()
-                @toggle_example()
-            </div>
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Proper ARIA attributes"</li>
+                    <li class={point}>"✅ Semantic HTML structure"</li>
+                    <li class={point}>"✅ Accessible form controls"</li>
+                    <li class={point}>"✅ Keyboard navigation support"</li>
+                    <li class={point}>"✅ Screen reader compatibility"</li>
+                </ul>
+            </section>
+
+            <section class={examples}>
+                <div class={example_card}>
+                    @accessible_card(
+                        title="Accessible Card",
+                        description="This card demonstrates proper accessibility attributes",
+                        image_url="https://via.placeholder.com/300x200",
+                        alt_text="Placeholder image showing accessibility features"
+                    )
+                </div>
+                <div class={example_card}>
+                    @accessible_form()
+                </div>
+                <div class={example_card}>
+                    @accessible_navigation()
+                </div>
+            </section>
         </div>
     }
 }
