@@ -4,12 +4,12 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn container(children: impl azumi::Component) -> impl azumi::Component {
+pub fn content_wrapper(children: impl azumi::Component) -> impl azumi::Component {
     html! {
         <style>
-            .content_box { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
+            .wrapper_style { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
         </style>
-        <div class={content_box}>
+        <div class={wrapper_style}>
             {children}
         </div>
     }
@@ -24,7 +24,7 @@ pub fn layout_example() -> impl azumi::Component {
         </style>
         <div>
             <h2 class={layout_title}>"Container with Children"</h2>
-            @container {
+            @content_wrapper {
                 <p>"This content is passed as children"</p>
                 <p>"Children can be any valid Azumi components"</p>
             }
@@ -42,11 +42,11 @@ pub fn nested_children() -> impl azumi::Component {
         </style>
         <div>
             <h3>"Nested Children Example"</h3>
-            @container {
+            @content_wrapper {
                 <p>"Outer content"</p>
                 <div class={outer_container}>
                     <p>"Inner nested content"</p>
-                    @container {
+                    @content_wrapper {
                         <p>"Deeply nested content"</p>
                     }
                 </div>
@@ -64,7 +64,7 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
         <div>
-            @container {
+            @content_wrapper {
                 <div class={children_demo}>
                     <div class={child_item}>"Child 1"</div>
                     <div class={child_item}>"Child 2"</div>
