@@ -5,7 +5,7 @@ use crate::examples::lessons::components::layout::dark_modern_layout;
 pub fn homepage() -> impl azumi::Component {
     html! {
         @dark_modern_layout() {
-            lessons()
+            @lessons()
         }
     }
 }
@@ -15,7 +15,7 @@ pub fn lessons() -> impl azumi::Component {
     html! {
         <style>
             .homepage_title {
-                        color: "purple";
+                color: "purple";
                 font-size: "3em";
             }
             .lesson_grid {
