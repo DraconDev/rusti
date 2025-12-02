@@ -10,4 +10,3 @@ pub mod example_component;
 pub mod form;
 pub mod test_css_validation; // CSS validation test case
 pub mod test_global_styles; // Global style tag test
-pub mod test_inline_styles; // Inline styles test
