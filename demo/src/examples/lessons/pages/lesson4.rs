@@ -1,4 +1,3 @@
-use azumi::html;
 
 /// Lesson 5: Children Pattern
 ///
@@ -22,11 +21,13 @@ pub fn layout_example() -> impl azumi::Component {
         <style>
             .layout_title { font-size: "1.5rem"; color: "#2196f3"; margin-bottom: "1rem"; }
         </style>
-        @container {
+        <div>
             <h2 class={layout_title}>"Container with Children"</h2>
-            <p>"This content is passed as children"</p>
-            <p>"Children can be any valid Azumi components"</p>
-        }
+            @container {
+                <p>"This content is passed as children"</p>
+                <p>"Children can be any valid Azumi components"</p>
+            }
+        </div>
     }
 }
 
@@ -38,15 +39,18 @@ pub fn nested_children() -> impl azumi::Component {
             .outer_container { background: "#f0f0f0"; padding: "1.5rem"; }
             .inner_container { background: "white"; padding: "1rem"; margin-top: "1rem"; }
         </style>
-        @container {
+        <div>
             <h3>"Nested Children Example"</h3>
-            <div class={outer_container}>
+            @container {
                 <p>"Outer content"</p>
-                @container {
+                <div class={outer_container}>
                     <p>"Inner nested content"</p>
-                }
-            </div>
-        }
+                    @container {
+                        <p>"Deeply nested content"</p>
+                    }
+                </div>
+            }
+        </div>
     }
 }
 
@@ -58,13 +62,15 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .children_demo { display: "grid"; gap: "1rem"; }
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
-        @container {
-            <div class={children_demo}>
-                <div class={child_item}>"Child 1"</div>
-                <div class={child_item}>"Child 2"</div>
-                <div class={child_item}>"Child 3"</div>
-            </div>
-        }
+        <div>
+            @container {
+                <div class={children_demo}>
+                    <div class={child_item}>"Child 1"</div>
+                    <div class={child_item}>"Child 2"</div>
+                    <div class={child_item}>"Child 3"</div>
+                </div>
+            }
+        </div>
     }
 }
 
