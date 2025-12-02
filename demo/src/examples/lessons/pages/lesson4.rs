@@ -82,8 +82,9 @@ pub fn multiple_children_example() -> impl azumi::Component {
                     </div>
                 </div>
             }
-            
-
+            @container() {
+                <p>"Multiple children example"</p>
+            }
         </div>
     }
 }
