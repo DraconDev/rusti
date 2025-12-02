@@ -368,6 +368,10 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
     // 3. Extract classes and IDs for bindings (even though not scoped)
     let (classes, ids) = extract_selectors(&raw_css);
 
+    eprintln!("DEBUG GLOBAL: raw_css: '{}'", raw_css);
+    eprintln!("DEBUG GLOBAL: extracted classes: {:?}", classes);
+    eprintln!("DEBUG GLOBAL: extracted ids: {:?}", ids);
+
     // 4. Generate Bindings for both classes and IDs (without scoping)
     let mut bindings = TokenStream::new();
 
@@ -389,6 +393,8 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
             let #ident = #id;
         });
     }
+
+    eprintln!("DEBUG GLOBAL: bindings tokens: {}", bindings);
 
     // 5. Return unscoped CSS with bindings
     StyleOutput {
