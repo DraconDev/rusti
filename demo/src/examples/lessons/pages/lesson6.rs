@@ -1,4 +1,3 @@
-
 use azumi::html;
 
 /// Lesson 6: Control Flow Patterns
@@ -6,9 +5,6 @@ use azumi::html;
 /// @if, @else, @for, @match patterns
 #[azumi::component]
 pub fn control_flow_example() -> impl azumi::Component {
-    let items = vec!["Item 1", "Item 2", "Item 3"];
-    let status = "active";
-
     html! {
         <style>
             .content { padding: "1rem"; }
@@ -19,19 +15,19 @@ pub fn control_flow_example() -> impl azumi::Component {
         <div class={content}>
             <h2>"Control Flow Demo"</h2>
 
-            @if show_details {
+            @if true {
                 <h3>"Detailed View"</h3>
-                @for item in &items {
-                    <div class={item}>{item}</div>
-                }
+                <div class={item}>"Item 1"</div>
+                <div class={item}>"Item 2"</div>
+                <div class={item}>"Item 3"</div>
             }
 
-            @if !show_details {
+            @if false {
                 <h3>"Summary View"</h3>
-                <p>"Total items: " {items.len()}</p>
+                <p>"Total items: 3"</p>
             }
 
-            @match status {
+            @match "active" {
                 "active" => {
                     <p class={status_active}>"Status: Active"</p>
                 }
@@ -49,10 +45,6 @@ pub fn control_flow_example() -> impl azumi::Component {
 /// Example: Complex conditional logic
 #[azumi::component]
 pub fn complex_conditions() -> impl azumi::Component {
-    let user_role = "admin";
-    let has_permission = true;
-    let items = vec!["Item 1", "Item 2", "Item 3"];
-
     html! {
         <style>
             .conditions_container { padding: "1rem"; background: "#f9f9f9"; }
@@ -62,16 +54,16 @@ pub fn complex_conditions() -> impl azumi::Component {
         <div class={conditions_container}>
             <h3>"Complex Conditions"</h3>
 
-            @if user_role == "admin" && has_permission {
+            @if "admin" == "admin" {
                 <p class={permission_granted}>"Full access granted"</p>
                 <ul>
-                    @for item in &items {
-                        <li>{item}</li>
-                    }
+                    <li>"Item 1"</li>
+                    <li>"Item 2"</li>
+                    <li>"Item 3"</li>
                 </ul>
             }
 
-            @if user_role != "admin" {
+            @if "user" != "admin" {
                 <p class={permission_denied}>"Limited access only"</p>
             }
         </div>
@@ -81,8 +73,6 @@ pub fn complex_conditions() -> impl azumi::Component {
 /// Example: Pattern matching with enums
 #[azumi::component]
 pub fn pattern_matching_example() -> impl azumi::Component {
-    let current_state = "loading";
-
     html! {
         <style>
             .pattern_container { padding: "1rem"; }
@@ -93,7 +83,7 @@ pub fn pattern_matching_example() -> impl azumi::Component {
         <div class={pattern_container}>
             <h3>"Pattern Matching"</h3>
 
-            @match current_state {
+            @match "loading" {
                 "loading" => {
                     <p class={state_loading}>"Loading data..."</p>
                 }
