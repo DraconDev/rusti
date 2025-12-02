@@ -169,6 +169,58 @@ fn ControlFlowExample(show_details: bool, items: Vec<&str>, status: &str) -> imp
 }
 ```
 
+### Lesson 6.5: @let Pattern for Local Variables
+
+```rust
+// Using @let for local variable declarations
+#[azumi::component]
+fn LetPatternExample() -> impl azumi::Component {
+    html! {
+        <style>
+            .let_demo { padding: "1rem"; }
+            .calculated { font-weight: "bold"; color: "#2196f3"; }
+            .derived { background: "#f0f0f0"; padding: "0.5rem"; }
+        </style>
+        <div class={let_demo}>
+            <h2>"@let Pattern Examples"</h2>
+
+            // Basic variable declaration
+            @let name = "Azumi";
+            <p>"Hello, " <span class={calculated}>{name}</span> "!"</p>
+
+            // Calculated values
+            @let items = vec!["Item 1", "Item 2", "Item 3"];
+            @let item_count = items.len();
+            <p>"Total items: " <span class={calculated}>{item_count}</span></p>
+
+            // Derived values from calculations
+            @let base_price = 100.0;
+            @let tax_rate = 0.08;
+            @let total_price = base_price * (1.0 + tax_rate);
+            <div class={derived}>
+                <p>"Base Price: ${base_price}"</p>
+                <p>"Tax Rate: {tax_rate * 100}%"</p>
+                <p>"Total: ${total_price:.2}"</p>
+            </div>
+
+            // Complex data transformations
+            @let users = vec![
+                ("Alice", 25),
+                ("Bob", 30),
+                ("Charlie", 35)
+            ];
+            @let user_names = users.iter().map(|(name, _)| *name).collect::<Vec<&str>>();
+            <div class={derived}>
+                <h3>"User Names:"</h3>
+                @for name in user_names {
+                    <p>{name}</p>
+                }
+            </div>
+        </div>
+    }
+}
+```
+
 ## 🔧 Advanced Patterns
 
 ### Lesson 7: Form Handling with Validation
