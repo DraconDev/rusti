@@ -31,7 +31,7 @@ pub fn counter_display(state: CounterState) -> impl azumi::Component {
             .timestamp { font-size: "0.8rem"; color: "#666"; }
             #counter_box { display: "block"; }
         </style>
-        <div id="counter_box" class={counter} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
+        <div id={counter_box} class={counter} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <div class={count_display}>{state.count}</div>
             <button class={counter_button} az-on={click call increment_counter -> #counter_box}>
                 "Increment"
@@ -59,7 +59,7 @@ pub fn state_management_example(state: ManagementState) -> impl azumi::Component
             .action_button { padding: "0.75rem 1.5rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
             #state_box { display: "block"; }
         </style>
-        <div id="state_box" class={state_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
+        <div id={state_box} class={state_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"State Management"</h3>
 
             <div class={state_info}>
@@ -99,7 +99,7 @@ pub fn action_composition_example(state: CompositionState) -> impl azumi::Compon
             .compose_button { padding: "0.75rem 1.5rem"; background: "#ff4081"; color: "white"; border: "none"; cursor: "pointer"; }
             #composition_box { display: "block"; }
         </style>
-        <div id="composition_box" class={composition_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
+        <div id={composition_box} class={composition_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"Action Composition"</h3>
 
             <div class={action_card}>
