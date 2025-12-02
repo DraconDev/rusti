@@ -1,4 +1,3 @@
-
 use azumi::html;
 
 /// Lesson 6: Control Flow Patterns
@@ -18,10 +17,11 @@ pub fn control_flow_example() -> impl azumi::Component {
             .status_inactive { color: "red"; }
         </style>
         <div class={content}>
+            <h2>"Control Flow Demo"</h2>
 
             @if show_details {
                 <h3>"Detailed View"</h3>
-                @for item in items {
+                @for item in &items {
                     <div class={item}>{item}</div>
                 }
             }
@@ -65,7 +65,7 @@ pub fn complex_conditions() -> impl azumi::Component {
             @if user_role == "admin" && has_permission {
                 <p class={permission_granted}>"Full access granted"</p>
                 <ul>
-                    @for item in items {
+                    @for item in &items {
                         <li>{item}</li>
                     }
                 </ul>
@@ -114,8 +114,6 @@ pub fn pattern_matching_example() -> impl azumi::Component {
 /// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson6() -> impl azumi::Component {
-    let demo_items = vec!["Feature 1", "Feature 2", "Feature 3"];
-
     html! {
         <style>
             .container { padding: "20px"; }
@@ -148,7 +146,7 @@ pub fn lesson6() -> impl azumi::Component {
 
             <section class={examples}>
                 <div class={example_card}>
-                    @control_flow_example(show_details=true, items=demo_items.clone(), status="active")
+                    @control_flow_example()
                 </div>
                 <div class={example_card}>
                     @complex_conditions()
