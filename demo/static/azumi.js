@@ -81,8 +81,14 @@ class Azumi {
             // Add context from az-scope if needed
             body = JSON.stringify(data);
         } else {
-            // For buttons, maybe send some data?
-            body = JSON.stringify({});
+            // For buttons, get state from az-scope on nearest parent with az-scope
+            let scopeElement = element.closest("[az-scope]");
+            if (scopeElement) {
+                let scopeData = scopeElement.getAttribute("az-scope");
+                body = scopeData || "{}";
+            } else {
+                body = "{}";
+            }
         }
 
         try {
