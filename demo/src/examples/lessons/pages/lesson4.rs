@@ -4,7 +4,7 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn content_wrapper(children: impl azumi::Component) -> impl azumi::Component {
+pub fn content_wrapper(children: Box<dyn azumi::Component>) -> impl azumi::Component {
     html! {
         <style>
             .wrapper_style { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
@@ -25,8 +25,10 @@ pub fn layout_example() -> impl azumi::Component {
         <div>
             <h2 class={layout_title}>"Container with Children"</h2>
             @content_wrapper {
-                <p>"This content is passed as children"</p>
-                <p>"Children can be any valid Azumi components"</p>
+                Box::new(html! {
+                    <p>"This content is passed as children"</p>
+                    <p>"Children can be any valid Azumi components"</p>
+                })
             }
         </div>
     }
