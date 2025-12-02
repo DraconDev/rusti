@@ -47,13 +47,15 @@ pub fn nested_children() -> impl azumi::Component {
         </style>
         <div>
             <h3>"Nested Children Example"</h3>
-            @container(
-                {@container(
-                    html! {
+            @container() {
+                <p>"Outer content"</p>
+                <div class={outer_container}>
+                    <p>"Inner nested content"</p>
+                    @container() {
                         <p>"Deeply nested content"</p>
                     }
-                )}
-            )
+                </div>
+            }
         </div>
     }
 }
