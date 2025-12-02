@@ -4,7 +4,9 @@ use crate::examples::lessons::components::layout::dark_modern_layout;
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
     html! {
-        @dark_modern_layout(children = lessons())
+        @dark_modern_layout() {
+            lessons()
+        }
     }
 }
 
