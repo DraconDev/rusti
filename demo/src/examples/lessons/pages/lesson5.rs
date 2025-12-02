@@ -29,9 +29,9 @@ pub fn component_a() -> impl azumi::Component {
 pub fn component_b() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson5.css" />
-        <div class="scoped-demo alternate">
-            <h2 class="demo-title">"Component B"</h2>
-            <p class="primary-text">"Same CSS, no conflicts!"</p>
+        <div class={scoped_demo alternate}>
+            <h2 class={demo_title}>"Component B"</h2>
+            <p class={primary_text}>"Same CSS, no conflicts!"</p>
         </div>
     }
 }
@@ -41,9 +41,9 @@ pub fn component_b() -> impl azumi::Component {
 pub fn lesson5() -> impl azumi::Component {
     html! {
         <style src="/static/pages/lesson5.css" />
-        <div class="lesson-container">
-            <h1 class="lesson-title">"Lesson 5: CSS Scoping"</h1>
-            <p class="lesson-desc">"Azumi automatically scopes CSS to prevent conflicts."</p>
+        <div class={lesson_container}>
+            <h1 class={lesson_title}>"Lesson 5: CSS Scoping"</h1>
+            <p class={lesson_desc}>"Azumi automatically scopes CSS to prevent conflicts."</p>
             @component_a()
             @component_b()
         </div>
