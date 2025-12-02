@@ -1,7 +1,7 @@
 use azumi::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Copy)]
 pub struct LikeState {
     pub liked: bool,
     pub count: i32,
@@ -32,15 +32,12 @@ pub fn like_section(state: LikeState) -> impl Component {
 
 /// Inner fragment - this is what gets swapped by actions
 pub fn like_button(state: LikeState) -> impl Component {
-    // Serialize state for az-scope
-    let scope_json = serde_json::to_string(&state).unwrap_or_default();
-
     html! {
         <style>
             .btn {}
             #like_section {}
         </style>
-        <div id={like_section} az-scope={scope_json}>
+        <div id={like_section} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h2>"Server-Side Action"</h2>
             <p>
                 "Likes: " <span az-bind:text="count">{state.count}</span>
