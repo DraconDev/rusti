@@ -20,7 +20,7 @@ pub fn global_css_example() -> impl azumi::Component {
 
         <div class={component_class}>
             <h2 class={local_class}>"Scoped Style"</h2>
-            <p class="global_class">"Global Style"</p>
+            <p class={global_class}>"Global Style"</p>
             <p>"This component demonstrates both global and scoped CSS"</p>
         </div>
     }
