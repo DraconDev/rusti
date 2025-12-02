@@ -16,6 +16,12 @@ pub struct StyleOutput {
 // AST for our style! macro
 struct StyleInput {
     rules: Vec<StyleRule>,
+    at_rules: Vec<AtRule>,
+}
+
+struct AtRule {
+    name: String,
+    content: String,
 }
 
 struct StyleRule {
@@ -36,10 +42,39 @@ struct StyleProperty {
 impl Parse for StyleInput {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         let mut rules = Vec::new();
+        let mut at_rules = Vec::new();
+
         while !input.is_empty() {
-            rules.push(input.parse()?);
+            // Check for @ rules
+            if input.peek(Token![@]) {
+                let at_rule = input.parse::<AtRule>()?;
+                at_rules.push(at_rule);
+            } else {
+                rules.push(input.parse()?);
+            }
         }
-        Ok(StyleInput { rules })
+        Ok(StyleInput { rules, at_rules })
+    }
+}
+
+impl Parse for AtRule {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
+        input.parse::<Token![@]>()?;
+        let name = input.parse::<Ident>()?.to_string();
+
+        // Parse the content until semicolon or end
+        let mut content = String::new();
+        while !input.peek(Token![;]) && !input.is_empty() {
+            let tt: TokenTree = input.parse()?;
+            content.push_str(&tt.to_string());
+        }
+
+        // Consume semicolon if present
+        if input.peek(Token![;]) {
+            input.parse::<Token![;]>()?;
+        }
+
+        Ok(AtRule { name, content })
     }
 }
 
@@ -376,10 +411,22 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
 
     // 2. Generate raw CSS (validation happens during parsing above)
     eprintln!(
-        "DEBUG GLOBAL: number of parsed rules: {}",
-        style_input.rules.len()
+        "DEBUG GLOBAL: number of parsed rules: {}, at_rules: {}",
+        style_input.rules.len(),
+        style_input.at_rules.len()
     );
     let mut raw_css = String::new();
+
+    // Add @rules first
+    for at_rule in &style_input.at_rules {
+        raw_css.push_str("@");
+        raw_css.push_str(&at_rule.name);
+        raw_css.push_str(" ");
+        raw_css.push_str(&at_rule.content);
+        raw_css.push_str("; ");
+    }
+
+    // Add regular rules
     for rule in &style_input.rules {
         let selector_str = tokens_to_css_string(&rule.selectors);
 
@@ -443,6 +490,17 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
 
     // 2. Reconstruct CSS string (with quotes removed from values)
     let mut raw_css = String::new();
+
+    // Add @rules first
+    for at_rule in &style_input.at_rules {
+        raw_css.push_str("@");
+        raw_css.push_str(&at_rule.name);
+        raw_css.push_str(" ");
+        raw_css.push_str(&at_rule.content);
+        raw_css.push_str("; ");
+    }
+
+    // Add regular rules
     for rule in &style_input.rules {
         let selector_str = tokens_to_css_string(&rule.selectors);
 
