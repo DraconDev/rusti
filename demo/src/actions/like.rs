@@ -27,7 +27,7 @@ pub fn like_section(state: LikeState) -> impl Component {
         </style>
 
         // Render the dynamic core
-        @like_button(state)
+        @like_button(state=state)
     }
 }
 
