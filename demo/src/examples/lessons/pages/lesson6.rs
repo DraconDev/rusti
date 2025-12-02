@@ -5,7 +5,7 @@ use azumi::html;
 ///
 /// @if, @else, @for, @match patterns
 #[azumi::component]
-    let show_details = true;
+pub fn control_flow_example() -> impl azumi::Component {
     let items = vec!["Item 1", "Item 2", "Item 3"];
     let status = "active";
 
