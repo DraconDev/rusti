@@ -357,10 +357,16 @@ fn validate_hex_color(value: &str) -> Option<String> {
 
 /// Process global style macro - validates but doesn't scope or generate bindings
 pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
+    eprintln!("DEBUG GLOBAL: input tokens: {}", input);
+
     // 1. Parse the input
-    let style_input: StyleInput = match parse2(input) {
-        Ok(input) => input,
+    let style_input: StyleInput = match parse2(input.clone()) {
+        Ok(input) => {
+            eprintln!("DEBUG GLOBAL: Parse SUCCESS");
+            input
+        }
         Err(err) => {
+            eprintln!("DEBUG GLOBAL: Parse FAILED: {}", err);
             return StyleOutput {
                 bindings: err.to_compile_error(),
                 css: String::new(),
