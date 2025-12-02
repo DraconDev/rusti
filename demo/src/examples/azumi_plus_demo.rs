@@ -3,6 +3,7 @@ use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
     html! {
+        <script src="/static/azumi.js"></script>
         <style>
         .demo_container {
             padding: "2rem";
