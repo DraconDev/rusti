@@ -3,7 +3,6 @@
 /// Components with children parameter
 use azumi::html;
 
-
 #[azumi::component]
 pub fn container(children: impl azumi::Component) -> impl azumi::Component {
     html! {
@@ -11,7 +10,7 @@ pub fn container(children: impl azumi::Component) -> impl azumi::Component {
             .container { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
         </style>
         <div class={container}>
-            {children}
+            {&children}
         </div>
     }
 }
