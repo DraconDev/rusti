@@ -39,11 +39,11 @@ pub fn custom_button<'a>(text: &'a str, color: &'a str) -> impl azumi::Component
     html! {
         <style>
             .btn { padding: "10px 20px"; border: "none"; border-radius: "4px"; cursor: "pointer"; }
-            .color-2196f3 { background-color: "#2196f3"; }
-            .color-4caf50 { background-color: "#4caf50"; }
-            .color-f44336 { background-color: "#f44336"; }
+            .btn_primary { background-color: "#2196f3"; color: "white"; }
+            .btn_success { background-color: "#4caf50"; color: "white"; }
+            .btn_danger { background-color: "#f44336"; color: "white"; }
         </style>
-        <button class={btn} class={format!("color-{}", color.replace("#", ""))}>
+        <button class={btn} class={if color == "#2196f3" { "btn_primary" } else if color == "#4caf50" { "btn_success" } else { "btn_danger" }}>
             {text}
         </button>
     }

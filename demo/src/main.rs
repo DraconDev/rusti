@@ -21,6 +21,11 @@ async fn main() {
         .route("/azumi-plus", get(examples::azumi_plus_demo::azumi_plus_demo_handler))
         .merge(azumi::action::register_actions(axum::Router::new()))
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
+        .route("/lesson-6", get(examples::lessons::pages::lesson6::lesson6_handler))
+        .route("/lesson-7", get(examples::lessons::pages::lesson7::lesson7_handler))
+        .route("/lesson-8", get(examples::lessons::pages::lesson8::lesson8_handler))
+        .route("/lesson-9", get(examples::lessons::pages::lesson9::lesson9_handler))
+        .route("/lesson-10", get(examples::lessons::pages::lesson10::lesson10_handler))
 
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
