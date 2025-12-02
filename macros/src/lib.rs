@@ -403,6 +403,18 @@ fn collect_styles_recursive(
                 collect_styles_recursive(&frag.children, global_css, scoped_css);
             }
             token_parser::Node::Block(block) => match block {
+                token_parser::Block::Style(style_block) => {
+                    // Handle <style> blocks - reconstruct CSS from TokenStream
+                    let css_content =
+                        crate::style::reconstruct_css_from_tokens(style_block.content.clone());
+                    if style_block.is_global {
+                        global_css.push_str(&css_content);
+                        global_css.push('\n');
+                    } else {
+                        scoped_css.push_str(&css_content);
+                        scoped_css.push('\n');
+                    }
+                }
                 token_parser::Block::If(if_block) => {
                     collect_styles_recursive(&if_block.then_branch, global_css, scoped_css);
                     if let Some(else_branch) = &if_block.else_branch {
