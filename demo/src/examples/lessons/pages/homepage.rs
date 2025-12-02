@@ -3,7 +3,7 @@ use azumi::html;
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
     html! {
-        @layout(@lessons())
+        @layout(childred:lessons)
     }
 }
 
