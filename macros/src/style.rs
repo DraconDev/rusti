@@ -89,7 +89,7 @@ fn validate_selectors(tokens: &TokenStream) -> syn::Result<()> {
                         if next_p.as_char() == '-' {
                             return Err(syn::Error::new(
                                 ident_span,
-                                "Class names in style! macro must be snake_case (no dashes allowed). Use underscores instead."
+                                "Class names in <style> tag must be snake_case (no dashes allowed). Use underscores instead."
                             ));
                         }
                     }
@@ -120,7 +120,7 @@ fn validate_selectors(tokens: &TokenStream) -> syn::Result<()> {
                         if next_p.as_char() == '-' {
                             return Err(syn::Error::new(
                                 ident_span,
-                                "ID names in style! macro must be snake_case (no dashes allowed). Use underscores instead."
+                                "ID names in <style> tag must be snake_case (no dashes allowed). Use underscores instead."
                             ));
                         }
                     }
