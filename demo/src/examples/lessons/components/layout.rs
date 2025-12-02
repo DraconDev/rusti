@@ -1,18 +1,18 @@
+
 use azumi::html;
 
 /// Modern dark layout component that uses global CSS variables
 #[azumi::component]
 pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Component {
     html! {
-        <style global>
-            .dark_layout {
-                min-height: 100vh;
-                background: var(--azumi-bg);
-                color: var(--azumi-text);
-                font-family: var(--font-sans);
-            }
-
-            .content_container {
+        <div style="
+            min-height: 100vh;
+            background: var(--azumi-bg);
+            color: var(--azumi-text);
+            font-family: var(--font-sans);
+        ">
+            <div style="
+                max-width: 1200px;
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: var(--spacing-lg);
@@ -165,7 +165,7 @@ pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Compon
             .fade_in_up {
                 animation: fadeInUp 0.6s ease-out;
             }
-        </style>
+        </div>
 
         <div class={dark_layout}>
             <div class={content_container}>

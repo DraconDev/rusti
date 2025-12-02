@@ -365,10 +365,35 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
         raw_css.push_str("} ");
     }
 
-    // 3. Return raw CSS, no bindings
+    // 3. Extract classes and IDs for bindings (even though not scoped)
+    let (classes, ids) = extract_selectors(&raw_css);
+
+    // 4. Generate Bindings for both classes and IDs (without scoping)
+    let mut bindings = TokenStream::new();
+
+    // Generate class bindings (no scoping, just the original class name)
+    for class in classes {
+        let snake_name = class.to_snake_case();
+        let ident = format_ident!("{}", snake_name);
+
+        bindings.extend(quote! {
+            let #ident = #class;
+        });
+    }
+
+    // Generate ID bindings (no scoping, just the original ID)
+    for id in ids {
+        let ident = format_ident!("{}", id);
+
+        bindings.extend(quote! {
+            let #ident = #id;
+        });
+    }
+
+    // 5. Return unscoped CSS with bindings
     StyleOutput {
-        bindings: quote! {}, // No bindings for global styles
-        css: raw_css,        // Unscoped CSS
+        bindings,     // Now includes bindings for global styles!
+        css: raw_css, // Unscoped CSS
     }
 }
 
