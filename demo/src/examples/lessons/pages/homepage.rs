@@ -1,7 +1,9 @@
 use azumi::html;
 
+pub fn 
+
 #[azumi::component]
-pub fn homepage() -> impl azumi::Component {
+pub fn lessons() -> impl azumi::Component {
     html! {
         <style>
             .homepage_title {
