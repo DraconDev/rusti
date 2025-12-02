@@ -1,7 +1,9 @@
-
 /// Lesson 5: Children Pattern
 ///
 /// Components with children parameter
+use azumi::html;
+
+
 #[azumi::component]
 pub fn container(children: impl azumi::Component) -> impl azumi::Component {
     html! {
