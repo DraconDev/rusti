@@ -8,7 +8,7 @@ pub struct LikeState {
 }
 
 /// Server-side action that toggles the like state
-// #[azumi::action]
+#[azumi::action]
 pub async fn toggle_like(state: LikeState) -> impl Component {
     let new_state = LikeState {
         liked: !state.liked,
@@ -20,7 +20,7 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
     };
 
     // Serialize to JSON for az-scope attribute
-    let scope_json = std::sync::Arc::new(serde_json::to_string(&new_state).unwrap_or_default());
+    let scope_json = serde_json::to_string(&new_state).unwrap_or_default();
 
     // Return the updated HTML fragment
     html! {
@@ -38,7 +38,7 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
             }
             #like_section {}
         </style>
-        <div id={like_section} az-scope={scope_json.clone()}>
+        <div id={like_section} az-scope={format!("{}", scope_json)}>
             <h2>"Server-Side Action"</h2>
             <p>
                 "Likes: " <span az-bind:text="count">"10"</span>
