@@ -54,8 +54,9 @@ pub fn nested_children() -> impl azumi::Component {
                         <p>"Inner nested content"</p>
                         @container {
                             <p>"Deeply nested content"</p>
-                    }
-                </div>
+                        }
+                    </div>
+                }
             }
         </div>
     }
