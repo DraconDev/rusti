@@ -4,17 +4,15 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn content_wrapper(children: impl azumi::Component) -> impl azumi::Component {
-    use azumi::{Component, FallbackRender, RenderWrapper};
-    azumi::from_fn(move |f| {
-        write!(f, "<style>.wrapper_style {{ padding: \"2rem\"; border: \"1px solid #ddd\"; border-radius: \"8px\"; }}</style>")?;
-        write!(f, "<div class=\"wrapper_style\">")?;
-        {
-            use azumi::FallbackRender;
-            azumi::RenderWrapper(&children).render_azumi(f)?;
-        }
-        write!(f, "</div>")
-    })
+pub fn container(content: impl azumi::Component) -> impl azumi::Component {
+    html! {
+        <style>
+            .content_box { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
+        </style>
+        <div class={content_box}>
+            {content}
+        </div>
+    }
 }
 
 /// Example: Layout with children
@@ -26,8 +24,9 @@ pub fn layout_example() -> impl azumi::Component {
         </style>
         <div>
             <h2 class={layout_title}>"Container with Children"</h2>
-            @content_wrapper {
-                String::from("Hello")
+            @container {
+                <p>"This content is passed as children"</p>
+                <p>"Children can be any valid Azumi components"</p>
             }
         </div>
     }
@@ -43,11 +42,11 @@ pub fn nested_children() -> impl azumi::Component {
         </style>
         <div>
             <h3>"Nested Children Example"</h3>
-            @content_wrapper {
+            @container {
                 <p>"Outer content"</p>
                 <div class={outer_container}>
                     <p>"Inner nested content"</p>
-                    @content_wrapper {
+                    @container {
                         <p>"Deeply nested content"</p>
                     }
                 </div>
@@ -65,7 +64,7 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
         <div>
-            @content_wrapper {
+            @container {
                 <div class={children_demo}>
                     <div class={child_item}>"Child 1"</div>
                     <div class={child_item}>"Child 2"</div>
