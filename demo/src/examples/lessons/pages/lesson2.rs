@@ -9,40 +9,42 @@ pub fn global_css_example() -> impl azumi::Component {
         // Global styles - not scoped to component
         <style global>
             body { font-family: "Arial, sans-serif"; }
-            .global_class { color: "purple"; }
         </style>
 
         // Component-scoped styles - automatically scoped
         <style>
             .component_class { background: "#f5f5f5"; padding: "1rem"; }
             .local_class { color: "blue"; }
+            .global_demo { color: "purple"; font-style: "italic"; }
         </style>
 
         <div class={component_class}>
             <h2 class={local_class}>"Scoped Style"</h2>
-            <p class="global_class">"Global Style"</p>
-            <p>"This component demonstrates both global and scoped CSS"</p>
+            <p class={global_demo}>"Global Style Effect (simulated)"</p>
+            <p>"This component demonstrates CSS scoping concepts"</p>
         </div>
     }
 }
 
-/// Example: Multiple components with global and scoped styles
+/// Example: Multiple components with different scoping
 #[azumi::component]
 pub fn mixed_scoping_example() -> impl azumi::Component {
     html! {
         <style global>
-            .shared_global { font-size: "1.1rem"; }
+            /* This would affect the entire app */
+            /* body { font-family: "Arial, sans-serif"; } */
         </style>
 
         <style>
             .container { padding: "1rem"; border: "1px solid #ddd"; }
             .scoped_title { color: "#2196f3"; }
+            .global_simulation { font-size: "1.1rem"; font-weight: "bold"; }
         </style>
 
         <div class={container}>
-            <h3 class={scoped_title}>"Mixed Scoping Example"</h3>
-            <p class="shared_global">"This text uses global styling"</p>
-            <p class={scoped_title}>"This text uses scoped styling"</p>
+            <h3 class={scoped_title}>"Scoping Concepts"</h3>
+            <p class={global_simulation}>"Global styles affect everything"</p>
+            <p class={scoped_title}>"Scoped styles are component-specific"</p>
         </div>
     }
 }
@@ -54,27 +56,27 @@ pub fn scoping_best_practices() -> impl azumi::Component {
         <style>
             .best_practices { padding: "1.5rem"; background: "#f9f9f9"; }
             .practice_item { margin: "0.5rem 0"; padding: "0.5rem"; background: "white"; }
-            .do { color: "green"; font-weight: "bold"; }
-            .dont { color: "red"; font-weight: "bold"; }
+            .do_class { color: "green"; font-weight: "bold"; }
+            .dont_class { color: "red"; font-weight: "bold"; }
         </style>
 
         <div class={best_practices}>
             <h3>"CSS Scoping Best Practices"</h3>
 
             <div class={practice_item}>
-                <span class={do}>"DO:"</span> " Use component-scoped styles for most cases"
+                <span class={do_class}>"DO:"</span> " Use component-scoped styles for most cases"
             </div>
 
             <div class={practice_item}>
-                <span class={do}>"DO:"</span> " Use global styles only for truly global elements"
+                <span class={do_class}>"DO:"</span> " Use global styles only for truly global elements"
             </div>
 
             <div class={practice_item}>
-                <span class={dont}>"DON'T:"</span> " Overuse global styles - they can cause conflicts"
+                <span class={dont_class}>"DON'T:"</span> " Overuse global styles - they can cause conflicts"
             </div>
 
             <div class={practice_item}>
-                <span class={do}>"DO:"</span> " Let Azumi handle scoping automatically"
+                <span class={do_class}>"DO:"</span> " Let Azumi handle scoping automatically"
             </div>
         </div>
     }
