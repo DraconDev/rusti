@@ -21,6 +21,7 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
 
     // Serialize to JSON for az-scope attribute
     let scope_json = serde_json::to_string(&new_state).unwrap_or_default();
+    let scope_ref = &scope_json;
 
     // Return the updated HTML fragment
     html! {
@@ -38,9 +39,8 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
             }
             #like_section {}
         </style>
-        <div id={like_section} az-scope={&scope_json}>
+        <div id={like_section} az-scope={scope_ref}>
             <h2>"Server-Side Action"</h2>
-            /*
             <p>
                 "Likes: " <span az-bind:text="count">"10"</span>
             </p>
@@ -52,7 +52,6 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
             >
                 <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
             </button>
-            */
         </div>
     }
 }
