@@ -1,4 +1,4 @@
-use crate::actions::{like_section, LikeState};
+use crate::actions::{like_button, LikeState};
 use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
@@ -18,10 +18,16 @@ pub fn azumi_plus_demo() -> impl Component {
             cursor: "pointer";
             background: "#eee";
         }
+        .btn.liked {
+            background: "#ff4081";
+            color: "white";
+        }
+        #like_box {
+            margin-top: "2rem";
+        }
         </style>
         <div class={demo_container}>
             <h1>"Azumi+ Demo"</h1>
-
 
             // Local State (Client-side only)
             <div az-scope="{ \"count\": 0 }">
@@ -36,8 +42,8 @@ pub fn azumi_plus_demo() -> impl Component {
 
             <hr />
 
-            // Server Action - using the refactored component
-            {like_section(LikeState { liked: false, count: 10 })}
+            // Server Action - pure fragment, styles defined above
+            {like_button(LikeState { liked: false, count: 10 })}
         </div>
     }
 }

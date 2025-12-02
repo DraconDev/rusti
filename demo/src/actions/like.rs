@@ -7,36 +7,10 @@ pub struct LikeState {
     pub count: i32,
 }
 
-/// Outer shell - rendered once on page load, contains styles
-pub fn like_section(state: LikeState) -> impl Component {
-    html! {
-        <style>
-            .btn {
-                padding: "0.5rem 1rem";
-                border: "none";
-                border-radius: "4px";
-                cursor: "pointer";
-                background: "#eee";
-            }
-            .btn.liked {
-                background: "#ff4081";
-                color: "white";
-            }
-            #like_box {}
-        </style>
-
-        // Render the dynamic core
-        {like_button(state.clone())}
-    }
-}
-
-/// Inner fragment - this is what gets swapped by actions
+/// Dynamic fragment - this is what gets swapped by actions
 pub fn like_button(state: LikeState) -> impl Component {
     html! {
-        <style>
-            .btn {}
-            #like_box {}
-        </style>
+        <>  
         <div id={like_box} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h2>"Server-Side Action"</h2>
             <p>
@@ -56,7 +30,7 @@ pub fn like_button(state: LikeState) -> impl Component {
     }
 }
 
-/// Server-side action - returns ONLY the inner fragment, not the outer shell
+/// Server-side action - returns ONLY the fragment
 #[azumi::action]
 pub async fn toggle_like(state: LikeState) -> impl Component {
     let new_state = LikeState {
@@ -68,6 +42,6 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
         },
     };
 
-    // Return ONLY the dynamic fragment, styles are already on the page!
+    // Return the same fragment, styles are already on the page!
     like_button(new_state)
 }
