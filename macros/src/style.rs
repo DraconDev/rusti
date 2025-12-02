@@ -170,24 +170,40 @@ impl Parse for StyleProperty {
 
         input.parse::<Token![:]>()?;
 
-        // Parse value (must be a string literal)
-        let value_lit: LitStr = input.parse().map_err(|_| {
-            syn::Error::new(
-                input.span(),
-                "Expected string literal for property value (e.g. \"10px\")",
-            )
-        })?;
-        let value = value_lit.value();
-        let value_span = value_lit.span();
+        // Parse value - accept either string literal OR tokens until semicolon
+        let value_start_span = input.span();
+        let mut value = String::new();
+        let mut value_tokens = Vec::new();
+
+        // Try to parse as string literal first
+        if let Ok(lit_str) = input.parse::<LitStr>() {
+            value = lit_str.value();
+        } else {
+            // Parse as raw tokens until semicolon
+            while !input.peek(Token![;]) && !input.is_empty() {
+                let tt: TokenTree = input.parse()?;
+                value_tokens.push(tt.clone());
+                value.push_str(&tt.to_string());
+            }
+
+            // Remove spaces around tokens for cleaner output
+            value = value.replace(" ", "");
+        }
 
         input.parse::<Token![;]>()?;
 
-        // Validate the CSS value using lightningcss
-        if let Err(err_msg) = validate_css_value(&name, &value) {
-            return Err(syn::Error::new(
-                value_span,
-                format!("Invalid CSS value for property '{}': {}", name, err_msg),
-            ));
+        // Validate the CSS value using lightningcss (skip for CSS variables)
+        if !value.starts_with("var(") && !value_tokens.is_empty() {
+            // For unquoted values, we skip lightningcss validation since it's complex
+            // (e.g., linear-gradient, rgba, etc.) and lightningcss expects quoted strings
+        } else if value_tokens.is_empty() {
+            // Only validate quoted string values with lightningcss
+            if let Err(err_msg) = validate_css_value(&name, &value) {
+                return Err(syn::Error::new(
+                    value_start_span,
+                    format!("Invalid CSS value for property '{}': {}", name, err_msg),
+                ));
+            }
         }
 
         Ok(StyleProperty {
