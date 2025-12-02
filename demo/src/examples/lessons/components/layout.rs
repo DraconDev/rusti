@@ -6,30 +6,30 @@ pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Compon
     html! {
         <style global>
             .dark_layout {
-                min-height: 100vh;
+                min-height: "100vh";
                 background: var(--azumi-bg);
                 color: var(--azumi-text);
                 font-family: var(--font-sans);
             }
 
             .content_container {
-                max-width: 1200px;
-                margin: 0 auto;
+                max-width: "1200px";
+                margin: "0 auto";
                 padding: var(--spacing-lg);
             }
 
             .header_section {
-                background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%);
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+                background: "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%)";
+                backdrop-filter: "blur(10px)";
+                border-bottom: "1px solid rgba(148, 163, 184, 0.1)";
                 padding: var(--spacing-md) 0;
                 margin-bottom: var(--spacing-lg);
             }
 
             .main_content {
-                background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.6) 100%);
-                backdrop-filter: blur(8px);
-                border: 1px solid rgba(148, 163, 184, 0.1);
+                background: "linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.6) 100%)";
+                backdrop-filter: "blur(8px)";
+                border: "1px solid rgba(148, 163, 184, 0.1)";
                 border-radius: var(--radius-md);
                 padding: var(--spacing-lg);
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
