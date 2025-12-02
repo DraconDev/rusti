@@ -1,11 +1,10 @@
-use azumi::html;
 
 /// Lesson 4: Component Composition Patterns
 ///
 /// Building complex UIs from simple components
 #[azumi::component]
 pub fn card<'a>(title: &'a str, content: &'a str) -> impl azumi::Component + 'a {
-    html! {
+    azumi::html! {
         <style>
             .card { border: "1px solid #eee"; padding: "1rem"; margin: "0.5rem"; }
             .card_title { font-weight: "bold"; margin-bottom: "0.5rem"; }
@@ -20,7 +19,7 @@ pub fn card<'a>(title: &'a str, content: &'a str) -> impl azumi::Component + 'a 
 /// Example: Dashboard composed of multiple cards
 #[azumi::component]
 pub fn dashboard() -> impl azumi::Component {
-    html! {
+    azumi::html! {
         <style>
             .dashboard_container { display: "grid"; gap: "1rem"; }
             .dashboard_title { font-size: "1.5rem"; color: "#2196f3"; margin-bottom: "1rem"; }
@@ -39,11 +38,11 @@ pub fn dashboard() -> impl azumi::Component {
 /// Example: Complex layout with nested composition
 #[azumi::component]
 pub fn complex_layout() -> impl azumi::Component {
-    html! {
+    azumi::html! {
         <style>
             .layout_container { display: "grid"; gap: "1rem"; }
             .header_section { background: "#f0f0f0"; padding: "1rem"; }
-            .main_section { display: "grid"; grid-template-columns: "2fr 1fr"; gap: "1rem"; }
+            .main_section { display: "grid"; grid-template-columns: "2fr1fr"; gap: "1rem"; }
             .sidebar { background: "#f9f9f9"; padding: "1rem"; }
         </style>
         <div class={layout_container}>
@@ -68,7 +67,7 @@ pub fn complex_layout() -> impl azumi::Component {
 /// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson3() -> impl azumi::Component {
-    html! {
+    azumi::html! {
         <style>
             .container { padding: "20px"; }
             .header { text-align: "center"; margin-bottom: "30px"; }
