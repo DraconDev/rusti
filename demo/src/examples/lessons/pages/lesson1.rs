@@ -26,7 +26,7 @@ pub fn multiple_scoped_components() -> impl azumi::Component {
             .card_title { font-weight: "bold"; color: "#1976d2"; }
         </style>
         <div>
-            <div class={card}>
+            <div class={car}>
                 <h3 class={card_title}>"First Component"</h3>
                 <p>"This uses the same class names as the second component"</p>
             </div>
