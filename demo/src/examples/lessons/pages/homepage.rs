@@ -15,7 +15,7 @@ pub fn lessons() -> impl azumi::Component {
     html! {
         <style>
             .homepage_title {
-                color: "purple";
+                        color: "purple";
                 font-size: "3em";
             }
             .lesson_grid {
