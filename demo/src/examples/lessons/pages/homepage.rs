@@ -3,7 +3,7 @@ use azumi::html;
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
     html! {
-        @crate::examples::lessons::components::layout(lessons)
+        @crate::examples::lessons::components::layout(lessons())
     }
 }
 
