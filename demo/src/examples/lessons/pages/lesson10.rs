@@ -10,10 +10,11 @@ pub fn click_counter() -> impl azumi::Component {
             .counter_container { padding: "20px"; text-align: "center"; }
             .counter_display { font-size: "24px"; margin: "10px 0"; }
             .counter_button { padding: "10px 20px"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
+            #counter {}
         </style>
         <div class={counter_container}>
             <h3>"Click Counter"</h3>
-            <div class={counter_display} id="counter">"0"</div>
+            <div class={counter_display} id={counter}>"0"</div>
             <button
                 class={counter_button}
                 onclick="document.getElementById('counter').textContent = parseInt(document.getElementById('counter').textContent) + 1"
@@ -41,7 +42,7 @@ pub fn input_handler() -> impl azumi::Component {
                 placeholder="Type something..."
                 oninput="document.getElementById('input-display').textContent = this.value"
             />
-            <div class={input_display} id="input-display">"Your input will appear here"</div>
+            <div class={input_display} id={input_display}>"Your input will appear here"</div>
         </div>
     }
 }
@@ -64,7 +65,7 @@ pub fn toggle_example() -> impl azumi::Component {
             >
                 "Toggle Content"
             </button>
-            <div class={toggle_content} id="toggle-content">
+            <div class={toggle_content} id={toggle_content}>
                 <p>"This content can be toggled on and off!"</p>
             </div>
         </div>
