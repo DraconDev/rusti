@@ -510,28 +510,7 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     };
 
     // 2. Reconstruct CSS string (with quotes removed from values)
-    let mut raw_css = String::new();
-
-    // Add @rules first
-    for at_rule in &style_input.at_rules {
-        raw_css.push_str("@");
-        raw_css.push_str(&at_rule.name);
-        raw_css.push_str(" ");
-        raw_css.push_str(&at_rule.content);
-        raw_css.push_str("; ");
-    }
-
-    // Add regular rules
-    for rule in &style_input.rules {
-        let selector_str = tokens_to_css_string(&rule.selectors);
-
-        raw_css.push_str(&selector_str);
-        raw_css.push_str(" { ");
-        for prop in &rule.block.properties {
-            raw_css.push_str(&format!("{}: {}; ", prop.name, prop.value));
-        }
-        raw_css.push_str("} ");
-    }
+    let raw_css = reconstruct_css_from_tokens(input);
 
     // 3. Generate Scope ID
     let mut hasher = DefaultHasher::new();
@@ -579,6 +558,40 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
         bindings,
         css: scoped_css,
     }
+}
+
+/// Reconstruct CSS string from TokenStream (parsing and formatting)
+pub fn reconstruct_css_from_tokens(input: TokenStream) -> String {
+    // 1. Parse the input
+    let style_input: StyleInput = match parse2(input) {
+        Ok(input) => input,
+        Err(_) => return String::new(), // Return empty on parse error (validation handles errors elsewhere)
+    };
+
+    let mut raw_css = String::new();
+
+    // Add @rules first
+    for at_rule in &style_input.at_rules {
+        raw_css.push_str("@");
+        raw_css.push_str(&at_rule.name);
+        raw_css.push_str(" ");
+        raw_css.push_str(&at_rule.content);
+        raw_css.push_str("; ");
+    }
+
+    // Add regular rules
+    for rule in &style_input.rules {
+        let selector_str = tokens_to_css_string(&rule.selectors);
+
+        raw_css.push_str(&selector_str);
+        raw_css.push_str(" { ");
+        for prop in &rule.block.properties {
+            raw_css.push_str(&format!("{}: {}; ", prop.name, prop.value));
+        }
+        raw_css.push_str("} ");
+    }
+
+    raw_css
 }
 
 fn tokens_to_css_string(tokens: &TokenStream) -> String {
