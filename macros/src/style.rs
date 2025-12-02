@@ -353,6 +353,10 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
     };
 
     // 2. Generate raw CSS (validation happens during parsing above)
+    eprintln!(
+        "DEBUG GLOBAL: number of parsed rules: {}",
+        style_input.rules.len()
+    );
     let mut raw_css = String::new();
     for rule in &style_input.rules {
         let selector_str = tokens_to_css_string(&rule.selectors);
