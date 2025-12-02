@@ -1,5 +1,12 @@
 pub mod homepage;
 pub mod lesson0;
 pub mod lesson1;
+pub mod lesson10;
 pub mod lesson2;
-// pub mod lesson3;
+pub mod lesson3;
+pub mod lesson4;
+pub mod lesson5;
+pub mod lesson6;
+pub mod lesson7;
+pub mod lesson8;
+pub mod lesson9;
