@@ -4,14 +4,14 @@
 
 ### 📚 Course Overview
 
-This comprehensive lesson plan covers all aspects of Azumi, from basic syntax to advanced patterns, showcasing the full power of the framework's macro system.
+This comprehensive lesson plan covers all aspects of Azumi, from basic syntax to advanced patterns, showcasing the full power of the framework's macro system while adhering to Azumi's strict validation rules.
 
 ## 🏗️ Foundational Concepts
 
-### Lesson 1: Introduction to Azumi
+### Lesson 1: Introduction to Azumi Components
 
 ```rust
-// Basic component structure
+// Basic component structure with proper syntax
 #[azumi::component]
 fn HelloWorld() -> impl azumi::Component {
     html! {
@@ -23,7 +23,7 @@ fn HelloWorld() -> impl azumi::Component {
 }
 ```
 
-### Lesson 2: CSS Scoping & Validation
+### Lesson 2: CSS Scoping & Validation Fundamentals
 
 ```rust
 // Automatic CSS scoping demonstration
@@ -42,9 +42,36 @@ fn ScopedComponent() -> impl azumi::Component {
 }
 ```
 
-## 🎨 Core Features
+### Lesson 3: Global vs Component CSS
 
-### Lesson 3: Component Composition
+```rust
+// Understanding style scoping options
+#[azumi::component]
+fn StyleScopingExample() -> impl azumi::Component {
+    html! {
+        // Global styles - not scoped to component
+        <style global>
+            body { font-family: "Arial, sans-serif"; }
+            .global_class { color: "purple"; }
+        </style>
+
+        // Component-scoped styles - automatically scoped
+        <style>
+            .component_class { background: "#f5f5f5"; }
+            .local_class { color: "blue"; }
+        </style>
+
+        <div class={component_class}>
+            <h2 class={local_class}>"Scoped Style"</h2>
+            <p class="global_class">"Global Style"</p>
+        </div>
+    }
+}
+```
+
+## 🎨 Core Features Deep Dive
+
+### Lesson 4: Component Composition Patterns
 
 ```rust
 // Building complex UIs from simple components
@@ -74,16 +101,45 @@ fn Dashboard() -> impl azumi::Component {
 }
 ```
 
-### Lesson 4: Control Flow Patterns
+### Lesson 5: Children Pattern
 
 ```rust
-// @if, @for, @match patterns
+// Components with children parameter
 #[azumi::component]
-fn DynamicContent(show_details: bool, items: Vec<&str>) -> impl azumi::Component {
+fn Container(children: impl azumi::Component) -> impl azumi::Component {
+    html! {
+        <style>
+            .container { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
+        </style>
+        <div class={container}>
+            {children}
+        </div>
+    }
+}
+
+#[azumi::component]
+fn LayoutExample() -> impl azumi::Component {
+    html! {
+        @Container {
+            <h1>"Container with Children"</h1>
+            <p>"This content is passed as children"</p>
+        }
+    }
+}
+```
+
+### Lesson 6: Control Flow Patterns
+
+```rust
+// @if, @else, @for, @match patterns
+#[azumi::component]
+fn ControlFlowExample(show_details: bool, items: Vec<&str>, status: &str) -> impl azumi::Component {
     html! {
         <style>
             .content { padding: "1rem"; }
             .item { margin: "0.5rem 0"; padding: "0.5rem"; background: "#f5f5f5"; }
+            .status_active { color: "green"; }
+            .status_inactive { color: "red"; }
         </style>
         <div class={content}>
             @if show_details {
@@ -96,6 +152,18 @@ fn DynamicContent(show_details: bool, items: Vec<&str>) -> impl azumi::Component
                 <h2>"Summary View"</h2>
                 <p>"Total items: " {items.len()}</p>
             }
+
+            @match status {
+                "active" => {
+                    <p class={status_active}>"Status: Active"</p>
+                }
+                "inactive" => {
+                    <p class={status_inactive}>"Status: Inactive"</p>
+                }
+                _ => {
+                    <p>"Status: Unknown"</p>
+                }
+            }
         </div>
     }
 }
@@ -103,7 +171,7 @@ fn DynamicContent(show_details: bool, items: Vec<&str>) -> impl azumi::Component
 
 ## 🔧 Advanced Patterns
 
-### Lesson 5: Form Handling with Validation
+### Lesson 7: Form Handling with Validation
 
 ```rust
 // Form validation with compile-time checks
@@ -143,7 +211,7 @@ fn UserFormComponent() -> impl azumi::Component {
 }
 ```
 
-### Lesson 6: Action System Deep Dive
+### Lesson 8: Action System Deep Dive
 
 ```rust
 // Server-side interactivity patterns
@@ -185,9 +253,43 @@ async fn increment_counter(state: CounterState) -> impl azumi::Component {
 }
 ```
 
+### Lesson 9: Feature Composition
+
+```rust
+// Combining multiple Azumi features
+#[azumi::component]
+fn FeatureShowcase() -> impl azumi::Component {
+    let items = vec!["Feature 1", "Feature 2", "Feature 3"];
+    let active = true;
+
+    html! {
+        <style>
+            .showcase { display: "grid"; gap: "2rem"; }
+            .section { padding: "1rem"; border: "1px solid #eee"; }
+            .feature_list { display: "grid"; gap: "0.5rem"; }
+            .feature_item { padding: "0.5rem"; background: "#f0f0f0"; }
+            .active_badge { background: "#4caf50"; color: "white"; padding: "0.25rem 0.5rem"; border-radius: "4px"; }
+        </style>
+        <div class={showcase}>
+            <div class={section}>
+                <h2>"Feature Composition"</h2>
+                @if active {
+                    <span class={active_badge}>"ACTIVE"</span>
+                }
+                <div class={feature_list}>
+                    @for item in &items {
+                        <div class={feature_item}>{item}</div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+```
+
 ## 🎯 Specialized Features
 
-### Lesson 7: Accessibility Patterns
+### Lesson 10: Accessibility Patterns
 
 ```rust
 // Accessibility-validated components
@@ -212,28 +314,36 @@ fn AccessibleCard(title: &str, description: &str, image_url: &str, alt_text: &st
 }
 ```
 
-### Lesson 8: Global vs Scoped CSS
+### Lesson 11: Advanced CSS Features
 
 ```rust
-// Mixing global and scoped styles
+// CSS variables, pseudo-classes, and media queries
 #[azumi::component]
-fn ThemedComponent() -> impl azumi::Component {
+fn AdvancedCSSExample() -> impl azumi::Component {
     html! {
-        <style global>
-            /* Global styles - not scoped */
-            body { font-family: "Arial, sans-serif"; }
-            a { color: "#2196f3"; text-decoration: "none"; }
-        </style>
         <style>
-            /* Component-scoped styles */
-            .component { padding: "2rem"; background: "#f9f9f9"; }
-            .local_link { color: "#ff4081"; } /* Overrides global a color */
+            :root {
+                --primary-color: #2196f3;
+                --secondary-color: #ff4081;
+            }
+            .advanced { padding: "2rem"; }
+            .button {
+                padding: "0.75rem 1.5rem";
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            .button:hover { background: var(--secondary-color); }
+            .responsive { color: "blue"; }
+            @media (max-width: 600px) {
+                .responsive { color: "red"; }
+            }
         </style>
-        <div class={component}>
-            <h1>"Global + Scoped CSS"</h1>
-            <p>"This uses both global and component-scoped styles"</p>
-            <a href="#" class={local_link}>"Local link (pink)"</a>
-            <a href="#" class="global-link">"Global link (blue)"</a>
+        <div class={advanced}>
+            <button class={button}>"Hover Me"</button>
+            <p class={responsive}>"Responsive Text"</p>
         </div>
     }
 }
@@ -241,7 +351,7 @@ fn ThemedComponent() -> impl azumi::Component {
 
 ## 🚀 Advanced Integration
 
-### Lesson 9: Database Integration
+### Lesson 12: Database Integration Patterns
 
 ```rust
 // Database-connected components
@@ -276,10 +386,10 @@ fn UserList(db: rusqlite::Connection) -> impl azumi::Component {
 }
 ```
 
-### Lesson 10: Real-time Features
+### Lesson 13: Real-time Features with External Scripts
 
 ```rust
-// WebSocket integration patterns
+// Real-time features using external scripts (no inline scripts)
 #[azumi::component]
 fn ChatInterface() -> impl azumi::Component {
     html! {
@@ -297,32 +407,18 @@ fn ChatInterface() -> impl azumi::Component {
             </div>
             <div class={input_area}>
                 <input class={chat_input} type="text" id="chat-input" placeholder="Type your message..." />
-                <button class={send_button} onclick="sendMessage()">"Send"</button>
+                <button class={send_button} onclick="window.sendMessage()">"Send"</button>
             </div>
         </div>
-        <script>
-            "function sendMessage() {
-                const input = document.getElementById('chat-input');
-                const message = input.value;
-                if (message.trim()) {
-                    // WebSocket send logic would go here
-                    const messages = document.getElementById('messages');
-                    const newMessage = document.createElement('div');
-                    newMessage.className = 'message';
-                    newMessage.textContent = message;
-                    messages.appendChild(newMessage);
-                    input.value = '';
-                    messages.scrollTop = messages.scrollHeight;
-                }
-            }"
-        </script>
+        <!-- External script import (required by Azumi) -->
+        <script src="/static/chat.js"></script>
     }
 }
 ```
 
 ## 🎓 Mastery Projects
 
-### Final Project: Complete Blog Application
+### Lesson 14: Complete Blog Application
 
 ```rust
 // Full-stack blog with all Azumi features
@@ -392,33 +488,84 @@ mod blog {
 }
 ```
 
+### Lesson 15: E-commerce Product Catalog
+
+```rust
+// Advanced e-commerce patterns
+mod ecommerce {
+    #[derive(Debug)]
+    struct Product {
+        id: i32,
+        name: String,
+        price: f64,
+        description: String,
+        in_stock: bool,
+    }
+
+    #[azumi::component]
+    fn ProductCard(product: Product) -> impl azumi::Component {
+        html! {
+            <style>
+                .product_card { border: "1px solid #eee"; padding: "1rem"; display: "grid"; gap: "0.5rem"; }
+                .product_name { font-weight: "bold"; }
+                .product_price { color: "#2196f3"; font-weight: "bold"; }
+                .product_description { color: "#666"; font-size: "0.9rem"; }
+                .add_button { padding: "0.5rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
+                .out_of_stock { opacity: "0.5"; }
+            </style>
+            <div class={if product.in_stock { "product_card" } else { "product_card out_of_stock" }}>
+                <h3 class={product_name}>{product.name}</h3>
+                <div class={product_price}>${product.price}</div>
+                <p class={product_description}>{product.description}</p>
+                @if product.in_stock {
+                    <button class={add_button}>"Add to Cart"</button>
+                }
+                @if !product.in_stock {
+                    <p>"Out of Stock"</p>
+                }
+            </div>
+        }
+    }
+
+    #[azumi::component]
+    fn ProductGrid(products: Vec<Product>) -> impl azumi::Component {
+        html! {
+            <style>
+                .grid { display: "grid"; grid-template-columns: "repeat(auto-fill, minmax(250px, 1fr))"; gap: "1rem"; }
+            </style>
+            <div class={grid}>
+                @for product in &products {
+                    @ProductCard(product=product.clone())
+                }
+            </div>
+        }
+    }
+}
+```
+
 ## 🎯 Learning Path Summary
 
-### Beginner Track (Lessons 1-4)
+### Beginner Track (Lessons 1-6)
 
-- Basic component syntax
-- CSS scoping fundamentals
-- Component composition
-- Control flow patterns
+- Basic component syntax and CSS scoping
+- Component composition and children patterns
+- Control flow with @if, @for, @match
+- Global vs component CSS management
 
-### Intermediate Track (Lessons 5-8)
+### Intermediate Track (Lessons 7-11)
 
 - Form handling and validation
-- Action system integration
-- Accessibility patterns
-- Global vs scoped CSS
+- Action system for server-side interactivity
+- Feature composition patterns
+- Accessibility patterns and validation
+- Advanced CSS features
 
-### Advanced Track (Lessons 9-10)
+### Advanced Track (Lessons 12-15)
 
-- Database integration
-- Real-time features
-- Full-stack application patterns
-
-### Mastery Project
-
+- Database integration patterns
+- Real-time features with external scripts
 - Complete blog application
-- All features integrated
-- Production-ready patterns
+- E-commerce product catalog
 
 ## 🚀 Key Takeaways
 
@@ -427,5 +574,6 @@ mod blog {
 3. **Type Safety**: Full Rust type system integration
 4. **Progressive Enhancement**: Server-side rendering with optional interactivity
 5. **Developer Experience**: Comprehensive validation and error messages
+6. **Strict Validation**: No inline scripts, proper external imports
 
-This lesson plan provides a complete roadmap for mastering Azumi, from basic concepts to advanced patterns, showcasing the full power of the framework's macro system and unique features.
+This expanded lesson plan provides a complete roadmap from basic concepts to advanced integration patterns, showcasing Azumi's full potential while adhering to all framework constraints and best practices.
