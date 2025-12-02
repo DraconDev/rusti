@@ -1,4 +1,4 @@
-use crate::actions::{toggle_like, LikeState};
+use crate::actions::{like_section, LikeState};
 use azumi::prelude::*;
 
 pub fn azumi_plus_demo() -> impl Component {
@@ -43,33 +43,8 @@ pub fn azumi_plus_demo() -> impl Component {
 
             <hr />
 
-            // Server Action
-            <div id={like_section} az-scope="{ \"liked\": false, \"count\": 10 }">
-                <h2>"Server-Side Action"</h2>
-                <p>
-                    "Likes: " <span az-bind:text="count">"10"</span>
-                </p>
-
-                // az-on with unified syntax
-                // click call toggle_like -> #like-section
-                // This calls the server action `toggle_like` with the current scope state,
-                // and replaces the #like-section with the result.
-                // Wait, the result of the action is HTML.
-                // But our action returns `LikeState`.
-                // We need the action to return HTML (Component) to replace the target.
-                // Or we need the client to handle JSON response and update scope.
-
-                // In the plan: "Server sends only necessary HTML fragments, client uses morphing"
-                // So the action should return HTML.
-
-                <button
-                    class={btn}
-                    az-bind:class.liked="liked"
-                    az-on={click call toggle_like -> #like-section}
-                >
-                    <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
-                </button>
-            </div>
+            // Server Action - using the refactored component
+            {like_section(LikeState { liked: false, count: 10 })}
         </div>
     }
 }
