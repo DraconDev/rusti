@@ -5,12 +5,13 @@ use azumi::html;
 
 #[azumi::component]
 pub fn container(children: impl azumi::Component) -> impl azumi::Component {
+    let children = &children;
     html! {
         <style>
-            .container { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
+            .content_box { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
         </style>
-        <div class={container}>
-            {&children}
+        <div class={content_box}>
+            {children}
         </div>
     }
 }
