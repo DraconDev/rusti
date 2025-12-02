@@ -2,9 +2,7 @@ use azumi::html;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
-    
-        @crate::examples::lessons::components::layout(children=lessons())
-    
+    layout(children = lessons())
 }
 
 #[azumi::component]
