@@ -17,14 +17,12 @@ pub fn accessible_card<'a>(
             .card_content { padding: "1rem"; }
             .card_title { font-size: "1.2rem"; margin-bottom: "0.5rem"; }
             .card_description { color: "#666"; }
-            #card_title { margin: "0"; }
-            #card_desc { margin: "0"; }
         </style>
-        <article class={card} aria-labelledby="card_title" aria-describedby="card_desc">
+        <article class={card} aria-label="Accessible card">
             <img class={card_image} src={image_url} alt={alt_text} />
             <div class={card_content}>
-                <h3 id="card_title" class={card_title}>{title}</h3>
-                <p id="card_desc" class={card_description}>{description}</p>
+                <h3 class={card_title}>{title}</h3>
+                <p class={card_description}>{description}</p>
             </div>
         </article>
     }
@@ -40,21 +38,18 @@ pub fn accessible_form() -> impl azumi::Component {
             .form_label { font-weight: "bold"; }
             .form_input { padding: "0.5rem"; border: "1px solid #ddd"; }
             .form_button { padding: "0.75rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
-            #form_title { margin: "0"; }
-            #username { margin: "0"; }
-            #password { margin: "0"; }
         </style>
-        <form class={accessible_form} aria-labelledby="form_title">
-            <h2 id="form_title">"Accessible Form"</h2>
+        <form class={accessible_form} aria-label="Accessible form">
+            <h2>"Accessible Form"</h2>
 
             <div class={form_group}>
                 <label class={form_label} for="username">"Username"</label>
-                <input class={form_input} type="text" id="username" name="username" required aria-required="true" />
+                <input class={form_input} type="text" name="username" required aria-required="true" />
             </div>
 
             <div class={form_group}>
                 <label class={form_label} for="password">"Password"</label>
-                <input class={form_input} type="password" id="password" name="password" required aria-required="true" />
+                <input class={form_input} type="password" name="password" required aria-required="true" />
             </div>
 
             <button class={form_button} type="submit">"Submit"</button>
@@ -72,11 +67,10 @@ pub fn accessible_navigation() -> impl azumi::Component {
             .nav_item { padding: "0.5rem"; }
             .nav_link { color: "#2196f3"; text-decoration: "none"; }
             .nav_link:hover { text-decoration: "underline"; }
-            #nav_heading { margin: "0"; }
         </style>
         <nav class={nav_container} aria-label="Main navigation">
-            <h3 id="nav_heading">"Site Navigation"</h3>
-            <ul class={nav_list} aria-labelledby="nav_heading">
+            <h3>"Site Navigation"</h3>
+            <ul class={nav_list}>
                 <li class={nav_item}>
                     <a class={nav_link} href="#home" aria-current="page">"Home"</a>
                 </li>
@@ -116,11 +110,11 @@ pub fn lesson10() -> impl azumi::Component {
             <section class={key_points}>
                 <h2 class={section_title}>"Key Concepts"</h2>
                 <ul class={points_list}>
-                    <li class={point}>"✅ Proper ARIA attributes"</li>
-                    <li class={point}>"✅ Semantic HTML structure"</li>
-                    <li class={point}>"✅ Accessible form controls"</li>
-                    <li class={point}>"✅ Keyboard navigation support"</li>
-                    <li class={point}>"✅ Screen reader compatibility"</li>
+                    <li class={point}>"Proper ARIA attributes"</li>
+                    <li class={point}>"Semantic HTML structure"</li>
+                    <li class={point}>"Accessible form controls"</li>
+                    <li class={point}>"Keyboard navigation support"</li>
+                    <li class={point}>"Screen reader compatibility"</li>
                 </ul>
             </section>
 
