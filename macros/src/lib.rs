@@ -529,12 +529,12 @@ fn validate_nodes(
                     for attr in &elem.attrs {
                         let name = &attr.name;
 
-                        // Rule 1: Allow inline styles (removed restriction)
-                        // if name == "style" {
-                        //     errors.push(quote_spanned! { attr.span =>
-                        //         compile_error!("Inline styles banned. Use CSS classes instead.");
-                        //     });
-                        // }
+                        // Rule 1: Ban inline styles - COMPILE ERROR
+                        if name == "style" {
+                            errors.push(quote_spanned! { attr.span =>
+                                compile_error!("Inline styles banned. Use CSS classes instead.");
+                            });
+                        }
 
                         // Rule 2: Check class existence - COMPILE ERROR
                         if name == "class" {

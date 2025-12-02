@@ -321,43 +321,43 @@ impl Parse for Element {
             attrs.push(input.parse()?);
         }
 
-        // Azumi 2.0: Allow inline <style> tags for flexibility
-        // if name == "style" || name == "script" {
-        //     let has_src = attrs.iter().any(|attr: &Attribute| attr.name == "src");
-        //     let is_internal = attrs
-        //         .iter()
-        //         .any(|attr: &Attribute| attr.name == "data-azumi-internal");
-        //     let is_json_script = name == "script"
-        //         && attrs.iter().any(|attr: &Attribute| {
-        //             attr.name == "type"
-        //                 && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
-        //         });
+        // Azumi 2.0: Block inline <style> and <script> tags
+        if name == "style" || name == "script" {
+            let has_src = attrs.iter().any(|attr: &Attribute| attr.name == "src");
+            let is_internal = attrs
+                .iter()
+                .any(|attr: &Attribute| attr.name == "data-azumi-internal");
+            let is_json_script = name == "script"
+                && attrs.iter().any(|attr: &Attribute| {
+                    attr.name == "type"
+                        && matches!(&attr.value, AttributeValue::Static(v) if v.contains("json"))
+                });
 
-        //     if !(has_src || is_internal || (name == "script" && is_json_script)) {
-        //         let tag_help = if name == "script" {
-        //             "JavaScript must be external or JSON data:
-        //   ✅ <script src=\"/static/app.js\" />
-        //   ✅ <script type=\"application/json\">{{ data }}</script>
-        //   ❌ <script>const x = 42;</script>
+            if !(has_src || is_internal || (name == "script" && is_json_script)) {
+                let tag_help = if name == "script" {
+                    "JavaScript must be external or JSON data:
+  ✅ <script src=\"/static/app.js\" />
+  ✅ <script type=\"application/json\">{{ data }}</script>
+  ❌ <script>const x = 42;</script>
 
-        // For data: use data-* attributes or JSON script blocks"
-        //         } else {
-        //             "CSS must be external:
-        //   ✅ <style src=\"components/card.css\" />  (auto-scoped)
-        //   ❌ <style>.card { padding: 2em; }</style>
+For data: use data-* attributes or JSON script blocks"
+                } else {
+                    "CSS must be external:
+  ✅ <style src=\"components/card.css\" />  (auto-scoped)
+  ❌ <style>.card { padding: 2em; }</style>
 
-        // For dynamic styles: use style attribute with expressions"
-        //         };
+For dynamic styles: use style attribute with expressions"
+                };
 
-        //         return Err(Error::new(
-        //             if let Some(joined) = start_span.join(name_span) { joined } else { name_span },
-        //             format!(
-        //                 "Inline <{}> tags not allowed in Azumi 2.0\n\n{}\n\nWhy? External files get full IDE support (linting, autocomplete, error checking).",
-        //                 name, tag_help
-        //             ),
-        //         ));
-        //     }
-        // }
+                return Err(Error::new(
+                    if let Some(joined) = start_span.join(name_span) { joined } else { name_span },
+                    format!(
+                        "Inline <{}> tags not allowed in Azumi 2.0\n\n{}\n\nWhy? External files get full IDE support (linting, autocomplete, error checking).",
+                        name, tag_help
+                    ),
+                ));
+            }
+        }
 
         // Azumi: Enforce component-scoped CSS - block <link rel="stylesheet"> for local files
         if name == "link" {

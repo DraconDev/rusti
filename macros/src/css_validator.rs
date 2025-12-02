@@ -182,10 +182,9 @@ pub fn validate_component_css(nodes: &[Node]) -> proc_macro2::TokenStream {
     }
 
     if !css_files.is_empty() {
-        // return quote! {
-        //     compile_error!("External CSS files are banned in Azumi. Use the style! macro instead.");
-        // };
-        // Now allowing external CSS files for flexibility
+        return quote! {
+            compile_error!("External CSS files are banned in Azumi. Use the style! macro instead.");
+        };
     }
 
     quote! {}
@@ -201,18 +200,17 @@ fn check_inline_styles_recursive(nodes: &[Node], errors: &mut Vec<proc_macro2::T
                     let is_internal = elem.attrs.iter().any(|a| a.name == "data-azumi-internal");
                     
                     if !has_src && !is_internal {
-                        // errors.push(quote! {
-                        //     compile_error!(r#"Inline <style> tags not allowed in Azumi
+                        errors.push(quote! {
+                            compile_error!(r#"Inline <style> tags not allowed in Azumi
 
-                        // CSS must be external:
-                        //   ✅ <style src="components/card.css" />  (auto-scoped)
-                        //   ❌ <style>.card { padding: 2em; }</style>
+CSS must be external:
+  ✅ <style src="components/card.css" />  (auto-scoped)
+  ❌ <style>.card { padding: 2em; }</style>
 
-                        // For dynamic styles: use style attribute with expressions
+For dynamic styles: use style attribute with expressions
 
-                        // Why? External files get full IDE support (linting, autocomplete, error checking)."#);
-                        // });
-                        // Now allowing inline styles for flexibility
+Why? External files get full IDE support (linting, autocomplete, error checking)."#);
+                        });
                     }
                 }
                 check_inline_styles_recursive(&elem.children, errors);
