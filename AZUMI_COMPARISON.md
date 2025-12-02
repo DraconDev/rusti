@@ -20,9 +20,9 @@
 // Azumi catches this at compile time:
 html! {
     <style>
-        .valid-class { color: red; }
+        .valid_class { color: red; }
     </style>
-    <div class="non-existent-class">  // ❌ Compile error: "CSS class 'non-existent-class' is not defined"
+    <div class={non_existent_class}>  // ❌ Compile error: "CSS class 'non-existent-class' is not defined"
         "Content"
     </div>
 }
@@ -37,7 +37,7 @@ html! {
 fn MyComponent() -> impl azumi::Component {
     html! {
         <style>
-            .my-class { color: red; }  // Automatically scoped to this component
+            .my_class { color: red; }  // Automatically scoped to this component
         </style>
         <div class={my_class}>Content</div>
     }
