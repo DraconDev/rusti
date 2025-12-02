@@ -21,7 +21,7 @@ pub struct CompositionState {
 /// Lesson 8: Action System Deep Dive
 ///
 /// Server-side interactivity patterns
-#[azumi::component]
+/// Server-side interactivity patterns
 pub fn counter_display(state: CounterState) -> impl azumi::Component {
     html! {
         <style>
@@ -50,7 +50,7 @@ pub async fn increment_counter(state: CounterState) -> impl azumi::Component {
 }
 
 /// Example: Action with state management
-#[azumi::component]
+/// Example: Action with state management
 pub fn state_management_example(state: ManagementState) -> impl azumi::Component {
     html! {
         <style>
@@ -90,7 +90,7 @@ pub async fn update_state(state: ManagementState) -> impl azumi::Component {
 }
 
 /// Example: Action composition
-#[azumi::component]
+/// Example: Action composition
 pub fn action_composition_example(state: CompositionState) -> impl azumi::Component {
     html! {
         <style>
@@ -170,13 +170,13 @@ pub fn lesson8() -> impl azumi::Component {
 
             <section class={examples}>
                 <div class={example_card}>
-                    @counter_display(state=counter_state)
+                    { counter_display(counter_state) }
                 </div>
                 <div class={example_card}>
-                    @state_management_example(state=management_state)
+                    { state_management_example(management_state.clone()) }
                 </div>
                 <div class={example_card}>
-                    @action_composition_example(state=composition_state)
+                    { action_composition_example(composition_state.clone()) }
                 </div>
             </section>
         </div>
