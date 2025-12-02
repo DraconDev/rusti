@@ -69,15 +69,13 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
         <div>
-            @container(
-                html! {
-                    <div class={children_demo}>
-                        <div class={child_item}>"Child 1"</div>
-                        <div class={child_item}>"Child 2"</div>
-                        <div class={child_item}>"Child 3"</div>
-                    </div>
-                }
-            )
+            @container(children=html! {
+                <div class={children_demo}>
+                    <div class={child_item}>"Child 1"</div>
+                    <div class={child_item}>"Child 2"</div>
+                    <div class={child_item}>"Child 3"</div>
+                </div>
+            })
         </div>
     }
 }
