@@ -19,6 +19,9 @@
 ```rust
 // Azumi catches this at compile time:
 html! {
+    <style>
+        .valid-class { color: red; }
+    </style>
     <div class="non-existent-class">  // ❌ Compile error: "CSS class 'non-existent-class' is not defined"
         "Content"
     </div>
@@ -31,12 +34,12 @@ html! {
 // Each component gets cryptographic scope ID automatically
 // No manual CSS modules or naming conventions needed
 #[azumi::component]
-fn MyComponent() -> impl Component {
+fn MyComponent() -> impl azumi::Component {
     html! {
         <style>
             .my-class { color: red; }  // Automatically scoped to this component
         </style>
-        <div class="my-class">Content</div>
+        <div class={my_class}>Content</div>
     }
 }
 ```
@@ -52,7 +55,7 @@ async fn like_handler(Json(payload): Json<LikeData>) -> Result<Html<String>, Err
 
 // Azumi approach (simple):
 #[azumi::action]
-async fn toggle_like(state: LikeState) -> impl Component {
+async fn toggle_like(state: LikeState) -> impl azumi::Component {
     let new_state = LikeState { liked: !state.liked, count: state.count + 1 };
     like_button(new_state)  // Just return the component!
 }
@@ -137,14 +140,14 @@ graph TD
 ```rust
 // Typical Azumi component - validated at compile time
 #[azumi::component]
-fn UserCard(name: &str, age: i32) -> impl Component {
+fn UserCard(name: &str, age: i32) -> impl azumi::Component {
     html! {
         <style>
             .card { padding: "1rem"; border: "1px solid #ddd"; }
             .name { color: "#1976d2"; }
         </style>
-        <div class="card">
-            <h3 class="name">{name}</h3>
+        <div class={card}>
+            <h3 class={name}>{name}</h3>
             <p>"Age: " {age}</p>
         </div>
     }
