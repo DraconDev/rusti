@@ -18,7 +18,8 @@ pub fn conditional_example() -> impl azumi::Component {
             <h3>"Authentication Status"</h3>
             @if is_logged_in {
                 <p class={welcome}>"Welcome back, " {user_name} "!"</p>
-            } @else {
+            }
+            @if !is_logged_in {
                 <p class={login_prompt}>"Please log in to continue"</p>
             }
         </div>
@@ -41,9 +42,11 @@ pub fn multi_condition() -> impl azumi::Component {
             <h3>"Permission Check"</h3>
             @if user_role == "admin" && has_permission {
                 <p class={granted}>"Full access granted"</p>
-            } @else if user_role == "user" {
+            }
+            @if user_role == "user" {
                 <p>"Limited access"</p>
-            } @else {
+            }
+            @if user_role != "admin" && user_role != "user" {
                 <p class={denied}>"Access denied"</p>
             }
         </div>
