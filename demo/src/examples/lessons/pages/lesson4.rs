@@ -42,12 +42,13 @@ pub fn nested_children() -> impl azumi::Component {
         </style>
         <div>
             <h3>"Nested Children Example"</h3>
-            @container {
-                <p>"Outer content"</p>
-                <div class={outer_container}>
-                    <p>"Inner nested content"</p>
-                    @container {
-                        <p>"Deeply nested content"</p>
+            @container(
+                html! {
+                    <p>"Outer content"</p>
+                    <div class={outer_container}>
+                        <p>"Inner nested content"</p>
+                        @container {
+                            <p>"Deeply nested content"</p>
                     }
                 </div>
             }
@@ -64,13 +65,15 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
         <div>
-            @contain {
-                <div class={children_demo}>
-                    <div class={child_item}>"Child 1"</div>
-                    <div class={child_item}>"Child 2"</div>
-                    <div class={child_item}>"Child 3"</div>
-                </div>
-            }
+            @container(
+                html! {
+                    <div class={children_demo}>
+                        <div class={child_item}>"Child 1"</div>
+                        <div class={child_item}>"Child 2"</div>
+                        <div class={child_item}>"Child 3"</div>
+                    </div>
+                }
+            )
         </div>
     }
 }
