@@ -151,16 +151,16 @@ pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Compon
             }
 
             /* Animation for modern feel */
-            @keyframes fadeInUp {
-                from {
-                    opacity: "0";
-                    transform: "translateY(20px)";
-                }
-                to {
-                    opacity: "1";
-                    transform: "translateY(0)";
-                }
-            }
+            // @keyframes fadeInUp {
+            //     from {
+            //         opacity: "0";
+            //         transform: "translateY(20px)";
+            //     }
+            //     to {
+            //         opacity: "1";
+            //         transform: "translateY(0)";
+            //     }
+            // }
 
             .fade_in_up {
                 animation: fadeInUp 0.6s ease-out;
