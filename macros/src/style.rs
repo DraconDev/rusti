@@ -62,20 +62,38 @@ impl Parse for AtRule {
         input.parse::<Token![@]>()?;
         let name = input.parse::<Ident>()?.to_string();
 
-        // For keyframes, we need to parse the full block structure
+        // Parse everything until we hit a semicolon or end
         let mut content = String::new();
+        let mut depth = 0;
+        let mut found_opening_brace = false;
 
-        // Parse the keyframe name
-        let keyframe_name = input.parse::<Ident>()?.to_string();
-        content.push_str(&keyframe_name);
+        while !input.is_empty() {
+            let fork = input.fork();
+            let tt: TokenTree = fork.parse()?;
+            let token_str = tt.to_string();
 
-        // Parse the opening brace
-        let content;
-        syn::braced!(content in input);
-        let brace_content = content.to_string();
-        content.push_str(" {");
-        content.push_str(&brace_content);
-        content.push_str("}");
+            // Handle braces for nested structures
+            if token_str == "{" {
+                depth += 1;
+                found_opening_brace = true;
+            } else if token_str == "}" {
+                depth -= 1;
+            }
+
+            // Stop when we've closed all braces and hit a semicolon
+            if depth == 0 && input.peek(Token![;]) {
+                break;
+            }
+
+            // Consume the token
+            let tt: TokenTree = input.parse()?;
+            content.push_str(&tt.to_string());
+        }
+
+        // Consume trailing semicolon if present
+        if input.peek(Token![;]) {
+            input.parse::<Token![;]>()?;
+        }
 
         Ok(AtRule { name, content })
     }
