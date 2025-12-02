@@ -94,7 +94,6 @@ pub fn multiple_children_example() -> impl azumi::Component {
 pub fn lesson4() -> impl azumi::Component {
     html! {
         <style>
-            .container { padding: "20px"; }
             .header { text-align: "center"; margin-bottom: "30px"; }
             .main_title { font-size: "32px"; color: "#333"; }
             .subtitle { font-size: "18px"; color: "#666"; }
@@ -105,35 +104,39 @@ pub fn lesson4() -> impl azumi::Component {
             .examples { display: "grid"; gap: "20px"; }
             .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 5: Children Pattern"</h1>
-                <p class={subtitle}>"Components with children parameter"</p>
-            </header>
+        @layout_component::dark_modern_layout(
+            html! {
+                <div>
+                    <header class={header}>
+                        <h1 class={main_title}>"Lesson 5: Children Pattern"</h1>
+                        <p class={subtitle}>"Components with children parameter"</p>
+                    </header>
 
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ Children parameter allows component composition"</li>
-                    <li class={point}>"✅ Pass any Azumi component as children"</li>
-                    <li class={point}>"✅ Children can contain multiple elements"</li>
-                    <li class={point}>"✅ Enables flexible layout patterns"</li>
-                    <li class={point}>"✅ Maintains clean component boundaries"</li>
-                </ul>
-            </section>
+                    <section class={key_points}>
+                        <h2 class={section_title}>"Key Concepts"</h2>
+                        <ul class={points_list}>
+                            <li class={point}>"✅ Children parameter allows component composition"</li>
+                            <li class={point}>"✅ Pass any Azumi component as children"</li>
+                            <li class={point}>"✅ Children can contain multiple elements"</li>
+                            <li class={point}>"✅ Enables flexible layout patterns"</li>
+                            <li class={point}>"✅ Maintains clean component boundaries"</li>
+                        </ul>
+                    </section>
 
-            <section class={examples}>
-                <div class={example_card}>
-                    @layout_example()
+                    <section class={examples}>
+                        <div class={example_card}>
+                            @layout_example()
+                        </div>
+                        <div class={example_card}>
+                            @nested_children()
+                        </div>
+                        <div class={example_card}>
+                            @multiple_children_example()
+                        </div>
+                    </section>
                 </div>
-                <div class={example_card}>
-                    @nested_children()
-                </div>
-                <div class={example_card}>
-                    @multiple_children_example()
-                </div>
-            </section>
-        </div>
+            }
+        )
     }
 }
 
