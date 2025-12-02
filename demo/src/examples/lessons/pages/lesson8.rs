@@ -139,6 +139,7 @@ pub fn lesson8() -> impl azumi::Component {
     };
 
     html! {
+        <script src="/static/azumi.js"></script>
         <style>
             .container { padding: "20px"; }
             .header { text-align: "center"; margin-bottom: "30px"; }
