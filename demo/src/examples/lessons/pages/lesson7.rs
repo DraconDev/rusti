@@ -39,8 +39,11 @@ pub fn custom_button<'a>(text: &'a str, color: &'a str) -> impl azumi::Component
     html! {
         <style>
             .btn { padding: "10px 20px"; border: "none"; border-radius: "4px"; cursor: "pointer"; }
+            .color-2196f3 { background-color: "#2196f3"; }
+            .color-4caf50 { background-color: "#4caf50"; }
+            .color-f44336 { background-color: "#f44336"; }
         </style>
-        <button class={btn} style={format!("background-color: {}", color)}>
+        <button class={btn} class={format!("color-{}", color.replace("#", ""))}>
             {text}
         </button>
     }

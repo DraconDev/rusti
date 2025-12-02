@@ -63,13 +63,13 @@ pub fn complex_data_list() -> impl azumi::Component {
         </style>
         <div class={users_container}>
             <h3>"User List"</h3>
-            <div class="user_card active">
+            <div class={user_card} class={active}>
                 <p><strong>"Alice"</strong> " - Age: 25 - Status: active"</p>
             </div>
-            <div class="user_card inactive">
+            <div class={user_card} class={inactive}>
                 <p><strong>"Bob"</strong> " - Age: 30 - Status: inactive"</p>
             </div>
-            <div class="user_card active">
+            <div class={user_card} class={active}>
                 <p><strong>"Charlie"</strong> " - Age: 22 - Status: active"</p>
             </div>
         </div>
