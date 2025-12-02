@@ -1,16 +1,19 @@
 # Azumi: A Revolutionary Approach to Rust Web Development
 
-## 🔍 Comparative Analysis: Azumi vs Other Rust Web Frameworks
+## 🔍 Comparative Analysis: Azumi vs Other Web Frameworks
 
 ### 🎯 Core Philosophy Comparison
 
-| Framework | Primary Focus            | Rendering Model                       | Type Safety              | CSS Integration                  |
-| --------- | ------------------------ | ------------------------------------- | ------------------------ | -------------------------------- |
-| **Azumi** | Compile-time HTML safety | Server-side + Progressive Enhancement | ✅ Full Rust type system | ✅ Deep CSS validation & scoping |
-| Leptos    | Runtime reactivity       | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
-| Yew       | Component-based UI       | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
-| Sycamore  | React-like experience    | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
-| Actix-Web | Traditional web          | Server-side                           | ❌ Manual HTML           | ❌ Manual CSS                    |
+| Framework   | Primary Focus             | Rendering Model                       | Type Safety              | CSS Integration                  |
+| ----------- | ------------------------- | ------------------------------------- | ------------------------ | -------------------------------- |
+| **Azumi**   | Compile-time HTML safety  | Server-side + Progressive Enhancement | ✅ Full Rust type system | ✅ Deep CSS validation & scoping |
+| Leptos      | Runtime reactivity        | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
+| Yew         | Component-based UI        | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
+| Sycamore    | React-like experience     | Client-side (WASM)                    | ✅ Rust types            | Basic CSS support                |
+| Actix-Web   | Traditional web           | Server-side                           | ❌ Manual HTML           | ❌ Manual CSS                    |
+| **Templ**   | Go HTML templates         | Server-side                           | ✅ Go type system        | Basic CSS support                |
+| **Next.js** | React framework           | Server-side + Client-side             | ✅ TypeScript            | CSS-in-JS/Modules                |
+| **Svelte**  | Compile-time optimization | Client-side + SSR                     | ✅ TypeScript            | Scoped CSS                       |
 
 ### 🚀 Key Innovations in Azumi
 
@@ -81,7 +84,9 @@ graph TD
 
     Leptos --> |Runtime| Reactive Signals
     Yew --> |Runtime| Virtual DOM
-    Actix --> |Runtime| Manual HTML
+    Templ --> |Compile-time| Go Templates
+    Next.js --> |Hybrid| React Components
+    Svelte --> |Compile-time| Optimized Components
 ```
 
 #### Performance Characteristics
@@ -92,15 +97,21 @@ graph TD
 | Leptos    | 🟡 Medium (WASM)           | 🟡 Good     | ✅ Full        | ❌ Poor      |
 | Yew       | 🟠 Large (WASM)            | 🟠 Slow     | ✅ Full        | ❌ Poor      |
 | Actix     | 🟢 Small                   | 🟢 Instant  | ❌ Manual      | ✅ Excellent |
+| Templ     | 🟢 Small                   | 🟢 Instant  | ❌ Manual      | ✅ Excellent |
+| Next.js   | 🟡 Medium (JS)             | 🟢 Good     | ✅ Full        | ✅ Excellent |
+| Svelte    | 🟢 Small                   | 🟢 Good     | ✅ Full        | ✅ Excellent |
 
 ### 🎓 Learning Curve Comparison
 
-| Framework | Rust Knowledge | Web Knowledge  | Setup Complexity | Debugging              |
-| --------- | -------------- | -------------- | ---------------- | ---------------------- |
-| Azumi     | Intermediate   | Basic HTML/CSS | ✅ Simple        | ✅ Compile-time errors |
-| Leptos    | Advanced       | React-like     | 🟡 Moderate      | 🟡 Runtime errors      |
-| Yew       | Advanced       | Web Components | 🟠 Complex       | 🟠 Runtime errors      |
-| Actix     | Basic          | Full-stack     | 🟢 Simple        | ❌ Manual debugging    |
+| Framework | Language Knowledge  | Web Knowledge   | Setup Complexity | Debugging              |
+| --------- | ------------------- | --------------- | ---------------- | ---------------------- |
+| Azumi     | Rust (Intermediate) | Basic HTML/CSS  | ✅ Simple        | ✅ Compile-time errors |
+| Leptos    | Rust (Advanced)     | React-like      | 🟡 Moderate      | 🟡 Runtime errors      |
+| Yew       | Rust (Advanced)     | Web Components  | 🟠 Complex       | 🟠 Runtime errors      |
+| Actix     | Rust (Basic)        | Full-stack      | 🟢 Simple        | ❌ Manual debugging    |
+| Templ     | Go (Intermediate)   | HTML Templates  | ✅ Simple        | ✅ Compile-time errors |
+| Next.js   | JavaScript/TS       | React           | 🟡 Moderate      | 🟡 Runtime errors      |
+| Svelte    | JavaScript/TS       | Component-based | ✅ Simple        | 🟡 Runtime errors      |
 
 ### 🔧 When to Choose Azumi
 
@@ -115,6 +126,9 @@ graph TD
 
 **❌ Consider alternatives if you need:**
 
+- **Templ**: Go-based templating with similar compile-time safety
+- **Next.js**: JavaScript ecosystem with hybrid rendering
+- **Svelte**: Compile-time optimization with simpler syntax
 - Full client-side interactivity (choose Leptos/Yew)
 - Real-time reactivity without page reloads
 - Complex client-side state management
@@ -122,18 +136,18 @@ graph TD
 
 ### 📊 Feature Matrix
 
-| Feature                      | Azumi | Leptos | Yew | Sycamore | Actix |
-| ---------------------------- | ----- | ------ | --- | -------- | ----- |
-| Compile-time HTML validation | ✅    | ❌     | ❌  | ❌       | ❌    |
-| CSS-HTML co-validation       | ✅    | ❌     | ❌  | ❌       | ❌    |
-| Automatic CSS scoping        | ✅    | ❌     | ❌  | ❌       | ❌    |
-| Server-side rendering        | ✅    | ❌     | ❌  | ❌       | ✅    |
-| Client-side interactivity    | ✅    | ✅     | ✅  | ✅       | ❌    |
-| Type-safe components         | ✅    | ✅     | ✅  | ✅       | ❌    |
-| Accessibility validation     | ✅    | ❌     | ❌  | ❌       | ❌    |
-| Action system                | ✅    | ❌     | ❌  | ❌       | ❌    |
-| Progressive enhancement      | ✅    | ❌     | ❌  | ❌       | ❌    |
-| SEO friendly                 | ✅    | ❌     | ❌  | ❌       | ✅    |
+| Feature                      | Azumi | Leptos | Yew | Sycamore | Actix | Templ | Next.js | Svelte |
+| ---------------------------- | ----- | ------ | --- | -------- | ----- | ----- | ------- | ------ |
+| Compile-time HTML validation | ✅    | ❌     | ❌  | ❌       | ❌    | ✅    | ❌      | ✅     |
+| CSS-HTML co-validation       | ✅    | ❌     | ❌  | ❌       | ❌    | ❌    | ❌      | ✅     |
+| Automatic CSS scoping        | ✅    | ❌     | ❌  | ❌       | ❌    | ❌    | ❌      | ✅     |
+| Server-side rendering        | ✅    | ❌     | ❌  | ❌       | ✅    | ✅    | ✅      | ✅     |
+| Client-side interactivity    | ✅    | ✅     | ✅  | ✅       | ❌    | ❌    | ✅      | ✅     |
+| Type-safe components         | ✅    | ✅     | ✅  | ✅       | ❌    | ✅    | ✅      | ✅     |
+| Accessibility validation     | ✅    | ❌     | ❌  | ❌       | ❌    | ❌    | ❌      | ❌     |
+| Action system                | ✅    | ❌     | ❌  | ❌       | ❌    | ❌    | ❌      | ❌     |
+| Progressive enhancement      | ✅    | ❌     | ❌  | ❌       | ❌    | ❌    | ✅      | ❌     |
+| SEO friendly                 | ✅    | ❌     | ❌  | ❌       | ✅    | ✅    | ✅      | ✅     |
 
 ### 🚀 Performance Benchmarks (Theoretical)
 
@@ -153,19 +167,75 @@ fn UserCard(name: &str, age: i32) -> impl azumi::Component {
     }
 }
 
-// Equivalent in other frameworks would require:
-// - Manual CSS class checking
-// - No compile-time validation
-// - Manual error handling
+// Equivalent in other frameworks:
+/*
+Templ (Go):
+templ UserCard(name string, age int) {
+    <div class="card">
+        <h3 class="name">{name}</h3>
+        <p>Age: {age}</p>
+    </div>
+}
+
+Next.js (React):
+function UserCard({ name, age }) {
+    return (
+        <div className="card">
+            <h3 className="name">{name}</h3>
+            <p>Age: {age}</p>
+        </div>
+    );
+}
+
+Svelte:
+<script>
+    export let name;
+    export let age;
+</script>
+
+<div class="card">
+    <h3 class="name">{name}</h3>
+    <p>Age: {age}</p>
+</div>
+*/
 ```
+
+### 🎯 Cross-Language Comparison
+
+#### Azumi vs Templ (Go)
+
+- **Azumi**: Rust-based with deep CSS-HTML validation
+- **Templ**: Go-based with simpler compile-time checking
+- **Similarity**: Both provide compile-time safety
+- **Difference**: Azumi has CSS validation and scoping
+
+#### Azumi vs Next.js (JavaScript)
+
+- **Azumi**: Rust type system with compile-time guarantees
+- **Next.js**: JavaScript ecosystem with hybrid rendering
+- **Similarity**: Both support server-side rendering
+- **Difference**: Azumi provides deeper validation
+
+#### Azumi vs Svelte (JavaScript)
+
+- **Azumi**: Compile-time CSS-HTML validation
+- **Svelte**: Compile-time optimization with scoped CSS
+- **Similarity**: Both have compile-time benefits
+- **Difference**: Azumi uses Rust's type system
 
 ### 🎯 Conclusion
 
-Azumi represents a paradigm shift in Rust web development by:
+Azumi represents a paradigm shift in web development by:
 
 1. **Moving validation to compile-time** - Catching errors before they reach production
 2. **Unifying HTML and CSS** - Treating them as a cohesive system rather than separate concerns
 3. **Simplifying interactivity** - The action system reduces boilerplate for common patterns
 4. **Enforcing best practices** - Accessibility, structure, and naming conventions built-in
 
-For teams that value safety, maintainability, and developer experience, Azumi provides a compelling alternative to traditional Rust web frameworks.
+**Cross-Language Positioning:**
+
+- **vs Rust frameworks**: Most comprehensive compile-time validation
+- **vs Go frameworks**: Deeper CSS integration and validation
+- **vs JavaScript frameworks**: Rust type safety with similar developer experience
+
+For teams that value safety, maintainability, and developer experience across language ecosystems, Azumi provides a compelling alternative with its unique combination of compile-time guarantees and progressive enhancement.
