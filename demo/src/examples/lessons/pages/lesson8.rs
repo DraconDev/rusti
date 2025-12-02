@@ -22,7 +22,7 @@ pub struct CompositionState {
 ///
 /// Server-side interactivity patterns
 #[azumi::component]
-pub fn counter_display() -> impl azumi::Component {
+pub fn counter_display(state: CounterState) -> impl azumi::Component {
     html! {
         <style>
             .counter { padding: "2rem"; text-align: "center"; border: "1px solid #eee"; }
@@ -30,14 +30,22 @@ pub fn counter_display() -> impl azumi::Component {
             .counter_button { padding: "1rem 2rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
             .timestamp { font-size: "0.8rem"; color: "#666"; }
         </style>
-        <div class={counter}>
-            <div class={count_display}>"0"</div>
-            <button class={counter_button}>
+        <div id="counter_box" class={counter} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
+            <div class={count_display}>{state.count}</div>
+            <button class={counter_button} az-on={click call increment_counter -> #counter_box}>
                 "Increment"
             </button>
             <div class={timestamp}>"Last updated: 12:00:00"</div>
         </div>
     }
+}
+
+#[azumi::action]
+pub async fn increment_counter(state: CounterState) -> impl azumi::Component {
+    let new_state = CounterState {
+        count: state.count + 1,
+    };
+    counter_display(new_state)
 }
 
 /// Example: Action with state management
