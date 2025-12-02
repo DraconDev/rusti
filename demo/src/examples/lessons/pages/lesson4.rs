@@ -105,7 +105,7 @@ pub fn lesson4() -> impl azumi::Component {
             .examples { display: "grid"; gap: "20px"; }
             .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        @layout::dark_modern_layout(
+        @layout::dark_modern_layout_component(
             children=html! {
                 <div>
                     <header class={header}>
