@@ -1,10 +1,10 @@
+
 use azumi::html;
 
 /// Lesson 6: Control Flow Patterns
 ///
 /// @if, @else, @for, @match patterns
 #[azumi::component]
-pub fn control_flow_example() -> impl azumi::Component {
     let show_details = true;
     let items = vec!["Item 1", "Item 2", "Item 3"];
     let status = "active";
