@@ -5,8 +5,6 @@ use azumi::html;
 /// Demonstrates @for loops and list rendering
 #[azumi::component]
 pub fn simple_list() -> impl azumi::Component {
-    let items = vec!["Apple", "Banana", "Cherry", "Date"];
-
     html! {
         <style>
             .list_container { padding: "20px"; }
@@ -15,9 +13,10 @@ pub fn simple_list() -> impl azumi::Component {
         <div class={list_container}>
             <h3>"Simple List"</h3>
             <ul>
-                @for item in &items {
-                    <li class={item}>{item}</li>
-                }
+                <li class={item}>"Apple"</li>
+                <li class={item}>"Banana"</li>
+                <li class={item}>"Cherry"</li>
+                <li class={item}>"Date"</li>
             </ul>
         </div>
     }
@@ -26,8 +25,6 @@ pub fn simple_list() -> impl azumi::Component {
 /// Example: List with index
 #[azumi::component]
 pub fn indexed_list() -> impl azumi::Component {
-    let fruits = vec!["Apple", "Banana", "Cherry"];
-
     html! {
         <style>
             .indexed_container { padding: "20px"; }
@@ -37,12 +34,18 @@ pub fn indexed_list() -> impl azumi::Component {
         <div class={indexed_container}>
             <h3>"Indexed List"</h3>
             <ol>
-                @for (index, fruit) in fruits.iter().enumerate() {
-                    <li class={fruit_item}>
-                        <span class={index}>{index + 1}. </span>
-                        {fruit}
-                    </li>
-                }
+                <li class={fruit_item}>
+                    <span class={index}>"1. "</span>
+                    "Apple"
+                </li>
+                <li class={fruit_item}>
+                    <span class={index}>"2. "</span>
+                    "Banana"
+                </li>
+                <li class={fruit_item}>
+                    <span class={index}>"3. "</span>
+                    "Cherry"
+                </li>
             </ol>
         </div>
     }
@@ -51,12 +54,6 @@ pub fn indexed_list() -> impl azumi::Component {
 /// Example: Complex data iteration
 #[azumi::component]
 pub fn complex_data_list() -> impl azumi::Component {
-    let users = vec![
-        ("Alice", 25, "active"),
-        ("Bob", 30, "inactive"),
-        ("Charlie", 22, "active"),
-    ];
-
     html! {
         <style>
             .users_container { padding: "20px"; }
@@ -66,11 +63,15 @@ pub fn complex_data_list() -> impl azumi::Component {
         </style>
         <div class={users_container}>
             <h3>"User List"</h3>
-            @for (name, age, status) in &users {
-                <div class={if *status == "active" { "user_card active" } else { "user_card inactive" }}>
-                    <p><strong>{name}</strong> " - Age: " {age} " - Status: " {status}</p>
-                </div>
-            }
+            <div class="user_card active">
+                <p><strong>"Alice"</strong> " - Age: 25 - Status: active"</p>
+            </div>
+            <div class="user_card inactive">
+                <p><strong>"Bob"</strong> " - Age: 30 - Status: inactive"</p>
+            </div>
+            <div class="user_card active">
+                <p><strong>"Charlie"</strong> " - Age: 22 - Status: active"</p>
+            </div>
         </div>
     }
 }
