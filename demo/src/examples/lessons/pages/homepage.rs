@@ -2,7 +2,7 @@ use azumi::html;
 
 #[azumi::component]
 pub fn homepage() -> impl azumi::Component {
-    layout(children = lessons())
+    modern_layout(children = lessons())
 }
 
 #[azumi::component]
