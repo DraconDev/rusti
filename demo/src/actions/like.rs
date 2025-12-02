@@ -8,7 +8,7 @@ pub struct LikeState {
 }
 
 /// Server-side action that toggles the like state
-#[azumi::action]
+// #[azumi::action]
 pub async fn toggle_like(state: LikeState) -> impl Component {
     let new_state = LikeState {
         liked: !state.liked,
