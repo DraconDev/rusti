@@ -2,83 +2,6 @@ class Azumi {
     constructor() {
         this.scopes = new WeakMap(); // Element -> Proxy
         this.delegate();
-        this.initScopes();
-    }
-
-    // Initialize all az-scope elements
-    initScopes() {
-        document.querySelectorAll("[az-scope]").forEach((el) => {
-            try {
-                const data = JSON.parse(el.getAttribute("az-scope"));
-                this.createScope(el, data);
-            } catch (e) {
-                console.error("Failed to parse az-scope:", e);
-            }
-        });
-    }
-
-    // Create a reactive scope
-    createScope(element, data) {
-        const self = this;
-        const proxy = new Proxy(data, {
-            set(target, key, value) {
-                target[key] = value;
-                self.updateBindings(element, key, value);
-                return true;
-            },
-        });
-        this.scopes.set(element, proxy);
-        // Initial render of bindings
-        this.renderBindings(element, proxy);
-    }
-
-    // Find the scope for an element (walk up the tree)
-    findScope(element) {
-        let current = element;
-        while (current) {
-            if (this.scopes.has(current)) {
-                return this.scopes.get(current);
-            }
-            current = current.parentElement;
-        }
-        return null;
-    }
-
-    // Render all bindings within a scope
-    renderBindings(scopeEl, scope) {
-        // az-bind:text="key"
-        scopeEl.querySelectorAll("[az-bind\\:text]").forEach((el) => {
-            const expr = el.getAttribute("az-bind:text");
-            const value = this.evalExpr(expr, scope);
-            if (value !== undefined) el.textContent = value;
-        });
-
-        // az-bind:class.foo="condition"
-        for (const attr of scopeEl.attributes || []) {
-            if (attr.name.startsWith("az-bind:class.")) {
-                const className = attr.name.slice("az-bind:class.".length);
-                const condition = attr.value;
-                const shouldHave = this.evalExpr(condition, scope);
-                scopeEl.classList.toggle(className, !!shouldHave);
-            }
-        }
-    }
-
-    // Update bindings when state changes
-    updateBindings(scopeEl, key, value) {
-        this.renderBindings(scopeEl, this.scopes.get(scopeEl));
-    }
-
-    // Simple expression evaluation
-    evalExpr(expr, scope) {
-        // Handle simple cases: "count", "liked", "count + 1", etc.
-        try {
-            const func = new Function(...Object.keys(scope), `return ${expr}`);
-            return func(...Object.values(scope));
-        } catch (e) {
-            console.warn("Failed to eval expression:", expr, e);
-            return undefined;
-        }
     }
 
     // Event delegation
@@ -93,24 +16,32 @@ class Azumi {
         const target = e.target.closest(`[az-on]`);
         if (!target) return;
 
+        // Check if the event type matches the trigger (e.g. "click ...")
+        // Simple parsing: "click call foo" or "submit call bar"
         const attr = target.getAttribute("az-on");
         const parts = attr.split(" ");
         const trigger = parts[0];
 
         if (trigger !== e.type) return;
 
-        e.preventDefault();
+        e.preventDefault(); // Default prevent for handled events
 
+        // Parse the rest: "call toggle_like -> #box"
+        // This is a very basic parser for the prototype
         const action = this.parseAction(parts.slice(1).join(" "), target);
         if (action) this.execute(action, target);
     }
 
     parseAction(cmd, element) {
+        // Format: "call <url> -> <target> <swap>"
+        // or "set <key> = <value>"
+
         const tokens = cmd.split(" ");
         const type = tokens[0]; // "call" or "set"
 
         if (type === "call") {
-            let url = tokens[1];
+            let actionName = tokens[1];
+            let url = `/_azumi/action/${actionName}`;
             let targetSelector = null;
             let swap = "morph";
 
@@ -125,22 +56,11 @@ class Azumi {
             return { type: "call", url, target: targetSelector, swap };
         }
 
-        if (type === "set") {
-            // Format: "set count = count + 1"
-            const rest = tokens.slice(1).join(" ");
-            const eqIndex = rest.indexOf("=");
-            if (eqIndex === -1) return null;
-
-            const key = rest.slice(0, eqIndex).trim();
-            const valueExpr = rest.slice(eqIndex + 1).trim();
-
-            return { type: "set", key, valueExpr };
-        }
-
+        // TODO: Implement 'set' for local state
         return null;
     }
 
-    // Execute: "call toggle_like -> #box" or "set count = count + 1"
+    // Execute: "call toggle_like -> #box" or "set open = true"
     async execute(action, element) {
         if (action.type === "call") {
             await this.callAction(action, element);
@@ -151,13 +71,18 @@ class Azumi {
 
     // Server action
     async callAction(action, element) {
-        // Get scope data to send to server
-        const scopeEl = element.closest("[az-scope]");
-        let body = {};
-
-        if (scopeEl && this.scopes.has(scopeEl)) {
-            const scope = this.scopes.get(scopeEl);
-            body = { ...scope };
+        // Collect form data if it's a form or has inputs
+        let body = null;
+        if (element.tagName === "FORM") {
+            body = new FormData(element);
+            // Convert to JSON for Axum if needed, or send as FormData
+            // For now, let's assume JSON payload for actions
+            const data = Object.fromEntries(body.entries());
+            // Add context from az-scope if needed
+            body = JSON.stringify(data);
+        } else {
+            // For buttons, maybe send some data?
+            body = JSON.stringify({});
         }
 
         try {
@@ -166,7 +91,7 @@ class Azumi {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(body),
+                body,
             });
 
             if (!res.ok) throw new Error(`Action failed: ${res.status}`);
@@ -182,11 +107,8 @@ class Azumi {
                 window.Idiomorph.morph(target, html);
             } else if (target) {
                 console.warn("Idiomorph not loaded, falling back to innerHTML");
-                target.outerHTML = html;
+                target.innerHTML = html;
             }
-
-            // Re-initialize scopes after DOM update
-            setTimeout(() => this.initScopes(), 10);
         } catch (err) {
             console.error("Azumi action error:", err);
         }
@@ -194,21 +116,9 @@ class Azumi {
 
     // Local state change
     setState(action, element) {
-        const scopeEl = element.closest("[az-scope]");
-        if (!scopeEl) {
-            console.warn("No az-scope found for setState");
-            return;
-        }
-
-        const scope = this.scopes.get(scopeEl);
-        if (!scope) {
-            console.warn("Scope not initialized");
-            return;
-        }
-
-        // Evaluate the expression
-        const value = this.evalExpr(action.valueExpr, scope);
-        scope[action.key] = value; // This triggers the proxy setter
+        // const scope = this.findScope(element);
+        // scope[action.key] = action.value; // Proxy auto-updates bindings
+        console.log("Set state not implemented yet");
     }
 }
 

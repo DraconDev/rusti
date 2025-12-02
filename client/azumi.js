@@ -40,7 +40,8 @@ class Azumi {
         const type = tokens[0]; // "call" or "set"
 
         if (type === "call") {
-            let url = tokens[1];
+            let actionName = tokens[1];
+            let url = `/_azumi/action/${actionName}`;
             let targetSelector = null;
             let swap = "morph";
 
