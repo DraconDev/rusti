@@ -4,7 +4,12 @@ use azumi::html;
 ///
 /// Accessibility-validated components
 #[azumi::component]
-pub fn accessible_card(title: &str, description: &str, image_url: &str, alt_text: &str) -> impl azumi::Component {
+pub fn accessible_card<'a>(
+    title: &'a str,
+    description: &'a str,
+    image_url: &'a str,
+    alt_text: &'a str,
+) -> impl azumi::Component + 'a {
     html! {
         <style>
             .card { max-width: "300px"; border: "1px solid #ddd"; border-radius: "8px"; overflow: "hidden"; }
@@ -12,6 +17,8 @@ pub fn accessible_card(title: &str, description: &str, image_url: &str, alt_text
             .card_content { padding: "1rem"; }
             .card_title { font-size: "1.2rem"; margin-bottom: "0.5rem"; }
             .card_description { color: "#666"; }
+            #card_title { margin: "0"; }
+            #card_desc { margin: "0"; }
         </style>
         <article class={card} aria-labelledby="card_title" aria-describedby="card_desc">
             <img class={card_image} src={image_url} alt={alt_text} />
@@ -33,6 +40,9 @@ pub fn accessible_form() -> impl azumi::Component {
             .form_label { font-weight: "bold"; }
             .form_input { padding: "0.5rem"; border: "1px solid #ddd"; }
             .form_button { padding: "0.75rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
+            #form_title { margin: "0"; }
+            #username { margin: "0"; }
+            #password { margin: "0"; }
         </style>
         <form class={accessible_form} aria-labelledby="form_title">
             <h2 id="form_title">"Accessible Form"</h2>
@@ -62,6 +72,7 @@ pub fn accessible_navigation() -> impl azumi::Component {
             .nav_item { padding: "0.5rem"; }
             .nav_link { color: "#2196f3"; text-decoration: "none"; }
             .nav_link:hover { text-decoration: "underline"; }
+            #nav_heading { margin: "0"; }
         </style>
         <nav class={nav_container} aria-label="Main navigation">
             <h3 id="nav_heading">"Site Navigation"</h3>
