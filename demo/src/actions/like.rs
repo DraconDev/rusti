@@ -1,28 +1,15 @@
 use azumi::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Clone)]
 pub struct LikeState {
     pub liked: bool,
     pub count: i32,
 }
 
-/// Server-side action that toggles the like state
-#[azumi::action]
-pub async fn toggle_like(state: LikeState) -> impl Component {
-    let new_state = LikeState {
-        liked: !state.liked,
-        count: if !state.liked {
-            state.count + 1
-        } else {
-            state.count - 1
-        },
-    };
-
-    // Serialize to JSON for az-scope attribute
-    let scope_json = serde_json::to_string(&new_state).unwrap_or_default();
-
-    // Return the updated HTML fragment
+/// Outer shell - rendered once on page load, contains styles
+#[azumi::component]
+pub fn like_section(state: LikeState) -> impl Component {
     html! {
         <style>
             .btn {
@@ -38,10 +25,23 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
             }
             #like_section {}
         </style>
-        <div id={like_section} az-scope={format!("{}", scope_json)}>
+
+        // Render the dynamic core
+        @like_button(state)
+    }
+}
+
+/// Inner fragment - this is what gets swapped by actions
+#[azumi::component]
+pub fn like_button(state: LikeState) -> impl Component {
+    // Serialize state for az-scope
+    let scope_json = serde_json::to_string(&state).unwrap_or_default();
+
+    html! {
+        <div id={like_section} az-scope={scope_json}>
             <h2>"Server-Side Action"</h2>
             <p>
-                "Likes: " <span az-bind:text="count">"10"</span>
+                "Likes: " <span az-bind:text="count">{state.count}</span>
             </p>
 
             <button
@@ -49,8 +49,26 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
                 az-bind:class.liked="liked"
                 az-on={click call toggle_like -> #like_section}
             >
-                <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">"Like"</span>
+                <span az-bind:text="if liked { 'Unlike' } else { 'Like' }">
+                    {if state.liked { "Unlike" } else { "Like" }}
+                </span>
             </button>
         </div>
     }
+}
+
+/// Server-side action - returns ONLY the inner fragment, not the outer shell
+#[azumi::action]
+pub async fn toggle_like(state: LikeState) -> impl Component {
+    let new_state = LikeState {
+        liked: !state.liked,
+        count: if !state.liked {
+            state.count + 1
+        } else {
+            state.count - 1
+        },
+    };
+
+    // Return ONLY the dynamic fragment, styles are already on the page!
+    like_button(new_state)
 }
