@@ -48,13 +48,13 @@ pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Compon
 
             /* Modern card styling */
             .modern_card {
-                background: linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.4) 100%);
-                backdrop-filter: blur(8px);
-                border: 1px solid rgba(148, 163, 184, 0.1);
+                background: "linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.4) 100%)";
+                backdrop-filter: "blur(8px)";
+                border: "1px solid rgba(148, 163, 184, 0.1)";
                 border-radius: var(--radius-md);
                 padding: var(--spacing-md);
-                transition: all 0.3s ease;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: "all 0.3s ease";
+                box-shadow: "0 2px 4px rgba(0, 0, 0, 0.1)";
             }
 
             .modern_card:hover {
@@ -124,10 +124,10 @@ pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Compon
 
             /* Glass effect for modern look */
             .glass_effect {
-                background: rgba(15, 23, 42, 0.5);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                border: 1px solid rgba(148, 163, 184, 0.1);
+                background: "rgba(15, 23, 42, 0.5)";
+                backdrop-filter: "blur(12px)";
+                -webkit-backdrop-filter: "blur(12px)";
+                border: "1px solid rgba(148, 163, 184, 0.1)";
             }
 
             /* Modern typography */
