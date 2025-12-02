@@ -1,6 +1,10 @@
 use azumi::html;
 
-pub fn 
+pub fn homepage() -> impl azumi::Component {
+    html! {
+        @layout(lessons()   )
+    }
+}
 
 #[azumi::component]
 pub fn lessons() -> impl azumi::Component {
