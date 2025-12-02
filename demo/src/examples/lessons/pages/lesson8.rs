@@ -29,6 +29,7 @@ pub fn counter_display(state: CounterState) -> impl azumi::Component {
             .count_display { font-size: "3rem"; margin: "1rem 0"; }
             .counter_button { padding: "1rem 2rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
             .timestamp { font-size: "0.8rem"; color: "#666"; }
+            #counter_box {}
         </style>
         <div id="counter_box" class={counter} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <div class={count_display}>{state.count}</div>
@@ -50,26 +51,42 @@ pub async fn increment_counter(state: CounterState) -> impl azumi::Component {
 
 /// Example: Action with state management
 #[azumi::component]
-pub fn state_management_example() -> impl azumi::Component {
+pub fn state_management_example(state: ManagementState) -> impl azumi::Component {
     html! {
         <style>
             .state_container { padding: "1.5rem"; background: "#f9f9f9"; }
             .state_info { margin: "0.5rem 0"; padding: "0.5rem"; background: "white"; }
             .action_button { padding: "0.75rem 1.5rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
+            #state_box {}
         </style>
-        <div class={state_container}>
+        <div id="state_box" class={state_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"State Management"</h3>
 
             <div class={state_info}>
-                <p>"Current State: Active"</p>
-                <p>"Counter: 0"</p>
+                <p>"Current State: " {state.status}</p>
+                <p>"Counter: " {state.count}</p>
             </div>
 
-            <button class={action_button}>
+            <button class={action_button} az-on={click call update_state -> #state_box}>
                 "Update State"
             </button>
         </div>
     }
+}
+
+#[azumi::action]
+pub async fn update_state(state: ManagementState) -> impl azumi::Component {
+    let new_count = state.count + 1;
+    let new_status = if new_count % 2 == 0 {
+        "Active"
+    } else {
+        "Processing"
+    };
+    let new_state = ManagementState {
+        status: new_status.to_string(),
+        count: new_count,
+    };
+    state_management_example(new_state)
 }
 
 /// Example: Action composition
