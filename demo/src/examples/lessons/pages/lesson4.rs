@@ -3,7 +3,6 @@
 /// Components with children parameter
 use azumi::html;
 
-#[azumi::component]
 pub fn container<C: azumi::Component>(children: C) -> impl azumi::Component {
     html! {
         <style>
@@ -24,9 +23,11 @@ pub fn layout_example() -> impl azumi::Component {
         </style>
         <div>
             <h2 class={layout_title}>"Container with Children"</h2>
-            @container {
-                <p>"This content is passed as children"</p>
-                <p>"Children can be any valid Azumi components"</p>
+            {
+                container(html! {
+                    <p>"This content is passed as children"</p>
+                    <p>"Children can be any valid Azumi components"</p>
+                })
             }
         </div>
     }
@@ -42,14 +43,18 @@ pub fn nested_children() -> impl azumi::Component {
         </style>
         <div>
             <h3>"Nested Children Example"</h3>
-            @container {
-                <p>"Outer content"</p>
-                <div class={outer_container}>
-                    <p>"Inner nested content"</p>
-                    @container {
-                        <p>"Deeply nested content"</p>
-                    }
-                </div>
+            {
+                container(html! {
+                    <p>"Outer content"</p>
+                    <div class={outer_container}>
+                        <p>"Inner nested content"</p>
+                        {
+                            container(html! {
+                                <p>"Deeply nested content"</p>
+                            })
+                        }
+                    </div>
+                })
             }
         </div>
     }
@@ -64,12 +69,14 @@ pub fn multiple_children_example() -> impl azumi::Component {
             .child_item { padding: "0.5rem"; background: "#f9f9f9"; border: "1px solid #eee"; }
         </style>
         <div>
-            @container {
-                <div class={children_demo}>
-                    <div class={child_item}>"Child 1"</div>
-                    <div class={child_item}>"Child 2"</div>
-                    <div class={child_item}>"Child 3"</div>
-                </div>
+            {
+                container(html! {
+                    <div class={children_demo}>
+                        <div class={child_item}>"Child 1"</div>
+                        <div class={child_item}>"Child 2"</div>
+                        <div class={child_item}>"Child 3"</div>
+                    </div>
+                })
             }
         </div>
     }
