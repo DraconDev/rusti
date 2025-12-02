@@ -22,7 +22,7 @@ pub fn azumi_plus_demo() -> impl Component {
             background: "#ff4081";
             color: "white";
         }
-        #like_box {
+        #like-box {
             margin-top: "2rem";
         }
         </style>
