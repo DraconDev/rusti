@@ -1,85 +1,161 @@
 use azumi::html;
 
-/// Lesson 7: Props and Parameters
+/// Lesson 7: Form Handling with Validation
 ///
-/// Shows how to pass props to components
+/// Form validation with compile-time checks
+#[derive(Debug)]
+struct UserForm {
+    name: String,
+    email: String,
+    age: i32,
+}
+
 #[azumi::component]
-pub fn greeting_component<'a>(name: &'a str) -> impl azumi::Component + 'a {
+pub fn user_form_component() -> impl azumi::Component {
     html! {
         <style>
-            .greeting { padding: "15px"; background: "#e3f2fd"; border: "1px solid #90caf9"; }
-            .name { color: "#1976d2"; font-weight: "bold"; }
+            .form { display: "grid"; gap: "1rem"; max-width: "400px"; }
+            .form_field { display: "grid"; gap: "0.5rem"; }
+            .form_label { font-weight: "bold"; }
+            .form_input { padding: "0.5rem"; border: "1px solid #ddd"; }
+            .form_button { padding: "0.75rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
         </style>
-        <div class={greeting}>
-            <p>"Hello, " <span class={name}>{name}</span> "!"</p>
+        <form class={form}>
+            <div class={form_field}>
+                <label class={form_label} for="name">"Name"</label>
+                <input class={form_input} type="text" name="name" required />
+            </div>
+            <div class={form_field}>
+                <label class={form_label} for="email">"Email"</label>
+                <input class={form_input} type="email" name="email" required />
+            </div>
+            <div class={form_field}>
+                <label class={form_label} for="age">"Age"</label>
+                <input class={form_input} type="number" name="age" min="18" max="120" />
+            </div>
+            <button class={form_button} type="submit">"Submit"</button>
+        </form>
+    }
+}
+
+/// Example: Validation feedback
+#[azumi::component]
+pub fn validation_example() -> impl azumi::Component {
+    html! {
+        <style>
+            .validation_container { padding: "1rem"; }
+            .error_message { color: "red"; font-size: "0.9rem"; margin-top: "0.5rem"; }
+            .success_message { color: "green"; font-size: "0.9rem"; margin-top: "0.5rem"; }
+        </style>
+        <div class={validation_container}>
+            <h3>"Form Validation"</h3>
+
+            <p>"Azumi provides compile-time validation for:"</p>
+            <ul>
+                <li>"Required fields"</li>
+                <li>"Proper input types"</li>
+                <li>"Valid attribute values"</li>
+                <li>"Accessible form structure"</li>
+            </ul>
+
+            <p class={success_message}>"✅ Valid form structure"</p>
+            <p class={error_message}>"❌ Invalid patterns caught at compile time"</p>
         </div>
     }
 }
 
-/// Example: Component with multiple parameters
+/// Example: Complex form with multiple fields
 #[azumi::component]
-pub fn user_card<'a>(name: &'a str, age: i32, is_active: bool) -> impl azumi::Component + 'a {
+pub fn complex_form_example() -> impl azumi::Component {
     html! {
         <style>
-            .card { padding: "20px"; border: "1px solid #ddd"; margin: "10px 0"; }
-            .active { background: "#e8f5e9"; }
-            .inactive { background: "#ffebee"; }
+            .complex_form { display: "grid"; gap: "1rem"; max-width: "500px"; }
+            .form_section { border: "1px solid #eee"; padding: "1rem"; margin-bottom: "1rem"; }
+            .section_title { font-weight: "bold"; margin-bottom: "0.5rem"; }
         </style>
-        <div class={if is_active { "card active" } else { "card inactive" }}>
-            <h3>{name}</h3>
-            <p>"Age: " {age}</p>
-            <p>"Status: " {if is_active { "Active" } else { "Inactive" }}</p>
-        </div>
+        <form class={complex_form}>
+            <div class={form_section}>
+                <h3 class={section_title}>"Personal Information"</h3>
+                <div style="display: grid; gap: 0.5rem;">
+                    <label for="fullname">"Full Name"</label>
+                    <input type="text" name="fullname" required />
+
+                    <label for="birthdate">"Birth Date"</label>
+                    <input type="date" name="birthdate" />
+
+                    <label for="country">"Country"</label>
+                    <select name="country">
+                        <option value="us">"United States"</option>
+                        <option value="uk">"United Kingdom"</option>
+                        <option value="ca">"Canada"</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class={form_section}>
+                <h3 class={section_title}>"Preferences"</h3>
+                <div style="display: grid; gap: 0.5rem;">
+                    <label>
+                        <input type="checkbox" name="newsletter" />
+                        " Subscribe to newsletter"
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="notifications" />
+                        " Enable notifications"
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" style="padding: 0.75rem; background: #4caf50; color: white; border: none;">"Save Preferences"</button>
+        </form>
     }
 }
 
-/// Example: Reusable button component
-#[azumi::component]
-pub fn custom_button<'a>(text: &'a str, color: &'a str) -> impl azumi::Component + 'a {
-    html! {
-        <style>
-            .btn { padding: "10px 20px"; border: "none"; border-radius: "4px"; cursor: "pointer"; }
-            .btn_primary { background-color: "#2196f3"; color: "white"; }
-            .btn_success { background-color: "#4caf50"; color: "white"; }
-            .btn_danger { background-color: "#f44336"; color: "white"; }
-        </style>
-        <button class={btn} class={if color == "#2196f3" { "btn_primary" } else if color == "#4caf50" { "btn_success" } else { "btn_danger" }}>
-            {text}
-        </button>
-    }
-}
-
-/// Main lesson component
+/// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson7() -> impl azumi::Component {
     html! {
         <style>
-            .lesson_container { padding: "20px"; }
-            .lesson_title { font-size: "24px"; color: "#333"; }
-            .demo_section { margin: "20px 0"; }
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .points_list { list-style: "none"; padding: "0"; }
+            .point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        <div class={lesson_container}>
-            <h1 class={lesson_title}>"Lesson 7: Props and Parameters"</h1>
-            <p>"Learn how to create reusable components with parameters"</p>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 7: Form Handling with Validation"</h1>
+                <p class={subtitle}>"Form validation with compile-time checks"</p>
+            </header>
 
-            <div class={demo_section}>
-                <h3>"Greeting Component"</h3>
-                @greeting_component(name="Alice")
-                @greeting_component(name="Bob")
-            </div>
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Form validation at compile time"</li>
+                    <li class={point}>"✅ Required field validation"</li>
+                    <li class={point}>"✅ Input type validation"</li>
+                    <li class={point}>"✅ Accessible form structure"</li>
+                    <li class={point}>"✅ Type-safe form handling"</li>
+                </ul>
+            </section>
 
-            <div class={demo_section}>
-                <h3>"User Cards"</h3>
-                @user_card(name="John Doe", age=30, is_active=true)
-                @user_card(name="Jane Smith", age=25, is_active=false)
-            </div>
-
-            <div class={demo_section}>
-                <h3>"Custom Buttons"</h3>
-                @custom_button(text="Primary", color="#2196f3")
-                @custom_button(text="Success", color="#4caf50")
-                @custom_button(text="Danger", color="#f44336")
-            </div>
+            <section class={examples}>
+                <div class={example_card}>
+                    @user_form_component()
+                </div>
+                <div class={example_card}>
+                    @validation_example()
+                </div>
+                <div class={example_card}>
+                    @complex_form_example()
+                </div>
+            </section>
         </div>
     }
 }
