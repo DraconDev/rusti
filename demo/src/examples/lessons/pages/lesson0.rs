@@ -8,8 +8,8 @@ pub fn hello_world() -> impl azumi::Component {
     html! {
         <style>
             .greeting { color: "#1976d2"; font-size: "1.5rem"; }
-            @media {
-                
+            @keyframes en {
+                color: "red";
             }
         </style>
         <div class={greeting}>"Hello, Azumi!"</div>
