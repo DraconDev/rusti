@@ -72,11 +72,13 @@ pub fn complex_form_example() -> impl azumi::Component {
             .complex_form { display: "grid"; gap: "1rem"; max-width: "500px"; }
             .form_section { border: "1px solid #eee"; padding: "1rem"; margin-bottom: "1rem"; }
             .section_title { font-weight: "bold"; margin-bottom: "0.5rem"; }
+            .form_grid { display: "grid"; gap: "0.5rem"; }
+            .save_button { padding: "0.75rem"; background: "#4caf50"; color: "white"; border: "none"; }
         </style>
         <form class={complex_form}>
             <div class={form_section}>
                 <h3 class={section_title}>"Personal Information"</h3>
-                <div style="display: grid; gap: 0.5rem;">
+                <div class={form_grid}>
                     <label for="fullname">"Full Name"</label>
                     <input type="text" name="fullname" required />
 
@@ -94,7 +96,7 @@ pub fn complex_form_example() -> impl azumi::Component {
 
             <div class={form_section}>
                 <h3 class={section_title}>"Preferences"</h3>
-                <div style="display: grid; gap: 0.5rem;">
+                <div class={form_grid}>
                     <label>
                         <input type="checkbox" name="newsletter" />
                         " Subscribe to newsletter"
@@ -107,7 +109,7 @@ pub fn complex_form_example() -> impl azumi::Component {
                 </div>
             </div>
 
-            <button type="submit" style="padding: 0.75rem; background: #4caf50; color: white; border: none;">"Save Preferences"</button>
+            <button class={save_button} type="submit">"Save Preferences"</button>
         </form>
     }
 }
