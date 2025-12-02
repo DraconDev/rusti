@@ -4,7 +4,7 @@
 use azumi::html;
 
 #[azumi::component]
-pub fn container(children: impl azumi::Component) -> impl azumi::Component {
+pub fn container<C: azumi::Component>(children: C) -> impl azumi::Component {
     html! {
         <style>
             .content_box { padding: "2rem"; border: "1px solid #ddd"; border-radius: "8px"; }
