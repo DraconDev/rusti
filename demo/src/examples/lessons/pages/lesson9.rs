@@ -5,9 +5,6 @@ use azumi::html;
 /// Combining multiple Azumi features
 #[azumi::component]
 pub fn feature_showcase() -> impl azumi::Component {
-    let items = vec!["Feature 1", "Feature 2", "Feature 3"];
-    let active = true;
-
     html! {
         <style>
             .showcase { display: "grid"; gap: "2rem"; }
@@ -19,13 +16,11 @@ pub fn feature_showcase() -> impl azumi::Component {
         <div class={showcase}>
             <div class={section}>
                 <h2>"Feature Composition"</h2>
-                @if active {
-                    <span class={active_badge}>"ACTIVE"</span>
-                }
+                <span class={active_badge}>"ACTIVE"</span>
                 <div class={feature_list}>
-                    @for item in &items {
-                        <div class={feature_item}>{item}</div>
-                    }
+                    <div class={feature_item}>"Feature 1"</div>
+                    <div class={feature_item}>"Feature 2"</div>
+                    <div class={feature_item}>"Feature 3"</div>
                 </div>
             </div>
         </div>
@@ -35,13 +30,6 @@ pub fn feature_showcase() -> impl azumi::Component {
 /// Example: Complex feature integration
 #[azumi::component]
 pub fn complex_feature_integration() -> impl azumi::Component {
-    let features = vec![
-        ("CSS Scoping", "Automatic component scoping"),
-        ("Type Safety", "Compile-time type checking"),
-        ("Validation", "Strict HTML/CSS validation"),
-        ("Performance", "Optimized rendering")
-    ];
-
     html! {
         <style>
             .integration_container { padding: "1.5rem"; background: "#f9f9f9"; }
@@ -54,12 +42,22 @@ pub fn complex_feature_integration() -> impl azumi::Component {
             <h3>"Complex Feature Integration"</h3>
 
             <div class={feature_grid}>
-                @for (name, desc) in &features {
-                    <div class={feature_card}>
-                        <div class={feature_name}>{name}</div>
-                        <div class={feature_desc}>{desc}</div>
-                    </div>
-                }
+                <div class={feature_card}>
+                    <div class={feature_name}>"CSS Scoping"</div>
+                    <div class={feature_desc}>"Automatic component scoping"</div>
+                </div>
+                <div class={feature_card}>
+                    <div class={feature_name}>"Type Safety"</div>
+                    <div class={feature_desc}>"Compile-time type checking"</div>
+                </div>
+                <div class={feature_card}>
+                    <div class={feature_name}>"Validation"</div>
+                    <div class={feature_desc}>"Strict HTML/CSS validation"</div>
+                </div>
+                <div class={feature_card}>
+                    <div class={feature_name}>"Performance"</div>
+                    <div class={feature_desc}>"Optimized rendering"</div>
+                </div>
             </div>
         </div>
     }
@@ -72,10 +70,11 @@ pub fn feature_with_children(children: impl azumi::Component) -> impl azumi::Com
         <style>
             .feature_wrapper { padding: "1.5rem"; border: "2px solid #2196f3"; border-radius: "8px"; }
             .feature_header { background: "#2196f3"; color: "white"; padding: "0.5rem 1rem"; font-weight: "bold"; }
+            .feature_content { padding: "1rem"; }
         </style>
         <div class={feature_wrapper}>
             <div class={feature_header}>"Feature Container"</div>
-            <div style="padding: 1rem;">
+            <div class={feature_content}>
                 {children}
             </div>
         </div>
