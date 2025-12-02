@@ -6,7 +6,7 @@ use quote::{format_ident, quote};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use syn::parse::{Parse, ParseStream};
-use syn::{braced, parse2, token, LitStr, Token};
+use syn::{braced, parse2, token, Ident, LitStr, Token};
 
 pub struct StyleOutput {
     pub bindings: TokenStream,
