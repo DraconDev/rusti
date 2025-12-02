@@ -91,31 +91,53 @@ pub async fn update_state(state: ManagementState) -> impl azumi::Component {
 
 /// Example: Action composition
 #[azumi::component]
-pub fn action_composition_example() -> impl azumi::Component {
+pub fn action_composition_example(state: CompositionState) -> impl azumi::Component {
     html! {
         <style>
             .composition_container { padding: "1.5rem"; }
             .action_card { margin: "0.5rem 0"; padding: "1rem"; background: "#f5f5f5"; border: "1px solid #eee"; }
             .compose_button { padding: "0.75rem 1.5rem"; background: "#ff4081"; color: "white"; border: "none"; cursor: "pointer"; }
+            #composition_box {}
         </style>
-        <div class={composition_container}>
+        <div id="composition_box" class={composition_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"Action Composition"</h3>
 
             <div class={action_card}>
-                <p>"Multiple actions can be composed together"</p>
-                <p>"Each action maintains its own state"</p>
+                <p>"Message: " {state.message}</p>
+                <p>"Step: " {state.step}</p>
             </div>
 
-            <button class={compose_button}>
+            <button class={compose_button} az-on={click call compose_actions -> #composition_box}>
                 "Compose Actions"
             </button>
         </div>
     }
 }
 
+#[azumi::action]
+pub async fn compose_actions(state: CompositionState) -> impl azumi::Component {
+    let new_step = state.step + 1;
+    let new_message = format!("Action composed at step {}", new_step);
+    let new_state = CompositionState {
+        message: new_message,
+        step: new_step,
+    };
+    action_composition_example(new_state)
+}
+
 /// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson8() -> impl azumi::Component {
+    let counter_state = CounterState { count: 0 };
+    let management_state = ManagementState {
+        status: "Active".to_string(),
+        count: 0,
+    };
+    let composition_state = CompositionState {
+        message: "Initial State".to_string(),
+        step: 0,
+    };
+
     html! {
         <style>
             .container { padding: "20px"; }
@@ -148,13 +170,13 @@ pub fn lesson8() -> impl azumi::Component {
 
             <section class={examples}>
                 <div class={example_card}>
-                    @counter_display()
+                    @counter_display(state=counter_state)
                 </div>
                 <div class={example_card}>
-                    @state_management_example()
+                    @state_management_example(state=management_state)
                 </div>
                 <div class={example_card}>
-                    @action_composition_example()
+                    @action_composition_example(state=composition_state)
                 </div>
             </section>
         </div>
