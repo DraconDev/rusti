@@ -1,7 +1,7 @@
-
 use azumi::html;
 
 /// Modern dark layout component that uses global CSS variables
+#[azumi::component]
 pub fn dark_modern_layout(children: impl azumi::Component) -> impl azumi::Component {
     html! {
         <style global>
