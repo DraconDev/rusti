@@ -4,7 +4,7 @@ use azumi::html;
 ///
 /// Building complex UIs from simple components
 #[azumi::component]
-pub fn card(title: &str, content: &str) -> impl azumi::Component {
+pub fn card<'a>(title: &'a str, content: &'a str) -> impl azumi::Component + 'a {
     html! {
         <style>
             .card { border: "1px solid #eee"; padding: "1rem"; margin: "0.5rem"; }

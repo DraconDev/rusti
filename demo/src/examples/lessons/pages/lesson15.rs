@@ -1,4 +1,3 @@
-
 use azumi::html;
 
 /// Lesson 15: E-commerce Product Catalog
@@ -99,3 +98,35 @@ pub fn lesson15() -> impl azumi::Component {
             .points_list { list-style: "none"; padding: "0"; }
             .point { margin-bottom: "10px"; }
             .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+        </style>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 15: E-commerce Product Catalog"</h1>
+                <p class={subtitle}>"Advanced e-commerce patterns"</p>
+            </header>
+
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Product data modeling"</li>
+                    <li class={point}>"✅ Responsive product grid"</li>
+                    <li class={point}>"✅ Inventory management"</li>
+                    <li class={point}>"✅ Conditional rendering"</li>
+                    <li class={point}>"✅ E-commerce component patterns"</li>
+                </ul>
+            </section>
+
+            <section class={examples}>
+                <div class={example_card}>
+                    @ecommerce::product_grid()
+                </div>
+            </section>
+        </div>
+    }
+}
+
+// Handler for Axum
+pub async fn lesson15_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&lesson15()))
+}
