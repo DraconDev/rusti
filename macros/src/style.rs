@@ -588,6 +588,7 @@ fn is_valid_css_property(name: &str) -> bool {
         "animation-play-state",
         "animation-timing-function",
         "backdrop-filter",
+        "-webkit-backdrop-filter",
         "backface-visibility",
         "background",
         "background-attachment",
