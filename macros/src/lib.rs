@@ -538,44 +538,82 @@ fn validate_nodes(
 
                         // Rule 2: Check class existence - COMPILE ERROR
                         if name == "class" {
-                            if let token_parser::AttributeValue::Static(val) = &attr.value {
-                                for class_name in val.split_whitespace() {
-                                    if !valid_classes.contains(class_name) {
-                                        let msg = if has_scoped_css {
-                                            format!(
-                                                "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
-                                                class_name
-                                            )
-                                        } else {
-                                            format!(
-                                                "CSS class '{}' is used but no CSS styles are defined for this component. Import a CSS file with <style src=\"...\" />.",
-                                                class_name
-                                            )
-                                        };
-                                        // Use value_span to point to the attribute value, fallback to attr.span
+                            match &attr.value {
+                                token_parser::AttributeValue::Static(val) => {
+                                    for class_name in val.split_whitespace() {
+                                        if !valid_classes.contains(class_name) {
+                                            let msg = if has_scoped_css {
+                                                format!(
+                                                    "CSS class '{}' is not defined in any CSS file. Check for typos or add the class to your CSS.",
+                                                    class_name
+                                                )
+                                            } else {
+                                                format!(
+                                                    "CSS class '{}' is used but no CSS styles are defined for this component. Import a CSS file with <style src=\"...\" />.",
+                                                    class_name
+                                                )
+                                            };
+                                            let error_span = attr.value_span.unwrap_or(attr.span);
+                                            errors.push(quote_spanned! { error_span =>
+                                                compile_error!(#msg);
+                                            });
+                                        }
+                                    }
+                                }
+                                token_parser::AttributeValue::Dynamic(tokens) => {
+                                    // Check if variable name matches an ID but is used in class
+                                    if let Ok(ident) = syn::parse2::<syn::Ident>(tokens.clone()) {
+                                        let var_name = ident.to_string();
+                                        if valid_ids.contains(&var_name)
+                                            && !valid_classes.contains(&var_name)
+                                        {
+                                            let msg = format!(
+                                                "Variable '{}' refers to an ID selector (#{}) but is used in 'class' attribute. Did you mean to use 'id={}'?",
+                                                var_name, var_name, var_name
+                                            );
+                                            errors.push(quote_spanned! { ident.span() =>
+                                                compile_error!(#msg);
+                                            });
+                                        }
+                                    }
+                                }
+                                _ => {}
+                            }
+                        }
+
+                        // Rule 3: Check ID existence - COMPILE ERROR
+                        if name == "id" {
+                            match &attr.value {
+                                token_parser::AttributeValue::Static(val) => {
+                                    if !valid_ids.contains(val) {
+                                        let msg = format!(
+                                            "ID '{}' is used in HTML but not defined in CSS.",
+                                            val
+                                        );
                                         let error_span = attr.value_span.unwrap_or(attr.span);
                                         errors.push(quote_spanned! { error_span =>
                                             compile_error!(#msg);
                                         });
                                     }
                                 }
-                            }
-                        }
-
-                        // Rule 3: Check ID existence - COMPILE ERROR
-                        if name == "id" {
-                            if let token_parser::AttributeValue::Static(val) = &attr.value {
-                                if !valid_ids.contains(val) {
-                                    let msg = format!(
-                                        "ID '{}' is used in HTML but not defined in CSS.",
-                                        val
-                                    );
-                                    // Use value_span to point to the attribute value, fallback to attr.span
-                                    let error_span = attr.value_span.unwrap_or(attr.span);
-                                    errors.push(quote_spanned! { error_span =>
-                                        compile_error!(#msg);
-                                    });
+                                token_parser::AttributeValue::Dynamic(tokens) => {
+                                    // Check if variable name matches a Class but is used in ID
+                                    if let Ok(ident) = syn::parse2::<syn::Ident>(tokens.clone()) {
+                                        let var_name = ident.to_string();
+                                        if valid_classes.contains(&var_name)
+                                            && !valid_ids.contains(&var_name)
+                                        {
+                                            let msg = format!(
+                                                "Variable '{}' refers to a Class selector (.{}) but is used in 'id' attribute. Did you mean to use 'class={}'?",
+                                                var_name, var_name, var_name
+                                            );
+                                            errors.push(quote_spanned! { ident.span() =>
+                                                compile_error!(#msg);
+                                            });
+                                        }
+                                    }
                                 }
+                                _ => {}
                             }
                         }
 
