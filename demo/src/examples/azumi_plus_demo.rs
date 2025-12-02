@@ -35,7 +35,7 @@ pub fn azumi_plus_demo() -> impl Component {
                 <p>
                     "Count: " <span az-bind:text="count">"0"</span>
                 </p>
-                <button class="btn" az-on="click set count = count + 1">
+                <button class={btn} az-on="click set count = count + 1">
                     "Increment"
                 </button>
             </div>
