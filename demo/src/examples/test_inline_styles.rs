@@ -15,8 +15,8 @@ pub fn test_inline_styles() -> impl azumi::Component {
             {/* Test 2: Inline style tag */}
             <style>
                 .test_class {
-                    font-weight: bold;
-                    color: blue;
+                    font-weight: "bold";
+                    color: "blue";
                 }
             </style>
 
