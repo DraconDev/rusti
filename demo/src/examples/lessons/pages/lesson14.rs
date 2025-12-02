@@ -1,4 +1,3 @@
-
 use azumi::html;
 
 /// Lesson 14: Complete Blog Application
@@ -68,3 +67,66 @@ mod blog {
                 .blog_container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
                 .blog_header { text-align: "center"; margin-bottom: "2rem"; }
                 .blog_title { font-size: "2.5rem"; color: "#2196f3"; }
+                .posts_list { display: "grid"; gap: "1.5rem"; }
+            </style>
+            <div class={blog_container}>
+                <header class={blog_header}>
+                    <h1 class={blog_title}>"Azumi Blog"</h1>
+                    <p>"A showcase of Azumi's capabilities"</p>
+                </header>
+                <main class={posts_list}>
+                    @for post in &posts {
+                        @post_card(post=post)
+                    }
+                </main>
+            </div>
+        }
+    }
+}
+
+/// Main lesson demonstration component
+#[azumi::component]
+pub fn lesson14() -> impl azumi::Component {
+    html! {
+        <style>
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .points_list { list-style: "none"; padding: "0"; }
+            .point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+        </style>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 14: Complete Blog Application"</h1>
+                <p class={subtitle}>"Full-stack blog with all Azumi features"</p>
+            </header>
+
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Full application structure"</li>
+                    <li class={point}>"✅ Component composition"</li>
+                    <li class={point}>"✅ Data modeling"</li>
+                    <li class={point}>"✅ List rendering"</li>
+                    <li class={point}>"✅ Complete feature integration"</li>
+                </ul>
+            </section>
+
+            <section class={examples}>
+                <div class={example_card}>
+                    @blog::blog_homepage()
+                </div>
+            </section>
+        </div>
+    }
+}
+
+// Handler for Axum
+pub async fn lesson14_handler() -> impl axum::response::IntoResponse {
+    axum::response::Html(azumi::render_to_string(&lesson14()))
+}
