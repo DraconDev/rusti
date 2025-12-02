@@ -1,4 +1,22 @@
-use azumi::html;
+use azumi::prelude::*;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Default, Clone, Copy)]
+pub struct CounterState {
+    pub count: i32,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+pub struct ManagementState {
+    pub status: String,
+    pub count: i32,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+pub struct CompositionState {
+    pub message: String,
+    pub step: i32,
+}
 
 /// Lesson 8: Action System Deep Dive
 ///
