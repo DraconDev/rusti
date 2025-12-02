@@ -3,7 +3,6 @@
 /// Components with children parameter
 use azumi::html;
 
-#[azumi::component]
 pub fn container<'a, C: azumi::Component + 'a>(content: &'a C) -> impl azumi::Component + 'a {
     html! {
         <style>
