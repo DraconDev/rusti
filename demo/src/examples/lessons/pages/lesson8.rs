@@ -1,99 +1,119 @@
 use azumi::html;
 
-/// Lesson 8: Conditional Rendering
+/// Lesson 8: Action System Deep Dive
 ///
-/// Demonstrates @if and @else control flow
+/// Server-side interactivity patterns
 #[azumi::component]
-pub fn conditional_example() -> impl azumi::Component {
-    let is_logged_in = true;
-    let user_name = "John";
-
+pub fn counter_display() -> impl azumi::Component {
     html! {
         <style>
-            .auth_container { padding: "20px"; border: "1px solid #ddd"; }
-            .welcome { color: "green"; }
-            .login_prompt { color: "blue"; }
+            .counter { padding: "2rem"; text-align: "center"; border: "1px solid #eee"; }
+            .count_display { font-size: "3rem"; margin: "1rem 0"; }
+            .counter_button { padding: "1rem 2rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
+            .timestamp { font-size: "0.8rem"; color: "#666"; }
         </style>
-        <div class={auth_container}>
-            <h3>"Authentication Status"</h3>
-            @if is_logged_in {
-                <p class={welcome}>"Welcome back, " {user_name} "!"</p>
-            }
-            @if !is_logged_in {
-                <p class={login_prompt}>"Please log in to continue"</p>
-            }
+        <div class={counter}>
+            <div class={count_display}>"0"</div>
+            <button class={counter_button}>
+                "Increment"
+            </button>
+            <div class={timestamp}>"Last updated: 12:00:00"</div>
         </div>
     }
 }
 
-/// Example: Multiple conditions
+/// Example: Action with state management
 #[azumi::component]
-pub fn multi_condition() -> impl azumi::Component {
-    let user_role = "admin";
-    let has_permission = true;
-
+pub fn state_management_example() -> impl azumi::Component {
     html! {
         <style>
-            .permissions { padding: "15px"; background: "#f5f5f5"; }
-            .granted { color: "green"; }
-            .denied { color: "red"; }
+            .state_container { padding: "1.5rem"; background: "#f9f9f9"; }
+            .state_info { margin: "0.5rem 0"; padding: "0.5rem"; background: "white"; }
+            .action_button { padding: "0.75rem 1.5rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
         </style>
-        <div class={permissions}>
-            <h3>"Permission Check"</h3>
-            @if user_role == "admin" && has_permission {
-                <p class={granted}>"Full access granted"</p>
-            }
-            @if user_role == "user" {
-                <p>"Limited access"</p>
-            }
-            @if user_role != "admin" && user_role != "user" {
-                <p class={denied}>"Access denied"</p>
-            }
-        </div>
-    }
-}
+        <div class={state_container}>
+            <h3>"State Management"</h3>
 
-/// Example: Conditional attributes
-#[azumi::component]
-pub fn conditional_attributes() -> impl azumi::Component {
-    let is_disabled = false;
-    let button_text = "Submit";
+            <div class={state_info}>
+                <p>"Current State: Active"</p>
+                <p>"Counter: 0"</p>
+            </div>
 
-    html! {
-        <style>
-            .button_container { padding: "20px"; }
-            .btn { padding: "10px 20px"; background: "#2196f3"; color: "white"; border: "none"; }
-            .disabled { opacity: "0.5"; cursor: "not-allowed"; }
-        </style>
-        <div class={button_container}>
-            <button
-                class={if is_disabled { "btn disabled" } else { "btn" }}
-                disabled={is_disabled}
-            >
-                {button_text}
+            <button class={action_button}>
+                "Update State"
             </button>
         </div>
     }
 }
 
-/// Main lesson component
+/// Example: Action composition
+#[azumi::component]
+pub fn action_composition_example() -> impl azumi::Component {
+    html! {
+        <style>
+            .composition_container { padding: "1.5rem"; }
+            .action_card { margin: "0.5rem 0"; padding: "1rem"; background: "#f5f5f5"; border: "1px solid #eee"; }
+            .compose_button { padding: "0.75rem 1.5rem"; background: "#ff4081"; color: "white"; border: "none"; cursor: "pointer"; }
+        </style>
+        <div class={composition_container}>
+            <h3>"Action Composition"</h3>
+
+            <div class={action_card}>
+                <p>"Multiple actions can be composed together"</p>
+                <p>"Each action maintains its own state"</p>
+            </div>
+
+            <button class={compose_button}>
+                "Compose Actions"
+            </button>
+        </div>
+    }
+}
+
+/// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson8() -> impl azumi::Component {
     html! {
         <style>
-            .lesson_container { padding: "20px"; }
-            .lesson_title { font-size: "24px"; color: "#333"; }
-            .examples { display: "grid"; gap: "20px"; margin-top: "20px"; }
+            .container { padding: "20px"; }
+            .header { text-align: "center"; margin-bottom: "30px"; }
+            .main_title { font-size: "32px"; color: "#333"; }
+            .subtitle { font-size: "18px"; color: "#666"; }
+            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
+            .section_title { font-size: "20px"; margin-bottom: "15px"; }
+            .points_list { list-style: "none"; padding: "0"; }
+            .point { margin-bottom: "10px"; }
+            .examples { display: "grid"; gap: "20px"; }
+            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
         </style>
-        <div class={lesson_container}>
-            <h1 class={lesson_title}>"Lesson 8: Conditional Rendering"</h1>
-            <p>"Learn how to conditionally render content in Azumi"</p>
+        <div class={container}>
+            <header class={header}>
+                <h1 class={main_title}>"Lesson 8: Action System Deep Dive"</h1>
+                <p class={subtitle}>"Server-side interactivity patterns"</p>
+            </header>
 
-            <div class={examples}>
-                @conditional_example()
-                @multi_condition()
-                @conditional_attributes()
-            </div>
+            <section class={key_points}>
+                <h2 class={section_title}>"Key Concepts"</h2>
+                <ul class={points_list}>
+                    <li class={point}>"✅ Server-side actions for interactivity"</li>
+                    <li class={point}>"✅ State management patterns"</li>
+                    <li class={point}>"✅ Action composition"</li>
+                    <li class={point}>"✅ Type-safe action parameters"</li>
+                    <li class={point}>"✅ Compile-time action validation"</li>
+                </ul>
+            </section>
+
+            <section class={examples}>
+                <div class={example_card}>
+                    @counter_display()
+                </div>
+                <div class={example_card}>
+                    @state_management_example()
+                </div>
+                <div class={example_card}>
+                    @action_composition_example()
+                </div>
+            </section>
         </div>
     }
 }
