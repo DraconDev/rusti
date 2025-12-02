@@ -29,7 +29,7 @@ pub fn counter_display(state: CounterState) -> impl azumi::Component {
             .count_display { font-size: "3rem"; margin: "1rem 0"; }
             .counter_button { padding: "1rem 2rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
             .timestamp { font-size: "0.8rem"; color: "#666"; }
-            #counter_box {}
+            #counter_box { display: "block"; }
         </style>
         <div id="counter_box" class={counter} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <div class={count_display}>{state.count}</div>
@@ -57,7 +57,7 @@ pub fn state_management_example(state: ManagementState) -> impl azumi::Component
             .state_container { padding: "1.5rem"; background: "#f9f9f9"; }
             .state_info { margin: "0.5rem 0"; padding: "0.5rem"; background: "white"; }
             .action_button { padding: "0.75rem 1.5rem"; background: "#2196f3"; color: "white"; border: "none"; cursor: "pointer"; }
-            #state_box {}
+            #state_box { display: "block"; }
         </style>
         <div id="state_box" class={state_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"State Management"</h3>
@@ -97,7 +97,7 @@ pub fn action_composition_example(state: CompositionState) -> impl azumi::Compon
             .composition_container { padding: "1.5rem"; }
             .action_card { margin: "0.5rem 0"; padding: "1rem"; background: "#f5f5f5"; border: "1px solid #eee"; }
             .compose_button { padding: "0.75rem 1.5rem"; background: "#ff4081"; color: "white"; border: "none"; cursor: "pointer"; }
-            #composition_box {}
+            #composition_box { display: "block"; }
         </style>
         <div id="composition_box" class={composition_container} az-scope={serde_json::to_string(&state).unwrap_or_default()}>
             <h3>"Action Composition"</h3>
