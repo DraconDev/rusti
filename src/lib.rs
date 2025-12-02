@@ -29,12 +29,6 @@ impl<T: Component + ?Sized> Component for &T {
     }
 }
 
-impl Component for Box<dyn Component> {
-    fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        (**self).render(f)
-    }
-}
-
 impl<T: Component + ?Sized> Component for Box<T> {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         (**self).render(f)
