@@ -262,22 +262,6 @@ impl Parse for StyleProperty {
             }
         }
 
-        // Enforce double quotes for non-variable values
-        if !value.starts_with("var(")
-            && !value.starts_with('"')
-            && !value.starts_with('#')
-            && !value.contains('(')
-            && !value.contains(' ')
-        {
-            return Err(syn::Error::new(
-                value_start_span,
-                format!(
-                    "CSS property '{}' value must be double-quoted: \"{}\"",
-                    name, value
-                ),
-            ));
-        }
-
         Ok(StyleProperty {
             name,
             value,
