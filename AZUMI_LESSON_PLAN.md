@@ -355,11 +355,11 @@ fn AccessibleCard(title: &str, description: &str, image_url: &str, alt_text: &st
             .card_title { font-size: "1.2rem"; margin-bottom: "0.5rem"; }
             .card_description { color: "#666"; }
         </style>
-        <article class={card} aria-labelledby="card-title" aria-describedby="card-desc">
+        <article class={card} aria-labelledby={card_title} aria-describedby={card_desc}>
             <img class={card_image} src={image_url} alt={alt_text} />
             <div class={card_content}>
-                <h3 id="card-title" class={card_title}>{title}</h3>
-                <p id="card-desc" class={card_description}>{description}</p>
+                <h3 id={card_title} class={card_title}>{title}</h3>
+                <p id={card_desc} class={card_description}>{description}</p>
             </div>
         </article>
     }
