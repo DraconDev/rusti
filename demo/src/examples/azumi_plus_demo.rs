@@ -48,6 +48,6 @@ pub fn azumi_plus_demo() -> impl Component {
     }
 }
 
-pub async fn azumi_plus_demo_handler() -> impl axum::response::IntoResponse {
-    azumi::render_to_string(&azumi_plus_demo())
+pub async fn azumi_plus_demo_handler() -> axum::response::Html<String> {
+    axum::response::Html(azumi::render_to_string(&azumi_plus_demo()))
 }
