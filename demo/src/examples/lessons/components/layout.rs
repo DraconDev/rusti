@@ -5,6 +5,11 @@ use azumi::html;
 pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Component {
     html! {
         <style global>
+            --azumi-bg: "#1e1e1e";
+            --azumi-text: "#fff";
+            --azumi-text-dim: "#ccc";
+            --azumi-primary: "#6366f1";
+            
             .dark_layout {
                 min-height: "100vh";
                 background: var(--azumi-bg);
