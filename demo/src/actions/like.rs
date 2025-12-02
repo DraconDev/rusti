@@ -20,7 +20,7 @@ pub async fn toggle_like(state: LikeState) -> impl Component {
     };
 
     // Serialize to JSON for az-scope attribute
-    let scope_json = serde_json::to_string(&new_state).unwrap_or_default();
+    let scope_json = "test".to_string();
 
     // Return the updated HTML fragment
     html! {
