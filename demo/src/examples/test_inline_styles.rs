@@ -15,12 +15,12 @@ pub fn test_inline_styles() -> impl azumi::Component {
             {/* Test 2: Inline style tag */}
             <style>
                 .test_class {
-                    font-weight: bold;
-                    color: blue;
+                    font-weight: "bold";
+                    color: "blue";
                 }
             </style>
 
-            <p class="test_class">"This should be bold and blue"</p>
+            <p class={test_class}>"This should be bold and blue"</p>
 
             {/* Test 3: Dynamic inline style */}
             <div style="background-color: yellow; padding: 5px;">
