@@ -9,6 +9,8 @@ The Rust Core Library is the dependency-free[^free] foundation of The Rust Stand
 
 maybe that is conflicting with our macro perhaps css oriented names, also make sure we are wrapping all values in double quotes
 
+## enforce all css to be double quoted
+
 
 # Done
 
