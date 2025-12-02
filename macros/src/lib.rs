@@ -89,7 +89,7 @@ pub fn html(input: TokenStream) -> TokenStream {
                 if !#scoped_css.is_empty() {
                      write!(f, "<style data-azumi-internal=\"true\">{}</style>", #scoped_css)?;
                 }
-                azumi::Component::render(&#html_construction, f)
+                #html_construction
             })
         }
     };
@@ -309,10 +309,8 @@ fn is_valid_identifier(s: &str) -> bool {
 fn generate_nodes(nodes: &[token_parser::Node]) -> proc_macro2::TokenStream {
     let body = generate_body(nodes);
     quote! {
-        azumi::from_fn(move |f| {
-            #body
-            Ok(())
-        })
+        #body
+        Ok(())
     }
 }
 
