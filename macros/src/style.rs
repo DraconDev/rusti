@@ -70,29 +70,12 @@ impl Parse for AtRule {
         content.push_str(&keyframe_name);
 
         // Parse the opening brace
-        input.parse::<Token![{]>()?;
+        let content;
+        syn::braced!(content in input);
+        let brace_content = content.to_string();
         content.push_str(" {");
-
-        // Parse keyframe content
-        let mut depth = 1;
-        while depth > 0 && !input.is_empty() {
-            let tt: TokenTree = input.parse()?;
-            let token_str = tt.to_string();
-
-            // Track brace depth
-            if token_str == "{" {
-                depth += 1;
-            } else if token_str == "}" {
-                depth -= 1;
-            }
-
-            content.push_str(&token_str);
-
-            // Stop if we've reached the end of the keyframes block
-            if depth == 0 {
-                break;
-            }
-        }
+        content.push_str(&brace_content);
+        content.push_str("}");
 
         Ok(AtRule { name, content })
     }
