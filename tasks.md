@@ -1,8 +1,9 @@
 # TODO
 
-## ? enforce all css to be double quoted
+- enforce all css to be double quoted
 
-## action testing 
+- action testing 
+- get gemini to fix lesson 8
 
 
 # Done
