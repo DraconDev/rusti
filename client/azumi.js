@@ -33,18 +33,19 @@ class Azumi {
     }
 
     parseAction(cmd, element) {
-        // Format: "call <url> -> <target> <swap>"
-        // or "set <key> = <value>"
+        // Format: "{event} call {action} -> {target} {swap}"
+        // or "{event} set {key} = {value}"
         // NOTE: TokenStream adds spaces around punctuation, so "-> #id" becomes "- > # id"
 
         // Remove extra spaces and reconstruct operators
         cmd = cmd.replace(/\s*-\s*>\s*/g, "->").replace(/\s*#\s*/g, "#");
 
         const tokens = cmd.split(" ");
-        const type = tokens[0]; // "call" or "set"
+        const eventType = tokens[0]; // "click", "submit", etc.
+        const actionType = tokens[1]; // "call" or "set"
 
-        if (type === "call") {
-            let actionName = tokens[1];
+        if (actionType === "call") {
+            let actionName = tokens[2]; // The actual action function name
             let url = `/_azumi/action/${actionName}`;
             let targetSelector = null;
             let swap = "morph";
