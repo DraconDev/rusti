@@ -1,174 +1,53 @@
 use azumi::html;
 
-/// Lesson 0: Understanding Fragments
+/// Lesson 1: Introduction to Azumi Components
 ///
-/// Fragments allow you to return multiple elements without a wrapper.
-/// Azumi supports BOTH automatic and explicit fragments!
-
-/// Example 1: Automatic Fragment (No explicit <> needed)
+/// Basic component structure with proper syntax
 #[azumi::component]
-pub fn automatic_fragment_example() -> impl azumi::Component {
+pub fn hello_world() -> impl azumi::Component {
     html! {
         <style>
-            .container {
-                padding: "20px";
-                border: "1px solid #ccc";
-            }
-            .title {
-                color: "blue";
-                font-size: "24px";
-            }
-            .content {
-                margin-top: "10px";
-            }
-            .footer {
-                margin-top: "15px";
-                font-size: "12px";
-                color: "#666";
-            }
+            .greeting { color: "#1976d2"; font-size: "1.5rem"; }
+        </style>
+        <div class={greeting}>"Hello, Azumi!"</div>
+    }
+}
+
+/// Example: Component with styling and structure
+#[azumi::component]
+pub fn basic_component() -> impl azumi::Component {
+    html! {
+        <style>
+            .container { padding: "1rem"; border: "1px solid #ddd"; }
+            .title { color: "#2196f3"; }
         </style>
         <div class={container}>
-            <h1 class={title}>"Automatic Fragments"</h1>
-            <div class={content}>
-                "This is some content."
-            </div>
-            <div class={footer}>
-                "Footer content"
-            </div>
+            <h1 class={title}>"Basic Azumi Component"</h1>
+            <p>"This demonstrates the basic component structure"</p>
         </div>
     }
 }
 
+/// Example: Component with multiple elements
 #[azumi::component]
-fn ControlFlowFragments() -> impl azumi::Component {
-    html! {
-        <div>"Control Flow Fragments Placeholder"</div>
-    }
-}
-
-/// Example 2: Explicit Fragment with <>
-#[azumi::component]
-pub fn explicit_fragment_example() -> impl azumi::Component {
+pub fn multi_element_component() -> impl azumi::Component {
     html! {
         <style>
-            .container {
-                padding: "20px";
-                border: "1px solid #ccc";
-            }
-            .title {
-                color: "blue";
-                font-size: "24px";
-            }
-            .text {
-                font-size: "16px";
-            }
+            .card { padding: "1.5rem"; margin: "1rem 0"; border: "1px solid #eee"; border-radius: "8px"; }
+            .card_title { font-size: "1.2rem"; color: "#1976d2"; margin-bottom: "0.5rem"; }
+            .card_content { color: "#666"; }
         </style>
-        <div class={container}>
-            <h1 class={title}>"Explicit Fragments"</h1>
-            <>
-                <p class={text}>"You can use explicit &lt;&gt; for clarity."</p>
-                <p class={text}>"Functionally identical to automatic!"</p>
-            </>
+        <div class={card}>
+            <h2 class={card_title}>"Multi-Element Component"</h2>
+            <p class={card_content}>"Components can contain multiple elements with proper styling"</p>
+            <p class={card_content}>"All CSS is automatically scoped to this component"</p>
         </div>
     }
 }
 
-/// Example 3: Fragments in Control Flow
-#[azumi::component]
-pub fn control_flow_fragments() -> impl azumi::Component {
-    let show_content = true;
-    html! {
-        <style>
-            .container { padding: "20px"; }
-            .title { color: "blue"; }
-            .content_block { margin: "10px"; border: "1px solid #eee"; padding: "10px"; }
-            .subtitle { font-weight: "bold"; }
-            .text { color: "#333"; }
-        </style>
-        <div class={container}>
-            <h1 class={title}>"Fragments in Control Flow"</h1>
-            <div class={content_block}>
-                <h3 class={subtitle}>"Automatic (No):"</h3>
-                @if show_content {
-                    <p class={text}>"First element"</p>
-                    <p class={text}>"Second element"</p>
-                }
-            </div>
-            <div class={content_block}>
-                <h3 class={subtitle}>"Explicit (With):"</h3>
-                @if show_content {
-                    <>
-                        <p class={text}>"First element"</p>
-                        <p class={text}>"Second element"</p>
-                    </>
-                }
-            </div>
-        </div>
-    }
-}
-
-/// Example 4: When Fragments Are Useful
-#[azumi::component]
-pub fn fragment_use_cases() -> impl azumi::Component {
-    
-
-    html! {
-        <style>
-            .container { padding: "20px"; }
-            .title { font-size: "24px"; }
-            .section { margin-bottom: "20px"; }
-            .subtitle { font-size: "18px"; }
-            .comparison { display: "flex"; gap: "20px"; }
-            .before { flex: "1"; border: "1px solid red"; padding: "10px"; }
-            .after { flex: "1"; border: "1px solid green"; padding: "10px"; }
-            .code { background: "#eee"; padding: "5px"; display: "block"; }
-            .list { list-style: "none"; }
-            .item { font-weight: "bold"; }
-            .item_note { font-style: "italic"; color: "#666"; }
-            .text { margin-top: "5px"; }
-        </style>
-        <div class={container}>
-            <h1 class={title}>"When to Use Fragments"</h1>
-
-            <section class={section}>
-                <h3 class={subtitle}>"1. Avoiding Unnecessary Wrappers"</h3>
-                <div class={comparison}>
-                    <div class={before}>
-                        <h4>"❌ Without Fragment (Extra div)"</h4>
-                        <code class={code}>"Title"</code>
-                    </div>
-                    <div class={after}>
-                        <h4>"✅ With Fragment (Clean)"</h4>
-                        <code class={code}>"Title"</code>
-                    </div>
-                </div>
-            </section>
-
-            <section class={section}>
-                <h3 class={subtitle}>"2. In Loops"</h3>
-                <ul class={list}>
-                    @let items = ["Apple", "Banana", "Cherry"];
-                    @for item in &items {
-                        <>
-                            <li class={item}>{item}</li>
-                            <li class={item_note}>"(Note: " {item} ")"</li>
-                        </>
-                    }
-                </ul>
-            </section>
-
-            <section class={section}>
-                <h3 class={subtitle}>"3. Component Returns"</h3>
-                <p class={text}>"Components can return multiple elements without wrappers using fragments!"</p>
-            </section>
-        </div>
-    }
-}
-
-/// Main demonstration component
+/// Main lesson demonstration component
 #[azumi::component]
 pub fn lesson0() -> impl azumi::Component {
-    
     html! {
         <style>
             .container { padding: "20px"; }
@@ -184,33 +63,30 @@ pub fn lesson0() -> impl azumi::Component {
         </style>
         <div class={container}>
             <header class={header}>
-                <h1 class={main_title}>"Lesson 0: Fragments"</h1>
-                <p class={subtitle}>"Multiple Elements Without Wrapper Divs"</p>
+                <h1 class={main_title}>"Lesson 1: Introduction to Azumi Components"</h1>
+                <p class={subtitle}>"Basic component syntax and structure"</p>
             </header>
 
             <section class={key_points}>
-                <h2 class={section_title}>"Key Points"</h2>
+                <h2 class={section_title}>"Key Concepts"</h2>
                 <ul class={points_list}>
-                    <li class={point}>"✅ Automatic: Multiple elements work without explicit &lt;&gt;"</li>
-                    <li class={point}>"✅ Explicit: Use for semantic clarity"</li>
-                    <li class={point}>"✅ Both generate identical output"</li>
-                    <li class={point}>"✅ Works in control flow (@if, @for, @match)"</li>
-                    <li class={point}>"✅ Avoids unnecessary DOM nesting"</li>
+                    <li class={point}>"✅ Components use #[azumi::component] macro"</li>
+                    <li class={point}>"✅ CSS is automatically scoped to each component"</li>
+                    <li class={point}>"✅ Components return impl azumi::Component"</li>
+                    <li class={point}>"✅ HTML structure uses html! macro"</li>
+                    <li class={point}>"✅ All text content must be quoted"</li>
                 </ul>
             </section>
 
             <section class={examples}>
                 <div class={example_card}>
-                    @automatic_fragment_example()
+                    @hello_world()
                 </div>
                 <div class={example_card}>
-                    @explicit_fragment_example()
+                    @basic_component()
                 </div>
                 <div class={example_card}>
-                    @control_flow_fragments()
-                </div>
-                <div class={example_card}>
-                    @fragment_use_cases()
+                    @multi_element_component()
                 </div>
             </section>
         </div>
