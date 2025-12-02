@@ -11,4 +11,4 @@ else
 fi
 
 echo "Starting demo application..."
-cd demo && cargo r
+# cd demo && cargo r
