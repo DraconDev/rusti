@@ -1,10 +1,15 @@
+
 use azumi::html;
 
 /// Lesson 6: Control Flow Patterns
 ///
 /// @if, @else, @for, @match patterns
 #[azumi::component]
-pub fn control_flow_example(show_details: bool, items: Vec<&str>, status: &str) -> impl azumi::Component {
+pub fn control_flow_example() -> impl azumi::Component {
+    let show_details = true;
+    let items = vec!["Item 1", "Item 2", "Item 3"];
+    let status = "active";
+
     html! {
         <style>
             .content { padding: "1rem"; }
@@ -13,11 +18,10 @@ pub fn control_flow_example(show_details: bool, items: Vec<&str>, status: &str) 
             .status_inactive { color: "red"; }
         </style>
         <div class={content}>
-            <h2>"Control Flow Demo"</h2>
 
             @if show_details {
                 <h3>"Detailed View"</h3>
-                @for item in &items {
+                @for item in items {
                     <div class={item}>{item}</div>
                 }
             }
@@ -61,7 +65,7 @@ pub fn complex_conditions() -> impl azumi::Component {
             @if user_role == "admin" && has_permission {
                 <p class={permission_granted}>"Full access granted"</p>
                 <ul>
-                    @for item in &items {
+                    @for item in items {
                         <li>{item}</li>
                     }
                 </ul>
@@ -144,7 +148,7 @@ pub fn lesson6() -> impl azumi::Component {
 
             <section class={examples}>
                 <div class={example_card}>
-                    @control_flow_example(show_details=true, items=demo_items, status="active")
+                    @control_flow_example(show_details=true, items=demo_items.clone(), status="active")
                 </div>
                 <div class={example_card}>
                     @complex_conditions()
