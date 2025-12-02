@@ -498,7 +498,8 @@ pub fn process_global_style_macro(input: TokenStream) -> StyleOutput {
 }
 
 pub fn process_style_macro(input: TokenStream) -> StyleOutput {
-    // 1. Parse the input
+    // 1. Parse the input (clone first to use later for reconstruction)
+    let input_clone = input.clone();
     let style_input: StyleInput = match parse2(input) {
         Ok(input) => input,
         Err(err) => {
@@ -510,7 +511,7 @@ pub fn process_style_macro(input: TokenStream) -> StyleOutput {
     };
 
     // 2. Reconstruct CSS string (with quotes removed from values)
-    let raw_css = reconstruct_css_from_tokens(input);
+    let raw_css = reconstruct_css_from_tokens(input_clone);
 
     // 3. Generate Scope ID
     let mut hasher = DefaultHasher::new();
