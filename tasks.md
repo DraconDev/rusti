@@ -12,9 +12,12 @@ i got a task for you, your job is to change the parse to make sure all css value
 
 # Later
 
+- hot reload 
+- also what nextjs features we could implement?
+  - what features we are missing 
 - action testing 
-- get gemini to fix lesson 8
-
+- maybe improve css validation 
+- make the lessons
 
 # Done
 
@@ -23,6 +26,3 @@ i got a task for you, your job is to change the parse to make sure all css value
 - snake case for css?
 - list-style should be list_style
 
-# ? Much later 
-- maybe improve css validation 
-- make the lessons
