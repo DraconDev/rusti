@@ -44,11 +44,10 @@ class Azumi {
         cmd = cmd.replace(/#\s+/g, "#");
 
         const tokens = cmd.split(" ");
-        const eventType = tokens[0]; // "click", "submit", etc.
-        const actionType = tokens[1]; // "call" or "set"
+        const actionType = tokens[0]; // "call" or "set"
 
         if (actionType === "call") {
-            let actionName = tokens[2]; // The actual action function name
+            let actionName = tokens[1]; // The actual action function name
             let url = `/_azumi/action/${actionName}`;
             let targetSelector = null;
             let swap = "morph";
