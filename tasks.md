@@ -17,6 +17,7 @@ i got a task for you, your job is to change the parse to make sure all css value
   - what features we are missing 
 - action testing 
 - maybe improve css validation 
+- image optimization
 - make the lessons
 
 # Done
