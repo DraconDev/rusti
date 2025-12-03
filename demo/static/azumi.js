@@ -44,7 +44,6 @@ class Azumi {
         cmd = cmd.replace(/#\s+/g, "#");
 
         const tokens = cmd.split(" ").filter((t) => t.trim() !== "");
-        console.log("Azumi parsed tokens:", tokens);
         const actionType = tokens[0]; // "call" or "set"
 
         if (actionType === "call") {
