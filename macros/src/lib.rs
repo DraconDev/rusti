@@ -921,6 +921,65 @@ fn generate_body_with_context(
                         }
                     }
 
+                    // Handle on:event syntax (e.g. on:click={state.increment})
+                    if attr_name.starts_with("on:") {
+                        let event = &attr_name[3..];
+                        if let token_parser::AttributeValue::Dynamic(tokens) = &attr.value {
+                            // Parse the expression: state.method
+                            // We expect a path like `state.method`
+                            if let Ok(expr) = syn::parse2::<syn::Expr>(tokens.clone()) {
+                                if let syn::Expr::Field(field_expr) = expr {
+                                    // Extract base (state) and member (method)
+                                    let base = &field_expr.base;
+                                    let method = &field_expr.member;
+
+                                    if let syn::Member::Named(method_ident) = method {
+                                        let method_name = method_ident.to_string();
+
+                                        // Generate az-on attribute
+                                        // We need the scope ID to target the update
+                                        // If we are inside a scope (ctx.scope_id is set), we use that
+                                        // But wait, ctx.scope_id is for CSS scoping!
+                                        // We need the *runtime* scope ID from the az-scope attribute
+                                        // For now, let's assume the target is the current element's closest scope
+                                        // which we can target with a special selector or just let the runtime handle it?
+                                        // The runtime looks for closest [az-scope] if no target specified!
+                                        // So "click call method" implies target=closest scope.
+                                        
+                                        // However, we need to know if we should generate data-predict.
+                                        // We can check if the base type implements LiveState and has a prediction for this method.
+                                        // But we can't check types at macro expansion time easily.
+                                        // Instead, we can generate code that checks it at runtime or use a helper trait.
+                                        
+                                        // Let's generate a runtime helper call:
+                                        // azumi::render_event(f, "click", &state, "method")?;
+                                        
+                                        attr_code.extend(quote! {
+                                            {
+                                                // Try to get prediction if available
+                                                // We use a trait method on the state object
+                                                let predictions = <_ as azumi::LiveState>::predictions();
+                                                let prediction = predictions.iter()
+                                                    .find(|(m, _)| *m == #method_name)
+                                                    .map(|(_, p)| *p)
+                                                    .unwrap_or("");
+                                                
+                                                if !prediction.is_empty() {
+                                                    write!(f, " data-predict=\"{}\"", prediction)?;
+                                                }
+                                                
+                                                // Generate az-on
+                                                // Default target is the closest scope (implied by missing -> target)
+                                                write!(f, " az-on=\"{} call {}\"", #event, #method_name)?;
+                                            }
+                                        });
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     match &attr.value {
                         token_parser::AttributeValue::Static(val) => {
                             attr_code.extend(quote! {
