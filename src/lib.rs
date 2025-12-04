@@ -13,9 +13,17 @@ pub trait Component {
 
 /// Marker trait for live state structs
 /// Auto-implemented by #[azumi::live]
-pub trait LiveState: serde::Serialize + serde::de::DeserializeOwned {
-    fn to_scope(&self) -> String;
+pub trait LiveState:
+    serde::Serialize + for<'de> serde::de::Deserialize<'de> + Send + Sync + 'static
+{
+    fn to_scope(&self) -> String {
+        serde_json::to_string(self).unwrap_or_default()
+    }
+    /// Returns predictions for optimistic UI (method_name -> dsl)
     fn predictions() -> &'static [(&'static str, &'static str)];
+
+    /// Returns the struct name for namespacing actions
+    fn struct_name() -> &'static str;
 }
 
 #[derive(Clone)]
