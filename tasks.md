@@ -3,6 +3,8 @@
    <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
  vs ?
    <div class={fill} style={--progress: completion; --accent: "red"}></div>
+?
+  <div class={fill} style={--progress: completion; --accent: format!("{}", accent_color)}></div>
 
 - enforce all css to be double quoted
 - variables names should be valid for style blocks 

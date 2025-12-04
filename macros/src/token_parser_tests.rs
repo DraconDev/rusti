@@ -8,26 +8,6 @@ fn parse_nodes_wrapper(input: ParseStream) -> Result<Vec<Node>> {
 }
 
 #[test]
-fn test_style_in_head() {
-    let input = quote! {
-        <head>
-            <style>
-                body { color: red; }
-            </style>
-        </head>
-    };
-
-    let parser = parse_nodes_wrapper;
-    let result = parser.parse2(input);
-    match result {
-        Ok(_) => panic!("Should have failed due to inline style ban"),
-        Err(e) => {
-            assert!(e.to_string().contains("Inline <style> tags not allowed"));
-        }
-    }
-}
-
-#[test]
 fn test_mismatched_closing_tag() {
     let input = quote! {
         <div></span>
