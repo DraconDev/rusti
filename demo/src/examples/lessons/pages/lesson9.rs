@@ -4,14 +4,12 @@ use azumi::prelude::*;
 ///
 /// Compiler-driven optimistic UI - write Rust, get instant updates!
 
-// #[azumi::live] auto-derives Serialize/Deserialize + LiveState trait
 #[azumi::live]
 pub struct Counter {
     pub count: i32,
     pub active: bool,
 }
 
-// #[azumi::live_impl] analyzes mutations and generates predictions
 #[azumi::live_impl]
 impl Counter {
     pub fn increment(&mut self) {
@@ -25,14 +23,9 @@ impl Counter {
     pub fn decrement(&mut self) {
         self.count -= 1;
     }
-
-    pub fn reset(&mut self) {
-        self.count = 0;
-        self.active = true;
-    }
 }
 
-/// Live component view - using `on:event` syntax
+/// Live component view
 #[azumi::component]
 pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
     html! {
@@ -84,61 +77,16 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
             </div>
 
             <div class={btn_row}>
-                <button class={btn, btn_primary} on:click={state.increment}>
+                <button class="btn btn_primary" on:click={state.increment}>
                     "+ Increment"
                 </button>
-                <button class={btn, btn_secondary} on:click={state.decrement}>
+                <button class="btn btn_secondary" on:click={state.decrement}>
                     "- Decrement"
                 </button>
-                <button class={btn, btn_danger} on:click={state.toggle}>
+                <button class="btn btn_danger" on:click={state.toggle}>
                     "Toggle Status"
                 </button>
             </div>
-        </div>
-    }
-}
-
-/// Key concepts explanation
-#[azumi::component]
-pub fn key_concepts() -> impl Component {
-    html! {
-        <style>
-            .concepts {
-                background: "#f8f9fa";
-                padding: "1.5rem";
-                border-radius: "8px";
-                margin-top: "2rem";
-            }
-            .concept_title { color: "#333"; margin-bottom: "1rem"; }
-            .concept_list { list-style: "none"; padding: "0"; }
-            .concept_item {
-                padding: "0.75rem";
-                margin: "0.5rem 0";
-                background: "white";
-                border-left: "4px solid #667eea";
-                border-radius: "0 4px 4px 0";
-            }
-        </style>
-        <div class={concepts}>
-            <h3 class={concept_title}>"🎯 Key Concepts"</h3>
-            <ul class={concept_list}>
-                <li class={concept_item}>
-                    <strong>"#[azumi::live]"</strong>
-                    " - Marks struct as reactive state"
-                </li>
-                <li class={concept_item}>
-                    <strong>"#[azumi::live_impl]"</strong>
-                    " - Analyzes mutations at compile time"
-                </li>
-                <li class={concept_item}>
-                    <strong>"on:click={state.method}"</strong>
-                    " - Declarative event binding"
-                </li>
-                <li class={concept_item}>
-                    <strong>"Zero JS Required"</strong>
-                    " - Compiler generates predictions"
-                </li>
-            </ul>
         </div>
     }
 }
@@ -154,8 +102,6 @@ pub async fn lesson9_handler() -> axum::response::Html<String> {
     let component_html = azumi::render_to_string(&render(
         Props::builder().state(&state).build().expect("props"),
     ));
-
-    let concepts_html = azumi::render_to_string(&key_concepts());
 
     let html = format!(
         r#"<!DOCTYPE html>
@@ -175,6 +121,25 @@ pub async fn lesson9_handler() -> axum::response::Html<String> {
         .header {{ text-align: center; margin-bottom: 2rem; }}
         .main_title {{ font-size: 2.5rem; color: #333; margin-bottom: 0.5rem; }}
         .subtitle {{ font-size: 1.2rem; color: #666; }}
+        .concepts {{
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }}
+        .concept_title {{ color: #333; margin-bottom: 1rem; }}
+        .concept_list {{ list-style: none; padding: 0; }}
+        .concept_item {{
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 0 4px 4px 0;
+        }}
+        .btn {{ padding: 0.75rem 1.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }}
+        .btn_primary {{ background: #4caf50; color: white; }}
+        .btn_secondary {{ background: #ff9800; color: white; }}
+        .btn_danger {{ background: #f44336; color: white; }}
     </style>
 </head>
 <body>
@@ -184,13 +149,21 @@ pub async fn lesson9_handler() -> axum::response::Html<String> {
             <p class="subtitle">Compiler-driven optimistic UI</p>
         </header>
         {}
-        {}
+        <div class="concepts">
+            <h3 class="concept_title">🎯 Key Concepts</h3>
+            <ul class="concept_list">
+                <li class="concept_item"><strong>#[azumi::live]</strong> - Marks struct as reactive state</li>
+                <li class="concept_item"><strong>#[azumi::live_impl]</strong> - Analyzes mutations at compile time</li>
+                <li class="concept_item"><strong>on:click={{state.method}}</strong> - Declarative event binding</li>
+                <li class="concept_item"><strong>Zero JS Required</strong> - Compiler generates predictions</li>
+            </ul>
+        </div>
     </div>
     <script src="/static/idiomorph.js"></script>
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        component_html, concepts_html
+        component_html
     );
 
     axum::response::Html(html)
