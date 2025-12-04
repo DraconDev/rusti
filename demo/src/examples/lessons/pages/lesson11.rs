@@ -1,170 +1,293 @@
+use azumi::prelude::*;
 
-/// Lesson 11: Advanced CSS Features
+/// Lesson 11: Declarative Event Binding (on:event)
 ///
-/// CSS variables, pseudo-classes, and media queries
-#[azumi::component]
-pub fn advanced_css_example() -> impl azumi::Component {
-    html! {
-        <style>
-            :root {
-                --primary-color: #2196f3;
-                --secondary-color: #ff4081;
-            }
-            .advanced { padding: "2rem"; }
-            .button {
-                padding: "0.75rem 1.5rem";
-                background: "var(--primary-color)";
-                color: "white";
-                border: "none";
-                cursor: "pointer";
-                transition: "background 0.3s";
-            }
-            .button:hover { background: "var(--secondary-color)"; }
-            .responsive { color: "blue"; }
-            @media (max-width: 600px) {
-                .responsive { color: "red"; }
-            }
-        </style>
-        <div class={advanced}>
-            <button class={button}>"Hover Me"</button>
-            <p class={responsive}>"Responsive Text"</p>
-        </div>
+/// The new concise syntax for event handling
+
+// Shopping cart item
+#[azumi::live]
+pub struct CartItem {
+    pub quantity: i32,
+    pub max_quantity: i32,
+}
+
+#[azumi::live_impl]
+impl CartItem {
+    pub fn increment(&mut self) {
+        if self.quantity < self.max_quantity {
+            self.quantity += 1;
+        }
+    }
+
+    pub fn decrement(&mut self) {
+        if self.quantity > 0 {
+            self.quantity -= 1;
+        }
     }
 }
 
-/// Example: CSS variables and theming
+/// Cart item component
 #[azumi::component]
-pub fn css_variables_example() -> impl azumi::Component {
+pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> impl Component + 'a {
     html! {
         <style>
-            .variables_container { padding: "1.5rem"; background: "#f9f9f9"; }
-            .theme_demo { display: "grid"; gap: "1rem"; }
-            .theme_card { padding: "1rem"; border: "1px solid #ddd"; }
-            .light_theme {
-                --bg-color: white;
-                --text-color: #333;
-                --border-color: #ddd;
-            }
-            .dark_theme {
-                --bg-color: #333;
-                --text-color: white;
-                --border-color: #666;
-            }
-            .theme_content {
-                background: "var(--bg-color)";
-                color: "var(--text-color)";
-                border: "1px solid var(--border-color)";
-                padding: "1rem";
-            }
-        </style>
-        <div class={variables_container}>
-        <div class={variables_container}>
-            <h3>"CSS Variables Demo"</h3>
-
-            <div class={theme_demo}>
-                <div class={theme_card} class={light_theme}>
-                    <h4>"Light Theme"</h4>
-                    <div class={theme_content}>"Light theme using CSS variables"</div>
-                </div>
-
-                <div class={theme_card} class={dark_theme}>
-                    <h4>"Dark Theme"</h4>
-                    <div class={theme_content}>"Dark theme using CSS variables"</div>
-                </div>
-            </div>
-        </div>
-    }
-}
-
-/// Example: Responsive design patterns
-#[azumi::component]
-pub fn responsive_design_example() -> impl azumi::Component {
-    html! {
-        <style>
-            .responsive_container { padding: "1.5rem"; }
-            .responsive_grid {
-                display: "grid";
-                grid-template-columns: "repeat(3, 1fr)";
+            .cart_item {
+                display: "flex";
+                align-items: "center";
                 gap: "1rem";
+                padding: "1rem";
+                border: "1px solid #eee";
+                border-radius: "8px";
+                background: "white";
             }
-            .grid_item { padding: "1rem"; background: "#f0f0f0"; border: "1px solid #eee"; }
-            @media (max-width: 768px) {
-                .responsive_grid {
-                    grid-template-columns: "repeat(2, 1fr)";
-                }
+            .item_info { flex: "1"; }
+            .item_name { font-weight: "bold"; color: "#333"; }
+            .item_price { color: "#666"; }
+            .qty_controls {
+                display: "flex";
+                align-items: "center";
+                gap: "0.5rem";
             }
-            @media (max-width: 480px) {
-                .responsive_grid {
-                    grid-template-columns: "1fr";
-                }
+            .qty_btn {
+                width: "32px";
+                height: "32px";
+                border: "1px solid #ddd";
+                border-radius: "4px";
+                background: "white";
+                cursor: "pointer";
+                font-size: "1.2rem";
+            }
+            .qty_btn:hover { background: "#f5f5f5"; }
+            .qty_btn:disabled { opacity: "0.5"; cursor: "not-allowed"; }
+            .qty_value {
+                min-width: "40px";
+                text-align: "center";
+                font-weight: "bold";
+            }
+            .item_total {
+                font-weight: "bold";
+                color: "#4caf50";
+                min-width: "80px";
+                text-align: "right";
             }
         </style>
-        <div class={responsive_container}>
-            <h3>"Responsive Grid"</h3>
-
-            <div class={responsive_grid}>
-                <div class={grid_item}>"Item 1"</div>
-                <div class={grid_item}>"Item 2"</div>
-                <div class={grid_item}>"Item 3"</div>
-                <div class={grid_item}>"Item 4"</div>
-                <div class={grid_item}>"Item 5"</div>
-                <div class={grid_item}>"Item 6"</div>
+        <div class={cart_item}>
+            <div class={item_info}>
+                <div class={item_name}>{name}</div>
+                <div class={item_price}>"$" {format!("{:.2}", price)}</div>
             </div>
 
-            <p>"This grid adapts to different screen sizes"</p>
+            <div class={qty_controls}>
+                // on:click is the NEW syntax - auto-generates az-on + data-predict
+                <button class={qty_btn} on:click={state.decrement}>"-"</button>
+                <span class={qty_value} data-bind="quantity">{state.quantity}</span>
+                <button class={qty_btn} on:click={state.increment}>"+"</button>
+            </div>
+
+            @let total = price * (state.quantity as f64);
+            <div class={item_total}>"$" {format!("{:.2}", total)}</div>
         </div>
     }
 }
 
-/// Main lesson demonstration component
+// Expandable panel state
+#[azumi::live]
+pub struct ExpandPanel {
+    pub expanded: bool,
+}
+
+#[azumi::live_impl]
+impl ExpandPanel {
+    pub fn toggle(&mut self) {
+        self.expanded = !self.expanded;
+    }
+}
+
+/// Expandable panel with on:click
 #[azumi::component]
-pub fn lesson11() -> impl azumi::Component {
+pub fn expand_panel<'a>(
+    state: &'a ExpandPanel,
+    title: &'a str,
+    children: impl Component + 'a,
+) -> impl Component + 'a {
     html! {
         <style>
-            .container { padding: "20px"; }
-            .header { text-align: "center"; margin-bottom: "30px"; }
-            .main_title { font-size: "32px"; color: "#333"; }
-            .subtitle { font-size: "18px"; color: "#666"; }
-            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-            .section_title { font-size: "20px"; margin-bottom: "15px"; }
-            .points_list { list-style: "none"; padding: "0"; }
-            .point { margin-bottom: "10px"; }
-            .examples { display: "grid"; gap: "20px"; }
-            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+            .expand_panel {
+                border: "1px solid #e0e0e0";
+                border-radius: "8px";
+                overflow: "hidden";
+            }
+            .panel_header {
+                padding: "1rem";
+                background: "#f8f9fa";
+                cursor: "pointer";
+                display: "flex";
+                justify-content: "space-between";
+                align-items: "center";
+                border: "none";
+                width: "100%";
+                font-size: "1rem";
+                font-weight: "bold";
+            }
+            .panel_header:hover { background: "#e9ecef"; }
+            .panel_body {
+                padding: "1rem";
+                border-top: "1px solid #e0e0e0";
+            }
+            .chevron { transition: "transform 0.2s"; }
+            .chevron_open { transform: "rotate(180deg)"; }
+        </style>
+        <div class={expand_panel}>
+            // Declarative: on:click={state.toggle}
+            <button class={panel_header} on:click={state.toggle}>
+                <span>{title}</span>
+                <span class={chevron, if state.expanded { "chevron_open" } else { "" }}>"▼"</span>
+            </button>
+            @if state.expanded {
+                <div class={panel_body}>
+                    {children}
+                </div>
+            }
+        </div>
+    }
+}
+
+/// Comparison of old vs new syntax
+#[azumi::component]
+pub fn syntax_comparison() -> impl Component {
+    html! {
+        <style>
+            .comparison {
+                display: "grid";
+                grid-template-columns: "1fr 1fr";
+                gap: "1rem";
+                margin: "2rem 0";
+            }
+            .compare_box {
+                padding: "1rem";
+                border-radius: "8px";
+                font-family: "monospace";
+                font-size: "0.85rem";
+                white-space: "pre-wrap";
+            }
+            .old_syntax { background: "#ffebee"; border: "1px solid #ef9a9a"; }
+            .new_syntax { background: "#e8f5e9"; border: "1px solid #a5d6a7"; }
+            .compare_label {
+                font-weight: "bold";
+                margin-bottom: "0.5rem";
+                font-family: "sans-serif";
+            }
+        </style>
+        <div class={comparison}>
+            <div class={compare_box, old_syntax}>
+                <div class={compare_label}>"❌ Old (Manual)"</div>
+                "<button\n"
+                "  az-on=\"click call toggle\"\n"
+                "  data-predict=\"expanded = !expanded\">\n"
+                "  Toggle\n"
+                "</button>"
+            </div>
+            <div class={compare_box, new_syntax}>
+                <div class={compare_label}>"✅ New (Declarative)"</div>
+                "<button on:click={state.toggle}>\n"
+                "  Toggle\n"
+                "</button>\n"
+                "\n"
+                "// Auto-generates both attributes!"
+            </div>
+        </div>
+    }
+}
+
+/// Main lesson page
+#[azumi::component]
+pub fn lesson11() -> impl Component {
+    html! {
+        <style>
+            .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
+            .header { text-align: "center"; margin-bottom: "2rem"; }
+            .main_title { font-size: "2rem"; color: "#333"; }
+            .subtitle { color: "#666"; }
+            .section { margin: "2rem 0"; }
+            .section_title { color: "#2196f3"; margin-bottom: "1rem"; }
         </style>
         <div class={container}>
             <header class={header}>
-                <h1 class={main_title}>"Lesson 11: Advanced CSS Features"</h1>
-                <p class={subtitle}>"CSS variables, pseudo-classes, and media queries"</p>
+                <h1 class={main_title}>"Lesson 11: on:event Syntax"</h1>
+                <p class={subtitle}>"Declarative event binding"</p>
             </header>
 
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ CSS variables for theming"</li>
-                    <li class={point}>"✅ Pseudo-classes for interactivity"</li>
-                    <li class={point}>"✅ Media queries for responsiveness"</li>
-                    <li class={point}>"✅ Advanced CSS features supported"</li>
-                    <li class={point}>"✅ All validated at compile time"</li>
-                </ul>
-            </section>
+            @syntax_comparison()
 
-            <section class={examples}>
-                <div class={example_card}>
-                    @advanced_css_example()
-                </div>
-                <div class={example_card}>
-                    @css_variables_example()
-                </div>
-                <div class={example_card}>
-                    @responsive_design_example()
-                </div>
+            <section class={section}>
+                <h2 class={section_title}>"🛒 Shopping Cart Demo"</h2>
+                @cart_item_view(state=&CartItem { quantity: 1, max_quantity: 10 }, name="Azumi Pro License", price=99.00)
             </section>
         </div>
     }
 }
 
 // Handler for Axum
-pub async fn lesson11_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&lesson11()))
+pub async fn lesson11_handler() -> axum::response::Html<String> {
+    let cart_state = CartItem {
+        quantity: 1,
+        max_quantity: 10,
+    };
+
+    use cart_item_view_component::Props as CartProps;
+    let cart_html = azumi::render_to_string(&cart_item_view_component::render(
+        CartProps::builder()
+            .state(&cart_state)
+            .name("Azumi Pro License")
+            .price(99.00)
+            .build()
+            .expect("props"),
+    ));
+
+    let comparison_html = azumi::render_to_string(&syntax_comparison());
+
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 11: Declarative Event Binding</title>
+    <style>
+        body {{ 
+            font-family: system-ui, sans-serif; 
+            margin: 0;
+            padding: 2rem;
+            background: #fafafa;
+        }}
+        .container {{ max-width: 800px; margin: 0 auto; }}
+        .header {{ text-align: center; margin-bottom: 2rem; }}
+        .main_title {{ font-size: 2rem; color: #333; }}
+        .subtitle {{ color: #666; }}
+        .section {{ margin: 2rem 0; }}
+        .section_title {{ color: #2196f3; margin-bottom: 1rem; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main_title">Lesson 11: on:event Syntax</h1>
+            <p class="subtitle">Declarative event binding</p>
+        </header>
+        
+        {}
+        
+        <section class="section">
+            <h2 class="section_title">🛒 Shopping Cart Demo</h2>
+            {}
+        </section>
+    </div>
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        comparison_html, cart_html
+    );
+
+    axum::response::Html(html)
 }
