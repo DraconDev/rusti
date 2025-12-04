@@ -8,15 +8,12 @@ use azumi::prelude::*;
 #[azumi::live]
 pub struct CartItem {
     pub quantity: i32,
-    pub max_quantity: i32,
 }
 
 #[azumi::live_impl]
 impl CartItem {
     pub fn increment(&mut self) {
-        if self.quantity < self.max_quantity {
-            self.quantity += 1;
-        }
+        self.quantity += 1;
     }
 
     pub fn decrement(&mut self) {
@@ -57,8 +54,6 @@ pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> imp
                 cursor: "pointer";
                 font-size: "1.2rem";
             }
-            .qty_btn:hover { background: "#f5f5f5"; }
-            .qty_btn:disabled { opacity: "0.5"; cursor: "not-allowed"; }
             .qty_value {
                 min-width: "40px";
                 text-align: "center";
@@ -78,7 +73,6 @@ pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> imp
             </div>
 
             <div class={qty_controls}>
-                // on:click is the NEW syntax - auto-generates az-on + data-predict
                 <button class={qty_btn} on:click={state.decrement}>"-"</button>
                 <span class={qty_value} data-bind="quantity">{state.quantity}</span>
                 <button class={qty_btn} on:click={state.increment}>"+"</button>
@@ -90,76 +84,13 @@ pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> imp
     }
 }
 
-// Expandable panel state
-#[azumi::live]
-pub struct ExpandPanel {
-    pub expanded: bool,
-}
-
-#[azumi::live_impl]
-impl ExpandPanel {
-    pub fn toggle(&mut self) {
-        self.expanded = !self.expanded;
-    }
-}
-
-/// Expandable panel with on:click
-#[azumi::component]
-pub fn expand_panel<'a>(
-    state: &'a ExpandPanel,
-    title: &'a str,
-    children: impl Component + 'a,
-) -> impl Component + 'a {
-    html! {
-        <style>
-            .expand_panel {
-                border: "1px solid #e0e0e0";
-                border-radius: "8px";
-                overflow: "hidden";
-            }
-            .panel_header {
-                padding: "1rem";
-                background: "#f8f9fa";
-                cursor: "pointer";
-                display: "flex";
-                justify-content: "space-between";
-                align-items: "center";
-                border: "none";
-                width: "100%";
-                font-size: "1rem";
-                font-weight: "bold";
-            }
-            .panel_header:hover { background: "#e9ecef"; }
-            .panel_body {
-                padding: "1rem";
-                border-top: "1px solid #e0e0e0";
-            }
-            .chevron { transition: "transform 0.2s"; }
-            .chevron_open { transform: "rotate(180deg)"; }
-        </style>
-        <div class={expand_panel}>
-            // Declarative: on:click={state.toggle}
-            <button class={panel_header} on:click={state.toggle}>
-                <span>{title}</span>
-                <span class={chevron, if state.expanded { "chevron_open" } else { "" }}>"▼"</span>
-            </button>
-            @if state.expanded {
-                <div class={panel_body}>
-                    {children}
-                </div>
-            }
-        </div>
-    }
-}
-
-/// Comparison of old vs new syntax
+/// Syntax comparison component
 #[azumi::component]
 pub fn syntax_comparison() -> impl Component {
     html! {
         <style>
             .comparison {
                 display: "grid";
-                grid-template-columns: "1fr 1fr";
                 gap: "1rem";
                 margin: "2rem 0";
             }
@@ -168,7 +99,6 @@ pub fn syntax_comparison() -> impl Component {
                 border-radius: "8px";
                 font-family: "monospace";
                 font-size: "0.85rem";
-                white-space: "pre-wrap";
             }
             .old_syntax { background: "#ffebee"; border: "1px solid #ef9a9a"; }
             .new_syntax { background: "#e8f5e9"; border: "1px solid #a5d6a7"; }
@@ -181,58 +111,19 @@ pub fn syntax_comparison() -> impl Component {
         <div class={comparison}>
             <div class={compare_box, old_syntax}>
                 <div class={compare_label}>"❌ Old (Manual)"</div>
-                "<button\n"
-                "  az-on=\"click call toggle\"\n"
-                "  data-predict=\"expanded = !expanded\">\n"
-                "  Toggle\n"
-                "</button>"
+                "az-on=\"click call toggle\" data-predict=\"...\""
             </div>
             <div class={compare_box, new_syntax}>
                 <div class={compare_label}>"✅ New (Declarative)"</div>
-                "<button on:click={state.toggle}>\n"
-                "  Toggle\n"
-                "</button>\n"
-                "\n"
-                "// Auto-generates both attributes!"
+                "on:click={state.toggle}"
             </div>
-        </div>
-    }
-}
-
-/// Main lesson page
-#[azumi::component]
-pub fn lesson11() -> impl Component {
-    html! {
-        <style>
-            .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
-            .header { text-align: "center"; margin-bottom: "2rem"; }
-            .main_title { font-size: "2rem"; color: "#333"; }
-            .subtitle { color: "#666"; }
-            .section { margin: "2rem 0"; }
-            .section_title { color: "#2196f3"; margin-bottom: "1rem"; }
-        </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 11: on:event Syntax"</h1>
-                <p class={subtitle}>"Declarative event binding"</p>
-            </header>
-
-            @syntax_comparison()
-
-            <section class={section}>
-                <h2 class={section_title}>"🛒 Shopping Cart Demo"</h2>
-                @cart_item_view(state=&CartItem { quantity: 1, max_quantity: 10 }, name="Azumi Pro License", price=99.00)
-            </section>
         </div>
     }
 }
 
 // Handler for Axum
 pub async fn lesson11_handler() -> axum::response::Html<String> {
-    let cart_state = CartItem {
-        quantity: 1,
-        max_quantity: 10,
-    };
+    let cart_state = CartItem { quantity: 1 };
 
     use cart_item_view_component::Props as CartProps;
     let cart_html = azumi::render_to_string(&cart_item_view_component::render(
