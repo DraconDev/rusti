@@ -318,6 +318,7 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
         // Generated handlers module
         #[allow(non_snake_case)]
         mod __azumi_live_handlers {
+            use super::*;
             #(#method_handlers)*
         }
     };
