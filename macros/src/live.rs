@@ -130,26 +130,21 @@ fn analyze_expr(expr: &Expr) -> Option<Prediction> {
         }
 
         // self.field += value or self.field -= value
-        Expr::Binary(ExprBinary {
+        Expr::AssignOp(ExprAssignOp {
             left, op, right, ..
         }) => {
-            // This handles compound assignment via desugaring
-            // Actually, compound assignments are separate in syn
-            None
+            let field = extract_self_field(left)?;
+            let value = expr_to_literal_string(right)?;
+
+            match op {
+                BinOp::AddEq(_) => Some(Prediction::Add { field, value }),
+                BinOp::SubEq(_) => Some(Prediction::Sub { field, value }),
+                _ => None,
+            }
         }
 
         _ => None,
     }
-}
-
-/// Analyze compound assignment (+=, -=)
-fn analyze_compound_assignment(expr: &Expr) -> Option<Prediction> {
-    // syn parses `self.x += 1` as AssignOp, not Binary
-    // But we need to check the actual syn types
-
-    // For now, let's handle the common case through macro_rules patterns
-    // This will be enhanced based on actual syn AST structure
-    None
 }
 
 /// Analyze a method body for all predictable mutations
