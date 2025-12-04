@@ -14,12 +14,10 @@ pub struct Counter {
 // #[azumi::live_impl] analyzes mutations and generates predictions
 #[azumi::live_impl]
 impl Counter {
-    // Compiler detects: self.count += 1 → Prediction: "count = count + 1"
     pub fn increment(&mut self) {
         self.count += 1;
     }
 
-    // Compiler detects: self.active = !self.active → Prediction: "active = !active"
     pub fn toggle(&mut self) {
         self.active = !self.active;
     }
@@ -43,7 +41,7 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
                 padding: "2rem";
                 border: "2px solid #e0e0e0";
                 border-radius: "12px";
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+                background: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)";
                 color: "white";
                 text-align: "center";
                 max-width: "400px";
@@ -52,7 +50,6 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
                 font-size: "4rem";
                 font-weight: "bold";
                 margin: "1rem 0";
-                text-shadow: "2px 2px 4px rgba(0,0,0,0.3)";
             }
             .status {
                 font-size: "1.2rem";
@@ -71,11 +68,8 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
                 border: "none";
                 border-radius: "8px";
                 cursor: "pointer";
-                transition: "transform 0.1s, opacity 0.1s";
                 font-weight: "bold";
             }
-            .btn:hover { transform: "scale(1.05)"; }
-            .btn:active { transform: "scale(0.95)"; }
             .btn_primary { background: "#4caf50"; color: "white"; }
             .btn_secondary { background: "#ff9800"; color: "white"; }
             .btn_danger { background: "#f44336"; color: "white"; }
@@ -83,16 +77,12 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
         <div class={counter_box}>
             <h2>"🚀 Azumi Live Counter"</h2>
 
-            // Display current state values
             <div class={value} data-bind="count">{state.count}</div>
             <div class={status}>
                 "Status: "
                 <span data-bind="active">{if state.active { "Active ✓" } else { "Inactive ✗" }}</span>
             </div>
 
-            // on:click={state.method} auto-generates:
-            // - az-on="click call Counter/increment"
-            // - data-predict="count = count + 1"
             <div class={btn_row}>
                 <button class={btn, btn_primary} on:click={state.increment}>
                     "+ Increment"
@@ -128,74 +118,32 @@ pub fn key_concepts() -> impl Component {
                 border-left: "4px solid #667eea";
                 border-radius: "0 4px 4px 0";
             }
-            .code_inline {
-                background: "#e8e8e8";
-                padding: "0.2rem 0.5rem";
-                border-radius: "4px";
-                font-family: "monospace";
-            }
         </style>
         <div class={concepts}>
             <h3 class={concept_title}>"🎯 Key Concepts"</h3>
             <ul class={concept_list}>
                 <li class={concept_item}>
                     <strong>"#[azumi::live]"</strong>
-                    " - Marks struct as reactive state (auto-derives Serialize/Deserialize)"
+                    " - Marks struct as reactive state"
                 </li>
                 <li class={concept_item}>
                     <strong>"#[azumi::live_impl]"</strong>
-                    " - Analyzes mutations at compile time, generates prediction DSL"
+                    " - Analyzes mutations at compile time"
                 </li>
                 <li class={concept_item}>
                     <strong>"on:click={state.method}"</strong>
-                    " - Declarative event binding with auto-generated optimistic updates"
+                    " - Declarative event binding"
                 </li>
                 <li class={concept_item}>
                     <strong>"Zero JS Required"</strong>
-                    " - Compiler generates client-side predictions from Rust code"
+                    " - Compiler generates predictions"
                 </li>
             </ul>
         </div>
     }
 }
 
-/// Main lesson page
-#[azumi::component]
-pub fn lesson9() -> impl Component {
-    html! {
-        <style>
-            .container {
-                max-width: "800px";
-                margin: "0 auto";
-                padding: "2rem";
-                font-family: "system-ui, sans-serif";
-            }
-            .header { text-align: "center"; margin-bottom: "2rem"; }
-            .main_title {
-                font-size: "2.5rem";
-                color: "#333";
-                margin-bottom: "0.5rem";
-            }
-            .subtitle { font-size: "1.2rem"; color: "#666"; }
-            .demo_section { margin: "2rem 0"; }
-        </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 9: Introducing Azumi Live"</h1>
-                <p class={subtitle}>"Compiler-driven optimistic UI"</p>
-            </header>
-
-            <section class={demo_section}>
-                // Render the live counter component
-                @counter_view(state=&Counter { count: 0, active: true })
-            </section>
-
-            @key_concepts()
-        </div>
-    }
-}
-
-// Handler for Axum - includes azumi.js runtime
+// Handler for Axum
 pub async fn lesson9_handler() -> axum::response::Html<String> {
     let state = Counter {
         count: 0,
@@ -223,10 +171,7 @@ pub async fn lesson9_handler() -> axum::response::Html<String> {
             padding: 2rem;
             background: #fafafa;
         }}
-        .container {{
-            max-width: 800px;
-            margin: 0 auto;
-        }}
+        .container {{ max-width: 800px; margin: 0 auto; }}
         .header {{ text-align: center; margin-bottom: 2rem; }}
         .main_title {{ font-size: 2.5rem; color: #333; margin-bottom: 0.5rem; }}
         .subtitle {{ font-size: 1.2rem; color: #666; }}
