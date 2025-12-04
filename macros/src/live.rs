@@ -103,7 +103,7 @@ fn is_toggle_expr(expr: &Expr, expected_field: &str) -> bool {
 /// Analyze a single statement for predictable mutations
 fn analyze_statement(stmt: &Stmt) -> Option<Prediction> {
     match stmt {
-        Stmt::Expr(expr, _) | Stmt::Semi(expr, _) => analyze_expr(expr),
+        Stmt::Expr(expr, _semicolon) => analyze_expr(expr),
         _ => None,
     }
 }
@@ -163,7 +163,7 @@ pub fn analyze_method(method: &ImplItemFn) -> MethodAnalysis {
         } else {
             // Check if this is a statement that could have side effects
             match stmt {
-                Stmt::Expr(expr, _) | Stmt::Semi(expr, _) => {
+                Stmt::Expr(expr, _semicolon) => {
                     if is_side_effect(expr) {
                         has_unpredictable = true;
                     }
@@ -328,7 +328,6 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[cfg(test)]
 mod tests {
     use crate::live::Prediction;
-
 
     #[test]
     fn test_prediction_to_dsl() {
