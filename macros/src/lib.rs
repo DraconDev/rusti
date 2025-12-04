@@ -76,6 +76,33 @@ impl Parse for NodesWrapper {
     }
 }
 
+/// Validates that a style attribute only contains CSS custom properties (--variables).
+/// Returns Ok(()) if valid, Err(error_message) if invalid.
+fn validate_style_only_css_vars(style_value: &str) -> Result<(), String> {
+    // Parse style value: "prop: value; prop2: value2"
+    for part in style_value.split(';') {
+        let part = part.trim();
+        if part.is_empty() {
+            continue;
+        }
+        
+        // Split by first ':'
+        if let Some(colon_pos) = part.find(':') {
+            let prop_name = part[..colon_pos].trim();
+            
+            // Property must start with --
+            if !prop_name.starts_with("--") {
+                return Err(format!(
+                    "Invalid style property '{}'. Only CSS custom properties (--variables) are allowed in style attributes. \
+                    Use <style> blocks for regular CSS properties.",
+                    prop_name
+                ));
+            }
+        }
+    }
+    Ok(())
+}
+
 #[proc_macro]
 pub fn html(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as token_parser::HtmlInput);
