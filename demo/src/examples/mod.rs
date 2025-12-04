@@ -1,5 +1,6 @@
 pub mod css_variables;
 pub mod lessons;
+pub mod live_demo;
 pub mod test_accessibility_pass;
 //pub mod test_html_structure;  // Demonstrates HTML structure validation
 //pub mod test_all_errors;  // Demonstrates all error messages
