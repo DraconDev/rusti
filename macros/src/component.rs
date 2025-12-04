@@ -118,33 +118,21 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
-                // Auto-generated az-scope wrapper
-                // We use a div by default, but maybe we should let the user control this?
-                // For now, we just inject the scope ID into the context if possible
-                // But wait, html! macro handles the generation.
-                // We need to wrap the user's html! block or inject the attribute.
-
-                // Better approach: Just execute the block. The html! macro inside
-                // will handle the on:click attributes.
-                // BUT we need to output the az-scope attribute somewhere.
-                // The user's root element needs it.
-
-                // Let's assume the user returns a single root element.
-                // We can't easily modify the returned HTML structure here without parsing it.
-                // So for Phase 2 MVP, we'll require the user to add az-scope manually OR
-                // we provide a helper wrapper.
-
-                // Actually, the plan said "Auto-generate az-scope wrapper".
-                // Let's wrap the result in a scope div.
-
-                let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
-                write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                #fn_block
-                write!(f, "</div>")?;
-                Ok(())
+                azumi::from_fn(move |f| {
+                    // Auto-generated az-scope wrapper
+                    let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
+                    write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
+                    #fn_block
+                    write!(f, "</div>")?;
+                    Ok(())
+                })
             }
         } else {
-            quote! { #fn_block }
+            quote! {
+                azumi::from_fn(move |f| {
+                    #fn_block
+                })
+            }
         };
 
         quote! {
@@ -156,19 +144,21 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     } else {
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
-                // Auto-generated az-scope wrapper
-                let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
-                // We use single quotes for JSON to avoid escaping double quotes inside
-                // But JSON uses double quotes, so we need to be careful.
-                // HTML attributes can use single quotes.
-                // JSON: {"count": 1} -> az-scope='{"count": 1}'
-                write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                #fn_block
-                write!(f, "</div>")?;
-                Ok(())
+                azumi::from_fn(move |f| {
+                    // Auto-generated az-scope wrapper
+                    let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
+                    write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
+                    #fn_block
+                    write!(f, "</div>")?;
+                    Ok(())
+                })
             }
         } else {
-            quote! { #fn_block }
+            quote! {
+                azumi::from_fn(move |f| {
+                    #fn_block
+                })
+            }
         };
 
         quote! {
