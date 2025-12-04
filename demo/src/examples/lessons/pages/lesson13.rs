@@ -1,152 +1,191 @@
-use azumi::html;
+use azumi::prelude::*;
 
-/// Lesson 13: Real-time Features with External Scripts
+/// Lesson 13: Form Handling
 ///
-/// Real-time features using external scripts (no inline scripts)
-#[azumi::component]
-pub fn chat_interface() -> impl azumi::Component {
-    html! {
-        <style>
-            .chat_container { display: "grid"; gap: "1rem"; max-width: "600px"; }
-            .messages { height: "400px"; overflow-y: "auto"; border: "1px solid #ddd"; padding: "1rem"; }
-            .message { margin-bottom: "0.5rem"; padding: "0.5rem"; background: "#f0f0f0"; border-radius: "4px"; }
-            .input_area { display: "grid"; gap: "0.5rem"; }
-            .chat_input { padding: "0.5rem"; }
-            .send_button { padding: "0.5rem"; background: "#2196f3"; color: "white"; border: "none"; }
-        </style>
-        <div class={chat_container}>
-            <div class={messages} id="messages">
-                <div class={message}>"Welcome to Azumi Chat!"</div>
-            </div>
-            <div class={input_area}>
-                <input class={chat_input} type="text" id="chat-input" placeholder="Type your message..." />
-                <button class={send_button}>"Send"</button>
-            </div>
-        </div>
-        <!-- External script import (required by Azumi) -->
-        <script src="/static/chat.js"></script>
+/// Building forms with Azumi Live
+
+#[azumi::live]
+pub struct ContactForm {
+    pub submitted: bool,
+}
+
+#[azumi::live_impl]
+impl ContactForm {
+    pub fn submit(&mut self) {
+        self.submitted = true;
+    }
+
+    pub fn reset(&mut self) {
+        self.submitted = false;
     }
 }
 
-/// Example: Real-time notifications
+/// Contact form component
 #[azumi::component]
-pub fn realtime_notifications() -> impl azumi::Component {
+pub fn contact_form_view<'a>(state: &'a ContactForm) -> impl Component + 'a {
     html! {
         <style>
-            .notifications_container { padding: "1.5rem"; background: "#f9f9f9"; }
-            .notification { padding: "0.75rem"; margin: "0.5rem 0"; background: "white"; border: "1px solid #eee"; border-radius: "4px"; }
-            .notification_new { background: "#e8f5e9"; }
-            .notification_old { background: "#ffebee"; }
-            .notification_button { padding: "0.5rem 1rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
+            .form_container {
+                max-width: "400px";
+                padding: "2rem";
+                background: "white";
+                border-radius: "12px";
+                border: "1px solid #e0e0e0";
+            }
+            .form_title {
+                margin-bottom: "1.5rem";
+                color: "#333";
+            }
+            .field {
+                display: "grid";
+                gap: "0.5rem";
+                margin-bottom: "1rem";
+            }
+            .label {
+                font-weight: "bold";
+                color: "#555";
+            }
+            .input {
+                padding: "0.75rem";
+                border: "1px solid #ddd";
+                border-radius: "6px";
+                font-size: "1rem";
+            }
+            .textarea {
+                padding: "0.75rem";
+                border: "1px solid #ddd";
+                border-radius: "6px";
+                font-size: "1rem";
+                min-height: "100px";
+                resize: "vertical";
+            }
+            .btn {
+                padding: "0.75rem 1.5rem";
+                background: "#2196f3";
+                color: "white";
+                border: "none";
+                border-radius: "6px";
+                font-size: "1rem";
+                cursor: "pointer";
+                width: "100%";
+            }
+            .btn_secondary {
+                background: "#757575";
+            }
+            .success_box {
+                padding: "2rem";
+                text-align: "center";
+                background: "#e8f5e9";
+                border-radius: "8px";
+            }
+            .success_icon {
+                font-size: "3rem";
+                margin-bottom: "1rem";
+            }
+            .success_text {
+                color: "#2e7d32";
+                font-size: "1.2rem";
+                font-weight: "bold";
+            }
         </style>
-        <div class={notifications_container}>
-            <h3>"Real-time Notifications"</h3>
+        <div class={form_container}>
+            <h2 class={form_title}>"📧 Contact Form"</h2>
 
-            <div id="notification-list">
-                <div class={notification} class={notification_new}>
-                    <p>"New message received"</p>
-                    <p class={notification_button}>"Dismiss"</p>
+            @if state.submitted {
+                <div class={success_box}>
+                    <div class={success_icon}>"✅"</div>
+                    <div class={success_text}>"Thank you for your message!"</div>
                 </div>
+                <button class="btn btn_secondary" on:click={state.reset} style="margin-top: 1rem;">
+                    "Send Another"
+                </button>
+            }
 
-                <div class={notification} class={notification_old}>
-                    <p>"System update available"</p>
-                    <p class={notification_button}>"Update Now"</p>
+            @if !state.submitted {
+                <div class={field}>
+                    <label class={label}>"Name"</label>
+                    <input class={input} type="text" name="name" placeholder="Your name" />
                 </div>
-            </div>
-
-            <button class={notification_button} id="refresh-btn">"Refresh Notifications"</button>
-        </div>
-        <script src="/static/notifications.js"></script>
-    }
-}
-
-/// Example: Live data visualization
-#[azumi::component]
-pub fn live_data_visualization() -> impl azumi::Component {
-    html! {
-        <style>
-            .visualization_container { padding: "1.5rem"; }
-            .data_display { display: "grid"; grid-template-columns: "repeat(auto-fit, minmax(150px, 1fr))"; gap: "1rem"; }
-            .data_card { padding: "1rem"; background: "#f0f0f0"; border: "1px solid #eee"; text-align: "center"; }
-            .data_value { font-size: "1.5rem"; font-weight: "bold"; color: "#2196f3"; }
-            .data_label { font-size: "0.9rem"; color: "#666"; }
-            .update_button { padding: "0.75rem"; background: "#ff4081"; color: "white"; border: "none"; cursor: "pointer"; }
-        </style>
-        <div class={visualization_container}>
-            <h3>"Live Data Dashboard"</h3>
-
-            <div class={data_display} id="live-data">
-                <div class={data_card}>
-                    <div class={data_value}>"1,245"</div>
-                    <div class={data_label}>"Active Users"</div>
+                <div class={field}>
+                    <label class={label}>"Email"</label>
+                    <input class={input} type="email" name="email" placeholder="your@email.com" />
                 </div>
-
-                <div class={data_card}>
-                    <div class={data_value}>"87%"</div>
-                    <div class={data_label}>"System Health"</div>
+                <div class={field}>
+                    <label class={label}>"Message"</label>
+                    <textarea class={textarea} name="message" placeholder="Your message..."></textarea>
                 </div>
-
-                <div class={data_card}>
-                    <div class={data_value}>"42"</div>
-                    <div class={data_label}>"Pending Tasks"</div>
-                </div>
-            </div>
-
-            <button class={update_button} id="update-data">"Update Data"</button>
-        </div>
-        <script src="/static/data-visualization.js"></script>
-    }
-}
-
-/// Main lesson demonstration component
-#[azumi::component]
-pub fn lesson13() -> impl azumi::Component {
-    html! {
-        <style>
-            .container { padding: "20px"; }
-            .header { text-align: "center"; margin-bottom: "30px"; }
-            .main_title { font-size: "32px"; color: "#333"; }
-            .subtitle { font-size: "18px"; color: "#666"; }
-            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-            .section_title { font-size: "20px"; margin-bottom: "15px"; }
-            .points_list { list-style: "none"; padding: "0"; }
-            .point { margin-bottom: "10px"; }
-            .examples { display: "grid"; gap: "20px"; }
-            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
-        </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 13: Real-time Features with External Scripts"</h1>
-                <p class={subtitle}>"Real-time features using external scripts"</p>
-            </header>
-
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ External script integration"</li>
-                    <li class={point}>"✅ Real-time data updates"</li>
-                    <li class={point}>"✅ No inline scripts allowed"</li>
-                    <li class={point}>"✅ Proper script importing"</li>
-                    <li class={point}>"✅ Interactive component patterns"</li>
-                </ul>
-            </section>
-
-            <section class={examples}>
-                <div class={example_card}>
-                    @chat_interface()
-                </div>
-                <div class={example_card}>
-                    @realtime_notifications()
-                </div>
-                <div class={example_card}>
-                    @live_data_visualization()
-                </div>
-            </section>
+                <button class={btn} type="button" on:click={state.submit}>
+                    "Submit"
+                </button>
+            }
         </div>
     }
 }
 
 // Handler for Axum
-pub async fn lesson13_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&lesson13()))
+pub async fn lesson13_handler() -> axum::response::Html<String> {
+    let form_state = ContactForm { submitted: false };
+
+    use contact_form_view_component::Props;
+    let form_html = azumi::render_to_string(&contact_form_view_component::render(
+        Props::builder().state(&form_state).build().expect("props"),
+    ));
+
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 13: Form Handling</title>
+    <style>
+        body {{ 
+            font-family: system-ui, sans-serif; 
+            margin: 0;
+            padding: 2rem;
+            background: #fafafa;
+        }}
+        .container {{ max-width: 800px; margin: 0 auto; }}
+        .header {{ text-align: center; margin-bottom: 2rem; }}
+        .main_title {{ font-size: 2rem; color: #333; }}
+        .subtitle {{ color: #666; }}
+        .demo_area {{ display: flex; justify-content: center; margin: 2rem 0; }}
+        .explanation {{
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }}
+        .btn {{ padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; width: 100%; }}
+        .btn_secondary {{ background: #757575; color: white; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main_title">Lesson 13: Form Handling</h1>
+            <p class="subtitle">Building forms with Azumi Live</p>
+        </header>
+        
+        <div class="explanation">
+            <h3>📝 Form Patterns</h3>
+            <ul>
+                <li><strong>Submit action</strong> - Toggles submitted state</li>
+                <li><strong>Reset action</strong> - Clears form state</li>
+                <li><strong>Conditional rendering</strong> - Shows form or success message</li>
+            </ul>
+        </div>
+        
+        <div class="demo_area">
+            {}
+        </div>
+    </div>
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        form_html
+    );
+
+    axum::response::Html(html)
 }
