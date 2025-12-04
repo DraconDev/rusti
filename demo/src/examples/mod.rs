@@ -12,4 +12,3 @@ pub mod form;
 pub mod live_component_demo;
 pub mod test_css_validation; // CSS validation test case
 pub mod test_global_styles; // Global style tag test
-pub mod test_result_component;
