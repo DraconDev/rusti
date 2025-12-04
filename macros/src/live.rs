@@ -6,6 +6,13 @@
 //! 3. Generates prediction metadata for client-side optimistic updates
 //! 4. Auto-registers server action handlers
 
+use proc_macro::TokenStream;
+use quote::{format_ident, quote};
+use syn::{
+    parse_macro_input, Expr, ExprAssign, ExprBinary, ExprField, ExprMethodCall, ExprPath,
+    ExprUnary, Fields, ImplItem, ImplItemFn, ItemImpl, ItemStruct, Member, Stmt, UnOp,
+};
+
 /// Represents a predictable mutation that can be executed optimistically
 #[derive(Debug, Clone)]
 pub enum Prediction {
