@@ -36,6 +36,13 @@ pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component {
             <button on:click={state.toggle}>
                 "Toggle Active"
             </button>
+            <style>
+                .counter-box {
+                    border: 1px solid #ccc;
+                    padding: 1em;
+                    border-radius: 8px;
+                }
+            </style>
         </div>
     }
 }
