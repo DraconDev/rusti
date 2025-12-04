@@ -1,132 +1,228 @@
-use azumi::html;
+use azumi::prelude::*;
 
-/// Lesson 15: E-commerce Product Catalog
+/// Lesson 15: Full Application Pattern
 ///
-/// Advanced e-commerce patterns
-mod ecommerce {
-    #[derive(Debug)]
-    struct Product {
-        id: i32,
-        name: String,
-        price: f64,
-        description: String,
-        in_stock: bool,
+/// Building a complete interactive todo app
+
+#[azumi::live]
+pub struct TodoApp {
+    pub show_completed: bool,
+    pub item_count: i32,
+}
+
+#[azumi::live_impl]
+impl TodoApp {
+    pub fn toggle_filter(&mut self) {
+        self.show_completed = !self.show_completed;
     }
 
-    #[azumi::component]
-    pub fn product_card(product: Product) -> impl azumi::Component {
-        html! {
-            <style>
-                .product_card { border: "1px solid #eee"; padding: "1rem"; display: "grid"; gap: "0.5rem"; }
-                .product_name { font-weight: "bold"; }
-                .product_price { color: "#2196f3"; font-weight: "bold"; }
-                .product_description { color: "#666"; font-size: "0.9rem"; }
-                .add_button { padding: "0.5rem"; background: "#4caf50"; color: "white"; border: "none"; cursor: "pointer"; }
-                .out_of_stock { opacity: "0.5"; }
-            </style>
-            <div class={if product.in_stock { "product_card" } else { "product_card out_of_stock" }}>
-                <h3 class={product_name}>{product.name}</h3>
-                <div class={product_price}>${product.price}</div>
-                <p class={product_description}>{product.description}</p>
-                @if product.in_stock {
-                    <button class={add_button}>"Add to Cart"</button>
-                }
-                @if !product.in_stock {
-                    <p>"Out of Stock"</p>
-                }
-            </div>
-        }
+    pub fn add_item(&mut self) {
+        self.item_count += 1;
     }
 
-    #[azumi::component]
-    pub fn product_grid() -> impl azumi::Component {
-        let products = vec![
-            Product {
-                id: 1,
-                name: "Premium Headphones",
-                price: 199.99,
-                description: "High-quality noise-cancelling headphones with 30-hour battery life",
-                in_stock: true,
-            },
-            Product {
-                id: 2,
-                name: "Wireless Mouse",
-                price: 49.99,
-                description: "Ergonomic wireless mouse with 5 programmable buttons",
-                in_stock: true,
-            },
-            Product {
-                id: 3,
-                name: "Mechanical Keyboard",
-                price: 129.99,
-                description: "RGB backlit mechanical keyboard with Cherry MX switches",
-                in_stock: false,
-            },
-            Product {
-                id: 4,
-                name: "4K Monitor",
-                price: 399.99,
-                description: "27-inch 4K UHD monitor with HDR and 144Hz refresh rate",
-                in_stock: true,
-            },
-        ];
-
-        html! {
-            <style>
-                .grid { display: "grid"; grid-template-columns: "repeat(auto-fill, minmax(250px, 1fr))"; gap: "1rem"; }
-            </style>
-            <div class={grid}>
-                @for product in &products {
-                    @product_card(product=product)
-                }
-            </div>
-        }
+    pub fn clear(&mut self) {
+        self.item_count = 0;
     }
 }
 
-/// Main lesson demonstration component
+/// Todo app component
 #[azumi::component]
-pub fn lesson15() -> impl azumi::Component {
+pub fn todo_app_view<'a>(state: &'a TodoApp) -> impl Component + 'a {
     html! {
         <style>
-            .container { padding: "20px"; }
-            .header { text-align: "center"; margin-bottom: "30px"; }
-            .main_title { font-size: "32px"; color: "#333"; }
-            .subtitle { font-size: "18px"; color: "#666"; }
-            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-            .section_title { font-size: "20px"; margin-bottom: "15px"; }
-            .points_list { list-style: "none"; padding: "0"; }
-            .point { margin-bottom: "10px"; }
-            .examples { display: "grid"; gap: "20px"; }
-            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+            .todo_app {
+                max-width: "500px";
+                background: "white";
+                border-radius: "12px";
+                border: "1px solid #e0e0e0";
+                overflow: "hidden";
+            }
+            .app_header {
+                background: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)";
+                color: "white";
+                padding: "2rem";
+                text-align: "center";
+            }
+            .app_title {
+                margin: "0";
+                font-size: "2rem";
+            }
+            .app_subtitle {
+                opacity: "0.8";
+                margin-top: "0.5rem";
+            }
+            .input_section {
+                padding: "1rem";
+                display: "flex";
+                gap: "0.5rem";
+                border-bottom: "1px solid #eee";
+            }
+            .todo_input {
+                flex: "1";
+                padding: "0.75rem";
+                border: "1px solid #ddd";
+                border-radius: "6px";
+                font-size: "1rem";
+            }
+            .add_btn {
+                padding: "0.75rem 1.5rem";
+                background: "#4caf50";
+                color: "white";
+                border: "none";
+                border-radius: "6px";
+                cursor: "pointer";
+                font-size: "1rem";
+            }
+            .filter_section {
+                padding: "1rem";
+                display: "flex";
+                justify-content: "space-between";
+                align-items: "center";
+                background: "#f8f9fa";
+            }
+            .filter_btn {
+                padding: "0.5rem 1rem";
+                border: "1px solid #ddd";
+                border-radius: "4px";
+                background: "white";
+                cursor: "pointer";
+            }
+            .filter_active {
+                background: "#2196f3";
+                color: "white";
+                border-color: "#2196f3";
+            }
+            .item_count {
+                font-size: "1.5rem";
+                font-weight: "bold";
+                color: "#667eea";
+            }
+            .clear_btn {
+                padding: "0.5rem 1rem";
+                background: "#f44336";
+                color: "white";
+                border: "none";
+                border-radius: "4px";
+                cursor: "pointer";
+            }
+            .todo_list {
+                padding: "1rem";
+            }
+            .empty_state {
+                text-align: "center";
+                padding: "2rem";
+                color: "#999";
+            }
         </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 15: E-commerce Product Catalog"</h1>
-                <p class={subtitle}>"Advanced e-commerce patterns"</p>
+        <div class={todo_app}>
+            <header class={app_header}>
+                <h1 class={app_title}>"📝 Azumi Todos"</h1>
+                <p class={app_subtitle}>"Built with Azumi Live"</p>
             </header>
 
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ Product data modeling"</li>
-                    <li class={point}>"✅ Responsive product grid"</li>
-                    <li class={point}>"✅ Inventory management"</li>
-                    <li class={point}>"✅ Conditional rendering"</li>
-                    <li class={point}>"✅ E-commerce component patterns"</li>
-                </ul>
-            </section>
+            <div class={input_section}>
+                <input class={todo_input} placeholder="What needs to be done?" />
+                <button class={add_btn} on:click={state.add_item}>"Add"</button>
+            </div>
 
-            <section class={examples}>
-                <div class={example_card}>
-                    @ecommerce::product_grid()
+            <div class={filter_section}>
+                <div>
+                    <button
+                        class={if !state.show_completed { "filter_btn filter_active" } else { "filter_btn" }}
+                        on:click={state.toggle_filter}>
+                        "Active"
+                    </button>
+                    <button
+                        class={if state.show_completed { "filter_btn filter_active" } else { "filter_btn" }}
+                        on:click={state.toggle_filter}>
+                        "Completed"
+                    </button>
                 </div>
-            </section>
+                <span class={item_count} data-bind="item_count">{state.item_count}</span>
+                <button class={clear_btn} on:click={state.clear}>"Clear"</button>
+            </div>
+
+            <div class={todo_list}>
+                @if state.item_count == 0 {
+                    <div class={empty_state}>
+                        "🎉 No todos! Add one above."
+                    </div>
+                }
+                @if state.item_count > 0 {
+                    <p>"You have " {state.item_count} " item(s) in your list."</p>
+                }
+            </div>
         </div>
     }
 }
 
 // Handler for Axum
-pub async fn lesson15_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&lesson15()))
+pub async fn lesson15_handler() -> axum::response::Html<String> {
+    let app_state = TodoApp {
+        show_completed: false,
+        item_count: 0,
+    };
+
+    use todo_app_view_component::Props;
+    let app_html = azumi::render_to_string(&todo_app_view_component::render(
+        Props::builder().state(&app_state).build().expect("props"),
+    ));
+
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 15: Full Application</title>
+    <style>
+        body {{ 
+            font-family: system-ui, sans-serif; 
+            margin: 0;
+            padding: 2rem;
+            background: #fafafa;
+        }}
+        .container {{ max-width: 800px; margin: 0 auto; }}
+        .header {{ text-align: center; margin-bottom: 2rem; }}
+        .main_title {{ font-size: 2rem; color: #333; }}
+        .subtitle {{ color: #666; }}
+        .demo_area {{ display: flex; justify-content: center; margin: 2rem 0; }}
+        .explanation {{
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }}
+        .filter_btn {{ padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }}
+        .filter_active {{ background: #2196f3; color: white; border-color: #2196f3; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main_title">Lesson 15: Full Application</h1>
+            <p class="subtitle">Building a complete interactive todo app</p>
+        </header>
+        
+        <div class="explanation">
+            <h3>🚀 Putting It All Together</h3>
+            <ul>
+                <li><strong>Multiple actions</strong> - add, toggle filter, clear</li>
+                <li><strong>Conditional rendering</strong> - empty state vs items</li>
+                <li><strong>Optimistic updates</strong> - instant count changes</li>
+            </ul>
+        </div>
+        
+        <div class="demo_area">
+            {}
+        </div>
+    </div>
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        app_html
+    );
+
+    axum::response::Html(html)
 }
