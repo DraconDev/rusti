@@ -6,40 +6,7 @@
 //! 3. Generates prediction metadata for client-side optimistic updates
 //! 4. Auto-registers server action handlers
 
-use proc_macro::TokenStream;
-use live::to_scope;
-use Fields::Named;
-use axum::response::Json;
 
-use Prediction::SetLiteral;
-use Prediction::Toggle;
-use Prediction::Add;
-use Prediction::Sub;
-use Expr::Field;
-use Expr::Path;
-use Member::Named;
-use Expr::Lit;
-use Expr::Unary;
-use Stmt::Semi;
-use Expr::Assign;
-use Expr::Binary;
-use Stmt::Local;
-use Expr::Await;
-use Expr::Call;
-use Expr::MethodCall;
-use Expr::Macro;
-use ImplItem::Fn;
-use axum::extract::Json;
-use axum::response::IntoResponse;
-use axum::routing::MethodRouter;
-use azumi::action::ActionEntry;
-use live::analyze_method;
-use token_parser::Block::For;
-use token_parser::Block::Call;
-use syn::Path;
-use token_parser::AttributeValue::None;
-use syn::Expr::Assign;
-use syn::Error;
 use quote::{format_ident, quote};
 use syn::{
     parse_macro_input, parse_quote, Attribute, BinOp, Block, Expr, ExprAssign, ExprBinary,
