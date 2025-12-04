@@ -167,6 +167,25 @@ Hint for optimistic UI (auto-generated with `on:event`):
 
 ---
 
+### Dynamic CSS Variables: `style="--var: {value}"`
+
+Pass dynamic values to CSS via custom properties (the ONLY allowed use of `style`):
+
+```rust
+html! {
+    <style>
+        .meter { width: "calc(var(--progress) * 100%)"; }
+    </style>
+    // ✅ Only CSS variables allowed in style attribute
+    <div class={meter} style="--progress: {completion}"></div>
+
+    // ❌ Direct CSS properties cause compile error!
+    // <div style="width: 50%"></div>
+}
+```
+
+---
+
 ## Architecture
 
 ```
