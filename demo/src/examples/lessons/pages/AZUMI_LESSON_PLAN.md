@@ -186,39 +186,40 @@ fn styling_demo() -> impl azumi::Component {
 
 ---
 
-### Lesson 6: @let Pattern & CSS Custom Properties
+### Lesson 6: @let Pattern & Dynamic CSS Variables
 
-**Goal:** Use local variables and CSS custom properties
+**Goal:** Use local variables and pass dynamic values to CSS
 
 ```rust
 #[azumi::component]
-fn pricing_card(base_price: f64, discount: f64) -> impl azumi::Component {
+fn progress_meter(completion: f64, accent_color: &str) -> impl azumi::Component {
     html! {
         <style>
-            .card {
-                --accent-color: #2196f3;
-                --highlight-bg: #f0f7ff;
-                padding: "2rem";
-                border: "1px solid var(--accent-color)";
-                border-radius: "8px";
+            .meter {
+                width: "100%";
+                height: "20px";
+                background: "#eee";
+                border-radius: "10px";
+                overflow: "hidden";
             }
-            .price { font-size: "2rem"; color: "var(--accent-color)"; }
-            .original { text-decoration: "line-through"; color: "#999"; }
-            .savings { background: "var(--highlight-bg)"; padding: "0.5rem"; }
+            .fill {
+                height: "100%";
+                background: "var(--accent, #2196f3)";
+                width: "calc(var(--progress) * 100%)";
+                transition: "width 0.3s ease";
+            }
+            .label { text-align: "center"; margin-top: "0.5rem"; }
         </style>
 
-        <div class={card}>
-            // @let for computed values
-            @let final_price = base_price * (1.0 - discount);
-            @let savings = base_price - final_price;
-
-            <div class={original}>"$" {base_price}</div>
-            <div class={price}>"$" {final_price:.2}</div>
-
-            @if savings > 0.0 {
-                <div class={savings}>"You save: $" {savings:.2}</div>
-            }
+        <div class={meter}>
+            // style="" ONLY allows CSS custom properties (--variables)
+            // Direct properties like "width: 50%" would be a compile error!
+            <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
         </div>
+
+        // @let for computed values
+        @let percent = (completion * 100.0) as i32;
+        <div class={label}>{percent}"% complete"</div>
     }
 }
 ```
@@ -226,9 +227,9 @@ fn pricing_card(base_price: f64, discount: f64) -> impl azumi::Component {
 **Key Concepts:**
 
 -   `@let name = expr;` for local variables inside templates
--   CSS custom properties: `--my-var: value;` then `var(--my-var)`
--   Computed values updated at render time
--   **No external CSS imports** - all CSS validated at compile time
+-   CSS custom properties in `<style>`: `--my-var: value;` then `var(--my-var)`
+-   Pass dynamic values via `style="--var: {value}"`
+-   **Only CSS variables allowed in style attribute** - direct properties cause compile errors
 
 ---
 
