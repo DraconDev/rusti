@@ -954,11 +954,14 @@ fn generate_body_with_context(
                                         // Let's generate a runtime helper call:
                                         // azumi::render_event(f, "click", &state, "method")?;
                                         
+                                        // Use the base expression to infer the type for LiveState trait
                                         attr_code.extend(quote! {
                                             {
-                                                // Try to get prediction if available
-                                                // We use a trait method on the state object
-                                                let predictions = <_ as azumi::LiveState>::predictions();
+                                                // Use the base expression to infer the type
+                                                fn get_predictions<T: azumi::LiveState>(_: &T) -> &'static [(&'static str, &'static str)] {
+                                                    T::predictions()
+                                                }
+                                                let predictions = get_predictions(#base);
                                                 let prediction = predictions.iter()
                                                     .find(|(m, _)| *m == #method_name)
                                                     .map(|(_, p)| *p)
