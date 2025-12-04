@@ -34,7 +34,7 @@ impl LiveCounter {
 }
 
 /// Demo view component
-pub fn live_counter_view(state: &LiveCounter) -> impl azumi::Component {
+pub fn live_counter_view(state: &LiveCounter) -> impl azumi::Component + '_ {
     html! {
         <style>
             .live_container { padding: "2rem"; text-align: "center"; border: "2px solid #4caf50"; border-radius: "8px"; }
