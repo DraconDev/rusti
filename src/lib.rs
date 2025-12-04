@@ -11,6 +11,13 @@ pub trait Component {
     fn render(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
 }
 
+/// Marker trait for live state structs
+/// Auto-implemented by #[azumi::live]
+pub trait LiveState: serde::Serialize + serde::de::DeserializeOwned {
+    fn to_scope(&self) -> String;
+    fn predictions() -> &'static [(&'static str, &'static str)];
+}
+
 #[derive(Clone)]
 pub struct FnComponent<F>(F);
 
