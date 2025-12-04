@@ -1,7 +1,7 @@
 # TODO
 
    <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
-
+ vs ?
    <div class={fill} style={--progress: completion; --accent: "red"}></div>
 
 - enforce all css to be double quoted
