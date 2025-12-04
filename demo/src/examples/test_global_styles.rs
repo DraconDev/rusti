@@ -2,7 +2,6 @@ use azumi::html;
 
 #[azumi::component]
 pub fn test_global_styles() -> impl azumi::Component {
-    SYNTAX_ERROR
     html! {
         <style global>
             body {
