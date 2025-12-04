@@ -1,114 +1,252 @@
-use azumi::html;
+use azumi::prelude::*;
 
-/// Lesson 9: Feature Composition
+/// Lesson 9: Introducing Azumi Live
 ///
-/// Combining multiple Azumi features
+/// Compiler-driven optimistic UI - write Rust, get instant updates!
+
+// #[azumi::live] auto-derives Serialize/Deserialize + LiveState trait
+#[azumi::live]
+pub struct Counter {
+    pub count: i32,
+    pub active: bool,
+}
+
+// #[azumi::live_impl] analyzes mutations and generates predictions
+#[azumi::live_impl]
+impl Counter {
+    // Compiler detects: self.count += 1 → Prediction: "count = count + 1"
+    pub fn increment(&mut self) {
+        self.count += 1;
+    }
+
+    // Compiler detects: self.active = !self.active → Prediction: "active = !active"
+    pub fn toggle(&mut self) {
+        self.active = !self.active;
+    }
+
+    pub fn decrement(&mut self) {
+        self.count -= 1;
+    }
+
+    pub fn reset(&mut self) {
+        self.count = 0;
+        self.active = true;
+    }
+}
+
+/// Live component view - using `on:event` syntax
 #[azumi::component]
-pub fn feature_showcase() -> impl azumi::Component {
+pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
     html! {
         <style>
-            .showcase { display: "grid"; gap: "2rem"; }
-            .section { padding: "1rem"; border: "1px solid #eee"; }
-            .feature_list { display: "grid"; gap: "0.5rem"; }
-            .feature_item { padding: "0.5rem"; background: "#f0f0f0"; }
-            .active_badge { background: "#4caf50"; color: "white"; padding: "0.25rem 0.5rem"; border-radius: "4px"; }
+            .counter_box {
+                padding: "2rem";
+                border: "2px solid #e0e0e0";
+                border-radius: "12px";
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+                color: "white";
+                text-align: "center";
+                max-width: "400px";
+            }
+            .value {
+                font-size: "4rem";
+                font-weight: "bold";
+                margin: "1rem 0";
+                text-shadow: "2px 2px 4px rgba(0,0,0,0.3)";
+            }
+            .status {
+                font-size: "1.2rem";
+                opacity: "0.9";
+                margin-bottom: "1.5rem";
+            }
+            .btn_row {
+                display: "flex";
+                gap: "0.5rem";
+                justify-content: "center";
+                flex-wrap: "wrap";
+            }
+            .btn {
+                padding: "0.75rem 1.5rem";
+                font-size: "1rem";
+                border: "none";
+                border-radius: "8px";
+                cursor: "pointer";
+                transition: "transform 0.1s, opacity 0.1s";
+                font-weight: "bold";
+            }
+            .btn:hover { transform: "scale(1.05)"; }
+            .btn:active { transform: "scale(0.95)"; }
+            .btn_primary { background: "#4caf50"; color: "white"; }
+            .btn_secondary { background: "#ff9800"; color: "white"; }
+            .btn_danger { background: "#f44336"; color: "white"; }
         </style>
-        <div class={showcase}>
-            <div class={section}>
-                <h2>"Feature Composition"</h2>
-                <span class={active_badge}>"ACTIVE"</span>
-                <div class={feature_list}>
-                    <div class={feature_item}>"Feature 1"</div>
-                    <div class={feature_item}>"Feature 2"</div>
-                    <div class={feature_item}>"Feature 3"</div>
-                </div>
+        <div class={counter_box}>
+            <h2>"🚀 Azumi Live Counter"</h2>
+
+            // Display current state values
+            <div class={value} data-bind="count">{state.count}</div>
+            <div class={status}>
+                "Status: "
+                <span data-bind="active">{if state.active { "Active ✓" } else { "Inactive ✗" }}</span>
+            </div>
+
+            // on:click={state.method} auto-generates:
+            // - az-on="click call Counter/increment"
+            // - data-predict="count = count + 1"
+            <div class={btn_row}>
+                <button class={btn, btn_primary} on:click={state.increment}>
+                    "+ Increment"
+                </button>
+                <button class={btn, btn_secondary} on:click={state.decrement}>
+                    "- Decrement"
+                </button>
+                <button class={btn, btn_danger} on:click={state.toggle}>
+                    "Toggle Status"
+                </button>
             </div>
         </div>
     }
 }
 
-/// Example: Complex feature integration
+/// Key concepts explanation
 #[azumi::component]
-pub fn complex_feature_integration() -> impl azumi::Component {
+pub fn key_concepts() -> impl Component {
     html! {
         <style>
-            .integration_container { padding: "1.5rem"; background: "#f9f9f9"; }
-            .feature_grid { display: "grid"; grid-template-columns: "repeat(auto-fit, minmax(200px, 1fr))"; gap: "1rem"; }
-            .feature_card { padding: "1rem"; background: "white"; border: "1px solid #eee"; }
-            .feature_name { font-weight: "bold"; color: "#2196f3"; }
-            .feature_desc { font-size: "0.9rem"; color: "#666"; }
+            .concepts {
+                background: "#f8f9fa";
+                padding: "1.5rem";
+                border-radius: "8px";
+                margin-top: "2rem";
+            }
+            .concept_title { color: "#333"; margin-bottom: "1rem"; }
+            .concept_list { list-style: "none"; padding: "0"; }
+            .concept_item {
+                padding: "0.75rem";
+                margin: "0.5rem 0";
+                background: "white";
+                border-left: "4px solid #667eea";
+                border-radius: "0 4px 4px 0";
+            }
+            .code_inline {
+                background: "#e8e8e8";
+                padding: "0.2rem 0.5rem";
+                border-radius: "4px";
+                font-family: "monospace";
+            }
         </style>
-        <div class={integration_container}>
-            <h3>"Complex Feature Integration"</h3>
-
-            <div class={feature_grid}>
-                <div class={feature_card}>
-                    <div class={feature_name}>"CSS Scoping"</div>
-                    <div class={feature_desc}>"Automatic component scoping"</div>
-                </div>
-                <div class={feature_card}>
-                    <div class={feature_name}>"Type Safety"</div>
-                    <div class={feature_desc}>"Compile-time type checking"</div>
-                </div>
-                <div class={feature_card}>
-                    <div class={feature_name}>"Validation"</div>
-                    <div class={feature_desc}>"Strict HTML/CSS validation"</div>
-                </div>
-                <div class={feature_card}>
-                    <div class={feature_name}>"Performance"</div>
-                    <div class={feature_desc}>"Optimized rendering"</div>
-                </div>
-            </div>
+        <div class={concepts}>
+            <h3 class={concept_title}>"🎯 Key Concepts"</h3>
+            <ul class={concept_list}>
+                <li class={concept_item}>
+                    <strong>"#[azumi::live]"</strong>
+                    " - Marks struct as reactive state (auto-derives Serialize/Deserialize)"
+                </li>
+                <li class={concept_item}>
+                    <strong>"#[azumi::live_impl]"</strong>
+                    " - Analyzes mutations at compile time, generates prediction DSL"
+                </li>
+                <li class={concept_item}>
+                    <strong>"on:click={state.method}"</strong>
+                    " - Declarative event binding with auto-generated optimistic updates"
+                </li>
+                <li class={concept_item}>
+                    <strong>"Zero JS Required"</strong>
+                    " - Compiler generates client-side predictions from Rust code"
+                </li>
+            </ul>
         </div>
     }
 }
 
-/// Main lesson demonstration component
+/// Main lesson page
 #[azumi::component]
-pub fn lesson9() -> impl azumi::Component {
+pub fn lesson9() -> impl Component {
     html! {
         <style>
-            .container { padding: "20px"; }
-            .header { text-align: "center"; margin-bottom: "30px"; }
-            .main_title { font-size: "32px"; color: "#333"; }
-            .subtitle { font-size: "18px"; color: "#666"; }
-            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-            .section_title { font-size: "20px"; margin-bottom: "15px"; }
-            .points_list { list-style: "none"; padding: "0"; }
-            .point { margin-bottom: "10px"; }
-            .examples { display: "grid"; gap: "20px"; }
-            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+            .container {
+                max-width: "800px";
+                margin: "0 auto";
+                padding: "2rem";
+                font-family: "system-ui, sans-serif";
+            }
+            .header { text-align: "center"; margin-bottom: "2rem"; }
+            .main_title {
+                font-size: "2.5rem";
+                color: "#333";
+                margin-bottom: "0.5rem";
+            }
+            .subtitle { font-size: "1.2rem"; color: "#666"; }
+            .demo_section { margin: "2rem 0"; }
         </style>
         <div class={container}>
             <header class={header}>
-                <h1 class={main_title}>"Lesson 9: Feature Composition"</h1>
-                <p class={subtitle}>"Combining multiple Azumi features"</p>
+                <h1 class={main_title}>"Lesson 9: Introducing Azumi Live"</h1>
+                <p class={subtitle}>"Compiler-driven optimistic UI"</p>
             </header>
 
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"Combine multiple Azumi features"</li>
-                    <li class={point}>"Composition over inheritance"</li>
-                    <li class={point}>"Reusable feature patterns"</li>
-                    <li class={point}>"Type-safe feature integration"</li>
-                    <li class={point}>"Clean separation of concerns"</li>
-                </ul>
+            <section class={demo_section}>
+                // Render the live counter component
+                @counter_view(state=&Counter { count: 0, active: true })
             </section>
 
-            <section class={examples}>
-                <div class={example_card}>
-                    @feature_showcase()
-                </div>
-                <div class={example_card}>
-                    @complex_feature_integration()
-                </div>
-            </section>
+            @key_concepts()
         </div>
     }
 }
 
-// Handler for Axum
-pub async fn lesson9_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&lesson9()))
+// Handler for Axum - includes azumi.js runtime
+pub async fn lesson9_handler() -> axum::response::Html<String> {
+    let state = Counter {
+        count: 0,
+        active: true,
+    };
+
+    use counter_view_component::*;
+    let component_html = azumi::render_to_string(&render(
+        Props::builder().state(&state).build().expect("props"),
+    ));
+
+    let concepts_html = azumi::render_to_string(&key_concepts());
+
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 9: Introducing Azumi Live</title>
+    <style>
+        body {{ 
+            font-family: system-ui, sans-serif; 
+            margin: 0;
+            padding: 2rem;
+            background: #fafafa;
+        }}
+        .container {{
+            max-width: 800px;
+            margin: 0 auto;
+        }}
+        .header {{ text-align: center; margin-bottom: 2rem; }}
+        .main_title {{ font-size: 2.5rem; color: #333; margin-bottom: 0.5rem; }}
+        .subtitle {{ font-size: 1.2rem; color: #666; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main_title">Lesson 9: Introducing Azumi Live</h1>
+            <p class="subtitle">Compiler-driven optimistic UI</p>
+        </header>
+        {}
+        {}
+    </div>
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        component_html, concepts_html
+    );
+
+    axum::response::Html(html)
 }
