@@ -83,6 +83,7 @@ pub async fn unified_demo_handler() -> axum::response::Html<String> {
 azumi::inventory::submit! {
     azumi::action::ActionEntry {
         path: "/unified_demo",
+        handler: unified_demo_router,
     }
 }
 
