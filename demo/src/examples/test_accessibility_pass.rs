@@ -21,3 +21,4 @@ pub async fn test_handler() -> axum::response::Html<String> {
     let component = test_valid_accessibility();
     axum::response::Html(azumi::render_to_string(&component))
 }
+    
