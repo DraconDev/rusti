@@ -1,11 +1,5 @@
-mod actions;
-mod examples;
-
-use axum::{
-    routing::{get, post},
-    Router,
-};
-use tower_http::services::ServeDir; 
+mod tower_http;
+use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
