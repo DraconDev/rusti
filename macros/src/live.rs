@@ -260,6 +260,8 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut method_handlers = Vec::new();
     let mut original_methods = Vec::new();
 
+    let mut predictions_entries = Vec::new();
+
     for item in &input.items {
         if let ImplItem::Fn(method) = item {
             let analysis = analyze_method(method);
@@ -273,6 +275,14 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
                 .join("; ");
 
             let method_name = &method.sig.ident;
+            let method_name_str = method_name.to_string();
+
+            if !prediction_dsl.is_empty() {
+                predictions_entries.push(quote! {
+                    (#method_name_str, #prediction_dsl)
+                });
+            }
+
             let handler_name = format_ident!("{}_handler", method_name);
             let router_name = format_ident!("{}_router", method_name);
 
@@ -313,6 +323,17 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     let expanded = quote! {
         impl #struct_name {
             #(#original_methods)*
+        }
+
+        impl azumi::LiveState for #struct_name {
+            fn to_scope(&self) -> String {
+                self.to_scope()
+            }
+            fn predictions() -> &'static [(&'static str, &'static str)] {
+                &[
+                    #(#predictions_entries),*
+                ]
+            }
         }
 
         // Generated handlers module
