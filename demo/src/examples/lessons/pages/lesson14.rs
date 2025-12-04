@@ -1,132 +1,175 @@
-use azumi::html;
+use azumi::prelude::*;
 
-/// Lesson 14: Complete Blog Application
+/// Lesson 14: Composition with Live Components
 ///
-/// Full-stack blog with all Azumi features
-mod blog {
-    use super::*;
+/// Building complex UIs by composing live components
 
-    #[derive(Debug)]
-    struct Post {
-        id: i32,
-        title: String,
-        content: String,
-        author: String,
-        created_at: String,
+#[azumi::live]
+pub struct TabState {
+    pub active_index: i32,
+}
+
+#[azumi::live_impl]
+impl TabState {
+    pub fn select_0(&mut self) {
+        self.active_index = 0;
     }
-
-    #[azumi::component]
-    pub fn post_card(post: Post) -> impl azumi::Component {
-        html! {
-            <style>
-                .post_card { border: "1px solid #eee"; padding: "1.5rem"; margin-bottom: "1rem"; border-radius: "8px"; }
-                .post_title { font-size: "1.5rem"; margin-bottom: "0.5rem"; color: "#1976d2"; }
-                .post_meta { display: "flex"; gap: "1rem"; color: "#666"; margin-bottom: "1rem"; font-size: "0.9rem"; }
-                .post_content { line-height: "1.6"; }
-                .post_author { font-weight: "bold"; }
-            </style>
-            <article class={post_card}>
-                <h2 class={post_title}>{post.title}</h2>
-                <div class={post_meta}>
-                    <span class={post_author}>"By " {post.author}</span>
-                    <span>"Published on " {post.created_at}</span>
-                </div>
-                <div class={post_content}>{post.content}</div>
-            </article>
-        }
+    pub fn select_1(&mut self) {
+        self.active_index = 1;
     }
-
-    #[azumi::component]
-    pub fn blog_homepage() -> impl azumi::Component {
-        let posts = vec![
-            Post {
-                id: 1,
-                title: "Getting Started with Azumi",
-                content: "Learn how to build your first Azumi application with this comprehensive guide.",
-                author: "Azumi Team",
-                created_at: "2023-01-15",
-            },
-            Post {
-                id: 2,
-                title: "Advanced CSS Techniques",
-                content: "Explore advanced CSS patterns and how Azumi handles them at compile time.",
-                author: "CSS Expert",
-                created_at: "2023-02-20",
-            },
-            Post {
-                id: 3,
-                title: "Database Integration",
-                content: "Connect your Azumi app to databases with these proven patterns and best practices.",
-                author: "Backend Specialist",
-                created_at: "2023-03-10",
-            },
-        ];
-
-        html! {
-            <style>
-                .blog_container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
-                .blog_header { text-align: "center"; margin-bottom: "2rem"; }
-                .blog_title { font-size: "2.5rem"; color: "#2196f3"; }
-                .posts_list { display: "grid"; gap: "1.5rem"; }
-            </style>
-            <div class={blog_container}>
-                <header class={blog_header}>
-                    <h1 class={blog_title}>"Azumi Blog"</h1>
-                    <p>"A showcase of Azumi's capabilities"</p>
-                </header>
-                <main class={posts_list}>
-                    @for post in &posts {
-                        @post_card(post=post)
-                    }
-                </main>
-            </div>
-        }
+    pub fn select_2(&mut self) {
+        self.active_index = 2;
     }
 }
 
-/// Main lesson demonstration component
+/// Tabs component
 #[azumi::component]
-pub fn lesson14() -> impl azumi::Component {
+pub fn tabs_view<'a>(state: &'a TabState) -> impl Component + 'a {
     html! {
         <style>
-            .container { padding: "20px"; }
-            .header { text-align: "center"; margin-bottom: "30px"; }
-            .main_title { font-size: "32px"; color: "#333"; }
-            .subtitle { font-size: "18px"; color: "#666"; }
-            .key_points { background: "#f9f9f9"; padding: "20px"; border-radius: "8px"; margin-bottom: "30px"; }
-            .section_title { font-size: "20px"; margin-bottom: "15px"; }
-            .points_list { list-style: "none"; padding: "0"; }
-            .point { margin-bottom: "10px"; }
-            .examples { display: "grid"; gap: "20px"; }
-            .example_card { border: "1px solid #ddd"; padding: "20px"; border-radius: "8px"; }
+            .tabs_container {
+                background: "white";
+                border-radius: "12px";
+                border: "1px solid #e0e0e0";
+                overflow: "hidden";
+            }
+            .tab_buttons {
+                display: "flex";
+                background: "#f5f5f5";
+                border-bottom: "1px solid #e0e0e0";
+            }
+            .tab_btn {
+                flex: "1";
+                padding: "1rem";
+                border: "none";
+                background: "transparent";
+                cursor: "pointer";
+                font-size: "1rem";
+                transition: "background 0.2s";
+            }
+            .tab_btn_active {
+                background: "white";
+                color: "#2196f3";
+                font-weight: "bold";
+                border-bottom: "2px solid #2196f3";
+            }
+            .tab_content {
+                padding: "1.5rem";
+                min-height: "150px";
+            }
+            .tab_panel {
+                animation: "fadeIn 0.3s ease";
+            }
         </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 14: Complete Blog Application"</h1>
-                <p class={subtitle}>"Full-stack blog with all Azumi features"</p>
-            </header>
-
-            <section class={key_points}>
-                <h2 class={section_title}>"Key Concepts"</h2>
-                <ul class={points_list}>
-                    <li class={point}>"✅ Full application structure"</li>
-                    <li class={point}>"✅ Component composition"</li>
-                    <li class={point}>"✅ Data modeling"</li>
-                    <li class={point}>"✅ List rendering"</li>
-                    <li class={point}>"✅ Complete feature integration"</li>
-                </ul>
-            </section>
-
-            <section class={examples}>
-                <div class={example_card}>
-                    @blog::blog_homepage()
-                </div>
-            </section>
+        <div class={tabs_container}>
+            <div class={tab_buttons}>
+                <button
+                    class={if state.active_index == 0 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    on:click={state.select_0}>
+                    "🏠 Overview"
+                </button>
+                <button
+                    class={if state.active_index == 1 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    on:click={state.select_1}>
+                    "📊 Features"
+                </button>
+                <button
+                    class={if state.active_index == 2 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    on:click={state.select_2}>
+                    "💡 Examples"
+                </button>
+            </div>
+            <div class={tab_content}>
+                @if state.active_index == 0 {
+                    <div class={tab_panel}>
+                        <h3>"Overview"</h3>
+                        <p>"Azumi Live allows you to build interactive components with zero JavaScript. The compiler analyzes your Rust code and generates optimistic predictions."</p>
+                    </div>
+                }
+                @if state.active_index == 1 {
+                    <div class={tab_panel}>
+                        <h3>"Features"</h3>
+                        <ul>
+                            <li>"Compiler-driven optimistic UI"</li>
+                            <li>"Type-safe state management"</li>
+                            <li>"Zero client-side JavaScript needed"</li>
+                            <li>"Automatic DOM reconciliation"</li>
+                        </ul>
+                    </div>
+                }
+                @if state.active_index == 2 {
+                    <div class={tab_panel}>
+                        <h3>"Examples"</h3>
+                        <p>"Counters, Like buttons, Forms, Tabs, Accordions - all built with the same pattern!"</p>
+                    </div>
+                }
+            </div>
         </div>
     }
 }
 
 // Handler for Axum
-pub async fn lesson14_handler() -> impl axum::response::IntoResponse {
-    axum::response::Html(azumi::render_to_string(&lesson14()))
+pub async fn lesson14_handler() -> axum::response::Html<String> {
+    let tab_state = TabState { active_index: 0 };
+
+    use tabs_view_component::Props;
+    let tabs_html = azumi::render_to_string(&tabs_view_component::render(
+        Props::builder().state(&tab_state).build().expect("props"),
+    ));
+
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 14: Component Composition</title>
+    <style>
+        body {{ 
+            font-family: system-ui, sans-serif; 
+            margin: 0;
+            padding: 2rem;
+            background: #fafafa;
+        }}
+        .container {{ max-width: 800px; margin: 0 auto; }}
+        .header {{ text-align: center; margin-bottom: 2rem; }}
+        .main_title {{ font-size: 2rem; color: #333; }}
+        .subtitle {{ color: #666; }}
+        .demo_area {{ margin: 2rem 0; }}
+        .explanation {{
+            background: #fff3e0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }}
+        .tab_btn {{ padding: 1rem; border: none; background: transparent; cursor: pointer; font-size: 1rem; flex: 1; }}
+        .tab_btn_active {{ background: white; color: #2196f3; font-weight: bold; border-bottom: 2px solid #2196f3; }}
+        @keyframes fadeIn {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main_title">Lesson 14: Component Composition</h1>
+            <p class="subtitle">Building complex UIs with live components</p>
+        </header>
+        
+        <div class="explanation">
+            <h3>🧩 Composition Pattern</h3>
+            <p>Each tab switch is a separate action. The compiler generates predictions for each:
+            <code>select_0</code> → <code>active_index = 0</code></p>
+        </div>
+        
+        <div class="demo_area">
+            {}
+        </div>
+    </div>
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        tabs_html
+    );
+
+    axum::response::Html(html)
 }
