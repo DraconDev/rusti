@@ -182,32 +182,42 @@ fn styling_demo() -> impl azumi::Component {
 -   `<style>` = scoped to component (class becomes variable)
 -   `<style global>` = not scoped (use string for class)
 -   CSS validation at compile time
+-   **No inline styles** - all styling via `<style>` blocks
 
 ---
 
-### Lesson 6: External CSS & Variables
+### Lesson 6: @let Pattern & CSS Custom Properties
 
-**Goal:** Import external stylesheets and use CSS variables
+**Goal:** Use local variables and CSS custom properties
 
 ```rust
 #[azumi::component]
-fn themed_component() -> impl azumi::Component {
+fn pricing_card(base_price: f64, discount: f64) -> impl azumi::Component {
     html! {
-        // Import external CSS file
-        <style src="dark-theme.css" />
-
-        // CSS variables in component styles
         <style>
-            .themed_box {
-                background: "var(--bg-color, #fff)";
-                color: "var(--text-color, #000)";
+            .card {
+                --accent-color: #2196f3;
+                --highlight-bg: #f0f7ff;
                 padding: "2rem";
+                border: "1px solid var(--accent-color)";
                 border-radius: "8px";
             }
+            .price { font-size: "2rem"; color: "var(--accent-color)"; }
+            .original { text-decoration: "line-through"; color: "#999"; }
+            .savings { background: "var(--highlight-bg)"; padding: "0.5rem"; }
         </style>
 
-        <div class={themed_box}>
-            "Themed content"
+        <div class={card}>
+            // @let for computed values
+            @let final_price = base_price * (1.0 - discount);
+            @let savings = base_price - final_price;
+
+            <div class={original}>"$" {base_price}</div>
+            <div class={price}>"$" {final_price:.2}</div>
+
+            @if savings > 0.0 {
+                <div class={savings}>"You save: $" {savings:.2}</div>
+            }
         </div>
     }
 }
@@ -215,9 +225,10 @@ fn themed_component() -> impl azumi::Component {
 
 **Key Concepts:**
 
--   `<style src="file.css" />` for external files
--   CSS variables work normally
--   Hot-reload for CSS changes
+-   `@let name = expr;` for local variables inside templates
+-   CSS custom properties: `--my-var: value;` then `var(--my-var)`
+-   Computed values updated at render time
+-   **No external CSS imports** - all CSS validated at compile time
 
 ---
 
