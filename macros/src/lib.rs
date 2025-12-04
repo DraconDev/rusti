@@ -1019,9 +1019,13 @@ fn generate_body_with_context(
                                                     write!(f, " data-predict=\"{}\"", prediction)?;
                                                 }
                                                 
-                                                // Generate az-on
+                                                // Generate az-on with namespaced action
                                                 // Default target is the closest scope (implied by missing -> target)
-                                                write!(f, " az-on=\"{} call {}\"", #event, #method_name)?;
+                                                fn get_struct_name<T: azumi::LiveState>(_: &T) -> &'static str {
+                                                    T::struct_name()
+                                                }
+                                                let struct_name = get_struct_name(#base);
+                                                write!(f, " az-on=\"{} call {}/{}\"", #event, struct_name, #method_name)?;
                                             }
                                         });
                                         continue;
