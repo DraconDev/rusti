@@ -327,6 +327,8 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
 
 #[cfg(test)]
 mod tests {
+    use crate::live::Prediction;
+
 
     #[test]
     fn test_prediction_to_dsl() {
