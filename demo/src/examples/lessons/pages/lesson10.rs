@@ -23,7 +23,7 @@ impl LikeButton {
     }
 }
 
-/// Like button component - auto-detects live state from first parameter
+/// Like button component
 #[azumi::component]
 pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
     html! {
@@ -40,11 +40,6 @@ pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
                 border-radius: "50px";
                 background: "transparent";
                 cursor: "pointer";
-                transition: "all 0.2s ease";
-            }
-            .like_btn:hover {
-                background: "#fce4ec";
-                transform: "scale(1.1)";
             }
             .like_count {
                 font-size: "1.2rem";
@@ -53,7 +48,6 @@ pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
             }
         </style>
         <div class={like_container}>
-            // on:click={state.toggle} auto-generates predictions for toggle
             <button class={like_btn} on:click={state.toggle}>
                 {if state.liked { "❤️" } else { "🤍" }}
             </button>
@@ -62,139 +56,20 @@ pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
     }
 }
 
-// Theme toggle state
-#[azumi::live]
-pub struct ThemeToggle {
-    pub dark_mode: bool,
-}
-
-#[azumi::live_impl]
-impl ThemeToggle {
-    pub fn toggle(&mut self) {
-        self.dark_mode = !self.dark_mode;
-    }
-}
-
-/// Theme toggle component
+/// Explanation component
 #[azumi::component]
-pub fn theme_toggle_view<'a>(state: &'a ThemeToggle) -> impl Component + 'a {
+pub fn auto_detect_explanation() -> impl Component {
     html! {
         <style>
-            .theme_toggle {
-                padding: "1rem";
-                border-radius: "8px";
-                transition: "all 0.3s ease";
-            }
-            .theme_light {
-                background: "#ffffff";
-                color: "#333333";
-                border: "1px solid #ddd";
-            }
-            .theme_dark {
-                background: "#1e1e1e";
-                color: "#ffffff";
-                border: "1px solid #444";
-            }
-            .toggle_btn {
-                padding: "0.5rem 1rem";
-                border: "none";
-                border-radius: "4px";
-                cursor: "pointer";
-                font-size: "1rem";
-            }
-        </style>
-        <div class={theme_toggle, if state.dark_mode { "theme_dark" } else { "theme_light" }}>
-            <p>"Current theme: " {if state.dark_mode { "🌙 Dark" } else { "☀️ Light" }}</p>
-            <button class={toggle_btn} on:click={state.toggle}>
-                "Toggle Theme"
-            </button>
-        </div>
-    }
-}
-
-// Accordion state
-#[azumi::live]
-pub struct Accordion {
-    pub open: bool,
-}
-
-#[azumi::live_impl]
-impl Accordion {
-    pub fn toggle(&mut self) {
-        self.open = !self.open;
-    }
-}
-
-/// Accordion component
-#[azumi::component]
-pub fn accordion_view<'a>(
-    state: &'a Accordion,
-    title: &'a str,
-    content: &'a str,
-) -> impl Component + 'a {
-    html! {
-        <style>
-            .accordion {
-                border: "1px solid #ddd";
-                border-radius: "8px";
-                overflow: "hidden";
-            }
-            .accordion_header {
-                padding: "1rem";
-                background: "#f5f5f5";
-                cursor: "pointer";
-                display: "flex";
-                justify-content: "space-between";
-                align-items: "center";
-                border: "none";
-                width: "100%";
-                font-size: "1rem";
-                text-align: "left";
-            }
-            .accordion_header:hover { background: "#eeeeee"; }
-            .accordion_content {
-                padding: "1rem";
-                background: "white";
-                border-top: "1px solid #ddd";
-            }
-            .accordion_icon {
-                transition: "transform 0.2s";
-            }
-        </style>
-        <div class={accordion}>
-            <button class={accordion_header} on:click={state.toggle}>
-                <span>{title}</span>
-                <span class={accordion_icon}>{if state.open { "▼" } else { "▶" }}</span>
-            </button>
-            @if state.open {
-                <div class={accordion_content}>
-                    {content}
-                </div>
-            }
-        </div>
-    }
-}
-
-/// Main lesson page
-#[azumi::component]
-pub fn lesson10() -> impl Component {
-    html! {
-        <style>
-            .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
-            .header { text-align: "center"; margin-bottom: "2rem"; }
-            .main_title { font-size: "2rem"; color: "#333"; }
-            .subtitle { color: "#666"; }
-            .demo_grid { display: "grid"; gap: "2rem"; margin: "2rem 0"; }
-            .demo_card {
+            .explanation {
+                background: "#e3f2fd";
                 padding: "1.5rem";
-                border: "1px solid #eee";
-                border-radius: "12px";
-                background: "white";
+                border-radius: "8px";
+                margin: "1rem 0";
             }
-            .demo_title { color: "#2196f3"; margin-bottom: "1rem"; }
             .code_block {
-                background: "#2d2d2d";
-                color: "#f8f8f2";
+                background: "#1e1e2e";
+                color: "#cdd6f4";
                 padding: "1rem";
                 border-radius: "8px";
                 font-family: "monospace";
@@ -203,41 +78,14 @@ pub fn lesson10() -> impl Component {
                 margin: "1rem 0";
             }
         </style>
-        <div class={container}>
-            <header class={header}>
-                <h1 class={main_title}>"Lesson 10: Auto-Detection"</h1>
-                <p class={subtitle}>"Components automatically detect live state"</p>
-            </header>
-
-            <div class={demo_grid}>
-                <div class={demo_card}>
-                    <h3 class={demo_title}>"❤️ Like Button"</h3>
-                    <p>"Click to toggle like state - instant UI update!"</p>
-                    @like_button_view(state=&LikeButton { liked: false, count: 42 })
-                </div>
-
-                <div class={demo_card}>
-                    <h3 class={demo_title}>"🎨 Theme Toggle"</h3>
-                    <p>"Toggle between light and dark themes"</p>
-                    @theme_toggle_view(state=&ThemeToggle { dark_mode: false })
-                </div>
-
-                <div class={demo_card}>
-                    <h3 class={demo_title}>"📂 Accordion"</h3>
-                    @accordion_view(
-                        state=&Accordion { open: false },
-                        title="Click to expand",
-                        content="This content is revealed with an instant toggle animation!"
-                    )
-                </div>
-            </div>
-
+        <div class={explanation}>
+            <h3>"🔍 Auto-Detection"</h3>
+            <p>"When first parameter is `state: &T`, component detects live mode:"</p>
             <div class={code_block}>
-                "// Auto-detection happens when first param is `state: &T`\n"
                 "#[azumi::component]\n"
-                "fn my_view<'a>(state: &'a MyLiveState) -> impl Component + 'a {\n"
+                "fn my_view<'a>(state: &'a MyState) -> impl Component + 'a {\n"
                 "    html! {\n"
-                "        <button on:click={state.action}>\"Click me\"</button>\n"
+                "        <button on:click={state.action}>\"Click\"</button>\n"
                 "    }\n"
                 "}"
             </div>
@@ -247,18 +95,12 @@ pub fn lesson10() -> impl Component {
 
 // Handler for Axum
 pub async fn lesson10_handler() -> axum::response::Html<String> {
-    // Create initial states
     let like_state = LikeButton {
         liked: false,
         count: 42,
     };
-    let theme_state = ThemeToggle { dark_mode: false };
-    let accordion_state = Accordion { open: false };
 
-    use accordion_view_component::Props as AccordionProps;
     use like_button_view_component::Props as LikeProps;
-    use theme_toggle_view_component::Props as ThemeProps;
-
     let like_html = azumi::render_to_string(&like_button_view_component::render(
         LikeProps::builder()
             .state(&like_state)
@@ -266,21 +108,7 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
             .expect("props"),
     ));
 
-    let theme_html = azumi::render_to_string(&theme_toggle_view_component::render(
-        ThemeProps::builder()
-            .state(&theme_state)
-            .build()
-            .expect("props"),
-    ));
-
-    let accordion_html = azumi::render_to_string(&accordion_view_component::render(
-        AccordionProps::builder()
-            .state(&accordion_state)
-            .title("Click to expand")
-            .content("This content is revealed with an instant toggle animation!")
-            .build()
-            .expect("props"),
-    ));
+    let explanation_html = azumi::render_to_string(&auto_detect_explanation());
 
     let html = format!(
         r#"<!DOCTYPE html>
@@ -300,12 +128,12 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
         .header {{ text-align: center; margin-bottom: 2rem; }}
         .main_title {{ font-size: 2rem; color: #333; }}
         .subtitle {{ color: #666; }}
-        .demo_grid {{ display: grid; gap: 2rem; margin: 2rem 0; }}
         .demo_card {{ 
             padding: 1.5rem; 
             border: 1px solid #eee; 
             border-radius: 12px;
             background: white;
+            margin: 2rem 0;
         }}
         .demo_title {{ color: #2196f3; margin-bottom: 1rem; }}
     </style>
@@ -317,30 +145,19 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
             <p class="subtitle">Components automatically detect live state</p>
         </header>
         
-        <div class="demo_grid">
-            <div class="demo_card">
-                <h3 class="demo_title">❤️ Like Button</h3>
-                <p>Click to toggle like state - instant UI update!</p>
-                {}
-            </div>
-            
-            <div class="demo_card">
-                <h3 class="demo_title">🎨 Theme Toggle</h3>
-                <p>Toggle between light and dark themes</p>
-                {}
-            </div>
-            
-            <div class="demo_card">
-                <h3 class="demo_title">📂 Accordion</h3>
-                {}
-            </div>
+        {}
+        
+        <div class="demo_card">
+            <h3 class="demo_title">❤️ Like Button</h3>
+            <p>Click to toggle like state - instant UI update!</p>
+            {}
         </div>
     </div>
     <script src="/static/idiomorph.js"></script>
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        like_html, theme_html, accordion_html
+        explanation_html, like_html
     );
 
     axum::response::Html(html)
