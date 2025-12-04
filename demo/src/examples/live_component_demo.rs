@@ -54,9 +54,10 @@ pub async fn unified_demo_handler() -> axum::response::Html<String> {
 
     // Use the component module pattern for components with props
     use unified_counter_view_component::*;
-    axum::response::Html(azumi::render_to_string(&render(
+    let rendered = azumi::render_to_string(&render(
         Props::builder().state(&state).build().expect("props"),
-    )))
+    ));
+    axum::response::Html(rendered)
 }
 
 azumi::inventory::submit! {
