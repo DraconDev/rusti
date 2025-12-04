@@ -97,16 +97,42 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let (impl_generics, ty_generics, where_clause) = fn_generics.split_for_impl();
 
     // Check for live state parameter (first argument)
+    // Only trigger for parameters named "state" with a reference to a user-defined type
+    // This avoids false positives on primitive refs like &str
     let mut live_state_ident = None;
     if let Some(arg) = input.sig.inputs.first() {
         if let FnArg::Typed(PatType { pat, ty, .. }) = arg {
             if let Pat::Ident(pat_ident) = &**pat {
-                // Check if type is a reference (e.g. &Counter)
-                if let syn::Type::Reference(_) = &**ty {
-                    // We assume the first reference parameter is the state
-                    // Ideally we'd check for LiveState trait bound, but that's hard in macros
-                    // So we rely on the user convention: fn view(state: &State)
-                    live_state_ident = Some(&pat_ident.ident);
+                // Only consider parameter if it's named "state"
+                if pat_ident.ident == "state" {
+                    // Check if type is a reference to a non-primitive type
+                    if let syn::Type::Reference(type_ref) = &**ty {
+                        // Exclude primitive types like &str
+                        if let syn::Type::Path(type_path) = &*type_ref.elem {
+                            // Check if it's NOT a primitive like str, String, etc.
+                            if let Some(last_segment) = type_path.path.segments.last() {
+                                let type_name = last_segment.ident.to_string();
+                                // Exclude common primitive/library types
+                                if !matches!(
+                                    type_name.as_str(),
+                                    "str"
+                                        | "String"
+                                        | "i32"
+                                        | "i64"
+                                        | "u32"
+                                        | "u64"
+                                        | "f32"
+                                        | "f64"
+                                        | "bool"
+                                        | "char"
+                                        | "usize"
+                                        | "isize"
+                                ) {
+                                    live_state_ident = Some(&pat_ident.ident);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
