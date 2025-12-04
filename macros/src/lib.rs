@@ -888,14 +888,35 @@ fn generate_body_with_context(
 
                 // Generate attributes
                 let mut attr_code = proc_macro2::TokenStream::new();
-                let mut css_vars = Vec::new();
 
                 for attr in &elem.attrs {
                     let attr_name = &attr.name;
 
-                    // Check for CSS variables (start with --)
-                    if attr_name.starts_with("--") {
-                        css_vars.push(attr);
+                    // Handle style attribute - ONLY CSS custom properties allowed
+                    if attr_name == "style" {
+                        match &attr.value {
+                            token_parser::AttributeValue::Static(val) => {
+                                // Validate that only CSS custom properties are used
+                                if let Err(error_msg) = validate_style_only_css_vars(val) {
+                                    return quote! {
+                                        compile_error!(#error_msg);
+                                    };
+                                }
+                                attr_code.extend(quote! {
+                                    write!(f, " style=\"{}\"", #val)?;
+                                });
+                            }
+                            token_parser::AttributeValue::Dynamic(expr) => {
+                                // For dynamic style, we can't validate at compile time
+                                // but we trust the user is passing CSS variables
+                                attr_code.extend(quote! {
+                                    write!(f, " style=\"{}\"", azumi::Escaped(&(#expr)))?;
+                                });
+                            }
+                            token_parser::AttributeValue::None => {
+                                // Empty style is fine
+                            }
+                        }
                         continue;
                     }
 
@@ -1001,45 +1022,6 @@ fn generate_body_with_context(
                             });
                         }
                     }
-                }
-
-                // Generate style attribute for CSS variables if any exist
-                if !css_vars.is_empty() {
-                    let mut style_content = proc_macro2::TokenStream::new();
-                    let mut first = true;
-
-                    for attr in css_vars {
-                        let name = &attr.name;
-                        if !first {
-                            style_content.extend(quote! { write!(f, "; ")?; });
-                        }
-                        first = false;
-
-                        match &attr.value {
-                            token_parser::AttributeValue::Static(val) => {
-                                style_content.extend(quote! {
-                                    write!(f, "{}: {}", #name, azumi::Escaped(#val))?;
-                                });
-                            }
-                            token_parser::AttributeValue::Dynamic(expr) => {
-                                style_content.extend(quote! {
-                                    write!(f, "{}: {}", #name, azumi::Escaped(&(#expr)))?;
-                                });
-                            }
-                            token_parser::AttributeValue::None => {
-                                // Empty value for variable? Treat as empty string
-                                style_content.extend(quote! {
-                                    write!(f, "{}: ", #name)?;
-                                });
-                            }
-                        }
-                    }
-
-                    attr_code.extend(quote! {
-                        write!(f, " style=\"")?;
-                        #style_content
-                        write!(f, "\"")?;
-                    });
                 }
 
                 // Generate element with potential scope attribute from context
