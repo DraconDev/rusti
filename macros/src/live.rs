@@ -256,6 +256,10 @@ pub fn expand_live(attr: TokenStream, item: TokenStream) -> TokenStream {
 pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as ItemImpl);
     let struct_name = &input.self_ty;
+    // Get struct name as string for namespacing
+    let struct_name_str = quote!(#struct_name).to_string();
+    // Clean up struct name (remove spaces)
+    let struct_name_str = struct_name_str.replace(" ", "");
 
     let mut method_handlers = Vec::new();
     let mut original_methods = Vec::new();
@@ -306,8 +310,9 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
 
             method_handlers.push(handler);
 
-            // Generate inventory registration
-            let action_path = format!("/_azumi/live/{}", method_name);
+            // Generate inventory registration with NAMESPACED path
+            // /_azumi/action/{StructName}/{MethodName}
+            let action_path = format!("/_azumi/action/{}/{}", struct_name_str, method_name);
             let registration = quote! {
                 azumi::inventory::submit! {
                     azumi::action::ActionEntry {
@@ -333,6 +338,9 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
                 &[
                     #(#predictions_entries),*
                 ]
+            }
+            fn struct_name() -> &'static str {
+                #struct_name_str
             }
         }
 
