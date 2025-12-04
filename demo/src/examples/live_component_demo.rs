@@ -71,6 +71,7 @@ pub async fn unified_demo_handler() -> axum::response::Html<String> {
 </head>
 <body>
     {}
+    <script src="/static/idiomorph.js"></script>
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
