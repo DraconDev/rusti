@@ -43,11 +43,10 @@ pub fn realtime_notifications() -> impl azumi::Component {
             <h3>"Real-time Notifications"</h3>
 
             <div id="notification-list">
-            <div #notification_list>
-                <div .notification .notification_new>
-                <p>"New message received"</p>
-                <p class={notification_button}>"Dismiss"</p>
-            </div>
+                <div class={notification} class={notification_new}>
+                    <p>"New message received"</p>
+                    <p class={notification_button}>"Dismiss"</p>
+                </div>
 
                 <div class={notification} class={notification_old}>
                     <p>"System update available"</p>
