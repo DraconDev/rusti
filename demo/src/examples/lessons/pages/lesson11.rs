@@ -58,7 +58,7 @@ pub fn css_variables_example() -> impl azumi::Component {
             }
         </style>
         <div class={variables_container}>
-        <div .variables_container>
+        <div class={variables_container}>
             <h3>"CSS Variables Demo"</h3>
 
             <div class={theme_demo}>
