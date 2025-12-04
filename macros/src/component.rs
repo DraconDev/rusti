@@ -161,12 +161,20 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
             }
         };
 
-        quote! {
+        let render_code = quote! {
             pub fn render #impl_generics (props: Props #ty_generics) -> impl azumi::Component #where_clause {
                 #(#props_init)*
                 #body
             }
+        };
+
+        // DEBUG: Emit compile error with generated code if function name is test_global_styles
+        if fn_name.to_string() == "test_global_styles" {
+            let s = render_code.to_string();
+            return quote! { compile_error!(#s); }.into();
         }
+
+        render_code
     };
 
     // Check if function name is snake_case
