@@ -22,7 +22,7 @@ impl UnifiedCounter {
 #[azumi::component]
 pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component {
     html! {
-        <div class="counter-box">
+        <div class="counter_box">
             <h3>"Unified Component Demo"</h3>
             <p>"Count: " {state.count}</p>
             <p>"Active: " {state.active}</p>
@@ -37,10 +37,10 @@ pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component {
                 "Toggle Active"
             </button>
             <style>
-                .counter-box {
-                    border: 1px solid #ccc;
-                    padding: 1em;
-                    border-radius: 8px;
+                .counter_box {
+                    border: "1px solid #ccc";
+                    padding: "1em";
+                    border-radius: "8px";
                 }
             </style>
         </div>
