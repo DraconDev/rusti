@@ -116,65 +116,57 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let render_fn = if has_children {
         let children_ty = children_type.as_ref().unwrap();
 
+        // Only wrap in az-scope for live state components
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
                 azumi::from_fn(move |f| {
                     // Auto-generated az-scope wrapper
                     let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
                     write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                    #fn_block
+                    // Render the inner component
+                    let inner = #fn_block;
+                    inner.render(f)?;
                     write!(f, "</div>")?;
                     Ok(())
                 })
             }
         } else {
-            quote! {
-                azumi::from_fn(move |f| {
-                    #fn_block
-                })
-            }
+            // For non-live components, just use the original block as-is
+            quote! { #fn_block }
         };
 
         quote! {
-            pub fn render #impl_generics (props: Props #ty_generics, children: #children_ty) -> impl azumi::Component #where_clause {
+            pub fn render #impl_generics (props: Props #ty_generics, children: #children_ty) #fn_output #where_clause {
                 #(#props_init)*
                 #body
             }
         }
     } else {
+        // Only wrap in az-scope for live state components
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
                 azumi::from_fn(move |f| {
                     // Auto-generated az-scope wrapper
                     let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
                     write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                    #fn_block
+                    // Render the inner component
+                    let inner = #fn_block;
+                    inner.render(f)?;
                     write!(f, "</div>")?;
                     Ok(())
                 })
             }
         } else {
-            quote! {
-                azumi::from_fn(move |f| {
-                    #fn_block
-                })
-            }
+            // For non-live components, just use the original block as-is
+            quote! { #fn_block }
         };
 
-        let render_code = quote! {
-            pub fn render #impl_generics (props: Props #ty_generics) -> impl azumi::Component #where_clause {
+        quote! {
+            pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
                 #(#props_init)*
                 #body
             }
-        };
-
-        // DEBUG: Emit compile error with generated code if function name is test_global_styles
-        if fn_name.to_string() == "test_global_styles" {
-            let s = render_code.to_string();
-            return quote! { compile_error!(#s); }.into();
         }
-
-        render_code
     };
 
     // Check if function name is snake_case
