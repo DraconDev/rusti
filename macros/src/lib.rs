@@ -7,6 +7,7 @@ mod css;
 mod css_validator;
 mod head;
 mod html_structure_validator;
+mod live;
 #[cfg(feature = "schema")]
 mod schema;
 mod style;
