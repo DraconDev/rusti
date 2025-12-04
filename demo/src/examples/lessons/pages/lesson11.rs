@@ -1,10 +1,7 @@
 use azumi::prelude::*;
 
 /// Lesson 11: Declarative Event Binding (on:event)
-///
-/// The new concise syntax for event handling
 
-// Shopping cart item
 #[azumi::live]
 pub struct CartItem {
     pub quantity: i32,
@@ -84,43 +81,6 @@ pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> imp
     }
 }
 
-/// Syntax comparison component
-#[azumi::component]
-pub fn syntax_comparison() -> impl Component {
-    html! {
-        <style>
-            .comparison {
-                display: "grid";
-                gap: "1rem";
-                margin: "2rem 0";
-            }
-            .compare_box {
-                padding: "1rem";
-                border-radius: "8px";
-                font-family: "monospace";
-                font-size: "0.85rem";
-            }
-            .old_syntax { background: "#ffebee"; border: "1px solid #ef9a9a"; }
-            .new_syntax { background: "#e8f5e9"; border: "1px solid #a5d6a7"; }
-            .compare_label {
-                font-weight: "bold";
-                margin-bottom: "0.5rem";
-                font-family: "sans-serif";
-            }
-        </style>
-        <div class={comparison}>
-            <div class={compare_box, old_syntax}>
-                <div class={compare_label}>"❌ Old (Manual)"</div>
-                "az-on=\"click call toggle\" data-predict=\"...\""
-            </div>
-            <div class={compare_box, new_syntax}>
-                <div class={compare_label}>"✅ New (Declarative)"</div>
-                "on:click={state.toggle}"
-            </div>
-        </div>
-    }
-}
-
 // Handler for Axum
 pub async fn lesson11_handler() -> axum::response::Html<String> {
     let cart_state = CartItem { quantity: 1 };
@@ -134,8 +94,6 @@ pub async fn lesson11_handler() -> axum::response::Html<String> {
             .build()
             .expect("props"),
     ));
-
-    let comparison_html = azumi::render_to_string(&syntax_comparison());
 
     let html = format!(
         r#"<!DOCTYPE html>
@@ -157,6 +115,11 @@ pub async fn lesson11_handler() -> axum::response::Html<String> {
         .subtitle {{ color: #666; }}
         .section {{ margin: 2rem 0; }}
         .section_title {{ color: #2196f3; margin-bottom: 1rem; }}
+        .comparison {{ display: grid; gap: 1rem; margin: 2rem 0; }}
+        .compare_box {{ padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; }}
+        .old_syntax {{ background: #ffebee; border: 1px solid #ef9a9a; }}
+        .new_syntax {{ background: #e8f5e9; border: 1px solid #a5d6a7; }}
+        .compare_label {{ font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; }}
     </style>
 </head>
 <body>
@@ -166,7 +129,16 @@ pub async fn lesson11_handler() -> axum::response::Html<String> {
             <p class="subtitle">Declarative event binding</p>
         </header>
         
-        {}
+        <div class="comparison">
+            <div class="compare_box old_syntax">
+                <div class="compare_label">❌ Old (Manual)</div>
+                <code>az-on="click call toggle" data-predict="..."</code>
+            </div>
+            <div class="compare_box new_syntax">
+                <div class="compare_label">✅ New (Declarative)</div>
+                <code>on:click={{state.toggle}}</code>
+            </div>
+        </div>
         
         <section class="section">
             <h2 class="section_title">🛒 Shopping Cart Demo</h2>
@@ -177,7 +149,7 @@ pub async fn lesson11_handler() -> axum::response::Html<String> {
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        comparison_html, cart_html
+        cart_html
     );
 
     axum::response::Html(html)
