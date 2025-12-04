@@ -2,7 +2,7 @@
 
    <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
 
-      <div class={fill} style={--progress: completion; --accent: "red"}></div>
+   <div class={fill} style={--progress: completion; --accent: "red"}></div>
 
 - enforce all css to be double quoted
 - variables names should be valid for style blocks 
