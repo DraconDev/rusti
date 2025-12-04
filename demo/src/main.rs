@@ -30,6 +30,7 @@ async fn main() {
         .route("/lesson-8", get(examples::lessons::pages::lesson8::lesson8_handler))
         .route("/lesson-9", get(examples::lessons::pages::lesson9::lesson9_handler))
         .route("/lesson-10", get(examples::lessons::pages::lesson10::lesson10_handler))
+        .route("/unified-demo", get(examples::live_component_demo::unified_demo_handler))
 
         // 🎮 Interactive Demo Endpoints
         .route("/api/click", post(|| async { "Button clicked! 🚀" }))
