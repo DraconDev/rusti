@@ -20,7 +20,7 @@ impl UnifiedCounter {
 
 // Unified component macro auto-detects live state!
 #[azumi::component]
-pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component {
+pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component + '_ {
     html! {
         <div class="counter_box">
             <h3>"Unified Component Demo"</h3>
@@ -53,7 +53,7 @@ pub async fn unified_demo_handler() -> impl axum::response::IntoResponse {
         active: true,
     };
 
-    azumi::fn_component(move |f| unified_counter_view(&state).render(f))
+    azumi::from_fn(move |f| unified_counter_view(&state).render(f))
 }
 
 azumi::inventory::submit! {
