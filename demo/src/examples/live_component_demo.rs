@@ -23,8 +23,8 @@ pub fn unified_counter_view<'a>(state: &'a UnifiedCounter) -> impl Component + '
     html! {
         <div class="counter_box">
             <h3>"Unified Component Demo"</h3>
-            <p>"Count: " {state.count}</p>
-            <p>"Active: " {state.active}</p>
+            <p>"Count: " <span data-bind="count">{state.count}</span></p>
+            <p>"Active: " <span data-bind="active">{state.active}</span></p>
 
             // New syntax: on:click={state.method}
             // Auto-generates az-on and data-predict!
@@ -54,16 +54,35 @@ pub async fn unified_demo_handler() -> axum::response::Html<String> {
 
     // Use the component module pattern for components with props
     use unified_counter_view_component::*;
-    let rendered = azumi::render_to_string(&render(
+    let component_html = azumi::render_to_string(&render(
         Props::builder().state(&state).build().expect("props"),
     ));
-    axum::response::Html(rendered)
+
+    // Wrap with full HTML document including azumi.js
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Azumi Live Demo</title>
+    <style>
+        body {{ font-family: system-ui, sans-serif; padding: 2rem; }}
+    </style>
+</head>
+<body>
+    {}
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        component_html
+    );
+
+    axum::response::Html(html)
 }
 
 azumi::inventory::submit! {
     azumi::action::ActionEntry {
         path: "/unified_demo",
-        handler: unified_demo_router,
     }
 }
 
