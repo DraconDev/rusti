@@ -1,10 +1,5 @@
 # TODO
 
-   <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
- vs ?
-   <div class={fill} style={--progress: completion; --accent: "red"}></div>
-?
-  <div class={fill} style={--progress: completion; --accent: format!("{}", accent_color)}></div>
 
 - enforce all css to be double quoted
 - variables names should be valid for style blocks 
@@ -15,6 +10,13 @@
 i got a task for you, your job is to change the parse to make sure all css values inside style blocks and style global blocks but be quoted, not the names, our project largley follows this style already but not in every case, and we need to make sure we do, this includes variables too which should be valid for style blocks
 
 
+# Maybe
+
+   <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
+ vs ?
+   <div class={fill} style={--progress: completion; --accent: "red"}></div>
+?
+  <div class={fill} style={--progress: completion; --accent: format!("{}", accent_color)}></div>
 
 # Later
 
