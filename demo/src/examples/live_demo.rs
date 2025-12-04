@@ -54,10 +54,10 @@ pub fn live_counter_view(state: &LiveCounter) -> impl azumi::Component {
                 {if state.active { "Active ✅" } else { "Inactive ❌" }}
             </div>
             <div>
-                <button class={live_button, toggle_btn} az-on={click call toggle -> #live_demo}>
+                <button class="live_button toggle_btn" az-on={click call toggle -> #live_demo}>
                     "Toggle Status"
                 </button>
-                <button class={live_button, deactivate_btn} az-on={click call deactivate -> #live_demo}>
+                <button class="live_button deactivate_btn" az-on={click call deactivate -> #live_demo}>
                     "Deactivate"
                 </button>
             </div>
