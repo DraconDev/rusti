@@ -667,7 +667,7 @@ pub fn app_view<'a>(state: &'a App) -> impl Component + 'a {
 | Track             | Lessons | Focus                                        |
 | ----------------- | ------- | -------------------------------------------- |
 | **Foundation**    | 1-4     | Components, props, composition, control flow |
-| **Styling**       | 5-6     | CSS scoping, global styles, external CSS     |
+| **Styling**       | 5-6     | CSS scoping, @let pattern, CSS custom props  |
 | **Interactivity** | 7-8     | `az-on` DSL, server actions                  |
 | **Azumi Live**    | 9-12    | `#[azumi::live]`, predictions, `on:event`    |
 | **Advanced**      | 13-15   | Forms, composition, full apps                |
@@ -678,6 +678,32 @@ pub fn app_view<'a>(state: &'a App) -> impl Component + 'a {
 
 1. **Single Source of Truth** - Write logic once in Rust, compiler generates client predictions
 2. **Compile-Time Safety** - Macros catch errors before runtime
-3. **Zero JavaScript** - Optimistic UI without writing JS
+3. **Zero JavaScript (Almost)** - Optimistic UI without writing JS
 4. **Progressive Enhancement** - Start static, add live features incrementally
 5. **Declarative Events** - `on:click={state.method}` is all you need
+
+---
+
+## ⚠️ Constraints & Escape Hatches
+
+**What Azumi Validates at Compile Time:**
+
+-   All CSS (no external imports, no inline styles)
+-   All HTML structure
+-   All event bindings
+
+**When You Might Need JavaScript:**
+
+For rare client-only interactions like drag-and-drop, canvas drawing, or complex animations,
+you can use external script files:
+
+```rust
+html! {
+    <script src="/static/drag-handler.js"></script>
+    <div id="draggable" data-draggable="true">
+        "Drag me"
+    </div>
+}
+```
+
+But for 99% of cases, `on:event` + Azumi Live handles everything with zero JS.
