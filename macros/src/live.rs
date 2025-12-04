@@ -9,9 +9,8 @@
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{
-    parse_macro_input, BinOp, Expr, ExprAssign, ExprAssignOp, ExprBinary, ExprField,
-    ExprMethodCall, ExprPath, ExprUnary, Fields, ImplItem, ImplItemFn, ItemImpl, ItemStruct,
-    Member, Stmt, UnOp,
+    parse_macro_input, BinOp, Expr, ExprAssign, ExprBinary, ExprField, ExprMethodCall, ExprPath,
+    ExprUnary, Fields, ImplItem, ImplItemFn, ItemImpl, ItemStruct, Member, Stmt, UnOp,
 };
 
 /// Represents a predictable mutation that can be executed optimistically
@@ -130,15 +129,15 @@ fn analyze_expr(expr: &Expr) -> Option<Prediction> {
         }
 
         // self.field += value or self.field -= value
-        Expr::AssignOp(ExprAssignOp {
+        Expr::Binary(ExprBinary {
             left, op, right, ..
         }) => {
             let field = extract_self_field(left)?;
             let value = expr_to_literal_string(right)?;
 
             match op {
-                BinOp::AddEq(_) => Some(Prediction::Add { field, value }),
-                BinOp::SubEq(_) => Some(Prediction::Sub { field, value }),
+                BinOp::AddAssign(_) => Some(Prediction::Add { field, value }),
+                BinOp::SubAssign(_) => Some(Prediction::Sub { field, value }),
                 _ => None,
             }
         }
