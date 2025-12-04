@@ -41,6 +41,33 @@ pub fn action(_attr: TokenStream, item: TokenStream) -> TokenStream {
     action::expand_action(item)
 }
 
+/// Azumi Live - Compiler-driven optimistic UI
+///
+/// Marks a struct as a live component state. The macro:
+/// - Adds Serialize/Deserialize derives
+/// - Generates `to_scope()` helper method
+///
+/// Use with `#[azumi::live_impl]` on the impl block to enable
+/// automatic prediction generation.
+#[proc_macro_attribute]
+pub fn live(attr: TokenStream, item: TokenStream) -> TokenStream {
+    live::expand_live(attr, item)
+}
+
+/// Azumi Live Impl - Method analysis for optimistic UI
+///
+/// Analyzes methods in an impl block for predictable mutations:
+/// - `self.field = literal` → SetLiteral prediction
+/// - `self.field = !self.field` → Toggle prediction  
+/// - `self.field += value` → Add prediction
+/// - `self.field -= value` → Sub prediction
+///
+/// Generates Axum action handlers automatically.
+#[proc_macro_attribute]
+pub fn live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
+    live::expand_live_impl(attr, item)
+}
+
 struct NodesWrapper(Vec<token_parser::Node>);
 
 impl Parse for NodesWrapper {
