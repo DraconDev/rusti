@@ -1,10 +1,7 @@
 use azumi::prelude::*;
 
 /// Lesson 10: Live Components with Auto-Detection
-///
-/// How the component macro auto-detects live state
 
-// Define a Like Button state
 #[azumi::live]
 pub struct LikeButton {
     pub liked: bool,
@@ -56,43 +53,6 @@ pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
     }
 }
 
-/// Explanation component
-#[azumi::component]
-pub fn auto_detect_explanation() -> impl Component {
-    html! {
-        <style>
-            .explanation {
-                background: "#e3f2fd";
-                padding: "1.5rem";
-                border-radius: "8px";
-                margin: "1rem 0";
-            }
-            .code_block {
-                background: "#1e1e2e";
-                color: "#cdd6f4";
-                padding: "1rem";
-                border-radius: "8px";
-                font-family: "monospace";
-                font-size: "0.85rem";
-                overflow-x: "auto";
-                margin: "1rem 0";
-            }
-        </style>
-        <div class={explanation}>
-            <h3>"🔍 Auto-Detection"</h3>
-            <p>"When first parameter is `state: &T`, component detects live mode:"</p>
-            <div class={code_block}>
-                "#[azumi::component]\n"
-                "fn my_view<'a>(state: &'a MyState) -> impl Component + 'a {\n"
-                "    html! {\n"
-                "        <button on:click={state.action}>\"Click\"</button>\n"
-                "    }\n"
-                "}"
-            </div>
-        </div>
-    }
-}
-
 // Handler for Axum
 pub async fn lesson10_handler() -> axum::response::Html<String> {
     let like_state = LikeButton {
@@ -107,8 +67,6 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
             .build()
             .expect("props"),
     ));
-
-    let explanation_html = azumi::render_to_string(&auto_detect_explanation());
 
     let html = format!(
         r#"<!DOCTYPE html>
@@ -136,6 +94,22 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
             margin: 2rem 0;
         }}
         .demo_title {{ color: #2196f3; margin-bottom: 1rem; }}
+        .explanation {{
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }}
+        .code_block {{
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }}
     </style>
 </head>
 <body>
@@ -145,7 +119,18 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
             <p class="subtitle">Components automatically detect live state</p>
         </header>
         
-        {}
+        <div class="explanation">
+            <h3>🔍 Auto-Detection</h3>
+            <p>When first parameter is <code>state: &amp;T</code>, component detects live mode:</p>
+            <div class="code_block">
+                #[azumi::component]<br/>
+                fn my_view&lt;'a&gt;(state: &amp;'a MyState) -&gt; impl Component + 'a {{<br/>
+                &nbsp;&nbsp;html! {{<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;button on:click={{state.action}}&gt;"Click"&lt;/button&gt;<br/>
+                &nbsp;&nbsp;}}<br/>
+                }}
+            </div>
+        </div>
         
         <div class="demo_card">
             <h3 class="demo_title">❤️ Like Button</h3>
@@ -157,7 +142,7 @@ pub async fn lesson10_handler() -> axum::response::Html<String> {
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        explanation_html, like_html
+        like_html
     );
 
     axum::response::Html(html)
