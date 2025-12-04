@@ -118,19 +118,25 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
-                // Auto-generated az-scope wrapper
-                let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
-                write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                #fn_block
-                write!(f, "</div>")?;
-                Ok(())
+                azumi::from_fn(move |f| {
+                    // Auto-generated az-scope wrapper
+                    let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
+                    write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
+                    #fn_block
+                    write!(f, "</div>")?;
+                    Ok(())
+                })
             }
         } else {
-            quote! { #fn_block }
+            quote! {
+                azumi::from_fn(move |f| {
+                    #fn_block
+                })
+            }
         };
 
         quote! {
-            pub fn render #impl_generics (props: Props #ty_generics, children: #children_ty) #fn_output #where_clause {
+            pub fn render #impl_generics (props: Props #ty_generics, children: #children_ty) -> impl azumi::Component #where_clause {
                 #(#props_init)*
                 #body
             }
@@ -138,19 +144,25 @@ pub fn expand_component(item: proc_macro::TokenStream) -> proc_macro::TokenStrea
     } else {
         let body = if let Some(state_ident) = live_state_ident {
             quote! {
-                // Auto-generated az-scope wrapper
-                let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
-                write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
-                #fn_block
-                write!(f, "</div>")?;
-                Ok(())
+                azumi::from_fn(move |f| {
+                    // Auto-generated az-scope wrapper
+                    let scope_json = <_ as azumi::LiveState>::to_scope(#state_ident);
+                    write!(f, "<div az-scope='{}' style='display: contents'>", scope_json)?;
+                    #fn_block
+                    write!(f, "</div>")?;
+                    Ok(())
+                })
             }
         } else {
-            quote! { #fn_block }
+            quote! {
+                azumi::from_fn(move |f| {
+                    #fn_block
+                })
+            }
         };
 
         quote! {
-            pub fn render #impl_generics (props: Props #ty_generics) #fn_output #where_clause {
+            pub fn render #impl_generics (props: Props #ty_generics) -> impl azumi::Component #where_clause {
                 #(#props_init)*
                 #body
             }
