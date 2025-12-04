@@ -47,13 +47,20 @@ pub fn unified_counter_view(state: &UnifiedCounter) -> impl Component + '_ {
     }
 }
 
-pub async fn unified_demo_handler() -> impl axum::response::IntoResponse {
+pub async fn unified_demo_handler() -> axum::response::Html<String> {
     let state = UnifiedCounter {
         count: 0,
         active: true,
     };
 
-    azumi::from_fn(move |f| unified_counter_view(&state).render(f))
+    axum::response::Html(azumi::render_to_string(
+        &unified_counter_view_component::render(
+            unified_counter_view_component::Props::builder()
+                .state(&state)
+                .build()
+                .expect("props"),
+        ),
+    ))
 }
 
 azumi::inventory::submit! {
