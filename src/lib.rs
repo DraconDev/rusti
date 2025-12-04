@@ -1,9 +1,9 @@
 pub mod prelude {
     pub use crate::action::Action;
-    pub use crate::{action, azumi_script, component, head, html, Component};
+    pub use crate::{action, azumi_script, component, head, html, live, live_impl, Component};
 }
 
-pub use azumi_macros::{action, component, head, html};
+pub use azumi_macros::{action, component, head, html, live, live_impl};
 pub mod action;
 pub use inventory;
 
