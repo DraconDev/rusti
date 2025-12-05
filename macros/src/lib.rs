@@ -612,12 +612,27 @@ fn validate_nodes(
                     for attr in &elem.attrs {
                         let name = &attr.name;
 
-                        // Rule 1: Ban inline styles - COMPILE ERROR
-                        if name == "style" {
-                            errors.push(quote_spanned! { attr.span =>
-                                compile_error!("Inline styles banned. Use CSS classes instead.");
-                            });
+                        // Rule 1: Check inline styles
+                    if name == "style" {
+                        match &attr.value {
+                            token_parser::AttributeValue::Static(val) => {
+                                // Validate that only CSS custom properties are used
+                                if let Err(error_msg) = validate_style_only_css_vars(val) {
+                                    let error_span = attr.value_span.unwrap_or(attr.span);
+                                    errors.push(quote_spanned! { error_span =>
+                                        compile_error!(#error_msg);
+                                    });
+                                }
+                            }
+                            token_parser::AttributeValue::StyleDsl(_) => {
+                                // Style DSL is allowed!
+                            }
+                            token_parser::AttributeValue::Dynamic(_) => {
+                                // Dynamic styles are allowed (we trust the user or warn later)
+                            }
+                            _ => {}
                         }
+                    }
 
                         // Rule 2: Check class existence - COMPILE ERROR
                         if name == "class" {
