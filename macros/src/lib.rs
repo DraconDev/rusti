@@ -1023,6 +1023,7 @@ fn generate_body_with_context(
                                 }
 
                                 attr_code.extend(quote! {
+                                    eprintln!("DEBUG STYLE DSL: {}", format!(#format_string, #(#args),*));
                                     write!(f, " style=\"{}\"", format_args!(#format_string, #(#args),*))?;
                                 });
                             }
