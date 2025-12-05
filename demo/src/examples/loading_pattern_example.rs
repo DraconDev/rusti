@@ -124,12 +124,12 @@ pub fn user_list_view<'a>(state: &'a UserList) -> impl Component + 'a {
                     <div class={spinner}></div>
                     <p>"Loading users..."</p>
                 </div>
-            } else @if state.error.is_some() {
+            } else if state.error.is_some() {
                 // Error state
                 <div class={error}>
                     "❌ " {state.error.as_ref().unwrap()}
                 </div>
-            } else @if state.users.is_empty() {
+            } else if state.users.is_empty() {
                 // Empty state
                 <p>"No users loaded yet. Click a button below."</p>
             } else {
