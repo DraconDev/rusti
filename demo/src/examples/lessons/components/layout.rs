@@ -174,8 +174,8 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
             }
         </style>
 
-        <div class="dark_layout">
-            <div class="content_container">
+        <div class={dark_layout}>
+            <div class={content_container}>
                 {children}
             </div>
         </div>
