@@ -259,7 +259,7 @@ class Azumi {
 
             const html = await res.text();
 
-            let target = element;
+            let target = scopeElement || element;
             if (action.target) {
                 target = document.querySelector(action.target);
             }
