@@ -29,7 +29,7 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
                 background: "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%)";
                 backdrop-filter: "blur(10px)";
                 border-bottom: "1px solid rgba(148, 163, 184, 0.1)";
-                padding: "  ";
+                padding: "var(--spacing-md) 0";
                 margin-bottom: "var(--spacing-lg)";
             }
 
@@ -37,8 +37,8 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
                 background: "linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.6) 100%)";
                 backdrop-filter: "blur(8px)";
                 border: "1px solid rgba(148, 163, 184, 0.1)";
-                border-radius: var(--radius-md);
-                padding: var(--spacing-lg);
+                border-radius: "var(--radius-md)";
+                padding: "var(--spacing-lg)";
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
