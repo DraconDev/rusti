@@ -74,6 +74,10 @@ fn extract_html_classes_recursive(nodes: &[Node], used_classes: &mut HashMap<Str
                             // but we should warn about this
                             eprintln!("Warning: Dynamic class attribute detected. Cannot validate at compile time.");
                         }
+                        AttributeValue::StyleDsl(_) => {
+                            // Style DSL is not valid for class attribute
+                            eprintln!("Warning: Style DSL used in class attribute. This is invalid.");
+                        }
                         AttributeValue::None => {}
                     }
                 }
