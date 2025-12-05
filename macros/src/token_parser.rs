@@ -254,12 +254,19 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 // Element or Style
                 let fork = input.fork();
                 fork.parse::<Token![<]>()?;
-                if let Ok((name, _)) = parse_html_name(&fork, false) {
-                    if name == "style" {
-                        nodes.push(parse_style_tag(input)?);
-                        continue;
+                match parse_html_name(&fork, false) {
+                    Ok((name, _)) => {
+                        eprintln!("DEBUG: parse_nodes saw tag: {}", name);
+                        if name == "style" {
+                            nodes.push(parse_style_tag(input)?);
+                            continue;
+                        }
+                    }
+                    Err(_) => {
+                        eprintln!("DEBUG: parse_nodes failed to parse tag name");
                     }
                 }
+                eprintln!("DEBUG: parse_nodes falling through to Element");
                 nodes.push(Node::Element(input.parse()?));
             }
         } else if input.peek(Token![@]) {
