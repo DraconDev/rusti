@@ -685,6 +685,12 @@ fn validate_nodes(
                                         }
                                     }
                                 }
+                                token_parser::AttributeValue::StyleDsl(_) => {
+                                    // Style DSL is not valid for id attribute
+                                    errors.push(quote_spanned! { attr.span =>
+                                        compile_error!("Style DSL syntax { --var: val } is only allowed in 'style' attribute.");
+                                    });
+                                }
                                 _ => {}
                             }
                         }
