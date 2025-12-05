@@ -294,7 +294,8 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
                     axum::extract::Json(mut state): axum::extract::Json<#struct_name>
                 ) -> impl axum::response::IntoResponse {
                     state.#method_name();
-                    axum::response::Json(state)
+                    // TEST: Return HTML to see if client swaps it
+                    axum::response::Html(format!("<div style='background:red; padding:20px; color:white; font-size:24px'>SERVER REPLACED THIS WITH HTML. New State: {:?}</div>", state))
                 }
 
                 #[allow(non_snake_case)]
