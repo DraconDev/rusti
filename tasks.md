@@ -3,14 +3,6 @@
 
 - enforce all css to be double quoted
 
-# Maybe
-
-   <div class={fill} style="--progress: {completion}; --accent: {accent_color}"></div>
- vs ?
-   <div class={fill} style={--progress: completion; --accent: "red"}></div>
-?
-  <div class={fill} style={--progress: completion; --accent: format!("{}", accent_color)}></div>
-
 # Later
 
 - hot reload 
