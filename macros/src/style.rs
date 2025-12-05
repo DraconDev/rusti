@@ -276,6 +276,16 @@ fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
 
     // Check for spaces in single-word values (common typo)
     let trimmed = value.trim();
+
+    if value.contains("white") {
+        eprintln!(
+            "DEBUG: validate_css_value checking '{}' for property '{}'. contains space? {}",
+            value,
+            property,
+            value.contains(' ')
+        );
+    }
+
     if !is_multi_word_property(property) {
         // Properties that should be single tokens (no spaces)
         if trimmed.contains(' ') && !is_valid_space_in_value(property, trimmed) {
