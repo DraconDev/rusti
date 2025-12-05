@@ -1,96 +1,31 @@
 # 🚀 Azumi Feature Suggestions
 
-> Scored recommendations based on deep codebase analysis
+> Refined recommendations based on codebase analysis and review
 
-## Scoring System
+## ✅ Already Working (Verified)
 
-| Score        | Meaning                        |
-| ------------ | ------------------------------ |
-| **Impact**   | 1-5 (how much value this adds) |
-| **Effort**   | 1-5 (1 = easy, 5 = very hard)  |
-| **Priority** | Impact/Effort ratio            |
-
----
-
-## 🔥 High Priority (Do First)
-
-### 1. CSS `@keyframes` Support
-
-**Impact: 4** | **Effort: 2** | **Priority: 2.0**
-
-Currently, `style.rs` parses `@rules` but doesn't fully support `@keyframes` for animations.
-
-```rust
-// Goal
-<style>
-    @keyframes fade_in {
-        from { opacity: "0"; }
-        to { opacity: "1"; }
-    }
-    .card { animation: "fade_in 0.3s ease"; }
-</style>
-```
-
-**Why:** Animations are essential for modern UX. The parser already has `AtRule` support—just needs testing/tweaking.
+| Feature              | Status   | Example                                         |
+| -------------------- | -------- | ----------------------------------------------- |
+| `@keyframes`         | ✅ Works | `layout.rs` has `fadeInUp` animation            |
+| `@media` queries     | ✅ Works | `layout.rs` uses `@media (max-width: "1200px")` |
+| `@container` queries | ✅ Works | `layout.rs` has `@container (width > 700px)`    |
+| Form `bind`          | ✅ Works | Compile-time form binding exists                |
+| CSS error messages   | ✅ Works | `style.rs` has validation with `lightningcss`   |
 
 ---
 
-### 2. CSS `@media` Queries
+## 🎯 Remaining Suggestions
 
-**Impact: 5** | **Effort: 2** | **Priority: 2.5**
+### 1. `@loading` / `@error` States
 
-Responsive design is non-negotiable. Already partially supported via `AtRule` parsing.
+**Impact: 4** | **Effort: 3** | **Worth considering**
 
-```rust
-<style>
-    @media (max-width: "768px") {
-        .sidebar { display: "none"; }
-    }
-</style>
-```
+For async operations where optimistic updates don't apply (database queries, external APIs).
 
-**Why:** Critical for production apps. Should "just work" but needs verification and tests.
-
----
-
-### 3. `@loading` and `@error` States
-
-**Impact: 5** | **Effort: 3** | **Priority: 1.7**
-
-Async operations need loading/error UI patterns. Currently not supported.
-
-```rust
-@async(state.fetch_data()) {
+````rust
+@async(state.fetch_users()) {
     @loading { <Spinner /> }
     @error(e) { <p>"Error: " {e}</p> }
-    |data| { <DataView data={data} /> }
-}
-```
-
-**Why:** Real apps have async operations. Phoenix LiveView, Next.js all have this pattern.
-
----
-
-### 4. Client-Side `set` Implementation
-
-**Impact: 3** | **Effort: 1** | **Priority: 3.0**
-
-In `azumi.js` line 377: `setState` says "not implemented yet". This would allow purely client-side state changes without server roundtrip.
-
-```js
-// Currently returns null for "set" type actions
-setState(action, element) {
-    console.log("Set state not implemented yet");
-}
-```
-
-**Why:** Quick win. Some UI interactions (accordions, tabs) don't need server.
-
----
-
-## ⚡ Medium Priority
-
-### 5. Image Optimization Component
 
 **Impact: 4** | **Effort: 4** | **Priority: 1.0**
 
@@ -99,7 +34,7 @@ Auto-generate responsive images, lazy loading, blur placeholders.
 ```rust
 @Image(src="/photo.jpg", alt="Photo", width=400)
 // Generates: srcset, WebP variant, lazy loading
-```
+````
 
 **Why:** Major DX improvement but requires build-time tooling.
 
@@ -217,21 +152,20 @@ Modern CSS feature for component-based responsive design.
 
 **Why:** Cutting-edge CSS. Lower priority than media queries.
 
-
 Thoughts
+
 1. we already have animation, layout is example
 2. media works too
 3. but we are very different so this is when we can't do optimistic update? i could see it, worth considering
 4. we are trying to limit complication that is why we have azumli live like lesson 9, but would it work with us?
-5. seems like an easy win 
-6. how? Cna't just the header heave a title h1?, this seems less clean 
+5. seems like an easy win
+6. how? Cna't just the header heave a title h1?, this seems less clean
 7. what about the bind we have ? for forms
 8. we already have this
 9. Not sure if we want the complexity, currently we cna use the live struct, but this is useless in very rare cases, albeit might be more confusion than worth
-10. Is this better? I think non file system routing allows for deeper logic,  you can alreayd maek subfolders and router based on them, you are not forced to
-11.  i suppose otherwise we would need js, this is pretty low prio, i am not super scared of shipping some js in rare cases, 
-12.  nice if we dont already have it, at least its not erroring we would have to check the macro
-
+10. Is this better? I think non file system routing allows for deeper logic, you can alreayd maek subfolders and router based on them, you are not forced to
+11. i suppose otherwise we would need js, this is pretty low prio, i am not super scared of shipping some js in rare cases,
+12. nice if we dont already have it, at least its not erroring we would have to check the macro
 
 ---
 
