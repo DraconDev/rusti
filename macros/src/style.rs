@@ -338,25 +338,6 @@ fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
     }
 }
 
-/// Check if property allows multiple words (e.g., font-family, content)
-fn is_multi_word_property(property: &str) -> bool {
-    matches!(
-        property,
-        "font-family" | "content" | "animation-name" | "grid-template-areas"
-    )
-}
-
-/// Check if spaces are valid in this specific value context
-fn is_valid_space_in_value(property: &str, value: &str) -> bool {
-    // Allow spaces in certain contexts:
-    // - Multiple values: "10px 20px"
-    // - Functions: "rgb(255, 0, 0)", "calc(100% - 20px)"
-    // - Keywords with spaces: "ease-in-out"
-
-    value.contains('(') || // Function call
-    value.split_whitespace().count() > 1 && is_multi_word_property(property)
-}
-
 /// Properties that accept multiple space-separated values
 fn is_multi_word_property(property: &str) -> bool {
     // Check for prefixes
