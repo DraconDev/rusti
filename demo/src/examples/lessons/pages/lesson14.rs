@@ -64,17 +64,17 @@ pub fn tabs_view<'a>(state: &'a TabState) -> impl Component + 'a {
         <div class={tabs_container}>
             <div class={tab_buttons}>
                 <button
-                    class={if state.active_index == 0 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    class={if state.active_index == 0 { format!("{} {}", tab_btn, tab_btn_active) } else { tab_btn.to_string() }}
                     on:click={state.select_0}>
                     "🏠 Overview"
                 </button>
                 <button
-                    class={if state.active_index == 1 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    class={if state.active_index == 1 { format!("{} {}", tab_btn, tab_btn_active) } else { tab_btn.to_string() }}
                     on:click={state.select_1}>
                     "📊 Features"
                 </button>
                 <button
-                    class={if state.active_index == 2 { "tab_btn tab_btn_active" } else { "tab_btn" }}
+                    class={if state.active_index == 2 { format!("{} {}", tab_btn, tab_btn_active) } else { tab_btn.to_string() }}
                     on:click={state.select_2}>
                     "💡 Examples"
                 </button>
