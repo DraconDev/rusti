@@ -508,6 +508,96 @@ pub fn contact_form_view<'a>(state: &'a ContactForm) -> impl Component + 'a {
 
 ---
 
+## 📋 Form Binding & Data Attributes
+
+### Data Bind Attributes for Optimistic UI
+
+The `data-bind` attribute enables optimistic UI updates by binding state properties to DOM elements:
+
+```rust
+#[azumi::component]
+pub fn LiveCounter(state: &Counter) -> impl Component {
+    html! {
+        <style>
+            .counter { padding: "2rem"; text-align: "center"; }
+            .value { font-size: "3rem"; color: "#2196f3"; }
+        </style>
+        <div class={counter}>
+            <div class={value} data-bind="count">{state.count}</div>
+            <p>"Status: " 
+                <span data-bind="active">
+                    {if state.active { "Active ✓" } else { "Inactive ✗" }}
+                </span>
+            </p>
+        </div>
+    }
+}
+```
+
+**How it works:**
+- The `data-bind="count"` attribute binds the `count` property from state
+- When a prediction updates `count`, the corresponding DOM element updates instantly
+- Supports nested properties: `data-bind="user.profile.name"`
+
+### Form Binding with Structs
+
+```rust
+struct UserRegistration {
+    username: String,
+    email: String,
+    password: String,
+}
+
+#[azumi::component]
+pub fn RegistrationForm() -> impl Component {
+    html! {
+        <style>
+            .form { display: "grid"; gap: "1rem"; max-width: "400px"; }
+            .input { padding: "0.5rem"; border: "1px solid #ddd"; }
+        </style>
+        <form class={form} bind={UserRegistration}>
+            <input class={input} name="username" type="text" placeholder="Username" />
+            <input class={input} name="email" type="email" placeholder="Email" />
+            <input class={input} name="password" type="password" placeholder="Password" />
+            <button type="submit">"Register"</button>
+        </form>
+    }
+}
+```
+
+### Nested Form Binding
+
+```rust
+struct UserProfile {
+    name: String,
+    address: Address,
+}
+
+struct Address {
+    street: String,
+    city: String,
+}
+
+#[azumi::component]
+pub fn ProfileForm() -> impl Component {
+    html! {
+        <form bind={UserProfile}>
+            <input name="name" type="text" placeholder="Full name" />
+            <input name="address.street" type="text" placeholder="Street address" />
+            <input name="address.city" type="text" placeholder="City" />
+        </form>
+    }
+}
+```
+
+**Form Binding Rules:**
+- Field names must match struct field names (case-sensitive)
+- Nested fields use dot notation: `address.street`
+- Compile-time validation prevents typos in field names
+- Supports all form elements: `<input>`, `<select>`, `<textarea>`
+
+---
+
 ## 🔄 Server Actions (Advanced)
 
 For complex server-side logic beyond simple predictions:
