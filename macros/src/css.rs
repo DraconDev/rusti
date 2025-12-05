@@ -212,16 +212,18 @@ pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
             // Start of string, skip until end quote
             let quote = ch;
             clean_css.push(quote); // Keep opening quote
-            
+
             while let Some(c) = chars.next() {
                 if c == quote {
-            // loop -> consumes content
-            // if c == quote -> break.
-            // We need to NOT push the content to clean_css.
+                    clean_css.push(c); // Keep closing quote
+                    break;
+                }
+                // Replace content with space to avoid parsing selectors inside strings
+                clean_css.push(' ');
+            }
+        } else {
+            clean_css.push(ch);
         }
-
-        // Wait, the logic above is messy to patch into the existing loop structure.
-        // Let me rewrite the loop cleanly.
     }
 
     // Simple parser to extract selectors
