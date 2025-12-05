@@ -735,6 +735,131 @@ pub async fn complex_action(&mut self) {
 
 ---
 
+## 📋 Schema.org JSON-LD Structured Data
+
+Azumi supports generating Schema.org structured data for SEO through the `#[schema]` derive macro.
+
+### Basic Schema Support
+
+```rust
+use azumi::Schema;
+
+#[derive(Schema)]
+#[schema(type = "BlogPosting")]
+pub struct Article {
+    pub headline: String,
+    pub author: String,
+    pub date_published: String,
+    #[schema(skip)]
+    pub internal_id: String, // Skip this field in JSON-LD
+}
+
+#[azumi::component]
+pub fn ArticlePage(article: &Article) -> impl Component {
+    html! {
+        <html>
+        <head>
+            {head! {
+                title: &article.headline,
+                description: "Read this article about web development"
+            }}
+            {article.to_schema_script()} // ← Generates JSON-LD script
+        </head>
+        <body>
+            <article>
+                <h1>{article.headline}</h1>
+                <p>"By " {article.author} " on " {article.date_published}</p>
+                <div>"Article content goes here..."</div>
+            </article>
+        </body>
+        </html>
+    }
+}
+```
+
+### Custom Field Names
+
+```rust
+#[derive(Schema)]
+pub struct Product {
+    pub name: String,
+    #[schema(name = "description")]
+    pub product_description: String,
+    pub price: f64,
+    #[schema(name = "image")]
+    pub product_image_url: String,
+}
+
+// Generates: {
+//   "@type": "Product",
+//   "name": "...",
+//   "description": "...", // Note: camelCase -> original name
+//   "price": ...,
+//   "image": "..."
+// }
+```
+
+### Schema Types
+
+Common Schema.org types:
+
+| Type | Use Case | Example Usage |
+|------|----------|---------------|
+| `Article` | Blog posts, news articles | News sites, blogs |
+| `BlogPosting` | Blog articles | Personal/professional blogs |
+| `Product` | E-commerce products | Online stores |
+| `Organization` | Companies, teams | About pages |
+| `Person` | Individual profiles | Team pages, author bios |
+| `Event` | Events, webinars | Event listings |
+| `Recipe` | Cooking instructions | Food blogs |
+| `VideoObject` | Video content | YouTube embeds |
+| `WebSite` | Website information | Site-wide metadata |
+
+### Complex Schema Example
+
+```rust
+#[derive(Schema)]
+#[schema(type = "WebSite")]
+pub struct Website {
+    pub name: String,
+    pub url: String,
+    pub description: String,
+    pub potential_action: SearchAction,
+}
+
+#[derive(Schema)]
+pub struct SearchAction {
+    pub target: String,
+    pub query_input: String,
+}
+
+#[azumi::component]
+pub fn WebsiteLayout() -> impl Component {
+    let website = Website {
+        name: "My Azumi App".to_string(),
+        url: "https://myapp.com".to_string(),
+        description: "A modern web application".to_string(),
+        potential_action: SearchAction {
+            target: "https://myapp.com/search?q={search_term_string}".to_string(),
+            query_input: "search_term_string".to_string(),
+        },
+    };
+
+    html! {
+        <html>
+        <head>
+            {website.to_schema_script()}
+        </head>
+        <body>
+            <div>"Website content"</div>
+        </body>
+        </html>
+    }
+}
+```
+
+---
+
 ## 📄 Head Meta Tags (SEO & Social Sharing)
 
 The `head!` macro generates complete HTML head meta tags including title, description, and Open Graph/Twitter card tags.
@@ -1122,6 +1247,43 @@ cd demo
 cargo run
 # Visit http://localhost:3000
 ```
+
+### Client Runtime Integration
+
+```rust
+#[azumi::component]
+pub fn InteractivePage() -> impl Component {
+    html! {
+        <html>
+        <head>
+            // Include Azumi client runtime (required for live components)
+            {azumi::azumi_script()}
+            <script src="/static/idiomorph.js"></script>
+        </head>
+        <body>
+            // Your components here
+        </body>
+        </html>
+    }
+}
+```
+
+### CSS ID Handling
+
+```rust
+// IDs are NOT scoped like classes - they remain global
+<style>
+    #unique_id { color: "blue"; }  // ID not scoped
+    .my_class { padding: "1rem"; } // Class gets scoped
+</style>
+
+// Usage
+<div id={unique_id} class={my_class}>
+    "Content"
+</div>
+```
+
+### Development Server
 
 ### Error Messages
 
