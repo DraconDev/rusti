@@ -1,7 +1,5 @@
 # TODO
 
-- hot reload 
-
 # Later
 
 
