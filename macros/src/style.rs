@@ -353,6 +353,12 @@ fn is_valid_space_in_value(property: &str, value: &str) -> bool {
     // - Functions: "rgb(255, 0, 0)", "calc(100% - 20px)"
     // - Keywords with spaces: "ease-in-out"
 
+    value.contains('(') || // Function call
+    value.split_whitespace().count() > 1 && is_multi_word_property(property)
+}
+
+/// Properties that accept multiple space-separated values
+fn is_multi_word_property(property: &str) -> bool {
     // Check for prefixes
     if property.starts_with("border-")
         || property.starts_with("background-")
