@@ -569,7 +569,10 @@ pub fn reconstruct_css_from_tokens(input: TokenStream) -> String {
     // 1. Parse the input
     let style_input: StyleInput = match parse2(input) {
         Ok(input) => input,
-        Err(_) => return String::new(), // Return empty on parse error (validation handles errors elsewhere)
+        Err(e) => {
+            eprintln!("DEBUG: reconstruct_css_from_tokens failed to parse: {}", e);
+            return String::new();
+        }
     };
 
     let mut raw_css = String::new();
