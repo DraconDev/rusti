@@ -10,7 +10,7 @@ pub struct TodoApp {
     pub item_count: i32,
 }
 
-#[azumi::live_impl]
+#[azumi::live_impl(component = "todo_app_view")]
 impl TodoApp {
     pub fn toggle_filter(&mut self) {
         self.show_completed = !self.show_completed;
