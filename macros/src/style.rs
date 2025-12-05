@@ -666,6 +666,9 @@ fn tokens_to_css_string(tokens: &TokenStream) -> String {
 }
 
 fn is_valid_css_property(name: &str) -> bool {
+    if name.starts_with("--") {
+        return true;
+    }
     let valid_properties = [
         "align-content",
         "align-items",
