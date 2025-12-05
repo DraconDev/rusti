@@ -9,7 +9,7 @@ pub struct TabState {
     pub active_index: i32,
 }
 
-#[azumi::live_impl]
+#[azumi::live_impl(component = "tabs_view")]
 impl TabState {
     pub fn select_0(&mut self) {
         self.active_index = 0;

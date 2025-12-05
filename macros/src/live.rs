@@ -307,17 +307,43 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
             original_methods.push(quote! { #method });
 
             // Generate Axum handler
-            let handler = quote! {
-                pub async fn #handler_name(
-                    axum::extract::Json(mut state): axum::extract::Json<#struct_name>
-                ) -> impl axum::response::IntoResponse {
-                    state.#method_name();
-                    axum::response::Json(state)
-                }
+            let handler = if let Some(comp_name) = &component_name {
+                let comp_mod = format_ident!("{}_component", comp_name);
+                quote! {
+                    pub async fn #handler_name(
+                        axum::extract::Json(mut state): axum::extract::Json<#struct_name>
+                    ) -> impl axum::response::IntoResponse {
+                        state.#method_name();
 
-                #[allow(non_snake_case)]
-                pub fn #router_name() -> axum::routing::MethodRouter<()> {
-                    axum::routing::post(#handler_name)
+                        // Re-render the component with new state
+                        let html = azumi::render_to_string(&#comp_mod::render(
+                            #comp_mod::Props::builder()
+                                .state(&state)
+                                .build()
+                                .expect("Live component re-render failed")
+                        ));
+
+                        axum::response::Html(html)
+                    }
+
+                    #[allow(non_snake_case)]
+                    pub fn #router_name() -> axum::routing::MethodRouter<()> {
+                        axum::routing::post(#handler_name)
+                    }
+                }
+            } else {
+                quote! {
+                    pub async fn #handler_name(
+                        axum::extract::Json(mut state): axum::extract::Json<#struct_name>
+                    ) -> impl axum::response::IntoResponse {
+                        state.#method_name();
+                        axum::response::Json(state)
+                    }
+
+                    #[allow(non_snake_case)]
+                    pub fn #router_name() -> axum::routing::MethodRouter<()> {
+                        axum::routing::post(#handler_name)
+                    }
                 }
             };
 
