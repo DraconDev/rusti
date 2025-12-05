@@ -289,12 +289,22 @@ fn validate_css_value(property: &str, value: &str) -> Result<(), String> {
     if !is_multi_word_property(property) {
         // Properties that should be single tokens (no spaces)
         if trimmed.contains(' ') && !is_valid_space_in_value(property, trimmed) {
+            if value.contains("white") {
+                eprintln!("DEBUG: validate_css_value RETURNING ERROR for '{}'", value);
+            }
             return Err(format!(
                 "Unexpected space in value '{}'. Did you mean '{}'?",
                 value,
                 trimmed.replace(' ', "")
             ));
         }
+    }
+
+    if value.contains("white") {
+        eprintln!(
+            "DEBUG: validate_css_value PASSED space check for '{}'",
+            value
+        );
     }
 
     // Check for invalid units
