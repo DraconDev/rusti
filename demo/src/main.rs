@@ -24,6 +24,7 @@ async fn main() {
         .route("/test-global-styles", get(examples::test_global_styles::handler))
         .route("/azumi-plus", get(examples::azumi_plus_demo::azumi_plus_demo_handler))
         .merge(azumi::action::register_actions(axum::Router::new()))
+        .merge(azumi::hot_reload::router())
         .route("/lesson-1", get(examples::lessons::pages::lesson1::lesson1_handler))
         .route("/lesson-6", get(examples::lessons::pages::lesson6::lesson6_handler))
         .route("/lesson-7", get(examples::lessons::pages::lesson7::lesson7_handler))

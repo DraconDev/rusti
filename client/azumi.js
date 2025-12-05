@@ -10,6 +10,49 @@ class Azumi {
     constructor() {
         this.scopes = new WeakMap(); // Element -> state cache
         this.delegate();
+        this.connectHotReload();
+    }
+
+    // Hot Reload Logic
+    connectHotReload() {
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsUrl = `${protocol}//${window.location.host}/_azumi/live_reload`;
+
+        try {
+            const ws = new WebSocket(wsUrl);
+            let connected = false;
+
+            ws.onopen = () => {
+                connected = true;
+                console.log("🔥 Hot Reload: Connected");
+            };
+
+            ws.onclose = () => {
+                if (connected) {
+                    console.log(
+                        "🔥 Hot Reload: Connection lost, polling for restart..."
+                    );
+                    this.pollForReload();
+                }
+            };
+        } catch (e) {
+            // Hot reload likely not enabled on server
+        }
+    }
+
+    pollForReload() {
+        const interval = setInterval(() => {
+            fetch(window.location.href, { method: "HEAD" })
+                .then((res) => {
+                    if (res.ok) {
+                        clearInterval(interval);
+                        window.location.reload();
+                    }
+                })
+                .catch(() => {
+                    /* keep polling */
+                });
+        }, 200);
     }
 
     // Event delegation
