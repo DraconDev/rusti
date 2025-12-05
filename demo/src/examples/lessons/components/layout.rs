@@ -157,6 +157,12 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
                 padding-bottom: "var(--spacing-xs)";
             }
 
+            @container dark {
+                .modern_h1 {
+                    background: "linear-gradient(135deg, var(--azumi-primary), #6366f1)";
+                }
+            }
+
             /* Animation for modern feel */
             @keyframes fadeInUp {
                 from {
