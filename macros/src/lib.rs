@@ -110,11 +110,24 @@ fn validate_style_only_css_vars(style_value: &str) -> Result<(), String> {
 
 #[proc_macro]
 pub fn html(input: TokenStream) -> TokenStream {
+    let input_str = input.to_string();
+    if input_str.contains("tabs_container") {
+        eprintln!("DEBUG: html! macro called for lesson14 (tabs_container found)");
+    }
+
     let input = parse_macro_input!(input as token_parser::HtmlInput);
     let nodes = input.nodes;
 
+    if input_str.contains("tabs_container") {
+        eprintln!("DEBUG: html! macro parsed {} nodes for lesson14", nodes.len());
+    }
+
     // 1. Process styles (hoist <style> tags)
     let (style_bindings, scoped_css, global_css) = process_styles(&nodes);
+
+    if input_str.contains("tabs_container") {
+        eprintln!("DEBUG: process_styles returned for lesson14. Bindings empty? {}", style_bindings.is_empty());
+    }
 
     // 2. CSS dependencies are no longer collected for external files
     let css_deps: Vec<proc_macro2::TokenStream> = Vec::new();
