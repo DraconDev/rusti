@@ -33,3 +33,6 @@ reference/**
 
 # Auto-committer ignored files
 .env.keys
+
+# Auto-committer ignored files
+.env
