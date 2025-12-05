@@ -222,16 +222,8 @@ class Azumi {
         // Find scope element
         const scopeElement = element.closest("[az-scope]");
 
-        // Check for prediction attribute (Azumi Live)
-        const prediction = element.getAttribute("data-predict");
-        let predictionResult = null;
-
-        if (prediction && scopeElement) {
-            // Execute prediction BEFORE server call (0ms latency!)
-            predictionResult = this.executePrediction(scopeElement, prediction);
-        }
-
-        // Collect state for server
+        // IMPORTANT: Capture original state BEFORE prediction
+        // We send original state to server, not predicted state
         let body = null;
         if (element.tagName === "FORM") {
             body = new FormData(element);
@@ -244,6 +236,15 @@ class Azumi {
             } else {
                 body = "{}";
             }
+        }
+
+        // Check for prediction attribute (Azumi Live)
+        const prediction = element.getAttribute("data-predict");
+        let predictionResult = null;
+
+        if (prediction && scopeElement) {
+            // Execute prediction AFTER capturing state (0ms latency!)
+            predictionResult = this.executePrediction(scopeElement, prediction);
         }
 
         try {
