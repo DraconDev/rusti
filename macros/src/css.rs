@@ -185,7 +185,7 @@ pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
     let mut in_rule = false;
     let mut selector_buffer = String::new();
 
-    // Strip comments first
+    // Strip comments and strings first
     let mut clean_css = String::with_capacity(css.len());
     let mut chars = css.chars().peekable();
     while let Some(ch) = chars.next() {
@@ -207,26 +207,14 @@ pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
                     continue;
                 }
             }
+            clean_css.push(ch);
         } else if ch == '"' || ch == '\'' {
             // Start of string, skip until end quote
             let quote = ch;
-            clean_css.push(quote);
+            clean_css.push(quote); // Keep opening quote
+            
             while let Some(c) = chars.next() {
-                clean_css.push(c); // keep content or not?
-                                   // If we keep content, process_selectors will see it.
-                                   // We MUST NOT push the content if we want to hide # from process_selectors.
-                                   // But wait, if we are in a property value (inside {}), we want to keep it for the output?
-                                   // extract_selectors is ONLY for extracting classes/ids for bindings. It returns sets.
-                                   // It does NOT return the modified CSS.
-                                   // So we can safely drop the string content here.
                 if c == quote {
-                    break;
-                }
-            }
-            // We already pushed the opening quote. Let's push the closing one if we found it.
-            // Actually, let's just push a placeholder or nothing.
-            // The logic below:
-            // clean_css.push(ch); -> pushes opening quote
             // loop -> consumes content
             // if c == quote -> break.
             // We need to NOT push the content to clean_css.
