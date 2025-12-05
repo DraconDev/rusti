@@ -247,6 +247,9 @@ pub fn extract_selectors(css: &str) -> (HashSet<String>, HashSet<String>) {
         }
     }
 
+    eprintln!("DEBUG: clean_css: '{}'", clean_css);
+    eprintln!("DEBUG: classes: {:?}", classes);
+
     (classes, ids)
 }
 
