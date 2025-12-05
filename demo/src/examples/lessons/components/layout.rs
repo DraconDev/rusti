@@ -173,7 +173,7 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
                 animation: "fadeInUp 0.6s ease-out";
             }
 
-            @media (max-width: "") {
+            @media (max-width: "1200px") {
                 .content_container {
                     padding: "var(--spacing-md)";
                 }
