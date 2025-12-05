@@ -66,18 +66,12 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
             .btn_primary { background: "#4caf50"; color: "white"; }
             .btn_secondary { background: "#ff9800"; color: "white"; }
             .btn_danger { background: "#f44336"; color: "white"; }
-            #counter_component {
-            }
-            #counter_value {
-            }
-            #counter_status {
-            }
         </style>
-        <div id={counter_component} class={counter_box}>
+        <div class={counter_box}>
             <h2>"🚀 Azumi Live Counter"</h2>
 
-            <div id={counter_value} class={value} data-bind="count">{state.count}</div>
-            <div id={counter_status} class={status}>
+            <div class={value} data-bind="count">{state.count}</div>
+            <div class={status}>
                 "Status: "
                 <span data-bind="active">{if state.active { "Active ✓" } else { "Inactive ✗" }}</span>
             </div>
