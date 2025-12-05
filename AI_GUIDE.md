@@ -1404,6 +1404,8 @@ Common error patterns and solutions:
 | Children      | `@Component { }` | `@Container { <p>"Content"</p> }` |
 | Head Meta     | `head! { title: "", description: "" }` | `head! { title: "Page", desc: "Desc" }` |
 | Schema        | `#[derive(Schema)]` | `#[schema(type = "BlogPosting")]` |
+| Form Bind     | `bind={StructName}` | `form bind={UserRegistration}` |
+| Data Bind      | `data-bind="property"` | `data-bind="count"` |
 | Client Script | `azumi::azumi_script()` | `{azumi::azumi_script()}` |
 | Text          | Quoted strings | `"Hello world"` |
 
