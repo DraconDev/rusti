@@ -782,6 +782,130 @@ Do you have a JavaScript team?
 
 ---
 
+## What Azumi Doesn't Do Well
+
+### 🚫 **Limitations and Weaknesses**
+
+#### **1. Learning Curve is Brutal**
+
+-   **Rust knowledge required** - Not friendly to JavaScript developers
+-   **Macro debugging** can be cryptic and hard to understand
+-   **Compile-time errors** can be overwhelming for beginners
+-   **Documentation** still maturing compared to established frameworks
+
+```rust
+// This might confuse newcomers:
+#[azumi::component]
+fn ComplexComponent() -> impl Component {
+    html! {
+        <div class={complex_variable_name}>
+            {some_function_call()}
+        </div>
+    }
+}
+// "Cannot find value `complex_variable_name` in this scope"
+// vs React's "Cannot read properties of undefined"
+```
+
+#### **2. Ecosystem is Tiny**
+
+-   **Community**: ~5K developers vs 2M for Next.js
+-   **Packages**: Limited third-party libraries
+-   **Examples**: Fewer real-world implementations
+-   **Job market**: Very few Azumi positions compared to React/Vue
+
+#### **3. Client-Side Limitations**
+
+-   **No virtual DOM** - Less sophisticated client-side reactivity
+-   **Limited animations** - No built-in transition systems like React Spring
+-   **Complex interactivity** requires server roundtrips (can feel sluggish)
+-   **No offline support** - Requires server connection for state changes
+
+```rust
+// Complex animation in React (built-in):
+// <motion.div animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }} />
+
+// In Azumi - would need:
+// 1. JavaScript library + custom integration
+// 2. Server-sent events for state updates
+// 3. Manual CSS animations
+```
+
+#### **4. Development Experience Pain Points**
+
+-   **Slow compilation** - Rust macros add compile time
+-   **Hot reload** not as instant as JavaScript frameworks
+-   **IDE support** improving but not VS Code-level
+-   **Debugging macros** requires deep Rust knowledge
+
+#### **5. Real-Time Features Struggle**
+
+-   **WebSocket integration** more complex than client-side solutions
+-   **Live collaboration** (like Google Docs) requires significant custom work
+-   **Push notifications** need server infrastructure
+-   **Real-time gaming** impossible with server-first approach
+
+#### **6. Mobile Performance Issues**
+
+-   **Touch interactions** can feel laggy compared to native mobile frameworks
+-   **Progressive Web App** capabilities limited
+-   **Mobile-first development** requires different mindset
+-   **App store deployment** not designed for mobile apps
+
+#### **7. Team Integration Challenges**
+
+-   **JavaScript developers** need to learn Rust (significant barrier)
+-   **Design systems** integration more complex
+-   **CMS integration** (headless CMS) requires custom work
+-   **Third-party services** (Stripe, Auth0) need Rust SDKs or HTTP APIs
+
+### 🔄 **When Other Frameworks Are Clearly Better**
+
+| Use Case                        | Avoid Azumi | Choose Instead         | Why                        |
+| ------------------------------- | ----------- | ---------------------- | -------------------------- |
+| **Dashboard with live charts**  | ❌          | Svelte + Chart.js      | Real-time updates easier   |
+| **E-commerce with complex UX**  | ❌          | Next.js + Shopify      | Mature ecosystem           |
+| **Social media app**            | ❌          | React Native + Next.js | Mobile-first design        |
+| **Real-time chat app**          | ❌          | Socket.io + React      | WebSocket native support   |
+| **Design-heavy marketing site** | ❌          | Svelte + Framer        | Animation capabilities     |
+| **Rapid MVP prototyping**       | ❌          | Next.js + Tailwind     | Speed of development       |
+| **Large team collaboration**    | ❌          | Next.js                | Developer availability     |
+| **Complex animations**          | ❌          | Svelte + GSAP          | Built-in transition system |
+
+### 🎯 **Honest Assessment: Who Should NOT Use Azumi**
+
+**❌ Avoid if you have:**
+
+-   **Team without Rust experience** - Learning curve too steep
+-   **Need rapid prototyping** - Setup and learning takes weeks
+-   **Limited time/budget** - Development initially slower
+-   **Complex real-time requirements** - Server roundtrips become bottleneck
+-   **Heavy client-side interactivity** - Not Azumi's strength
+-   **Mobile app requirements** - Web-focused approach
+-   **Strict deadlines** - Macro debugging can be time-consuming
+
+**❌ Avoid if building:**
+
+-   **Games** - Real-time requirements mismatch
+-   **Drawing apps** - Canvas/WebGL better suited for client-side
+-   **Video editors** - Heavy client-side processing needed
+-   **Music production tools** - Real-time audio processing
+-   **CAD software** - Complex 3D rendering requirements
+-   **Trading platforms** - Millisecond latency requirements
+
+### 💡 **The Reality Check**
+
+**Azumi is brilliant for what it does, but it has clear boundaries:**
+
+-   **Great for**: Server-rendered applications with moderate interactivity
+-   **Poor for**: Client-heavy applications with complex real-time features
+-   **Avoid for**: Rapid prototyping and teams without Rust experience
+-   **Not suitable for**: Mobile apps, games, or real-time collaboration
+
+**The honest truth**: Azumi is **not** a replacement for React or Vue in most scenarios. It's a **specialized tool** for specific use cases where compile-time safety outweighs the development speed cost.
+
+---
+
 ## Conclusion
 
 ### The Azumi Advantage
