@@ -150,6 +150,9 @@ pub fn todo_app_view<'a>(state: &'a TodoApp) -> impl Component + 'a {
                 }
                 @if state.item_count > 0 {
                     <p>"You have " {state.item_count} " item(s) in your list."</p>
+                    <div style={ --bg-color: "#e0f7fa"; --padding: "1rem" }>
+                        "This box is styled with the new Style DSL!"
+                    </div>
                 }
             </div>
         </div>
