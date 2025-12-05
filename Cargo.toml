@@ -1,6 +1,6 @@
 [package]
 name = "azumi"
-version = "0.7.1030"
+version = "0.7.1031"
 edition = "2021"
 authors = [" DraconDev <dracsharp@gmail.com>"]
 license = "MIT"
@@ -20,7 +20,7 @@ schema = ["azumi-macros/schema"]
 azumi-macros = { path = "macros" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-axum = "0.7"
+axum = { version = "0.7", features = ["ws"] }
 inventory = "0.3"
 
 [dev-dependencies]

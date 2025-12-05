@@ -5,6 +5,7 @@ pub mod prelude {
 
 pub use azumi_macros::{action, component, head, html, live, live_impl};
 pub mod action;
+pub mod hot_reload;
 pub use inventory;
 
 pub trait Component {
