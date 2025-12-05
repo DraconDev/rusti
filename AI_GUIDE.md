@@ -735,6 +735,166 @@ pub async fn complex_action(&mut self) {
 
 ---
 
+## 📄 Head Meta Tags (SEO & Social Sharing)
+
+The `head!` macro generates complete HTML head meta tags including title, description, and Open Graph/Twitter card tags.
+
+### Basic Head Meta
+
+```rust
+use azumi::head;
+
+#[azumi::component]
+pub fn Page() -> impl Component {
+    html! {
+        <html>
+        <head>
+            {head! {
+                title: "My Azumi App",
+                description: "A type-safe Rust web framework"
+            }}
+        </head>
+        <body>
+            <h1>"Welcome to Azumi"</h1>
+        </body>
+        </html>
+    }
+}
+```
+
+### Full Meta with Social Sharing
+
+```rust
+#[azumi::component]
+pub fn BlogPost() -> impl Component {
+    let title = "Building with Azumi Live";
+    let description = "Learn how to create reactive UI components";
+    
+    html! {
+        <html>
+        <head>
+            {head! {
+                title: title,
+                description: description,
+                image: "/static/azumi-preview.jpg",
+                url: "https://myapp.com/blog/azumi-live",
+                type: "article"
+            }}
+        </head>
+        <body>
+            <article>
+                <h1>{title}</h1>
+                <p>{description}</p>
+            </article>
+        </body>
+        </html>
+    }
+}
+```
+
+### Dynamic Meta Values
+
+```rust
+#[azumi::component]
+pub fn ProductPage(product: &'a Product) -> impl Component + 'a {
+    html! {
+        <html>
+        <head>
+            {head! {
+                title: format!("{} - {} | My Store", product.name, product.category),
+                description: format!("Buy {} for ${}. {} {}", product.name, product.price, product.brand, product.description),
+                image: product.image_url,
+                url: format!("https://mystore.com/products/{}", product.id),
+                type: "product"
+            }}
+        </head>
+        <body>
+            <div>
+                <h1>{product.name}</h1>
+                <p>"$" {product.price}</p>
+            </div>
+        </body>
+        </html>
+    }
+}
+```
+
+### Head Meta Field Reference
+
+| Field | Required | Description | Generated Tags |
+|-------|----------|-------------|----------------|
+| `title` | ✅ Yes | Page title | `<title>`, `og:title`, `twitter:title` |
+| `description` | ✅ Yes | Page description | `<meta name="description">`, `og:description`, `twitter:description` |
+| `image` | ❌ No | Social sharing image | `og:image`, `twitter:image`, `twitter:card="summary_large_image"` |
+| `url` | ❌ No | Canonical URL | `og:url` |
+| `type` | ❌ No | Content type | `og:type` (defaults to "website") |
+
+### Meta Tag Output Examples
+
+**Minimal (title + description only):**
+```html
+<title>My Page</title>
+<meta name="description" content="Page description">
+<meta property="og:title" content="My Page">
+<meta property="og:description" content="Page description">
+<meta property="og:type" content="website">
+<meta name="twitter:title" content="My Page">
+<meta name="twitter:description" content="Page description">
+<meta name="twitter:card" content="summary">
+```
+
+**Full (with image, URL, type):**
+```html
+<title>My Article</title>
+<meta name="description" content="Article description">
+<meta property="og:title" content="My Article">
+<meta property="og:description" content="Article description">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://example.com/article">
+<meta property="og:image" content="/image.jpg">
+<meta name="twitter:image" content="/image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Article">
+<meta name="twitter:description" content="Article description">
+```
+
+### SEO Best Practices
+
+```rust
+#[azumi::component]
+pub fn SEOOptimizedPage() -> impl Component {
+    let page_title = "Azumi Live Guide - Type-Safe Reactive UI";
+    let description = "Complete guide to building reactive web applications with Azumi Live. Zero JavaScript, full type safety.";
+    let keywords = "rust, web framework, reactive ui, type-safe, azumi";
+    
+    html! {
+        <html lang="en">
+        <head>
+            {head! {
+                title: page_title,
+                description: description,
+                image: "/static/azumi-social-preview.jpg",
+                url: "https://azumi.dev/guide",
+                type: "article"
+            }}
+            // Additional SEO meta tags
+            <meta name="keywords" content={keywords} />
+            <meta name="author" content="Azumi Team" />
+            <meta name="robots" content="index, follow" />
+        </head>
+        <body>
+            <main>
+                <h1>"Azumi Live Guide"</h1>
+                <p>{description}</p>
+            </main>
+        </body>
+        </html>
+    }
+}
+```
+
+---
+
 ## 🔧 Component Props System
 
 ### Required Props
