@@ -7,7 +7,6 @@
 *.cache
 *.dll
 *.exe
-*.env
 *.kilocode
 node_modules/
 .vscode
@@ -32,7 +31,6 @@ Thumbs.db
 reference/**
 
 # Auto-committer ignored files
-.env.keys
 
 # Auto-committer ignored files
-.env
+*.env

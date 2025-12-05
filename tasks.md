@@ -1,8 +1,6 @@
 # TODO
 
 
-- enforce all css to be double quoted
-
 # Later
 
 - hot reload 
