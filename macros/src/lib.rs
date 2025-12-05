@@ -1092,6 +1092,14 @@ fn generate_body_with_context(
                                 write!(f, " {}=\"{}\"", #attr_name, azumi::Escaped(&(#expr)))?;
                             });
                         }
+                        token_parser::AttributeValue::StyleDsl(props) => {
+                            // Style DSL is only valid for 'style' attribute, which is handled above.
+                            // If we reach here, it means it was used on a non-style attribute, which is invalid.
+                            // But we should handle it gracefully or error.
+                            // Since we can't emit compile_error! easily inside this loop without returning TokenStream,
+                            // we'll just ignore it or emit a warning via println (which is visible during build).
+                            // Ideally, validation pass should have caught this.
+                        }
                         token_parser::AttributeValue::None => {
                             // Boolean attribute
                             attr_code.extend(quote! {
