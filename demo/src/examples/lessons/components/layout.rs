@@ -6,31 +6,31 @@ pub fn DarkModernLayout(children: impl azumi::Component) -> impl azumi::Componen
     html! {
         <style global>
             :root {
-                --azumi-bg: #1e1e1e;
-                --azumi-text: #fff;
-                --azumi-text-dim: #ccc;
-                --azumi-primary: #6366f1;
+                --azumi-bg: "#1e1e1e";
+                --azumi-text: "#fff";
+                --azumi-text-dim: "#ccc";
+                --azumi-primary: "#6366f1";
             }
 
             .dark_layout {
                 min-height: "100vh";
-                background: var(--azumi-bg);
-                color: var(--azumi-text);
-                font-family: var(--font-sans);
+                background: "var(--azumi-bg)";
+                color: "var(--azumi-text)";
+                font-family: "var(--font-sans)";
             }
 
             .content_container {
                 max-width: "1200px";
                 margin: "0 auto";
-                padding: var(--spacing-lg);
+                padding: "var(--spacing-lg)";
             }
 
             .header_section {
                 background: "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%)";
                 backdrop-filter: "blur(10px)";
                 border-bottom: "1px solid rgba(148, 163, 184, 0.1)";
-                padding: var(--spacing-md) 0;
-                margin-bottom: var(--spacing-lg);
+                padding: "  ";
+                margin-bottom: "var(--spacing-lg)";
             }
 
             .main_content {
