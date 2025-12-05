@@ -507,15 +507,21 @@ impl Parse for Attribute {
 
                             content.parse::<Token![:]>()?;
 
-                            // Parse value expression until comma or end
+                            // Parse value expression until semicolon, comma, or end
                             let mut value_tokens = TokenStream::new();
-                            while !content.is_empty() && !content.peek(Token![,]) {
+                            while !content.is_empty()
+                                && !content.peek(Token![;])
+                                && !content.peek(Token![,])
+                            {
                                 value_tokens.extend(std::iter::once(content.parse::<TokenTree>()?));
                             }
 
                             props.push((prop_name, value_tokens));
 
-                            if content.peek(Token![,]) {
+                            // Consume separator if present
+                            if content.peek(Token![;]) {
+                                content.parse::<Token![;]>()?;
+                            } else if content.peek(Token![,]) {
                                 content.parse::<Token![,]>()?;
                             }
                         }
