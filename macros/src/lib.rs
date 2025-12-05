@@ -940,6 +940,40 @@ fn generate_body_with_context(
                                     write!(f, " style=\"{}\"", azumi::Escaped(&(#expr)))?;
                                 });
                             }
+                            token_parser::AttributeValue::StyleDsl(props) => {
+                                // Generate optimized style string construction
+                                // style="--var1: val1; --var2: val2"
+                                let mut format_string = String::new();
+                                let mut args = Vec::new();
+
+                                for (i, (prop, value_tokens)) in props.iter().enumerate() {
+                                    if i > 0 {
+                                        format_string.push_str("; ");
+                                    }
+                                    format_string.push_str(prop);
+                                    format_string.push_str(": {}");
+                                    
+                                    // Check if value is a string literal to strip quotes
+                                    // This allows style={ --color: "red" } to output --color: red
+                                    // instead of --color: "red" which is invalid CSS
+                                    let value_expr = if let Ok(lit) = syn::parse2::<syn::Lit>(value_tokens.clone()) {
+                                        if let syn::Lit::Str(s) = lit {
+                                            let s_val = s.value();
+                                            quote! { #s_val }
+                                        } else {
+                                            quote! { #value_tokens }
+                                        }
+                                    } else {
+                                        quote! { #value_tokens }
+                                    };
+                                    
+                                    args.push(value_expr);
+                                }
+
+                                attr_code.extend(quote! {
+                                    write!(f, " style=\"{}\"", format_args!(#format_string, #(#args),*))?;
+                                });
+                            }
                             token_parser::AttributeValue::None => {
                                 // Empty style is fine
                             }
