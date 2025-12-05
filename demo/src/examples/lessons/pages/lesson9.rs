@@ -73,11 +73,11 @@ pub fn counter_view<'a>(state: &'a Counter) -> impl Component + 'a {
             #counter_status {
             }
         </style>
-        <div id="counter_component" class={counter_box}>
+        <div id={counter_component} class={counter_box}>
             <h2>"🚀 Azumi Live Counter"</h2>
 
-            <div id="counter_value" class={value} data-bind="count">{state.count}</div>
-            <div id="counter_status" class={status}>
+            <div id={counter_value} class={value} data-bind="count">{state.count}</div>
+            <div id={counter_status} class={status}>
                 "Status: "
                 <span data-bind="active">{if state.active { "Active ✓" } else { "Inactive ✗" }}</span>
             </div>
