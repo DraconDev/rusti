@@ -164,6 +164,7 @@ fn parse_style_tag(input: ParseStream) -> Result<Node> {
     let start_span = input.span();
     input.parse::<Token![<]>()?;
     parse_html_name(input, false)?; // "style"
+    eprintln!("DEBUG: Parsing <style> tag");
 
     // Check for 'global' attribute
     let mut is_global = false;
