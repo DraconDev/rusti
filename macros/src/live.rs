@@ -256,6 +256,24 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     // Clean up struct name (remove spaces)
     let struct_name_str = struct_name_str.replace(" ", "");
 
+    // Parse attributes to find component="name"
+    let args = parse_macro_input!(attr as syn::AttributeArgs);
+    let mut component_name = None;
+
+    for arg in args {
+        if let syn::Meta::NameValue(nv) = arg {
+            if nv.path.is_ident("component") {
+                if let syn::Expr::Lit(syn::ExprLit {
+                    lit: syn::Lit::Str(lit),
+                    ..
+                }) = nv.value
+                {
+                    component_name = Some(lit.value());
+                }
+            }
+        }
+    }
+
     let mut method_handlers = Vec::new();
     let mut original_methods = Vec::new();
 
