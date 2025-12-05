@@ -260,6 +260,46 @@ class Azumi {
 
             const html = await res.text();
 
+            // OPTIMIZATION: Check if server state matches prediction
+            // If prediction was correct, skip morphing to prevent flicker
+            if (predictionResult && scopeElement) {
+                // Extract az-scope from the response HTML
+                const scopeMatch = html.match(/az-scope='([^']+)'/);
+                if (scopeMatch) {
+                    try {
+                        const serverState = JSON.parse(scopeMatch[1]);
+                        const predictedState = predictionResult.newState;
+
+                        // Compare states - if they match, skip morph entirely
+                        if (
+                            JSON.stringify(serverState) ===
+                            JSON.stringify(predictedState)
+                        ) {
+                            console.log(
+                                "✅ Prediction matched server - skipping morph"
+                            );
+                            // Just update the az-scope attribute to match server
+                            scopeElement.setAttribute(
+                                "az-scope",
+                                JSON.stringify(serverState)
+                            );
+                            return; // Skip morphing!
+                        } else {
+                            console.log(
+                                "⚠️ Prediction mismatch - morphing to reconcile",
+                                {
+                                    predicted: predictedState,
+                                    server: serverState,
+                                }
+                            );
+                        }
+                    } catch (e) {
+                        // Parse error, continue with morph
+                    }
+                }
+            }
+
+            // FIXED: Default target to scopeElement (component root), then element
             let target = scopeElement || element;
             if (action.target) {
                 target = document.querySelector(action.target);
