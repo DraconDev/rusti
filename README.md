@@ -397,6 +397,7 @@ cargo run -p demo
 # Development server with automatic rebuilding
 cargo watch -x "cargo run -p demo"
 
+# See HOT_RELOAD.md for full setup guide!
 # Any change recompiles instantly
 # Visit updated lessons at: http://localhost:8080
 ```
