@@ -164,7 +164,6 @@ fn parse_style_tag(input: ParseStream) -> Result<Node> {
     let start_span = input.span();
     input.parse::<Token![<]>()?;
     parse_html_name(input, false)?; // "style"
-    eprintln!("DEBUG: Parsing <style> tag");
 
     // Check for 'global' attribute
     let mut is_global = false;
@@ -254,19 +253,12 @@ pub fn parse_nodes(input: ParseStream) -> Result<Vec<Node>> {
                 // Element or Style
                 let fork = input.fork();
                 fork.parse::<Token![<]>()?;
-                match parse_html_name(&fork, false) {
-                    Ok((name, _)) => {
-                        eprintln!("DEBUG: parse_nodes saw tag: {}", name);
-                        if name == "style" {
-                            nodes.push(parse_style_tag(input)?);
-                            continue;
-                        }
-                    }
-                    Err(_) => {
-                        eprintln!("DEBUG: parse_nodes failed to parse tag name");
+                if let Ok((name, _)) = parse_html_name(&fork, false) {
+                    if name == "style" {
+                        nodes.push(parse_style_tag(input)?);
+                        continue;
                     }
                 }
-                eprintln!("DEBUG: parse_nodes falling through to Element");
                 nodes.push(Node::Element(input.parse()?));
             }
         } else if input.peek(Token![@]) {
