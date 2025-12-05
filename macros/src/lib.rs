@@ -93,14 +93,14 @@ fn validate_style_only_css_vars(style_value: &str) -> Result<(), String> {
             // Property must start with --
             if !prop_name.starts_with("--") {
                 return Err(format!(
-                    "Invalid style property '{}'. Inline styles are banned in Azumi.\n\
+                    "Invalid style property '{}'. Only CSS variables are allowed in inline styles.\n\
+                    \n\
                     Allowed:\n\
                     - CSS Variables: style={{ --custom-color: \"red\" }}\n\
                     - CSS Variables (string): style=\"--custom-color: red\"\n\
                     \n\
-                    Banned:\n\
-                    - Standard properties: style=\"color: red\" (Use CSS classes instead)",
-                    prop_name
+                    For standard properties like '{}', please use CSS classes in the <style> block.",
+                    prop_name, prop_name
                 ));
             }
         }
