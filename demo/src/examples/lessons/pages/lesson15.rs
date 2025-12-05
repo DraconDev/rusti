@@ -153,6 +153,7 @@ pub fn todo_app_view<'a>(state: &'a TodoApp) -> impl Component + 'a {
                     <div style={ --bg-color: "#e0f7fa"; --padding: "1rem" }>
                         "This box is styled with the new Style DSL!"
                     </div>
+                    <div style="color: red">"This should fail compilation"</div>
                 }
             </div>
         </div>
