@@ -257,7 +257,7 @@ pub fn expand_live_impl(attr: TokenStream, item: TokenStream) -> TokenStream {
     let struct_name_str = struct_name_str.replace(" ", "");
 
     // Parse attributes to find component="name"
-    let args = parse_macro_input!(attr as syn::AttributeArgs);
+    let args = parse_macro_input!(attr as syn::punctuated::Punctuated<syn::Meta, syn::Token![,]>);
     let mut component_name = None;
 
     for arg in args {
