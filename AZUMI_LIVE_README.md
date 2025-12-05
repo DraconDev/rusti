@@ -4,6 +4,23 @@
 
 Azumi Live is a **compile-time reactive UI system** that analyzes your Rust mutations and generates optimistic client predictions automatically. The server remains authoritative while users experience zero-latency interactions.
 
+## The Problem We Solve: "The Two-Brain Problem"
+
+In traditional web development, you write logic **twice**:
+
+1. **Server Logic (Rust):** `self.count += 1`
+2. **Client Logic (JS):** `setCount(count + 1)` for optimistic UI
+
+This creates:
+
+-   **Synchronization bugs** - logic can drift apart
+-   **Cognitive load** - constantly deciding "is this client or server?"
+-   **Duplication** - same mutation written in two languages
+
+**Azumi Live's Solution:** Write the logic **once** in Rust. The compiler analyzes it and generates both server handlers AND client predictions automatically.
+
+---
+
 ## The Core Idea
 
 ```rust
