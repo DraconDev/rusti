@@ -1311,8 +1311,11 @@ Common error patterns and solutions:
 | Loop | `@for item in items { }` | `@for item in &list { <div>{item}</div> }` |
 | Pattern Match | `@match value { }` | `@match status { "ok" => {} _ => {} }` |
 | Local Var | `@let name = value;` | `@let total = price * quantity;` |
-| Children | `@Component { }` | `@Container { <p>"Content"</p> }` |
-| Text | Quoted strings | `"Hello world"` |
+| Children      | `@Component { }` | `@Container { <p>"Content"</p> }` |
+| Head Meta     | `head! { title: "", description: "" }` | `head! { title: "Page", desc: "Desc" }` |
+| Schema        | `#[derive(Schema)]` | `#[schema(type = "BlogPosting")]` |
+| Client Script | `azumi::azumi_script()` | `{azumi::azumi_script()}` |
+| Text          | Quoted strings | `"Hello world"` |
 
 ---
 
