@@ -217,6 +217,22 @@ Modern CSS feature for component-based responsive design.
 
 **Why:** Cutting-edge CSS. Lower priority than media queries.
 
+
+Thoughts
+1. we already have animation, layout is example
+2. media works too
+3. but we are very different so this is when we can't do optimistic update? i could see it, worth considering
+4. we are trying to limit complication that is why we have azumli live like lesson 9, but would it work with us?
+5. seems like an easy win 
+6. how? Cna't just the header heave a title h1?, this seems less clean 
+7. what about the bind we have ? for forms
+8. we already have this
+9. Not sure if we want the complexity, currently we cna use the live struct, but this is useless in very rare cases, albeit might be more confusion than worth
+10. Is this better? I think non file system routing allows for deeper logic,  you can alreayd maek subfolders and router based on them, you are not forced to
+11.  i suppose otherwise we would need js, this is pretty low prio, i am not super scared of shipping some js in rare cases, 
+12.  nice if we dont already have it, at least its not erroring we would have to check the macro
+
+
 ---
 
 ## 📊 Summary Table
