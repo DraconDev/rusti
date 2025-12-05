@@ -580,7 +580,10 @@ pub fn reconstruct_css_from_tokens(input: TokenStream) -> String {
         raw_css.push_str(&at_rule.name);
         raw_css.push_str(" ");
         raw_css.push_str(&at_rule.content);
-        raw_css.push_str("; ");
+        if !at_rule.content.trim().ends_with('}') {
+            raw_css.push_str(";");
+        }
+        raw_css.push_str(" ");
     }
 
     // Add regular rules
