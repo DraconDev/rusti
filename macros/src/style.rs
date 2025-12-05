@@ -353,12 +353,24 @@ fn is_valid_space_in_value(property: &str, value: &str) -> bool {
     // - Functions: "rgb(255, 0, 0)", "calc(100% - 20px)"
     // - Keywords with spaces: "ease-in-out"
 
-    value.contains('(') || // Function call
-    value.split_whitespace().count() > 1 && is_multi_value_property(property)
-}
+    // Check for prefixes
+    if property.starts_with("border-")
+        || property.starts_with("background-")
+        || property.starts_with("margin-")
+        || property.starts_with("padding-")
+        || property.starts_with("font-")
+        || property.starts_with("text-")
+        || property.starts_with("grid-")
+        || property.starts_with("flex-")
+        || property.starts_with("animation-")
+        || property.starts_with("transition-")
+        || property.starts_with("transform-")
+        || property.starts_with("list-style-")
+        || property.starts_with("outline-")
+    {
+        return true;
+    }
 
-/// Properties that accept multiple space-separated values
-fn is_multi_value_property(property: &str) -> bool {
     matches!(
         property,
         "margin"
@@ -367,11 +379,34 @@ fn is_multi_value_property(property: &str) -> bool {
             | "border-radius"
             | "background"
             | "box-shadow"
-            | "text-shadow"
             | "transform"
             | "transition"
             | "animation"
+            | "font"
+            | "font-family"
+            | "text-shadow"
+            | "flex"
+            | "grid-template-columns"
+            | "grid-template-rows"
+            | "grid-gap"
+            | "gap"
+            | "content"
+            | "cursor" // cursor can be "pointer", but also "url(...) x y, auto"
+            | "filter"
+            | "backdrop-filter"
+            | "clip-path"
     )
+}
+
+/// Check if spaces are valid in this specific value context
+fn is_valid_space_in_value(property: &str, value: &str) -> bool {
+    // Allow spaces in certain contexts:
+    // - Multiple values: "10px 20px"
+    // - Functions: "rgb(255, 0, 0)", "calc(100% - 20px)"
+    // - Keywords with spaces: "ease-in-out"
+
+    value.contains('(') || // Function call
+    value.split_whitespace().count() > 1 && is_multi_word_property(property)
 }
 
 /// Validate unit suffixes
