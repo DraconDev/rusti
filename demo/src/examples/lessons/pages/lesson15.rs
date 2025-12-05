@@ -74,7 +74,7 @@ pub fn todo_app_view<'a>(state: &'a TodoApp) -> impl Component + 'a {
                 font-size: "1rem";
             }
             .filter_section {
-                padding: 1rem;
+                padding: "1rem";
                 display: "flex";
                 justify-content: "space-between";
                 align-items: "center";
