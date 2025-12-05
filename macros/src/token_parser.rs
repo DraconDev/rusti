@@ -57,6 +57,7 @@ pub struct Attribute {
 pub enum AttributeValue {
     Static(String),
     Dynamic(TokenStream),
+    StyleDsl(Vec<(String, TokenStream)>), // List of (property, value_expr)
     None,
 }
 
@@ -475,10 +476,57 @@ impl Parse for Attribute {
         let (value, value_span) = if input.peek(Token![=]) {
             input.parse::<Token![=]>()?;
             if input.peek(Brace) {
-                // {expr} - dynamic expression
+                // {expr} - dynamic expression OR style DSL
                 let content;
                 syn::braced!(content in input);
-                (AttributeValue::Dynamic(content.parse()?), None)
+
+                // Check if this is a style attribute with DSL syntax: { --var: val, --var2: val2 }
+                if name == "style" {
+                    // Peek to see if it starts with --
+                    let fork = content.fork();
+                    if fork.peek(Token![-]) && fork.peek2(Token![-]) {
+                        // Parse as Style DSL
+                        let mut props = Vec::new();
+                        while !content.is_empty() {
+                            // Parse property name: --foo-bar
+                            let mut prop_name = String::new();
+                            content.parse::<Token![-]>()?;
+                            content.parse::<Token![-]>()?;
+                            prop_name.push_str("--");
+
+                            // Parse rest of identifier parts
+                            let ident = content.parse::<Ident>()?;
+                            prop_name.push_str(&ident.to_string());
+
+                            while content.peek(Token![-]) {
+                                content.parse::<Token![-]>()?;
+                                prop_name.push('-');
+                                let part = content.parse::<Ident>()?;
+                                prop_name.push_str(&part.to_string());
+                            }
+
+                            content.parse::<Token![:]>()?;
+
+                            // Parse value expression until comma or end
+                            let mut value_tokens = TokenStream::new();
+                            while !content.is_empty() && !content.peek(Token![,]) {
+                                value_tokens.extend(std::iter::once(content.parse::<TokenTree>()?));
+                            }
+
+                            props.push((prop_name, value_tokens));
+
+                            if content.peek(Token![,]) {
+                                content.parse::<Token![,]>()?;
+                            }
+                        }
+                        (AttributeValue::StyleDsl(props), None)
+                    } else {
+                        // Normal dynamic expression
+                        (AttributeValue::Dynamic(content.parse()?), None)
+                    }
+                } else {
+                    (AttributeValue::Dynamic(content.parse()?), None)
+                }
             } else if input.peek(syn::Lit) {
                 let lit_before = input.span();
                 let lit: syn::Lit = input.parse()?;
