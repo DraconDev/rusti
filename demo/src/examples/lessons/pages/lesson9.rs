@@ -10,7 +10,7 @@ pub struct Counter {
     pub active: bool,
 }
 
-#[azumi::live_impl]
+#[azumi::live_impl(component = "counter_view")]
 impl Counter {
     pub fn increment(&mut self) {
         self.count += 1;

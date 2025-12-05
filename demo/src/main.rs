@@ -51,13 +51,13 @@ async fn main() {
         // 📁 Static files (CSS, JS)
         .nest_service("/static", ServeDir::new("static"));
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8081")
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
         .await
-        .expect("Failed to bind to port 8081");
+        .expect("Failed to bind to port 8080");
 
     println!("🎓 Azumi Learning Platform");
     println!("=====================================");
-    println!("📍 http://localhost:8081");
+    println!("📍 http://localhost:8080");
 
     axum::serve(listener, app).await.unwrap();
 }

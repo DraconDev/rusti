@@ -8,7 +8,7 @@ pub struct LikeButton {
     pub count: i32,
 }
 
-#[azumi::live_impl]
+#[azumi::live_impl(component = "like_button_view")]
 impl LikeButton {
     pub fn toggle(&mut self) {
         self.liked = !self.liked;
