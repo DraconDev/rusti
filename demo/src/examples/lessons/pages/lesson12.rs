@@ -30,17 +30,17 @@ pub fn lesson12_page() -> impl Component {
             .responsive_img { width: "100%"; height: "auto"; }
         </style>
 
-        <div class={container}>
+        <div class="container">
             <h1>"Lesson 12: Image Optimization"</h1>
             <p>"Azumi provides components to ensure images are performant by default."</p>
 
-            <div class={section}>
+            <div class="section">
                 <h2>"1. Basic Optimized Image"</h2>
-                <div class={code}>
+                <div class="code">
                     "@Image(src=\"/static/photo.jpg\", width=800, height=600, alt=\"Photo\")"
                 </div>
-                <div class={card}>
-                    <div class={label}>"Output HTML"</div>
+                <div class="card">
+                    <div class="label">"Output HTML"</div>
                     <div class={code_comment}>
                         "&lt;img src=\"...\" loading=\"lazy\" decoding=\"async\" width=\"800\" ...&gt;"
                     </div>
@@ -55,13 +55,13 @@ pub fn lesson12_page() -> impl Component {
                 </div>
             </div>
 
-            <div class={section}>
+            <div class="section">
                 <h2>"2. Eager Loading (Above the Fold)"</h2>
                 <p>"For hero images at the top of the page, use eager loading."</p>
-                <div class={code}>
+                <div class="code">
                     "@Image(..., eager=true)"
                 </div>
-                <div class={card}>
+                <div class="card">
                     @Image(
                         src="https://images.unsplash.com/photo-1682687221038-404670e01d46?w=800&q=80",
                         alt="Hero mountain",
@@ -72,14 +72,14 @@ pub fn lesson12_page() -> impl Component {
                 </div>
             </div>
 
-            <div class={section}>
+            <div class="section">
                 <h2>"3. Responsive Images (srcset)"</h2>
                 <p>"Automatically serve the right size for the device."</p>
-                <div class={code}>
+                <div class="code">
                     "@ResponsiveImage(src=\"photo.jpg\", sizes=\"(max-width: 600px) 100vw, 50vw\")"
                 </div>
-                <div class={card}>
-                    <div class={label}>"Try resizing window"</div>
+                <div class="card">
+                    <div class="label">"Try resizing window"</div>
 
                     // We use a placeholder service that supports width parameter
                     // In real app, you'd have photo-400.jpg, photo-800.jpg on disk
@@ -90,7 +90,7 @@ pub fn lesson12_page() -> impl Component {
                                 https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200 1200w"
                         sizes="(max-width: 600px) 100vw, 800px"
                         alt="Responsive nature"
-                        class={responsive_img}
+                        class="responsive_img"
                     />
                 </div>
             </div>
