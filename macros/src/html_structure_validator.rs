@@ -504,6 +504,7 @@ pub fn validate_attribute_name(attr: &crate::token_parser::Attribute) -> Option<
         "kind",
         "label",
         "list",
+        "loading",
         "loop",
         "low",
         "max",
