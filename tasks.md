@@ -12,5 +12,8 @@
 - image optimization
 - make the lessons
 
+
+- set ? doens't this mean that our state is desynced form the client
+
 # Done
 
