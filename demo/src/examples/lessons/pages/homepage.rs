@@ -62,7 +62,7 @@ pub fn Lessons() -> impl azumi::Component {
                 "Azumi Learning Platform"
             </h1>
             <p class={subtitle}>
-                "Explore interactive lessons to learn Azumi framework!"
+                "Explore interactive lessons to learn Azumi framework"
             </p>
 
             <div class={lesson_grid}>
