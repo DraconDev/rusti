@@ -163,11 +163,15 @@ pub fn Lessons() -> impl Component {
 #[azumi::component]
 fn LessonCard(num: &str, title: &str, desc: &str, link: &str) -> impl Component {
     html! {
-        <div class="lesson_card">
-            <div class="card_number">"LESSON " {num}</div>
-            <h3 class="card_title">{title}</h3>
-            <p class="card_desc">{desc}</p>
-            <a href={link} class="card_link">"Start Lesson →"</a>
+        <style>
+            {.lesson_card}
+            
+        </style>
+        <div class={lesson_card}>
+            <div class={card_number}>"LESSON " {num}</div>
+            <h3 class={card_title}>{title}</h3>
+            <p class={card_desc}>{desc}</p>
+            <a href={link} class={card_link}>"Start Lesson →"</a>
         </div>
     }
 }
