@@ -109,20 +109,5 @@ pub fn lesson12_page() -> impl Component {
 
 pub async fn lesson12_handler() -> axum::response::Html<String> {
     let component_html = azumi::render_to_string(&lesson12_page());
-    let html = format!(
-        r#"<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lesson 12: Images</title>
-    <style>body {{ font-family: system-ui; background: #fafafa; margin: 0; }}</style>
-</head>
-<body>
-    {}
-</body>
-</html>"#,
-        component_html
-    );
-    axum::response::Html(html)
+    axum::response::Html(component_html)
 }
