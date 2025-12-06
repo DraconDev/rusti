@@ -1,98 +1,183 @@
 use azumi::prelude::*;
 
-/// Lesson 11: Declarative Event Binding (on:event)
+/// Lesson 11: Async Loading Patterns
+///
+/// Demonstrates how to handle loading and error states for async operations.
+/// Key concept: Use `loading: bool` and `error: Option<String>` in your state.
 
 #[azumi::live]
-pub struct CartItem {
-    pub quantity: i32,
+pub struct UserLoader {
+    pub loading: bool,
+    pub error: Option<String>,
+    pub users: Vec<String>,
 }
 
-#[azumi::live_impl]
-impl CartItem {
-    pub fn increment(&mut self) {
-        self.quantity += 1;
+#[azumi::live_impl(component = "user_loader_view")]
+impl UserLoader {
+    pub fn load_users(&mut self) {
+        // 1. Optimistic Update: Set loading=true instantly
+        self.loading = true;
+        self.error = None;
+
+        // 2. Simulate Server Delay (in real app, this would be DB call)
+        std::thread::sleep(std::time::Duration::from_secs(1));
+
+        // 3. Update State
+        self.users = vec![
+            "Alice Chen".to_string(),
+            "Bob Smith".to_string(),
+            "Charlie Kim".to_string(),
+        ];
+        self.loading = false;
     }
 
-    pub fn decrement(&mut self) {
-        if self.quantity > 0 {
-            self.quantity -= 1;
-        }
+    pub fn load_fail(&mut self) {
+        self.loading = true;
+        self.error = None;
+
+        std::thread::sleep(std::time::Duration::from_secs(1));
+
+        self.loading = false;
+        self.error = Some("Network timeout: Could not reach user database.".to_string());
+        self.users.clear();
+    }
+
+    pub fn reset(&mut self) {
+        self.loading = false;
+        self.error = None;
+        self.users.clear();
     }
 }
 
-/// Cart item component
 #[azumi::component]
-pub fn cart_item_view<'a>(state: &'a CartItem, name: &'a str, price: f64) -> impl Component + 'a {
+pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
     html! {
         <style>
-            .cart_item {
-                display: "flex";
-                align-items: "center";
-                gap: "1rem";
-                padding: "1rem";
-                border: "1px solid #eee";
-                border-radius: "8px";
-                background: "white";
+            .container { max-width: "600px"; margin: "2rem auto"; padding: "2rem"; }
+            .card {
+                background: "white"; border-radius: "12px";
+                box_shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
+                padding: "2rem"; border: "1px solid #e5e7eb";
             }
-            .item_info { flex: "1"; }
-            .item_name { font-weight: "bold"; color: "#333"; }
-            .item_price { color: "#666"; }
-            .qty_controls {
-                display: "flex";
-                align-items: "center";
-                gap: "0.5rem";
+            .header { text-align: "center"; margin-bottom: "2rem"; }
+
+            /* Loading State */
+            .loading_state { text-align: "center"; padding: "3rem"; color: "#6b7280"; }
+            .spinner {
+                display: "inline-block"; width: "40px"; height: "40px";
+                border: "3px solid #e5e7eb"; border-top-color: "#4f46e5";
+                border-radius: "50%"; animation: "spin 1s linear infinite";
+                margin-bottom: "1rem";
             }
-            .qty_btn {
-                width: "32px";
-                height: "32px";
-                border: "1px solid #ddd";
-                border-radius: "4px";
-                background: "white";
-                cursor: "pointer";
-                font-size: "1.2rem";
+            @keyframes spin { to { transform: "rotate(360deg)"; } }
+
+            /* Error State */
+            .error_state {
+                background: "#fef2f2"; color: "#991b1b";
+                padding: "1rem"; border-radius: "8px";
+                display: "flex"; align_items: "center"; gap: "0.5rem";
+                margin-bottom: "1rem";
             }
-            .qty_value {
-                min-width: "40px";
-                text-align: "center";
+
+            /* Data State */
+            .user_list { list-style: "none"; padding: "0"; }
+            .user_item {
+                display: "flex"; align_items: "center"; gap: "1rem";
+                padding: "1rem"; border-bottom: "1px solid #f3f4f6";
+            }
+            .avatar {
+                width: "40px"; height: "40px"; background: "#e0e7ff";
+                color: "#4f46e5"; border-radius: "50%";
+                display: "flex"; align-items: "center"; justify-content: "center";
                 font-weight: "bold";
             }
-            .item_total {
-                font-weight: "bold";
-                color: "#4caf50";
-                min-width: "80px";
-                text-align: "right";
+
+            /* Controls */
+            .controls {
+                display: "flex"; gap: "1rem"; justify-content: "center";
+                margin-top: "2rem"; padding-top: "2rem"; border-top: "1px solid #e5e7eb";
             }
+            .btn {
+                padding: "0.75rem 1.5rem"; border-radius: "6px"; font-weight: "500";
+                border: "none"; cursor: "pointer"; transition: "all 0.2s";
+            }
+            .btn_primary { background: "#4f46e5"; color: "white"; }
+            .btn_primary:hover { background: "#4338ca"; }
+            .btn_danger { background: "#ef4444"; color: "white"; }
+            .btn_danger:hover { background: "#dc2626"; }
+            .btn_outline { background: "white"; border: "1px solid #d1d5db"; color: "#374151"; }
+            .btn_outline:hover { background: "#f9fafb"; }
         </style>
-        <div class={cart_item}>
-            <div class={item_info}>
-                <div class={item_name}>{name}</div>
-                <div class={item_price}>"$" {format!("{:.2}", price)}</div>
-            </div>
 
-            <div class={qty_controls}>
-                <button class={qty_btn} on:click={state.decrement}>"-"</button>
-                <span class={qty_value} data-bind="quantity">{state.quantity}</span>
-                <button class={qty_btn} on:click={state.increment}>"+"</button>
-            </div>
+        <div class={container}>
+            <div class={card}>
+                <div class={header}>
+                    <h1>"Async Data Loading"</h1>
+                    <p>"Click actions to see optimistic loading states."</p>
+                </div>
 
-            @let total = price * (state.quantity as f64);
-            <div class={item_total}>"$" {format!("{:.2}", total)}</div>
+                // ===============================================
+                // The Pattern: Logic-less View Switching
+                // ===============================================
+
+                @if state.loading {
+                    <div class={loading_state}>
+                        <div class={spinner}></div>
+                        <p>"Fetching users from database..."</p>
+                    </div>
+                } else @if state.error.is_some() {
+                    <div class={error_state}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <div>
+                            <strong>"Error Occurred"</strong>
+                            <p>{state.error.as_ref().unwrap()}</p>
+                        </div>
+                    </div>
+                } else @if state.users.is_empty() {
+                    <div style="text-align: center; color: #6b7280; padding: 2rem;">
+                        "No users loaded. Ready to fetch."
+                    </div>
+                } else {
+                    <ul class={user_list}>
+                        @for user in &state.users {
+                            <li class={user_item}>
+                                <div class={avatar}>{&user[0..1]}</div>
+                                {user}
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class={controls}>
+                    <button class="btn btn_primary" on:click={state.load_users}>
+                        "Load Users (Success)"
+                    </button>
+                    <button class="btn btn_danger" on:click={state.load_fail}>
+                        "Load Users (Fail)"
+                    </button>
+                    <button class="btn btn_outline" on:click={state.reset}>
+                        "Reset"
+                    </button>
+                </div>
+            </div>
         </div>
     }
 }
 
-// Handler for Axum
 pub async fn lesson11_handler() -> axum::response::Html<String> {
-    let cart_state = CartItem { quantity: 1 };
+    let state = UserLoader {
+        loading: false,
+        error: None,
+        users: vec![],
+    };
 
-    use cart_item_view_component::Props as CartProps;
-    let cart_html = azumi::render_to_string(&cart_item_view_component::render(
-        CartProps::builder()
-            .state(&cart_state)
-            .name("Azumi Pro License")
-            .price(99.00)
-            .build()
-            .expect("props"),
+    use user_loader_view_component::*;
+    let component_html = azumi::render_to_string(&render(
+        Props::builder().state(&state).build().expect("props"),
     ));
 
     let html = format!(
@@ -100,57 +185,16 @@ pub async fn lesson11_handler() -> axum::response::Html<String> {
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lesson 11: Declarative Event Binding</title>
-    <style>
-        body {{ 
-            font-family: system-ui, sans-serif; 
-            margin: 0;
-            padding: 2rem;
-            background: #fafafa;
-        }}
-        .container {{ max-width: 800px; margin: 0 auto; }}
-        .header {{ text-align: center; margin-bottom: 2rem; }}
-        .main_title {{ font-size: 2rem; color: #333; }}
-        .subtitle {{ color: #666; }}
-        .section {{ margin: 2rem 0; }}
-        .section_title {{ color: #2196f3; margin-bottom: 1rem; }}
-        .comparison {{ display: grid; gap: 1rem; margin: 2rem 0; }}
-        .compare_box {{ padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; }}
-        .old_syntax {{ background: #ffebee; border: 1px solid #ef9a9a; }}
-        .new_syntax {{ background: #e8f5e9; border: 1px solid #a5d6a7; }}
-        .compare_label {{ font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; }}
-    </style>
+    <title>Lesson 11: Loading Patterns</title>
+    <style>body {{ font-family: system-ui; background: #f3f4f6; margin: 0; }}</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="main_title">Lesson 11: on:event Syntax</h1>
-            <p class="subtitle">Declarative event binding</p>
-        </header>
-        
-        <div class="comparison">
-            <div class="compare_box old_syntax">
-                <div class="compare_label">❌ Old (Manual)</div>
-                <code>az-on="click call toggle" data-predict="..."</code>
-            </div>
-            <div class="compare_box new_syntax">
-                <div class="compare_label">✅ New (Declarative)</div>
-                <code>on:click={{state.toggle}}</code>
-            </div>
-        </div>
-        
-        <section class="section">
-            <h2 class="section_title">🛒 Shopping Cart Demo</h2>
-            {}
-        </section>
-    </div>
+    {}
     <script src="/static/idiomorph.js"></script>
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        cart_html
+        component_html
     );
-
     axum::response::Html(html)
 }
