@@ -56,7 +56,8 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
             .container { max-width: "600px"; margin: "2rem auto"; padding: "2rem"; }
             .card {
                 background: "white"; border-radius: "12px";
-                box_shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
+                background: "white"; border-radius: "12px";
+                // box_shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
                 padding: "2rem"; border: "1px solid #e5e7eb";
             }
             .header { text-align: "center"; margin-bottom: "2rem"; }
@@ -97,15 +98,23 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
                 display: "flex"; gap: "1rem"; justify-content: "center";
                 margin-top: "2rem"; padding-top: "2rem"; border-top: "1px solid #e5e7eb";
             }
-            .btn {
+            .btn_primary {
                 padding: "0.75rem 1.5rem"; border-radius: "6px"; font-weight: "500";
                 border: "none"; cursor: "pointer"; transition: "all 0.2s";
+                background: "#4f46e5"; color: "white";
             }
-            .btn_primary { background: "#4f46e5"; color: "white"; }
             .btn_primary:hover { background: "#4338ca"; }
-            .btn_danger { background: "#ef4444"; color: "white"; }
+            .btn_danger {
+                padding: "0.75rem 1.5rem"; border-radius: "6px"; font-weight: "500";
+                border: "none"; cursor: "pointer"; transition: "all 0.2s";
+                background: "#ef4444"; color: "white";
+            }
             .btn_danger:hover { background: "#dc2626"; }
-            .btn_outline { background: "white"; border: "1px solid #d1d5db"; color: "#374151"; }
+            .btn_outline {
+                padding: "0.75rem 1.5rem"; border-radius: "6px"; font-weight: "500";
+                border: "none"; cursor: "pointer"; transition: "all 0.2s";
+                background: "white"; border: "1px solid #d1d5db"; color: "#374151";
+            }
             .btn_outline:hover { background: "#f9fafb"; }
             .empty_state { text-align: "center"; color: "#6b7280"; padding: "2rem"; }
         </style>
@@ -158,13 +167,13 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
                 }
 
                 <div class={controls}>
-                    <button class="btn btn_primary" on:click={state.load_users}>
+                    <button class={btn_primary} on:click={state.load_users}>
                         "Load Users (Success)"
                     </button>
-                    <button class="btn btn_danger" on:click={state.load_fail}>
+                    <button class={btn_danger} on:click={state.load_fail}>
                         "Load Users (Fail)"
                     </button>
-                    <button class="btn btn_outline" on:click={state.reset}>
+                    <button class={btn_outline} on:click={state.reset}>
                         "Reset"
                     </button>
                 </div>

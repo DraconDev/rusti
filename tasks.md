@@ -2,7 +2,7 @@
 
 # Later
 
-
+in html click is onclick but we use on:click why?
 
 
 - also what nextjs features we could implement?
