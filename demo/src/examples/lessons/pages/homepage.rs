@@ -164,8 +164,50 @@ pub fn Lessons() -> impl Component {
 fn LessonCard(num: &str, title: &str, desc: &str, link: &str) -> impl Component {
     html! {
         <style>
-            {.lesson_card}
-            
+            .lesson_card {
+                display: "flex";
+                flex-direction: "column";
+                align-items: "center";
+                justify-content: "center";
+                width: "200px";
+                height: "200px";
+                border-radius: "8px";
+                background: "#1e293b";
+                color: "#f3f4f6";
+                box-shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+                transition: "all 0.2s";
+            }
+            .card_number {
+                font-size: "1.5rem";
+                font-weight: "700";
+                color: "#60a5fa";
+                margin-bottom: "0.5rem";
+                text-transform: "uppercase";
+                letter-spacing: "0.05em";
+            }
+            .card_title {
+                font-size: "1.5rem";
+                font-weight: "700";
+                color: "#f3f4f6";
+                margin-bottom: "1rem";
+                line-height: "1.2";
+            }
+            .card_desc {
+                color: "#9ca3af";
+                margin-bottom: "1rem";
+            }   
+            .card_link {
+                display: "inline-flex";
+                align-items: "center";
+                color: "#fff";
+                text-decoration: "none";
+                font-weight: "600";
+                padding: "0.75rem 1.5rem";
+                background: "linear-gradient(135deg, #3b82f6, #2563eb)";
+                border-radius: "8px";
+                transition: "all 0.2s";
+                align-self: "start";
+            }
         </style>
         <div class={lesson_card}>
             <div class={card_number}>"LESSON " {num}</div>
