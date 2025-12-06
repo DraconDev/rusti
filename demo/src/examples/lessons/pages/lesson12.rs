@@ -1,4 +1,4 @@
-use crate::components::{Image, ResponsiveImage};
+// use crate::components::{Image, ResponsiveImage};
 use azumi::prelude::*;
 
 /// Lesson 12: Image Optimization
@@ -32,12 +32,12 @@ pub fn lesson12_page() -> impl Component {
 
         <div class={container}>
             <h1>"Lesson 12: Image Optimization"</h1>
-            <p>"Azumi provides components to ensure images are performant by default."</p>
+            <p>"Azumi automatically optimizes standard <img> tags with lazy loading and async decoding."</p>
 
             <div class={section}>
                 <h2>"1. Basic Optimized Image"</h2>
                 <div class={code}>
-                    "@Image(src=\"/static/photo.jpg\", width=800, height=600, alt=\"Photo\")"
+                    "<img src=\"/static/photo.jpg\" width=\"800\" height=\"600\" alt=\"Photo\" />"
                 </div>
                 <div class={card}>
                     <div class={label}>"Output HTML"</div>
@@ -46,12 +46,12 @@ pub fn lesson12_page() -> impl Component {
                     </div>
 
                     // Usage of the component
-                    @Image(
-                        src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80",
-                        alt="Mountain landscape",
-                        width=800,
-                        height=500
-                    )
+                    <img
+                        src="/static/photo.jpg"
+                        width="800"
+                        height="600"
+                        alt="Photo"
+                    />
                 </div>
             </div>
 
@@ -59,16 +59,16 @@ pub fn lesson12_page() -> impl Component {
                 <h2>"2. Eager Loading (Above the Fold)"</h2>
                 <p>"For hero images at the top of the page, use eager loading."</p>
                 <div class={code}>
-                    "@Image(..., eager=true)"
+                    "<img ... loading=\"eager\" />"
                 </div>
                 <div class={card}>
-                    @Image(
-                        src="https://images.unsplash.com/photo-1682687221038-404670e01d46?w=800&q=80",
-                        alt="Hero mountain",
-                        width=800,
-                        height=500,
-                        eager=true
-                    )
+                    <img
+                        src="https://images.unsplash.com/photo-1682687221038-404670e01d46?w=800&q=80"
+                        alt="Hero mountain"
+                        width="800"
+                        height="600"
+                        loading="eager"
+                    />
                 </div>
             </div>
 
@@ -76,7 +76,7 @@ pub fn lesson12_page() -> impl Component {
                 <h2>"3. Responsive Images (srcset)"</h2>
                 <p>"Automatically serve the right size for the device."</p>
                 <div class={code}>
-                    "@ResponsiveImage(src=\"photo.jpg\", sizes=\"(max-width: 600px) 100vw, 50vw\")"
+                    "<img srcset=\"...\" sizes=\"...\" />"
                 </div>
                 <div class={card}>
                     <div class={label}>"Try resizing window"</div>
@@ -85,8 +85,7 @@ pub fn lesson12_page() -> impl Component {
                     // In real app, you'd have photo-400.jpg, photo-800.jpg on disk
                     <img
                         src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800"
-                        srcset="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400 400w,
-                                https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800 800w, 
+                        srcset="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600 600w,
                                 https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200 1200w"
                         sizes="(max-width: 600px) 100vw, 800px"
                         alt="Responsive nature"
