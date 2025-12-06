@@ -1354,8 +1354,8 @@ pub fn InteractivePage() -> impl Component {
         <html>
         <head>
             // Include Azumi client runtime (required for live components)
-            {azumi::azumi_script()}
             <script src="/static/idiomorph.js"></script>
+            <script src="/static/azumi.js"></script>
         </head>
         <body>
             // Your components here
