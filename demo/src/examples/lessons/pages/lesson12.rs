@@ -6,15 +6,6 @@ use azumi::prelude::*;
 /// Demonstrates the `@Image` component for performance.
 #[azumi::component]
 pub fn lesson12_page() -> impl Component {
-    let container = "container";
-    let section = "section";
-    let grid = "grid"; // Defined in CSS but not directly used in HTML class attribute here
-    let card = "card";
-    let code = "code";
-    let label = "label";
-    let code_comment = "code_comment";
-    let responsive_img = "responsive_img";
-
     html! {
         <style>
             .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
