@@ -9,11 +9,14 @@ in html click is onclick but we use on:click why?
   - what features we are missing 
 - action testing 
 
-- maybe improve css validation 
+
 
 - image optimization
 
+
 - make the lessons
+
+- hot reload doesn't reload the page 
 
 # Done
 
