@@ -99,5 +99,21 @@ pub fn lesson12_page() -> impl Component {
 
 pub async fn lesson12_handler() -> axum::response::Html<String> {
     let component_html = azumi::render_to_string(&lesson12_page());
-    axum::response::Html(component_html)
+    let html = format!(
+        r#"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lesson 12: Image Optimization</title>
+    <style>body {{ font-family: system-ui; background: #f3f4f6; margin: 0; }}</style>
+</head>
+<body>
+    {}
+    <script src="/static/idiomorph.js"></script>
+    <script src="/static/azumi.js"></script>
+</body>
+</html>"#,
+        component_html
+    );
+    axum::response::Html(html)
 }

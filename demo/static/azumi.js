@@ -333,8 +333,61 @@ class Azumi {
     setState(action, element) {
         console.log("Set state not implemented yet");
     }
+
+    // Initialize Hot Reload
+    initHotReload() {
+        if (!window.WebSocket) return;
+
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const url = `${protocol}//${window.location.host}/_azumi/live_reload`;
+
+        const connect = () => {
+            console.log("🔥 [Hot Reload] Connecting...");
+            const socket = new WebSocket(url);
+
+            socket.onopen = () => {
+                console.log("🔥 [Hot Reload] Connected");
+            };
+
+            socket.onclose = () => {
+                console.log(
+                    "🔥 [Hot Reload] Disconnected - Waiting for server..."
+                );
+                // Start polling for server
+                setTimeout(() => this.pollForServerSync(), 500);
+            };
+
+            socket.onerror = (e) => {
+                // Connection failed, likely server down
+                // Do nothing, onclose will trigger
+            };
+        };
+
+        connect();
+    }
+
+    /**
+     * Poll server until it responds, then reload
+     */
+    async pollForServerSync() {
+        try {
+            // Try to fetch current page header only
+            const res = await fetch(window.location.href, { method: "HEAD" });
+            if (res.ok) {
+                console.log("🔥 [Hot Reload] Server is back! Reloading...");
+                window.location.reload();
+                return;
+            }
+        } catch (e) {
+            // Still down, ignore
+        }
+
+        // Retry
+        setTimeout(() => this.pollForServerSync(), 500);
+    }
 }
 
 // Initialize
 window.azumi = new Azumi();
+window.azumi.initHotReload();
 console.log("Azumi Live Client Initialized 🚀");
