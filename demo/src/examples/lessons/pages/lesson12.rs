@@ -5,7 +5,7 @@ use azumi::prelude::*;
 ///
 /// Demonstrates the `@Image` component for performance.
 #[azumi::component]
-pub fn Lesson12Page() -> impl Component {
+pub fn lesson12_page() -> impl Component {
     html! {
         <style>
             .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
@@ -99,7 +99,7 @@ pub fn Lesson12Page() -> impl Component {
 }
 
 pub async fn lesson12_handler() -> axum::response::Html<String> {
-    let component_html = azumi::render_to_string(&Lesson12Page());
+    let component_html = azumi::render_to_string(&lesson12_page());
     let html = format!(
         r#"<!DOCTYPE html>
 <html>

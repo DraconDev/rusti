@@ -4,7 +4,7 @@ use azumi::prelude::*;
 ///
 /// Learn when to use client-side state vs server state.
 #[azumi::component]
-pub fn Lesson10Page() -> impl Component {
+pub fn lesson10_page() -> impl Component {
     html! {
         <style>
             .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
@@ -152,7 +152,7 @@ pub fn Lesson10Page() -> impl Component {
 }
 
 pub async fn lesson10_handler() -> axum::response::Html<String> {
-    let component_html = azumi::render_to_string(&Lesson10Page());
+    let component_html = azumi::render_to_string(&lesson10_page());
     let html = format!(
         r#"<!DOCTYPE html>
 <html>
