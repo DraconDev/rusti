@@ -26,11 +26,11 @@ pub fn lesson12_page() -> impl Component {
                 padding: "0.25rem 0.5rem"; border-radius: "4px"; font-size: "0.8rem";
                 margin-bottom: "0.5rem"; font-weight: "bold";
             }
-            .code_comment { color: "#666"; font-family: monospace; font-size: 0.9rem; margin-bottom: "1rem"; }
+            .code_comment { color: "#666"; font-family: "monospace"; font-size: "0.9rem"; margin-bottom: "1rem"; }
             .responsive_img { width: "100%"; height: "auto"; }
         </style>
 
-        <div class="container">
+        <div class={container}>
             <h1>"Lesson 12: Image Optimization"</h1>
             <p>"Azumi provides components to ensure images are performant by default."</p>
 
