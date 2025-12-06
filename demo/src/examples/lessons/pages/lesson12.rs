@@ -26,8 +26,8 @@ pub fn Lesson12() -> impl Component {
                 padding: "0.25rem 0.5rem"; border-radius: "4px"; font-size: "0.8rem";
                 margin-bottom: "0.5rem"; font-weight: "bold";
             }
-            .code-comment { color: "#666"; font-family: monospace; font-size: 0.9rem; margin-bottom: "1rem"; }
-            .responsive-img { width: "100%"; height: "auto"; }
+            .code_comment { color: "#666"; font-family: monospace; font-size: 0.9rem; margin-bottom: "1rem"; }
+            .responsive_img { width: "100%"; height: "auto"; }
         </style>
 
         <div class={container}>
@@ -41,7 +41,7 @@ pub fn Lesson12() -> impl Component {
                 </div>
                 <div class={card}>
                     <div class={label}>"Output HTML"</div>
-                    <div class="code-comment">
+                    <div class={code_comment}>
                         "&lt;img src=\"...\" loading=\"lazy\" decoding=\"async\" width=\"800\" ...&gt;"
                     </div>
 
@@ -90,7 +90,7 @@ pub fn Lesson12() -> impl Component {
                                 https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200 1200w"
                         sizes="(max-width: 600px) 100vw, 800px"
                         alt="Responsive nature"
-                        class="responsive-img"
+                        class={responsive_img}
                     />
                 </div>
             </div>
