@@ -1147,7 +1147,6 @@ fn generate_body_with_context(
                             });
                         }
                     }
-                    }
                 }
 
                 // Auto-optimization for <img> tags
