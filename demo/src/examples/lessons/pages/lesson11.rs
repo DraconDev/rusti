@@ -156,7 +156,6 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
                         }
                     }
                 }
-                }
 
                 <div class={controls}>
                     <button class="btn btn_primary" on:click={state.load_users}>
