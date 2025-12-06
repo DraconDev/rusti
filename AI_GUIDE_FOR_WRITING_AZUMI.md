@@ -6,10 +6,10 @@
 
 Azumi is a **compiler-driven optimistic UI framework** that generates client-side predictions from Rust code. Write logic once, get instant UI updates everywhere.
 
-- **Single Source of Truth**: Rust code is the only source of truth
-- **Compile-Time Safety**: Macros catch errors before runtime
-- **Zero JavaScript**: Compiler generates all client logic
-- **Server-Side Truth**: Server always wins, client predictions are optimistic
+-   **Single Source of Truth**: Rust code is the only source of truth
+-   **Compile-Time Safety**: Macros catch errors before runtime
+-   **Zero JavaScript**: Compiler generates all client logic
+-   **Server-Side Truth**: Server always wins, client predictions are optimistic
 
 ---
 
@@ -46,8 +46,9 @@ html! {
 ```
 
 **Naming rules:**
-- Use `snake_case` for class names (becomes Rust identifier)
-- Avoid hyphens in class names (`my-button` → use `my_button`)
+
+-   Use `snake_case` for class names (becomes Rust identifier)
+-   Avoid hyphens in class names (`my-button` → use `my_button`)
 
 ### 3. Live State Requires Component Link
 
@@ -230,14 +231,16 @@ pub fn ProgressMeter(completion: f64, accent_color: &str) -> impl Component {
 Azumi validates all CSS at compile time:
 
 **Allowed:**
-- Standard CSS properties with quoted values
-- CSS custom properties (`--variable-name`)
-- CSS functions like `calc()`, `var()`, etc.
+
+-   Standard CSS properties with quoted values
+-   CSS custom properties (`--variable-name`)
+-   CSS functions like `calc()`, `var()`, etc.
 
 **Not Allowed:**
-- External CSS imports (`@import`)
-- Inline CSS properties without custom properties
-- Invalid CSS syntax
+
+-   External CSS imports (`@import`)
+-   Inline CSS properties without custom properties
+-   Invalid CSS syntax
 
 ---
 
@@ -524,7 +527,7 @@ pub fn LiveCounter(state: &Counter) -> impl Component {
         </style>
         <div class={counter}>
             <div class={value} data-bind="count">{state.count}</div>
-            <p>"Status: " 
+            <p>"Status: "
                 <span data-bind="active">
                     {if state.active { "Active ✓" } else { "Inactive ✗" }}
                 </span>
@@ -535,9 +538,10 @@ pub fn LiveCounter(state: &Counter) -> impl Component {
 ```
 
 **How it works:**
-- The `data-bind="count"` attribute binds the `count` property from state
-- When a prediction updates `count`, the corresponding DOM element updates instantly
-- Supports nested properties: `data-bind="user.profile.name"`
+
+-   The `data-bind="count"` attribute binds the `count` property from state
+-   When a prediction updates `count`, the corresponding DOM element updates instantly
+-   Supports nested properties: `data-bind="user.profile.name"`
 
 ### Form Binding with Structs
 
@@ -591,10 +595,11 @@ pub fn ProfileForm() -> impl Component {
 ```
 
 **Form Binding Rules:**
-- Field names must match struct field names (case-sensitive)
-- Nested fields use dot notation: `address.street`
-- Compile-time validation prevents typos in field names
-- Supports all form elements: `<input>`, `<select>`, `<textarea>`
+
+-   Field names must match struct field names (case-sensitive)
+-   Nested fields use dot notation: `address.street`
+-   Compile-time validation prevents typos in field names
+-   Supports all form elements: `<input>`, `<select>`, `<textarea>`
 
 ---
 
@@ -802,14 +807,14 @@ User clicks on:click={state.increment}
 
 ### Supported Prediction Patterns
 
-| Rust Code Pattern | Generated Prediction |
-| ------------------ | -------------------- |
-| `self.x = !self.x` | `x = !x` (toggle) |
-| `self.x = true` | `x = true` (literal) |
-| `self.x = false` | `x = false` (literal) |
-| `self.x += 1` | `x = x + 1` (increment) |
-| `self.x -= 1` | `x = x - 1` (decrement) |
-| `self.x = value` | `x = value` (assignment) |
+| Rust Code Pattern  | Generated Prediction     |
+| ------------------ | ------------------------ |
+| `self.x = !self.x` | `x = !x` (toggle)        |
+| `self.x = true`    | `x = true` (literal)     |
+| `self.x = false`   | `x = false` (literal)    |
+| `self.x += 1`      | `x = x + 1` (increment)  |
+| `self.x -= 1`      | `x = x - 1` (decrement)  |
+| `self.x = value`   | `x = value` (assignment) |
 
 ### Complex Logic (No Prediction)
 
@@ -893,17 +898,17 @@ pub struct Product {
 
 Common Schema.org types:
 
-| Type | Use Case | Example Usage |
-|------|----------|---------------|
-| `Article` | Blog posts, news articles | News sites, blogs |
-| `BlogPosting` | Blog articles | Personal/professional blogs |
-| `Product` | E-commerce products | Online stores |
-| `Organization` | Companies, teams | About pages |
-| `Person` | Individual profiles | Team pages, author bios |
-| `Event` | Events, webinars | Event listings |
-| `Recipe` | Cooking instructions | Food blogs |
-| `VideoObject` | Video content | YouTube embeds |
-| `WebSite` | Website information | Site-wide metadata |
+| Type           | Use Case                  | Example Usage               |
+| -------------- | ------------------------- | --------------------------- |
+| `Article`      | Blog posts, news articles | News sites, blogs           |
+| `BlogPosting`  | Blog articles             | Personal/professional blogs |
+| `Product`      | E-commerce products       | Online stores               |
+| `Organization` | Companies, teams          | About pages                 |
+| `Person`       | Individual profiles       | Team pages, author bios     |
+| `Event`        | Events, webinars          | Event listings              |
+| `Recipe`       | Cooking instructions      | Food blogs                  |
+| `VideoObject`  | Video content             | YouTube embeds              |
+| `WebSite`      | Website information       | Site-wide metadata          |
 
 ### Complex Schema Example
 
@@ -984,7 +989,7 @@ pub fn Page() -> impl Component {
 pub fn BlogPost() -> impl Component {
     let title = "Building with Azumi Live";
     let description = "Learn how to create reactive UI components";
-    
+
     html! {
         <html>
         <head>
@@ -1036,41 +1041,43 @@ pub fn ProductPage(product: &'a Product) -> impl Component + 'a {
 
 ### Head Meta Field Reference
 
-| Field | Required | Description | Generated Tags |
-|-------|----------|-------------|----------------|
-| `title` | ✅ Yes | Page title | `<title>`, `og:title`, `twitter:title` |
-| `description` | ✅ Yes | Page description | `<meta name="description">`, `og:description`, `twitter:description` |
-| `image` | ❌ No | Social sharing image | `og:image`, `twitter:image`, `twitter:card="summary_large_image"` |
-| `url` | ❌ No | Canonical URL | `og:url` |
-| `type` | ❌ No | Content type | `og:type` (defaults to "website") |
+| Field         | Required | Description          | Generated Tags                                                       |
+| ------------- | -------- | -------------------- | -------------------------------------------------------------------- |
+| `title`       | ✅ Yes   | Page title           | `<title>`, `og:title`, `twitter:title`                               |
+| `description` | ✅ Yes   | Page description     | `<meta name="description">`, `og:description`, `twitter:description` |
+| `image`       | ❌ No    | Social sharing image | `og:image`, `twitter:image`, `twitter:card="summary_large_image"`    |
+| `url`         | ❌ No    | Canonical URL        | `og:url`                                                             |
+| `type`        | ❌ No    | Content type         | `og:type` (defaults to "website")                                    |
 
 ### Meta Tag Output Examples
 
 **Minimal (title + description only):**
+
 ```html
 <title>My Page</title>
-<meta name="description" content="Page description">
-<meta property="og:title" content="My Page">
-<meta property="og:description" content="Page description">
-<meta property="og:type" content="website">
-<meta name="twitter:title" content="My Page">
-<meta name="twitter:description" content="Page description">
-<meta name="twitter:card" content="summary">
+<meta name="description" content="Page description" />
+<meta property="og:title" content="My Page" />
+<meta property="og:description" content="Page description" />
+<meta property="og:type" content="website" />
+<meta name="twitter:title" content="My Page" />
+<meta name="twitter:description" content="Page description" />
+<meta name="twitter:card" content="summary" />
 ```
 
 **Full (with image, URL, type):**
+
 ```html
 <title>My Article</title>
-<meta name="description" content="Article description">
-<meta property="og:title" content="My Article">
-<meta property="og:description" content="Article description">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://example.com/article">
-<meta property="og:image" content="/image.jpg">
-<meta name="twitter:image" content="/image.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="My Article">
-<meta name="twitter:description" content="Article description">
+<meta name="description" content="Article description" />
+<meta property="og:title" content="My Article" />
+<meta property="og:description" content="Article description" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/article" />
+<meta property="og:image" content="/image.jpg" />
+<meta name="twitter:image" content="/image.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="My Article" />
+<meta name="twitter:description" content="Article description" />
 ```
 
 ### SEO Best Practices
@@ -1081,7 +1088,7 @@ pub fn SEOOptimizedPage() -> impl Component {
     let page_title = "Azumi Live Guide - Type-Safe Reactive UI";
     let description = "Complete guide to building reactive web applications with Azumi Live. Zero JavaScript, full type safety.";
     let keywords = "rust, web framework, reactive ui, type-safe, azumi";
-    
+
     html! {
         <html lang="en">
         <head>
@@ -1388,26 +1395,67 @@ Common error patterns and solutions:
 
 ## 📚 Quick Reference
 
-| Feature | Syntax | Example |
-|---------|--------|---------|
-| Component | `#[azumi::component]` | `#[azumi::component] fn MyComp() -> impl Component` |
-| Live State | `#[azumi::live]` | `#[azumi::live] pub struct State { }` |
-| Live Methods | `#[azumi::live_impl]` | `#[azumi::live_impl(component = "view")] impl State` |
-| Event | `on:event={state.method}` | `on:click={state.increment}` |
-| Class | `class={class_name}` | `class={my_button}` |
-| Style | `<style>` or `<style global>` | `<style> .btn { } </style>` |
-| Dynamic Style | `style="--var: {value}"` | `style="--color: red"` |
-| Conditional | `{if cond { a } else { b }}` | `{if active { "On" } else { "Off" }}` |
-| Loop | `@for item in items { }` | `@for item in &list { <div>{item}</div> }` |
-| Pattern Match | `@match value { }` | `@match status { "ok" => {} _ => {} }` |
-| Local Var | `@let name = value;` | `@let total = price * quantity;` |
-| Children      | `@Component { }` | `@Container { <p>"Content"</p> }` |
-| Head Meta     | `head! { title: "", description: "" }` | `head! { title: "Page", desc: "Desc" }` |
-| Schema        | `#[derive(Schema)]` | `#[schema(type = "BlogPosting")]` |
-| Form Bind     | `bind={StructName}` | `form bind={UserRegistration}` |
-| Data Bind      | `data-bind="property"` | `data-bind="count"` |
-| Client Script | `azumi::azumi_script()` | `{azumi::azumi_script()}` |
-| Text          | Quoted strings | `"Hello world"` |
+| Feature       | Syntax                                 | Example                                              |
+| ------------- | -------------------------------------- | ---------------------------------------------------- |
+| Component     | `#[azumi::component]`                  | `#[azumi::component] fn MyComp() -> impl Component`  |
+| Live State    | `#[azumi::live]`                       | `#[azumi::live] pub struct State { }`                |
+| Live Methods  | `#[azumi::live_impl]`                  | `#[azumi::live_impl(component = "view")] impl State` |
+| Event         | `on:event={state.method}`              | `on:click={state.increment}`                         |
+| Class         | `class={class_name}`                   | `class={my_button}`                                  |
+| Style         | `<style>` or `<style global>`          | `<style> .btn { } </style>`                          |
+| Dynamic Style | `style="--var: {value}"`               | `style="--color: red"`                               |
+| Conditional   | `{if cond { a } else { b }}`           | `{if active { "On" } else { "Off" }}`                |
+| Loop          | `@for item in items { }`               | `@for item in &list { <div>{item}</div> }`           |
+| Pattern Match | `@match value { }`                     | `@match status { "ok" => {} _ => {} }`               |
+| Local Var     | `@let name = value;`                   | `@let total = price * quantity;`                     |
+| Children      | `@Component { }`                       | `@Container { <p>"Content"</p> }`                    |
+| Head Meta     | `head! { title: "", description: "" }` | `head! { title: "Page", desc: "Desc" }`              |
+| Schema        | `#[derive(Schema)]`                    | `#[schema(type = "BlogPosting")]`                    |
+| Form Bind     | `bind={StructName}`                    | `form bind={UserRegistration}`                       |
+| Data Bind     | `data-bind="property"`                 | `data-bind="count"`                                  |
+| Client Script | `azumi::azumi_script()`                | `{azumi::azumi_script()}`                            |
+| Text          | Quoted strings                         | `"Hello world"`                                      |
+
+---
+
+## 🖼️ Image Optimization
+
+Azumi automatically optimizes images at compile time. You do not need a special image component.
+
+### Automatic Attributes
+
+Standard `<img>` tags automatically get performance attributes injected by the compiler:
+
+```rust
+// You write:
+<img src="/photo.jpg" alt="Description" />
+
+// Compiler generates:
+<img src="/photo.jpg" alt="Description" loading="lazy" decoding="async" />
+```
+
+### Overriding Defaults
+
+You can manually override these defaults for "above the fold" hero images:
+
+```rust
+// Hero image (loads immediately)
+<img src="/hero.jpg" alt="Hero" loading="eager" />
+// Compiler respects your choice and does NOT inject loading="lazy"
+```
+
+### Responsive Images
+
+Use standard HTML `srcset` for responsive sizing. The compiler leaves these alone (while still adding lazy/async if omitted).
+
+```rust
+<img
+    src="/photo-800.jpg"
+    srcset="/photo-400.jpg 400w, /photo-800.jpg 800w"
+    sizes="(max-width: 600px) 100vw, 800px"
+    alt="Responsive"
+/>
+```
 
 ---
 
