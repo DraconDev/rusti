@@ -126,31 +126,36 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
                         <div class={spinner}></div>
                         <p>"Fetching users from database..."</p>
                     </div>
-                } else @if state.error.is_some() {
-                    <div class={error_state}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                        <div>
-                            <strong>"Error Occurred"</strong>
-                            <p>{state.error.as_ref().unwrap()}</p>
-                        </div>
-                    </div>
-                } else @if state.users.is_empty() {
-                    <div class={empty_state}>
-                        "No users loaded. Ready to fetch."
-                    </div>
                 } else {
-                    <ul class={user_list}>
-                        @for user in &state.users {
-                            <li class={user_item}>
-                                <div class={avatar}>{&user[0..1]}</div>
-                                {user}
-                            </li>
+                    @if state.error.is_some() {
+                        <div class={error_state}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            <div>
+                                <strong>"Error Occurred"</strong>
+                                <p>{state.error.as_ref().unwrap()}</p>
+                            </div>
+                        </div>
+                    } else {
+                        @if state.users.is_empty() {
+                            <div class={empty_state}>
+                                "No users loaded. Ready to fetch."
+                            </div>
+                        } else {
+                            <ul class={user_list}>
+                                @for user in &state.users {
+                                    <li class={user_item}>
+                                        <div class={avatar}>{&user[0..1]}</div>
+                                        {user}
+                                    </li>
+                                }
+                            </ul>
                         }
-                    </ul>
+                    }
+                }
                 }
 
                 <div class={controls}>
