@@ -107,6 +107,7 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
             .btn_danger:hover { background: "#dc2626"; }
             .btn_outline { background: "white"; border: "1px solid #d1d5db"; color: "#374151"; }
             .btn_outline:hover { background: "#f9fafb"; }
+            .empty_state { text-align: "center"; color: "#6b7280"; padding: "2rem"; }
         </style>
 
         <div class={container}>
@@ -138,7 +139,7 @@ pub fn user_loader_view<'a>(state: &'a UserLoader) -> impl Component + 'a {
                         </div>
                     </div>
                 } else @if state.users.is_empty() {
-                    <div style="text-align: center; color: #6b7280; padding: 2rem;">
+                    <div class={empty_state}>
                         "No users loaded. Ready to fetch."
                     </div>
                 } else {
