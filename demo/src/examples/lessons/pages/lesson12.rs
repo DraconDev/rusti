@@ -1,164 +1,119 @@
+use crate::components::{Image, ResponsiveImage};
 use azumi::prelude::*;
 
-/// Lesson 12: How Optimistic UI Works
-
-#[azumi::live]
-pub struct FlowDemo {
-    pub count: i32,
-}
-
-#[azumi::live_impl]
-impl FlowDemo {
-    pub fn increment(&mut self) {
-        self.count += 1;
-    }
-}
-
-/// Flow demo component
+/// Lesson 12: Image Optimization
+///
+/// Demonstrates the `@Image` component for performance.
 #[azumi::component]
-pub fn flow_demo<'a>(state: &'a FlowDemo) -> impl Component + 'a {
+pub fn Lesson12() -> impl Component {
     html! {
         <style>
-            .flow_demo {
-                padding: "2rem";
+            .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
+            .section { margin-bottom: "3rem"; }
+            .grid { display: "grid"; grid-template-columns: "repeat(auto-fit, minmax(300px, 1fr))"; gap: "1rem"; }
+            .card {
+                border: "1px solid #eee"; padding: "1rem"; border-radius: "8px";
                 background: "white";
-                border-radius: "12px";
-                border: "1px solid #e0e0e0";
             }
-            .flow_value {
-                font-size: "3rem";
-                font-weight: "bold";
-                color: "#667eea";
-                text-align: "center";
-                margin: "1rem 0";
+            .code {
+                background: "#1e1e1e"; color: "#d4d4d4";
+                padding: "1rem"; border-radius: "6px";
+                overflow-x: "auto"; font-family: "monospace"; margin: "1rem 0";
             }
-            .flow_btn {
-                display: "block";
-                width: "100%";
-                padding: "1rem";
-                font-size: "1.2rem";
-                background: "#667eea";
-                color: "white";
-                border: "none";
-                border-radius: "8px";
-                cursor: "pointer";
+            img { max-width: "100%"; height: "auto"; border-radius: "4px"; }
+            .label {
+                display: "inline-block"; background: "#e0e7ff"; color: "#4338ca";
+                padding: "0.25rem 0.5rem"; border-radius: "4px"; font-size: "0.8rem";
+                margin-bottom: "0.5rem"; font-weight: "bold";
             }
+            .code-comment { color: "#666"; font-family: monospace; font-size: 0.9rem; margin-bottom: "1rem"; }
+            .responsive-img { width: "100%"; height: "auto"; }
         </style>
-        <div class={flow_demo}>
-            <h3>"Interactive Demo"</h3>
-            <div class={flow_value} data-bind="count">{state.count}</div>
-            <button class={flow_btn} on:click={state.increment}>
-                "Click to Increment"
-            </button>
+
+        <div class={container}>
+            <h1>"Lesson 12: Image Optimization"</h1>
+            <p>"Azumi provides components to ensure images are performant by default."</p>
+
+            <div class={section}>
+                <h2>"1. Basic Optimized Image"</h2>
+                <div class={code}>
+                    "@Image(src=\"/static/photo.jpg\", width=800, height=600, alt=\"Photo\")"
+                </div>
+                <div class={card}>
+                    <div class={label}>"Output HTML"</div>
+                    <div class="code-comment">
+                        "&lt;img src=\"...\" loading=\"lazy\" decoding=\"async\" width=\"800\" ...&gt;"
+                    </div>
+
+                    // Usage of the component
+                    @Image(
+                        src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80",
+                        alt="Mountain landscape",
+                        width=800,
+                        height=500
+                    )
+                </div>
+            </div>
+
+            <div class={section}>
+                <h2>"2. Eager Loading (Above the Fold)"</h2>
+                <p>"For hero images at the top of the page, use eager loading."</p>
+                <div class={code}>
+                    "@Image(..., eager=true)"
+                </div>
+                <div class={card}>
+                    @Image(
+                        src="https://images.unsplash.com/photo-1682687221038-404670e01d46?w=800&q=80",
+                        alt="Hero mountain",
+                        width=800,
+                        height=500,
+                        eager=true
+                    )
+                </div>
+            </div>
+
+            <div class={section}>
+                <h2>"3. Responsive Images (srcset)"</h2>
+                <p>"Automatically serve the right size for the device."</p>
+                <div class={code}>
+                    "@ResponsiveImage(src=\"photo.jpg\", sizes=\"(max-width: 600px) 100vw, 50vw\")"
+                </div>
+                <div class={card}>
+                    <div class={label}>"Try resizing window"</div>
+
+                    // We use a placeholder service that supports width parameter
+                    // In real app, you'd have photo-400.jpg, photo-800.jpg on disk
+                    <img
+                        src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800"
+                        srcset="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400 400w,
+                                https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800 800w, 
+                                https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200 1200w"
+                        sizes="(max-width: 600px) 100vw, 800px"
+                        alt="Responsive nature"
+                        class="responsive-img"
+                    />
+                </div>
+            </div>
         </div>
     }
 }
 
-// Handler for Axum
 pub async fn lesson12_handler() -> axum::response::Html<String> {
-    let flow_state = FlowDemo { count: 0 };
-
-    use flow_demo_component::Props as FlowProps;
-    let flow_html = azumi::render_to_string(&flow_demo_component::render(
-        FlowProps::builder()
-            .state(&flow_state)
-            .build()
-            .expect("props"),
-    ));
-
+    let component_html = azumi::render_to_string(&Lesson12());
     let html = format!(
         r#"<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lesson 12: Optimistic UI Flow</title>
-    <style>
-        body {{ 
-            font-family: system-ui, sans-serif; 
-            margin: 0;
-            padding: 2rem;
-            background: #fafafa;
-        }}
-        .container {{ max-width: 900px; margin: 0 auto; }}
-        .header {{ text-align: center; margin-bottom: 2rem; }}
-        .main_title {{ font-size: 2rem; color: #333; }}
-        .subtitle {{ color: #666; }}
-        .two_col {{ display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }}
-        .section {{ margin: 2rem 0; }}
-        .section_title {{ color: #2196f3; margin-bottom: 1rem; }}
-        .diagram {{
-            background: #1e1e2e;
-            color: #cdd6f4;
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }}
-        .diagram_title {{ color: #89b4fa; margin-bottom: 1rem; font-size: 1.1rem; }}
-        .step {{ padding: 0.75rem; margin: 0.5rem 0; border-radius: 6px; background: #45475a; }}
-        .step_num {{ display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background: #585b70; border-radius: 50%; margin-right: 0.5rem; font-size: 0.8rem; }}
-        .pred_table {{ width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }}
-        .pred_header {{ background: #f8f9fa; text-align: left; padding: 0.75rem; }}
-        .pred_cell {{ padding: 0.75rem; border-bottom: 1px solid #eee; font-family: monospace; }}
-        .rust_code {{ color: #e91e63; }}
-        .pred_code {{ color: #4caf50; }}
-        .benefits {{ display: grid; gap: 1rem; margin: 2rem 0; }}
-        .benefit_card {{ padding: 1.5rem; background: white; border-radius: 8px; border: 1px solid #e0e0e0; }}
-        .benefit_icon {{ font-size: 2rem; margin-bottom: 0.5rem; }}
-        .benefit_title {{ font-weight: bold; color: #333; margin-bottom: 0.5rem; }}
-        .benefit_desc {{ color: #666; font-size: 0.9rem; }}
-        @media (max-width: 768px) {{ .two_col {{ grid-template-columns: 1fr; }} }}
-    </style>
+    <title>Lesson 12: Images</title>
+    <style>body {{ font-family: system-ui; background: #fafafa; margin: 0; }}</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="main_title">Lesson 12: Optimistic UI Flow</h1>
-            <p class="subtitle">Understanding prediction → confirm</p>
-        </header>
-        
-        <div class="two_col">
-            <div class="diagram">
-                <div class="diagram_title">🔄 Optimistic UI Flow</div>
-                <div class="step"><span class="step_num">1</span> User clicks on:click={{state.increment}}</div>
-                <div class="step"><span class="step_num">2</span> INSTANT: Execute prediction locally (0ms!)</div>
-                <div class="step"><span class="step_num">3</span> ASYNC: POST to server action</div>
-                <div class="step"><span class="step_num">4</span> RECONCILE: Morph server HTML into DOM</div>
-            </div>
-            {}
-        </div>
-        
-        <section class="section">
-            <h2 class="section_title">📊 Supported Predictions</h2>
-            <table class="pred_table">
-                <thead>
-                    <tr><th class="pred_header">Rust Pattern</th><th class="pred_header">Generated Prediction</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="pred_cell"><span class="rust_code">self.x = !self.x</span></td><td class="pred_cell"><span class="pred_code">x = !x</span></td></tr>
-                    <tr><td class="pred_cell"><span class="rust_code">self.x = true</span></td><td class="pred_cell"><span class="pred_code">x = true</span></td></tr>
-                    <tr><td class="pred_cell"><span class="rust_code">self.x += 1</span></td><td class="pred_cell"><span class="pred_code">x = x + 1</span></td></tr>
-                    <tr><td class="pred_cell"><span class="rust_code">self.x -= 1</span></td><td class="pred_cell"><span class="pred_code">x = x - 1</span></td></tr>
-                </tbody>
-            </table>
-        </section>
-        
-        <section class="section">
-            <h2 class="section_title">🎯 Why This Matters</h2>
-            <div class="benefits">
-                <div class="benefit_card"><div class="benefit_icon">⚡</div><div class="benefit_title">0ms Perceived Latency</div><div class="benefit_desc">UI updates instantly before server confirms</div></div>
-                <div class="benefit_card"><div class="benefit_icon">🔒</div><div class="benefit_title">Server is Truth</div><div class="benefit_desc">Server always wins - can't trust client</div></div>
-                <div class="benefit_card"><div class="benefit_icon">🚫</div><div class="benefit_title">No JavaScript</div><div class="benefit_desc">Compiler generates all client logic</div></div>
-            </div>
-        </section>
-    </div>
-    <script src="/static/idiomorph.js"></script>
-    <script src="/static/azumi.js"></script>
+    {}
 </body>
 </html>"#,
-        flow_html
+        component_html
     );
-
     axum::response::Html(html)
 }
