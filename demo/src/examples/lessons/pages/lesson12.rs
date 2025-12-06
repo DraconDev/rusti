@@ -124,5 +124,5 @@ pub async fn lesson12_handler() -> axum::response::Html<String> {
 </html>"#,
         component_html
     );
-    axumi::response::Html(html)
+    axum::response::Html(html)
 }
