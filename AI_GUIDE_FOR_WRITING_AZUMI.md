@@ -1413,7 +1413,7 @@ Common error patterns and solutions:
 | Schema        | `#[derive(Schema)]`                    | `#[schema(type = "BlogPosting")]`                    |
 | Form Bind     | `bind={StructName}`                    | `form bind={UserRegistration}`                       |
 | Data Bind     | `data-bind="property"`                 | `data-bind="count"`                                  |
-| Client Script | `azumi::azumi_script()`                | `{azumi::azumi_script()}`                            |
+| Client Script | `<script src="...">`                   | `<script src="/static/azumi.js"></script>`           |
 | Text          | Quoted strings                         | `"Hello world"`                                      |
 
 ---
