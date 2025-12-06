@@ -1,4 +1,5 @@
 mod actions;
+pub mod components;
 mod examples;
 
 use axum::{

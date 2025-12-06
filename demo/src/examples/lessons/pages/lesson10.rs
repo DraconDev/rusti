@@ -1,149 +1,173 @@
 use azumi::prelude::*;
 
-/// Lesson 10: Live Components with Auto-Detection
-
-#[azumi::live]
-pub struct LikeButton {
-    pub liked: bool,
-    pub count: i32,
-}
-
-#[azumi::live_impl(component = "like_button_view")]
-impl LikeButton {
-    pub fn toggle(&mut self) {
-        self.liked = !self.liked;
-        if self.liked {
-            self.count += 1;
-        } else {
-            self.count -= 1;
-        }
-    }
-}
-
-/// Like button component
+/// Lesson 10: Client-Side State with `set`
+///
+/// Learn when to use client-side state vs server state.
 #[azumi::component]
-pub fn like_button_view<'a>(state: &'a LikeButton) -> impl Component + 'a {
+pub fn Lesson10() -> impl Component {
     html! {
         <style>
-            .like_container {
-                display: "inline-flex";
-                align-items: "center";
-                gap: "0.5rem";
+            .container { max-width: "800px"; margin: "0 auto"; padding: "2rem"; }
+            .card {
+                border: "1px solid #e0e0e0";
+                border-radius: "8px";
+                padding: "2rem";
+                margin-bottom: "2rem";
+                background: "white";
+                box-shadow: "0 2px 4px rgba(0,0,0,0.05)";
             }
-            .like_btn {
+            .title { color: "#333"; margin-bottom: "1rem"; }
+            .explanation { color: "#666"; line-height: "1.6"; margin-bottom: "2rem"; }
+
+            /* Tabs Styling */
+            .tabs { display: "flex"; border-bottom: "2px solid #eee"; margin-bottom: "1rem"; }
+            .tab_btn {
                 padding: "0.75rem 1.5rem";
-                font-size: "1.5rem";
-                border: "2px solid #e91e63";
-                border-radius: "50px";
+                border: "none";
                 background: "transparent";
                 cursor: "pointer";
-            }
-            .like_count {
-                font-size: "1.2rem";
                 font-weight: "bold";
-                color: "#e91e63";
+                color: "#666";
+                border-bottom: "2px solid transparent";
+                margin-bottom: "-2px";
             }
+            .tab_btn.active { color: "#667eea"; border-bottom-color: "#667eea"; }
+            .tab_content { display: "none"; padding: "1rem 0"; }
+            .tab_content.active { display: "block"; }
+
+            /* Accordion Styling */
+            .accordion_item { border: "1px solid #eee"; border-radius: "4px"; margin-bottom: "0.5rem"; }
+            .accordion_header {
+                padding: "1rem";
+                background: "#f8f9fa";
+                cursor: "pointer";
+                font-weight: "bold";
+                display: "flex";
+                justify-content: "space-between";
+            }
+            .accordion_body { display: "none"; padding: "1rem"; border-top: "1px solid #eee"; }
+            .accordion_body.open { display: "block"; }
+
+            .code { background: "#f5f5f5"; padding: "0.2rem 0.4rem"; border-radius: "4px"; font-family: "monospace"; }
         </style>
-        <div class={like_container}>
-            <button class={like_btn} on:click={state.toggle}>
-                {if state.liked { "❤️" } else { "🤍" }}
-            </button>
-            <span class={like_count} data-bind="count">{state.count}</span>
+
+        <div class={container}>
+            <h1>"Lesson 10: Client-Side State"</h1>
+            <p class={explanation}>
+                "Azumi is server-first, but sometimes you need pure client-side interactivity for "
+                "ephemeral UI state like tabs, accordions, and toggles. "
+                "For this, we use the "<span class={code}>"set"</span>" command."
+            </p>
+
+            // ==========================================
+            // Example 1: Tabs
+            // ==========================================
+            <div class={card} az-scope="{ \"active_tab\": \"rust\" }">
+                <h2 class={title}>"Example 1: Tabs"</h2>
+                <p>"State is local to the browser. Refreshing resets it."</p>
+
+                <div class={tabs}>
+                    <button
+                        class={tab_btn}
+                        // Bind class 'active' if active_tab == 'rust'
+                        az-bind:class:active="active_tab == 'rust'"
+                        // On click, set active_tab locally
+                        az-on="click set active_tab = 'rust'"
+                    >
+                        "Rust"
+                    </button>
+                    <button
+                        class={tab_btn}
+                        az-bind:class:active="active_tab == 'python'"
+                        az-on="click set active_tab = 'python'"
+                    >
+                        "Python"
+                    </button>
+                    <button
+                        class={tab_btn}
+                        az-bind:class:active="active_tab == 'js'"
+                        az-on="click set active_tab = 'js'"
+                    >
+                        "JavaScript"
+                    </button>
+                </div>
+
+                <div class={tab_content} az-bind:class:active="active_tab == 'rust'">
+                    <h3>"Rust"</h3>
+                    <p>"Rust is blazingly fast and memory-efficient with no garbage collector."</p>
+                </div>
+                <div class={tab_content} az-bind:class:active="active_tab == 'python'">
+                    <h3>"Python"</h3>
+                    <p>"Python is great for data science, AI, and scripting."</p>
+                </div>
+                <div class={tab_content} az-bind:class:active="active_tab == 'js'">
+                    <h3>"JavaScript"</h3>
+                    <p>"JavaScript powers the web... but Azumi helps you write less of it!"</p>
+                </div>
+            </div>
+
+            // ==========================================
+            // Example 2: Accordion
+            // ==========================================
+            <div class={card} az-scope="{ \"acc1\": false, \"acc2\": false }">
+                <h2 class={title}>"Example 2: Accordion"</h2>
+
+                <div class={accordion_item}>
+                    <div
+                        class={accordion_header}
+                        az-on="click set acc1 = !acc1"
+                    >
+                        "Section 1: Why Azumi?"
+                        <span az-bind:text="acc1 ? '−' : '+'">"+"</span>
+                    </div>
+                    // Show body if acc1 is true
+                    <div class={accordion_body} az-bind:class:open="acc1">
+                        <p>"Because it brings compile-time safety to your frontend code!"</p>
+                    </div>
+                </div>
+
+                <div class={accordion_item}>
+                    <div
+                        class={accordion_header}
+                        az-on="click set acc2 = !acc2"
+                    >
+                        "Section 2: How does it work?"
+                        <span az-bind:text="acc2 ? '−' : '+'">"+"</span>
+                    </div>
+                    <div class={accordion_body} az-bind:class:open="acc2">
+                        <p>"It uses Rust macros to analyze your code and generate optimized HTML and minimal JS."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class={card}>
+                <h2 class={title}>"When to use what?"</h2>
+                <ul>
+                    <li><strong>"Client 'set':"</strong>" UI state (tabs, modals, toggles). Data that can be lost on refresh."</li>
+                    <li><strong>"Server Actions:"</strong>" Business data (user profile, shopping cart, database records). Data that must persist."</li>
+                </ul>
+            </div>
         </div>
     }
 }
 
-// Handler for Axum
 pub async fn lesson10_handler() -> axum::response::Html<String> {
-    let like_state = LikeButton {
-        liked: false,
-        count: 42,
-    };
-
-    use like_button_view_component::Props as LikeProps;
-    let like_html = azumi::render_to_string(&like_button_view_component::render(
-        LikeProps::builder()
-            .state(&like_state)
-            .build()
-            .expect("props"),
-    ));
-
+    let component_html = azumi::render_to_string(&Lesson10());
     let html = format!(
         r#"<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lesson 10: Live Components Auto-Detection</title>
-    <style>
-        body {{ 
-            font-family: system-ui, sans-serif; 
-            margin: 0;
-            padding: 2rem;
-            background: #fafafa;
-        }}
-        .container {{ max-width: 800px; margin: 0 auto; }}
-        .header {{ text-align: center; margin-bottom: 2rem; }}
-        .main_title {{ font-size: 2rem; color: #333; }}
-        .subtitle {{ color: #666; }}
-        .demo_card {{ 
-            padding: 1.5rem; 
-            border: 1px solid #eee; 
-            border-radius: 12px;
-            background: white;
-            margin: 2rem 0;
-        }}
-        .demo_title {{ color: #2196f3; margin-bottom: 1rem; }}
-        .explanation {{
-            background: #e3f2fd;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }}
-        .code_block {{
-            background: #1e1e2e;
-            color: #cdd6f4;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }}
-    </style>
+    <title>Lesson 10: Client State</title>
+    <style>body {{ font-family: system-ui; background: #fafafa; margin: 0; }}</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="main_title">Lesson 10: Auto-Detection</h1>
-            <p class="subtitle">Components automatically detect live state</p>
-        </header>
-        
-        <div class="explanation">
-            <h3>🔍 Auto-Detection</h3>
-            <p>When first parameter is <code>state: &amp;T</code>, component detects live mode:</p>
-            <div class="code_block">
-                #[azumi::component]<br/>
-                fn my_view&lt;'a&gt;(state: &amp;'a MyState) -&gt; impl Component + 'a {{<br/>
-                &nbsp;&nbsp;html! {{<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&lt;button on:click={{state.action}}&gt;"Click"&lt;/button&gt;<br/>
-                &nbsp;&nbsp;}}<br/>
-                }}
-            </div>
-        </div>
-        
-        <div class="demo_card">
-            <h3 class="demo_title">❤️ Like Button</h3>
-            <p>Click to toggle like state - instant UI update!</p>
-            {}
-        </div>
-    </div>
+    {}
     <script src="/static/idiomorph.js"></script>
     <script src="/static/azumi.js"></script>
 </body>
 </html>"#,
-        like_html
+        component_html
     );
-
     axum::response::Html(html)
 }
