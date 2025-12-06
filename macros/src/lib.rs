@@ -1147,6 +1147,25 @@ fn generate_body_with_context(
                             });
                         }
                     }
+                    }
+                }
+
+                // Auto-optimization for <img> tags
+                if name == "img" {
+                    // Check if attributes were already present in the source
+                    let has_loading = elem.attrs.iter().any(|a| a.name == "loading");
+                    let has_decoding = elem.attrs.iter().any(|a| a.name == "decoding");
+
+                    if !has_loading {
+                        attr_code.extend(quote! {
+                            write!(f, " loading=\"lazy\"")?;
+                        });
+                    }
+                    if !has_decoding {
+                        attr_code.extend(quote! {
+                            write!(f, " decoding=\"async\"")?;
+                        });
+                    }
                 }
 
                 // Generate element with potential scope attribute from context
