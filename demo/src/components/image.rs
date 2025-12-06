@@ -23,8 +23,8 @@ pub fn Image<'a>(
             alt={alt}
             width={width.to_string()}
             height={height.to_string()}
-            loading={loading}
-            decoding="async"
+            // loading={loading}
+            // decoding="async"
         />
     }
 }

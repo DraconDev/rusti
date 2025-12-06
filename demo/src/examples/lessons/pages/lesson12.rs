@@ -30,7 +30,7 @@ pub fn lesson12_page() -> impl Component {
             .responsive_img { width: "100%"; height: "auto"; }
         </style>
 
-        <div class={container}>
+        <div class="container">
             <h1>"Lesson 12: Image Optimization"</h1>
             <p>"Azumi provides components to ensure images are performant by default."</p>
 
